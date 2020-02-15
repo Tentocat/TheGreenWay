@@ -137,4 +137,14 @@ AC_DEFUN([AX_BOOST_THREAD],
                            case "x$host_os" in
                               *bsd* )
 				BOOST_LDFLAGS="-pthread $BOOST_LDFLAGS"
-                        
+                              break;
+                              ;;
+                           esac
+
+			fi
+		fi
+
+		CPPFLAGS="$CPPFLAGS_SAVED"
+	LDFLAGS="$LDFLAGS_SAVED"
+	fi
+])
