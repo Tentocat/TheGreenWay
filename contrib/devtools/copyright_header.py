@@ -461,4 +461,152 @@ def get_header_lines(header, start_year, end_year):
 
 CPP_HEADER = '''
 // Copyright (c) %s The Bitcoin Core developers
-// Distributed under the MIT software license, see the a
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+'''
+
+def get_cpp_header_lines_to_insert(start_year, end_year):
+    return reversed(get_header_lines(CPP_HEADER, start_year, end_year))
+
+PYTHON_HEADER = '''
+# Copyright (c) %s The Bitcoin Core developers
+# Distributed under the MIT software license, see the accompanying
+# file COPYING or http://www.opensource.org/licenses/mit-license.php.
+'''
+
+def get_python_header_lines_to_insert(start_year, end_year):
+    return reversed(get_header_lines(PYTHON_HEADER, start_year, end_year))
+
+################################################################################
+# query git for year of last change
+################################################################################
+
+def get_git_change_year_range(filename):
+    years = get_git_change_years(filename)
+    return min(years), max(years)
+
+################################################################################
+# check for existing core copyright
+################################################################################
+
+def file_already_has_core_copyright(file_lines):
+    index, _ = get_updatable_copyright_line(file_lines)
+    return index != None
+
+################################################################################
+# insert header execution
+################################################################################
+
+def file_has_hashbang(file_lines):
+    if len(file_lines) < 1:
+        return False
+    if len(file_lines[0]) <= 2:
+        return False
+    return file_lines[0][:2] == '#!'
+
+def insert_python_header(filename, file_lines, start_year, end_year):
+    if file_has_hashbang(file_lines):
+        insert_idx = 1 
+    else:
+        insert_idx = 0
+    header_lines = get_python_header_lines_to_insert(start_year, end_year)
+    for line in header_lines:
+        file_lines.insert(insert_idx, line)
+    write_file_lines(filename, file_lines)
+
+def insert_cpp_header(filename, file_lines, start_year, end_year):
+    header_lines = get_cpp_header_lines_to_insert(start_year, end_year)
+    for line in header_lines:
+        file_lines.insert(0, line)
+    write_file_lines(filename, file_lines)
+
+def exec_insert_header(filename, style):
+    file_lines = read_file_lines(filename)
+    if file_already_has_core_copyright(file_lines):
+        sys.exit('*** %s already has a copyright by The Bitcoin Core developers'
+                 % (filename))
+    start_year, end_year = get_git_change_year_range(filename)
+    if style == 'python':
+        insert_python_header(filename, file_lines, start_year, end_year)
+    else:
+        insert_cpp_header(filename, file_lines, start_year, end_year)
+
+################################################################################
+# insert cmd
+################################################################################
+
+INSERT_USAGE = """
+Inserts a copyright header for "The Bitcoin Core developers" at the top of the
+file in either Python or C++ style as determined by the file extension. If the
+file is a Python file and it has a '#!' starting the first line, the header is
+inserted in the line below it.
+
+The copyright dates will be set to be:
+
+"<year_introduced>-<current_year>"
+
+where <year_introduced> is according to the 'git log' history. If
+<year_introduced> is equal to <current_year>, the date will be set to be:
+
+"<current_year>"
+
+If the file already has a copyright for "The Bitcoin Core developers", the
+script will exit.
+
+Usage:
+    $ ./copyright_header.py insert <file>
+
+Arguments:
+    <file> - A source file in the bitcoin repository.
+"""
+
+def insert_cmd(argv):
+    if len(argv) != 3:
+        sys.exit(INSERT_USAGE)
+
+    filename = argv[2]
+    if not os.path.isfile(filename):
+        sys.exit("*** bad filename: %s" % filename)
+    _, extension = os.path.splitext(filename)
+    if extension not in ['.h', '.cpp', '.cc', '.c', '.py']:
+        sys.exit("*** cannot insert for file extension %s" % extension)
+   
+    if extension == '.py': 
+        style = 'python'
+    else:
+        style = 'cpp'
+    exec_insert_header(filename, style)
+         
+################################################################################
+# UI
+################################################################################
+
+USAGE = """
+copyright_header.py - utilities for managing copyright headers of 'The Bitcoin
+Core developers' in repository source files.
+
+Usage:
+    $ ./copyright_header <subcommand>
+
+Subcommands:
+    report
+    update
+    insert
+
+To see subcommand usage, run them without arguments.
+"""
+
+SUBCOMMANDS = ['report', 'update', 'insert']
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        sys.exit(USAGE)
+    subcommand = sys.argv[1]
+    if subcommand not in SUBCOMMANDS:
+        sys.exit(USAGE)
+    if subcommand == 'report':
+        report_cmd(sys.argv)
+    elif subcommand == 'update':
+        update_cmd(sys.argv)
+    elif subcommand == 'insert':
+        insert_cmd(sys.argv)
