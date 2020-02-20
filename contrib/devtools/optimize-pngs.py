@@ -63,4 +63,16 @@ for folder in folders:
                 print "Image contents of PNG file "+file+" before and after crushing don't match"
                 sys.exit(1)
 
-            fil
+            fileMetaMap['psize'] = os.path.getsize(file_path)
+            outputArray.append(fileMetaMap)
+            print("done\n"),
+
+print "summary:\n+++++++++++++++++"
+for fileDict in outputArray:
+    oldHash = fileDict['sha256Old']
+    newHash = fileDict['sha256New']
+    totalSaveBytes += fileDict['osize'] - fileDict['psize']
+    noHashChange = noHashChange and (oldHash == newHash)
+    print fileDict['file']+"\n  size diff from: "+str(fileDict['osize'])+" to: "+str(fileDict['psize'])+"\n  old sha256: "+oldHash+"\n  new sha256: "+newHash+"\n"
+    
+print "completed. Checksum stable: "+str(noHashChange)+". Total reduction: "+str(totalSaveBytes)+" bytes"
