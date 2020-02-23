@@ -104,4 +104,74 @@ fi
 
 SIGFILEDIFFS="$(diff $SIGNATUREFILENAME $SIGNATUREFILENAME.2)"
 if [ "$SIGFILEDIFFS" != "" ]; then
-   echo "bitcoin.org and bitcoincore.org signature file
+   echo "bitcoin.org and bitcoincore.org signature files were not equal?"
+   clean_up $SIGNATUREFILENAME $SIGNATUREFILENAME.2
+   exit 4
+fi
+
+#then we check it
+GPGOUT=$(gpg --yes --decrypt --output "$TMPFILE" "$SIGNATUREFILENAME" 2>&1)
+
+#return value 0: good signature
+#return value 1: bad signature
+#return value 2: gpg error
+
+RET="$?"
+if [ $RET -ne 0 ]; then
+   if [ $RET -eq 1 ]; then
+      #and notify the user if it's bad
+      echo "Bad signature."
+   elif [ $RET -eq 2 ]; then
+      #or if a gpg error has occurred
+      echo "gpg error. Do you have the Bitcoin Core binary release signing key installed?"
+   fi
+
+   echo "gpg output:"
+   echo "$GPGOUT"|sed 's/^/\t/g'
+   clean_up $SIGNATUREFILENAME $SIGNATUREFILENAME.2 $TMPFILE
+   exit "$RET"
+fi
+
+if [ -n "$PLATFORM" ]; then
+   grep $PLATFORM $TMPFILE > "$TMPFILE-plat"
+   TMPFILESIZE=$(stat -c%s "$TMPFILE-plat")
+   if [ $TMPFILESIZE -eq 0 ]; then
+      echo "error: no files matched the platform specified" && exit 3
+   fi
+   mv "$TMPFILE-plat" $TMPFILE
+fi
+
+#here we extract the filenames from the signature file
+FILES=$(awk '{print $2}' "$TMPFILE")
+
+#and download these one by one
+for file in $FILES
+do
+   echo "Downloading $file"
+   wget --quiet -N "$HOST1$BASEDIR$file"
+done
+
+#check hashes
+DIFF=$(diff <(sha256sum $FILES) "$TMPFILE")
+
+if [ $? -eq 1 ]; then
+   echo "Hashes don't match."
+   echo "Offending files:"
+   echo "$DIFF"|grep "^<"|awk '{print "\t"$3}'
+   exit 1
+elif [ $? -gt 1 ]; then
+   echo "Error executing 'diff'"
+   exit 2
+fi
+
+if [ -n "$2" ]; then
+   echo "Clean up the binaries"
+   clean_up $FILES $SIGNATUREFILENAME $SIGNATUREFILENAME.2 $TMPFILE
+else
+   echo "Keep the binaries in $WORKINGDIR"
+   clean_up $TMPFILE
+fi
+
+echo -e "Verified hashes of \n$FILES"
+
+exit 0
