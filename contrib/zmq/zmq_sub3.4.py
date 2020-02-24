@@ -63,4 +63,27 @@ class ZMQHandler():
           sequence = str(msgSequence)
         if topic == b"hashblock":
             print('- HASH BLOCK ('+sequence+') -')
-            pr
+            print(binascii.hexlify(body))
+        elif topic == b"hashtx":
+            print('- HASH TX  ('+sequence+') -')
+            print(binascii.hexlify(body))
+        elif topic == b"rawblock":
+            print('- RAW BLOCK HEADER ('+sequence+') -')
+            print(binascii.hexlify(body[:80]))
+        elif topic == b"rawtx":
+            print('- RAW TX ('+sequence+') -')
+            print(binascii.hexlify(body))
+        # schedule ourselves to receive the next message
+        asyncio.ensure_future(self.handle())
+
+    def start(self):
+        self.loop.add_signal_handler(signal.SIGINT, self.stop)
+        self.loop.create_task(self.handle())
+        self.loop.run_forever()
+
+    def stop(self):
+        self.loop.stop()
+        self.zmqContext.destroy()
+
+daemon = ZMQHandler()
+daemon.start()
