@@ -135,4 +135,52 @@ define $(package)_preprocess_cmds
   mkdir -p qtbase/mkspecs/macx-clang-linux &&\
   cp -f qtbase/mkspecs/macx-clang/Info.plist.lib qtbase/mkspecs/macx-clang-linux/ &&\
   cp -f qtbase/mkspecs/macx-clang/Info.plist.app qtbase/mkspecs/macx-clang-linux/ &&\
-  cp -f qtbase/mkspecs/macx-clang/qplatformdefs.h qtbase/mkspecs/macx-clang-linux
+  cp -f qtbase/mkspecs/macx-clang/qplatformdefs.h qtbase/mkspecs/macx-clang-linux/ &&\
+  cp -f $($(package)_patch_dir)/mac-qmake.conf qtbase/mkspecs/macx-clang-linux/qmake.conf && \
+  patch -p1 < $($(package)_patch_dir)/mingw-uuidof.patch && \
+  patch -p1 < $($(package)_patch_dir)/pidlist_absolute.patch && \
+  patch -p1 < $($(package)_patch_dir)/fix-xcb-include-order.patch && \
+  patch -p1 < $($(package)_patch_dir)/fix_qt_pkgconfig.patch && \
+  patch -p1 < $($(package)_patch_dir)/fix-cocoahelpers-macos.patch && \
+  patch -p1 < $($(package)_patch_dir)/qfixed-coretext.patch && \
+  echo "!host_build: QMAKE_CFLAGS     += $($(package)_cflags) $($(package)_cppflags)" >> qtbase/mkspecs/common/gcc-base.conf && \
+  echo "!host_build: QMAKE_CXXFLAGS   += $($(package)_cxxflags) $($(package)_cppflags)" >> qtbase/mkspecs/common/gcc-base.conf && \
+  echo "!host_build: QMAKE_LFLAGS     += $($(package)_ldflags)" >> qtbase/mkspecs/common/gcc-base.conf && \
+  sed -i.old "s|QMAKE_CFLAGS            = |!host_build: QMAKE_CFLAGS            = $($(package)_cflags) $($(package)_cppflags) |" qtbase/mkspecs/win32-g++/qmake.conf && \
+  sed -i.old "s|QMAKE_LFLAGS            = |!host_build: QMAKE_LFLAGS            = $($(package)_ldflags) |" qtbase/mkspecs/win32-g++/qmake.conf && \
+  sed -i.old "s|QMAKE_CXXFLAGS          = |!host_build: QMAKE_CXXFLAGS            = $($(package)_cxxflags) $($(package)_cppflags) |" qtbase/mkspecs/win32-g++/qmake.conf
+
+endef
+
+define $(package)_config_cmds
+  export PKG_CONFIG_SYSROOT_DIR=/ && \
+  export PKG_CONFIG_LIBDIR=$(host_prefix)/lib/pkgconfig && \
+  export PKG_CONFIG_PATH=$(host_prefix)/share/pkgconfig  && \
+  ./configure $($(package)_config_opts) && \
+  echo "host_build: QT_CONFIG ~= s/system-zlib/zlib" >> mkspecs/qconfig.pri && \
+  echo "CONFIG += force_bootstrap" >> mkspecs/qconfig.pri && \
+  $(MAKE) sub-src-clean && \
+  cd ../qttranslations && ../qtbase/bin/qmake qttranslations.pro -o Makefile && \
+  cd translations && ../../qtbase/bin/qmake translations.pro -o Makefile && cd ../.. &&\
+  cd qttools/src/linguist/lrelease/ && ../../../../qtbase/bin/qmake lrelease.pro -o Makefile
+endef
+
+define $(package)_build_cmds
+  $(MAKE) -C src $(addprefix sub-,$($(package)_qt_libs)) && \
+  $(MAKE) -C ../qttools/src/linguist/lrelease && \
+  $(MAKE) -C ../qttranslations
+endef
+
+define $(package)_stage_cmds
+  $(MAKE) -C src INSTALL_ROOT=$($(package)_staging_dir) $(addsuffix -install_subtargets,$(addprefix sub-,$($(package)_qt_libs))) && cd .. &&\
+  $(MAKE) -C qttools/src/linguist/lrelease INSTALL_ROOT=$($(package)_staging_dir) install_target && \
+  $(MAKE) -C qttranslations INSTALL_ROOT=$($(package)_staging_dir) install_subtargets && \
+  if `test -f qtbase/src/plugins/platforms/xcb/xcb-static/libxcb-static.a`; then \
+    cp qtbase/src/plugins/platforms/xcb/xcb-static/libxcb-static.a $($(package)_staging_prefix_dir)/lib; \
+  fi
+endef
+
+define $(package)_postprocess_cmds
+  rm -rf native/mkspecs/ native/lib/ lib/cmake/ && \
+  rm -f lib/lib*.la lib/*.prl plugins/*/*.prl
+endef
