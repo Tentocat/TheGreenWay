@@ -74,4 +74,19 @@ these transactions:
   update of "d/bitcoin" (the first ever name registered) to the value of
   "Namecoin died October the 15th 2013, coinslayer"
 
-139,936 / c3e76d538413
+139,936 / c3e76d5384139228221cce60250397d1b87adf7366086bc8d6b5e6eee03c55c7:
+  update of "d/wav" (after being challenged by phelix)
+
+The name coin used for both of them was the one of "d/postmortem" as
+registered at 139,868.  After the first of these transactions and until
+"d/postmortem" actually expired, the names as seen in the UTXO set
+and the name database were inconsistent.  The name database still contained
+"d/postmortem", while the UTXO set only contained (briefly) *two* coins
+for "d/bitcoin" and later two for "d/wav".  The rebased client immediately
+spends the duplicate "d/wav" coin, though.  This is fine since the
+name coin expired afterwards and can also not be spent by the old
+client anymore.
+
+This issue was fixed in the hardfork at 150,000.  Before, such transactions
+were accepted but the name updates not actually performed.  After this point,
+strict checks are performed that the name of the input and output matches.
