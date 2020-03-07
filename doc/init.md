@@ -116,4 +116,10 @@ This Launch Agent will cause bitcoind to start whenever the user logs in.
 
 NOTE: This approach is intended for those wanting to run bitcoind as the current user.
 You will need to modify org.bitcoin.bitcoind.plist if you intend to use it as a
-Launch 
+Launch Daemon with a dedicated bitcoin user.
+
+Auto-respawn
+-----------------------------------
+
+Auto respawning is currently only configured for Upstart and systemd.
+Reasonable defaults have been chosen but YMMV.
