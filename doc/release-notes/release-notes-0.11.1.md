@@ -1,9 +1,9 @@
-Bitcoin Core version 0.10.2 is now available from:
+Bitcoin Core version 0.11.1 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.10.2/>
+  <https://bitcoin.org/bin/bitcoin-core-0.11.1/>
 
-This is a new minor version release, bringing minor bug fixes and translation 
-updates. It is recommended to upgrade to this version.
+This is a new minor version release, bringing security fixes. It is recommended
+to upgrade to this version as soon as possible.
 
 Please report bugs using the issue tracker at github:
 
@@ -41,46 +41,32 @@ bootstrap.dat) anew afterwards. It is possible that the data from a completely
 synchronised 0.10 node may be usable in older versions as-is, but this is not
 supported and may break as soon as the older version attempts to reindex.
 
-This does not affect wallet forward or backward compatibility.
+This does not affect wallet forward or backward compatibility. There are no
+known problems when downgrading from 0.11.x to 0.10.x.
 
 Notable changes
 ===============
 
-This fixes a serious problem on Windows with data directories that have non-ASCII
-characters (https://github.com/bitcoin/bitcoin/issues/6078).
+Fix buffer overflow in bundled upnp
+------------------------------------
 
-For other platforms there are no notable changes.
+Bundled miniupnpc was updated to 1.9.20151008. This fixes a buffer overflow in
+the XML parser during initial network discovery.
 
-For the notable changes in 0.10, refer to the release notes
-at https://github.com/bitcoin/bitcoin/blob/v0.10.0/doc/release-notes.md
+Details can be found here: http://talosintel.com/reports/TALOS-2015-0035/
 
-0.10.2 Change log
-=================
+This applies to the distributed executables only, not when building from source or
+using distribution provided packages.
 
-Detailed release notes follow. This overview includes changes that affect external
-behavior, not code moves, refactors or string updates.
+Additionally, upnp has been disabled by default. This may result in a lower
+number of reachable nodes on IPv4, however this prevents future libupnpc
+vulnerabilities from being a structural risk to the network
+(see https://github.com/bitcoin/bitcoin/pull/6795).
 
-Wallet:
-- `824c011` fix boost::get usage with boost 1.58
+Test for LowS signatures before relaying
+-----------------------------------------
 
-Miscellaneous:
-- `da65606` Avoid crash on start in TestBlockValidity with gen=1.
-- `424ae66` don't imbue boost::filesystem::path with locale "C" on windows (fixes #6078)
+Make the node require the canonical 'low-s' encoding for ECDSA signatures when
+relaying or mining.  This removes a nuisance malleability vector.
 
-Credits
-=======
-
-Thanks to everyone who directly contributed to this release:
-
-- Cory Fields
-- Gregory Maxwell
-- Jonas Schnelli
-- Wladimir J. van der Laan
-
-And all those who contributed additional code review and/or security research:
-
-- dexX7
-- Pieter Wuille
-- vayvanne
-
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+Consensus behavior is un
