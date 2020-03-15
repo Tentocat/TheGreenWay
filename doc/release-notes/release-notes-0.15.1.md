@@ -269,4 +269,9 @@ Thanks to everyone who directly contributed to this release:
 - Pieter Wuille
 - practicalswift
 - Russell Yanofsky
-- Samuel Do
+- Samuel Dobson
+- Suhas Daftuar
+- Tomas van der Wansem
+- Wladimir J. van der Laan
+
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
