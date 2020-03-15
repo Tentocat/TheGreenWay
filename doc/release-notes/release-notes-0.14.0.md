@@ -659,4 +659,215 @@ and git merge commit are mentioned.
 - #9406 `0f921e6` Re-enable a blank v1 Tx JSON test (droark)
 - #9435 `dbc8a8c` Removed unused variable in test, fixing warning (ryanofsky)
 - #9436 `dce853e` test: Include tx data in `EXTRA_DIST` (MarcoFalke)
-- #9525 `02e530
+- #9525 `02e5308` test: Include tx data in `EXTRA_DIST` (MarcoFalke)
+- #9498 `054d664` Basic CCheckQueue Benchmarks (JeremyRubin)
+- #9554 `0b96abc` test: Avoid potential NULL pointer dereference in `addrman_tests.cpp` (practicalswift)
+- #9628 `f895023` Increase a sync\_blocks timeout in pruning.py (sdaftuar)
+- #9638 `a7ea2f8` Actually test assertions in pruning.py (MarcoFalke)
+- #9647 `e99f0d7` Skip RAII event tests if libevent is built without `event_set_mem_functions` (luke-jr)
+- #9691 `fc67cd2` Init ECC context for `test_bitcoin_fuzzy` (gmaxwell)
+- #9712 `d304fef` bench: Fix initialization order in registration (laanwj)
+- #9707 `b860915` Fix RPC failure testing (jnewbery)
+- #9269 `43e8150` Align struct COrphan definition (sipa)
+- #9820 `599c69a` Fix pruning test broken by 2 hour manual prune window (ryanofsky)
+- #9824 `260c71c` qa: Check return code when stopping nodes (MarcoFalke)
+- #9875 `50953c2` tests: Fix dangling pwalletMain pointer in wallet tests (laanwj)
+- #9839 `eddaa6b` [qa] Make import-rescan.py watchonly check reliable (ryanofsky)
+
+### Documentation
+- #8332 `806b9e7` Clarify witness branches in transaction.h serialization (dcousens)
+- #8935 `0306978` Documentation: Building on Windows with WSL (pooleja)
+- #9144 `c98f6b3` Correct waitforblockheight example help text (fanquake)
+- #9407 `041331e` Added missing colons in when running help command (anditto)
+- #9378 `870cd2b` Add documentation for CWalletTx::fFromMe member (ryanofsky)
+- #9297 `0b73807` Various RPC help outputs updated (Mirobit)
+- #9613 `07421cf` Clarify getbalance help string to explain interaction with bumpfee (ryanofsky)
+- #9663 `e30d928` Clarify listunspent amount description (instagibbs)
+- #9396 `d65a13b` Updated listsinceblock rpc documentation (accraze)
+- #8747 `ce43630` rpc: Fix transaction size comments and RPC help text (jnewbery)
+- #8058 `bbd9740` Doc: Add issue template (AmirAbrams)
+- #8567 `85d4e21` Add default port numbers to REST doc (djpnewton)
+- #8624 `89de153` build: Mention curl (MarcoFalke)
+- #8786 `9da7366` Mandatory copyright agreement (achow101)
+- #8823 `7b05af6` Add privacy recommendation when running hidden service (laanwj)
+- #9433 `caa2f10` Update the Windows build notes (droark)
+- #8879 `f928050` Rework docs (MarcoFalke)
+- #8887 `61d191f` Improve GitHub issue template (fanquake)
+- #8787 `279bbad` Add missing autogen to example builds (AmirAbrams)
+- #8892 `d270c30` Add build instructions for FreeBSD (laanwj)
+- #8890 `c71a654` Update Doxygen configuration file (fanquake)
+- #9207 `fa1f944` Move comments above bash command in build-unix (AmirAbrams)
+- #9219 `c4522e7` Improve windows build instructions using Linux subsystem (laanwj)
+- #8954 `932d02a` contrib: Add README for pgp keys (MarcoFalke)
+- #9093 `2fae5b9` release-process: Mention GitHub release and archived release notes (MarcoFalke)
+- #8743 `bae178f` Remove old manpages from contrib/debian in favour of doc/man (fanquake)
+- #9550 `4105cb6` Trim down the XP notice and say more about what we support (gmaxwell)
+- #9246 `9851498` Developer docs about existing subtrees (gmaxwell)
+- #9401 `c2ea1e6` Make rpcauth help message clearer, add example in example .conf (instagibbs)
+- #9022,#9033 Document dropping OS X 10.7 support (fanquake, MarcoFalke)
+- #8771 `bc9e3ab` contributing: Mention not to open several pulls (luke-jr)
+- #8852 `7b784cc` Mention Gitian building script in doc (Laudaa) (laanwj)
+- #8915 `03dd707` Add copyright/patent issues to possible NACK reasons (petertodd)
+- #8965 `23e03f8` Mention that PPA doesn't support Debian (anduck)
+- #9115 `bfc7aad` Mention reporting security issues responsibly (paveljanik)
+- #9840 `08e0690` Update sendfrom RPC help to correct coin selection misconception (ryanofsky)
+- #9865 `289204f` Change bitcoin address in RPC help message (marijnfs)
+
+### Miscellaneous
+- #8274 `7a2d402` util: Update tinyformat (laanwj)
+- #8291 `5cac8b1` util: CopyrightHolders: Check for untranslated substitution (MarcoFalke)
+- #8557 `44691f3` contrib: Rework verifybinaries (MarcoFalke)
+- #8621 `e8ed6eb` contrib: python: Don't use shell=True (MarcoFalke)
+- #8813 `fb24d7e` bitcoind: Daemonize using daemon(3) (laanwj)
+- #9004 `67728a3` Clarify `listenonion` (unsystemizer)
+- #8674 `bae81b8` tools for analyzing, updating and adding copyright headers in source files (isle2983)
+- #8976 `8c6218a` libconsensus: Add input validation of flags (laanwj)
+- #9112 `46027e8` Avoid ugly exception in log on unknown inv type (laanwj)
+- #8837 `2108911` Allow bitcoin-tx to parse partial transactions (jnewbery)
+- #9204 `74ced54` Clarify CreateTransaction error messages (instagibbs)
+- #9265 `31bcc66` bitcoin-cli: Make error message less confusing (laanwj)
+- #9303 `72bf1b3` Update comments in ctaes (sipa)
+- #9417 `c4b7d4f` Do not evaluate hidden LogPrint arguments (sipa)
+- #9506 `593a00c` RFC: Improve style for if indentation (sipa)
+- #8883 `d5d4ad8` Add all standard TXO types to bitcoin-tx (jnewbery)
+- #9531 `23281a4` Release notes for estimation changes  (morcos)
+- #9486 `f62bc10` Make peer=%d log prints consistent (TheBlueMatt)
+- #9552 `41cb05c` Add IPv6 support to qos.sh (jamesmacwhite)
+- #9542 `e9e7993` Docs: Update CONTRIBUTING.md (jnewbery)
+- #9649 `53ab12d` Remove unused clang format dev script (MarcoFalke)
+- #9625 `77bd8c4` Increase minimum debug.log size to 10MB after shrink (morcos)
+- #9070 `7b22e50` Lockedpool fixes (kazcw)
+- #8779 `7008e28` contrib: Delete spendfrom (MarcoFalke)
+- #9587,#8793,#9496,#8191,#8109,#8655,#8472,#8677,#8981,#9124  Avoid shadowing of variables (paveljanik)
+- #9063 `f2a6e82` Use deprecated `MAP_ANON` if `MAP_ANONYMOUS` is not defined (paveljanik)
+- #9060 `1107653` Fix bloom filter init to isEmpty = true (robmcl4)
+- #8613 `613bda4` LevelDB 1.19 (sipa)
+- #9225 `5488514` Fix some benign races (TheBlueMatt)
+- #8736 `5fa7b07` base58: Improve DecodeBase58 performance (wjx)
+- #9039 `e81df49` Various serialization simplifcations and optimizations (sipa)
+- #9010 `a143b88` Split up AppInit2 into multiple phases, daemonize after datadir lock errors (laanwj)
+- #9230 `c79e52a` Fix some benign races in timestamp logging (TheBlueMatt)
+- #9183,#9260 Mrs Peacock in The Library with The Candlestick (killed main.{h,cpp}) (TheBlueMatt)
+- #9236 `7f72568` Fix races for strMiscWarning and `fLargeWork*Found`, make QT runawayException use GetWarnings (gmaxwell)
+- #9243 `7aa7004` Clean up mapArgs and mapMultiArgs Usage (TheBlueMatt)
+- #9387 `cfe41d7` RAII of libevent stuff using unique ptrs with deleters (kallewoof)
+- #9472 `fac0f30` Disentangle progress estimation from checkpoints and update it (sipa)
+- #9512 `6012967` Fix various things -fsanitize complains about (sipa)
+- #9373,#9580 Various linearization script issues (droark)
+- #9674 `dd163f5` Lock debugging: Always enforce strict lock ordering (try or not) (TheBlueMatt)
+- #8453,#9334  Update to latest libsecp256k1 (laanwj,sipa)
+- #9656 `7c93952` Check verify-commits on pushes to master (TheBlueMatt)
+- #9679 `a351162` Access WorkQueue::running only within the cs lock (TheBlueMatt)
+- #9777 `8dee822` Handle unusual maxsigcachesize gracefully (jnewbery)
+- #8863,#8807 univalue: Pull subtree (MarcoFalke)
+- #9798 `e22c067` Fix Issue #9775 (Check returned value of fopen) (kirit93)
+- #9856 `69832aa` Terminate immediately when allocation fails (theuni)
+
+Credits
+=======
+
+Thanks to everyone who directly contributed to this release:
+
+- accraze
+- adlawren
+- Alex Morcos
+- Alexey Vesnin
+- Amir Abrams
+- Anders Øyvind Urke-Sætre
+- Anditto Heristyo
+- Andrew Chow
+- anduck
+- Anthony Towns
+- Brian Deery
+- BtcDrak
+- Chris Moore
+- Chris Stewart
+- Christian Barcenas
+- Christian Decker
+- Cory Fields
+- crowning-
+- CryptAxe
+- CryptoVote
+- Dagur Valberg Johannsson
+- Daniel Cousens
+- Daniel Kraft
+- Derek Miller
+- djpnewton
+- Don Patterson
+- Doug
+- Douglas Roark
+- Ethan Heilman
+- fsb4000
+- Gaurav Rana
+- Geoffrey Tsui
+- Greg Walker
+- Gregory Maxwell
+- Gregory Sanders
+- Hampus Sjöberg
+- isle2983
+- Ivo van der Sangen
+- James White
+- Jameson Lopp
+- Jeremy Rubin
+- Jiaxing Wang
+- jnewbery
+- John Newbery
+- Johnson Lau
+- Jon Lund Steffensen
+- Jonas Schnelli
+- jonnynewbs
+- Jorge Timón
+- Justin Camarena
+- Karl-Johan Alm
+- Kaz Wesley
+- kirit93
+- Koki Takahashi
+- Lauda
+- leijurv
+- lizhi
+- Luke Dashjr
+- maiiz
+- MarcoFalke
+- Marijn Stollenga
+- Marty Jones
+- Masahiko Hyuga
+- Matt Corallo
+- Matthew King
+- matthias
+- Micha
+- Michael Ford
+- Michael Rotarius
+- Mitchell Cash
+- mrbandrews
+- mruddy
+- Nicolas DORIER
+- nomnombtc
+- Patrick Strateman
+- Pavel Janík
+- Pedro Branco
+- Peter Todd
+- Pieter Wuille
+- poole\_party
+- practicalswift
+- R E Broadley
+- randy-waterhouse
+- Richard Kiss
+- Robert McLaughlin
+- rodasmith
+- Russell Yanofsky
+- S. Matthew English
+- Sev
+- Spencer Lievens
+- Stanislas Marion
+- Steven
+- Suhas Daftuar
+- Thomas Snider
+- UdjinM6
+- unsystemizer
+- whythat
+- Will Binns
+- Wladimir J. van der Laan
+- wodry
+- Zak Wilcox
+
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
