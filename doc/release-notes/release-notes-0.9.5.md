@@ -42,4 +42,19 @@ achieving its 951/1001 status.
 - `6b4163b` Sanitize command strings before logging them.
 - `3230b32` Raise version of created blocks, and enforce DERSIG in mempool
 - `989d499` Backport of some of BIP66's tests
-- `ab03660` Implement BIP 66 val
+- `ab03660` Implement BIP 66 validation rules and switchover logic
+- `8438074` build: fix dynamic boost check when --with-boost= is used
+
+Credits
+--------
+
+Thanks to who contributed to this release, at least:
+
+- 21E14
+- Alex Morcos
+- Cory Fields
+- Gregory Maxwell
+- Pieter Wuille
+- Wladimir J. van der Laan
+
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
