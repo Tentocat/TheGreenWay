@@ -262,3 +262,52 @@ void CRollingBloomFilter::insert(const std::vector<unsigned char>& vKey)
             uint64_t mask = (p1 ^ nGenerationMask1) | (p2 ^ nGenerationMask2);
             data[p] = p1 & mask;
             data[p + 1] = p2 & mask;
+        }
+    }
+    nEntriesThisGeneration++;
+
+    for (int n = 0; n < nHashFuncs; n++) {
+        uint32_t h = RollingBloomHash(n, nTweak, vKey);
+        int bit = h & 0x3F;
+        uint32_t pos = (h >> 6) % data.size();
+        /* The lowest bit of pos is ignored, and set to zero for the first bit, and to one for the second. */
+        data[pos & ~1] = (data[pos & ~1] & ~(((uint64_t)1) << bit)) | ((uint64_t)(nGeneration & 1)) << bit;
+        data[pos | 1] = (data[pos | 1] & ~(((uint64_t)1) << bit)) | ((uint64_t)(nGeneration >> 1)) << bit;
+    }
+}
+
+void CRollingBloomFilter::insert(const uint256& hash)
+{
+    std::vector<unsigned char> vData(hash.begin(), hash.end());
+    insert(vData);
+}
+
+bool CRollingBloomFilter::contains(const std::vector<unsigned char>& vKey) const
+{
+    for (int n = 0; n < nHashFuncs; n++) {
+        uint32_t h = RollingBloomHash(n, nTweak, vKey);
+        int bit = h & 0x3F;
+        uint32_t pos = (h >> 6) % data.size();
+        /* If the relevant bit is not set in either data[pos & ~1] or data[pos | 1], the filter does not contain vKey */
+        if (!(((data[pos & ~1] | data[pos | 1]) >> bit) & 1)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CRollingBloomFilter::contains(const uint256& hash) const
+{
+    std::vector<unsigned char> vData(hash.begin(), hash.end());
+    return contains(vData);
+}
+
+void CRollingBloomFilter::reset()
+{
+    nTweak = GetRand(std::numeric_limits<unsigned int>::max());
+    nEntriesThisGeneration = 0;
+    nGeneration = 1;
+    for (std::vector<uint64_t>::iterator it = data.begin(); it != data.end(); it++) {
+        *it = 0;
+    }
+}
