@@ -612,4 +612,403 @@ static unsigned char utf16_literal_to_utf8(const unsigned char * const input_poi
     if (codepoint < 0x80)
     {
         /* normal ascii, encoding 0xxxxxxx */
-        
+        utf8_length = 1;
+    }
+    else if (codepoint < 0x800)
+    {
+        /* two bytes, encoding 110xxxxx 10xxxxxx */
+        utf8_length = 2;
+        first_byte_mark = 0xC0; /* 11000000 */
+    }
+    else if (codepoint < 0x10000)
+    {
+        /* three bytes, encoding 1110xxxx 10xxxxxx 10xxxxxx */
+        utf8_length = 3;
+        first_byte_mark = 0xE0; /* 11100000 */
+    }
+    else if (codepoint <= 0x10FFFF)
+    {
+        /* four bytes, encoding 1110xxxx 10xxxxxx 10xxxxxx 10xxxxxx */
+        utf8_length = 4;
+        first_byte_mark = 0xF0; /* 11110000 */
+    }
+    else
+    {
+        /* invalid unicode codepoint */
+        goto fail;
+    }
+
+    /* encode as utf8 */
+    for (utf8_position = (unsigned char)(utf8_length - 1); utf8_position > 0; utf8_position--)
+    {
+        /* 10xxxxxx */
+        (*output_pointer)[utf8_position] = (unsigned char)((codepoint | 0x80) & 0xBF);
+        codepoint >>= 6;
+    }
+    /* encode first byte */
+    if (utf8_length > 1)
+    {
+        (*output_pointer)[0] = (unsigned char)((codepoint | first_byte_mark) & 0xFF);
+    }
+    else
+    {
+        (*output_pointer)[0] = (unsigned char)(codepoint & 0x7F);
+    }
+
+    *output_pointer += utf8_length;
+
+    return sequence_length;
+
+fail:
+    return 0;
+}
+
+/* Parse the input text into an unescaped cinput, and populate item. */
+static cJSON_bool parse_string(cJSON * const item, parse_buffer * const input_buffer)
+{
+    const unsigned char *input_pointer = buffer_at_offset(input_buffer) + 1;
+    const unsigned char *input_end = buffer_at_offset(input_buffer) + 1;
+    unsigned char *output_pointer = NULL;
+    unsigned char *output = NULL;
+
+    /* not a string */
+    if (buffer_at_offset(input_buffer)[0] != '\"')
+    {
+        goto fail;
+    }
+
+    {
+        /* calculate approximate size of the output (overestimate) */
+        size_t allocation_length = 0;
+        size_t skipped_bytes = 0;
+        while (((size_t)(input_end - input_buffer->content) < input_buffer->length) && (*input_end != '\"'))
+        {
+            /* is escape sequence */
+            if (input_end[0] == '\\')
+            {
+                if ((size_t)(input_end + 1 - input_buffer->content) >= input_buffer->length)
+                {
+                    /* prevent buffer overflow when last input character is a backslash */
+                    goto fail;
+                }
+                skipped_bytes++;
+                input_end++;
+            }
+            input_end++;
+        }
+        if (((size_t)(input_end - input_buffer->content) >= input_buffer->length) || (*input_end != '\"'))
+        {
+            goto fail; /* string ended unexpectedly */
+        }
+
+        /* This is at most how much we need for the output */
+        allocation_length = (size_t) (input_end - buffer_at_offset(input_buffer)) - skipped_bytes;
+        output = (unsigned char*)input_buffer->hooks.allocate(allocation_length + sizeof(""));
+        if (output == NULL)
+        {
+            goto fail; /* allocation failure */
+        }
+    }
+
+    output_pointer = output;
+    /* loop through the string literal */
+    while (input_pointer < input_end)
+    {
+        if (*input_pointer != '\\')
+        {
+            *output_pointer++ = *input_pointer++;
+        }
+        /* escape sequence */
+        else
+        {
+            unsigned char sequence_length = 2;
+            if ((input_end - input_pointer) < 1)
+            {
+                goto fail;
+            }
+
+            switch (input_pointer[1])
+            {
+                case 'b':
+                    *output_pointer++ = '\b';
+                    break;
+                case 'f':
+                    *output_pointer++ = '\f';
+                    break;
+                case 'n':
+                    *output_pointer++ = '\n';
+                    break;
+                case 'r':
+                    *output_pointer++ = '\r';
+                    break;
+                case 't':
+                    *output_pointer++ = '\t';
+                    break;
+                case '\"':
+                case '\\':
+                case '/':
+                    *output_pointer++ = input_pointer[1];
+                    break;
+
+                /* UTF-16 literal */
+                case 'u':
+                    sequence_length = utf16_literal_to_utf8(input_pointer, input_end, &output_pointer);
+                    if (sequence_length == 0)
+                    {
+                        /* failed to convert UTF16-literal to UTF-8 */
+                        goto fail;
+                    }
+                    break;
+
+                default:
+                    goto fail;
+            }
+            input_pointer += sequence_length;
+        }
+    }
+
+    /* zero terminate the output */
+    *output_pointer = '\0';
+
+    item->type = cJSON_String;
+    item->valuestring = (char*)output;
+
+    input_buffer->offset = (size_t) (input_end - input_buffer->content);
+    input_buffer->offset++;
+
+    return true;
+
+fail:
+    if (output != NULL)
+    {
+        input_buffer->hooks.deallocate(output);
+    }
+
+    if (input_pointer != NULL)
+    {
+        input_buffer->offset = (size_t)(input_pointer - input_buffer->content);
+    }
+
+    return false;
+}
+
+/* Render the cstring provided to an escaped version that can be printed. */
+static cJSON_bool print_string_ptr(const unsigned char * const input, printbuffer * const output_buffer)
+{
+    const unsigned char *input_pointer = NULL;
+    unsigned char *output = NULL;
+    unsigned char *output_pointer = NULL;
+    size_t output_length = 0;
+    /* numbers of additional characters needed for escaping */
+    size_t escape_characters = 0;
+
+    if (output_buffer == NULL)
+    {
+        return false;
+    }
+
+    /* empty string */
+    if (input == NULL)
+    {
+        output = ensure(output_buffer, sizeof("\"\""));
+        if (output == NULL)
+        {
+            return false;
+        }
+        strcpy((char*)output, "\"\"");
+
+        return true;
+    }
+
+    /* set "flag" to 1 if something needs to be escaped */
+    for (input_pointer = input; *input_pointer; input_pointer++)
+    {
+        switch (*input_pointer)
+        {
+            case '\"':
+            case '\\':
+            case '\b':
+            case '\f':
+            case '\n':
+            case '\r':
+            case '\t':
+                /* one character escape sequence */
+                escape_characters++;
+                break;
+            default:
+                if (*input_pointer < 32)
+                {
+                    /* UTF-16 escape sequence uXXXX */
+                    escape_characters += 5;
+                }
+                break;
+        }
+    }
+    output_length = (size_t)(input_pointer - input) + escape_characters;
+
+    output = ensure(output_buffer, output_length + sizeof("\"\""));
+    if (output == NULL)
+    {
+        return false;
+    }
+
+    /* no characters have to be escaped */
+    if (escape_characters == 0)
+    {
+        output[0] = '\"';
+        memcpy(output + 1, input, output_length);
+        output[output_length + 1] = '\"';
+        output[output_length + 2] = '\0';
+
+        return true;
+    }
+
+    output[0] = '\"';
+    output_pointer = output + 1;
+    /* copy the string */
+    for (input_pointer = input; *input_pointer != '\0'; (void)input_pointer++, output_pointer++)
+    {
+        if ((*input_pointer > 31) && (*input_pointer != '\"') && (*input_pointer != '\\'))
+        {
+            /* normal character, copy */
+            *output_pointer = *input_pointer;
+        }
+        else
+        {
+            /* character needs to be escaped */
+            *output_pointer++ = '\\';
+            switch (*input_pointer)
+            {
+                case '\\':
+                    *output_pointer = '\\';
+                    break;
+                case '\"':
+                    *output_pointer = '\"';
+                    break;
+                case '\b':
+                    *output_pointer = 'b';
+                    break;
+                case '\f':
+                    *output_pointer = 'f';
+                    break;
+                case '\n':
+                    *output_pointer = 'n';
+                    break;
+                case '\r':
+                    *output_pointer = 'r';
+                    break;
+                case '\t':
+                    *output_pointer = 't';
+                    break;
+                default:
+                    /* escape and print as unicode codepoint */
+                    sprintf((char*)output_pointer, "u%04x", *input_pointer);
+                    output_pointer += 4;
+                    break;
+            }
+        }
+    }
+    output[output_length + 1] = '\"';
+    output[output_length + 2] = '\0';
+
+    return true;
+}
+
+/* Invoke print_string_ptr (which is useful) on an item. */
+static cJSON_bool print_string(const cJSON * const item, printbuffer * const p)
+{
+    return print_string_ptr((unsigned char*)item->valuestring, p);
+}
+
+/* Predeclare these prototypes. */
+static cJSON_bool parse_value(cJSON * const item, parse_buffer * const input_buffer);
+static cJSON_bool print_value(const cJSON * const item, printbuffer * const output_buffer);
+static cJSON_bool parse_array(cJSON * const item, parse_buffer * const input_buffer);
+static cJSON_bool print_array(const cJSON * const item, printbuffer * const output_buffer);
+static cJSON_bool parse_object(cJSON * const item, parse_buffer * const input_buffer);
+static cJSON_bool print_object(const cJSON * const item, printbuffer * const output_buffer);
+
+/* Utility to jump whitespace and cr/lf */
+static parse_buffer *buffer_skip_whitespace(parse_buffer * const buffer)
+{
+    if ((buffer == NULL) || (buffer->content == NULL))
+    {
+        return NULL;
+    }
+
+    while (can_access_at_index(buffer, 0) && (buffer_at_offset(buffer)[0] <= 32))
+    {
+       buffer->offset++;
+    }
+
+    if (buffer->offset == buffer->length)
+    {
+        buffer->offset--;
+    }
+
+    return buffer;
+}
+
+/* Parse an object - create a new root, and populate. */
+CJSON_PUBLIC(cJSON *) cJSON_ParseWithOpts(const char *value, const char **return_parse_end, cJSON_bool require_null_terminated)
+{
+    parse_buffer buffer = { 0, 0, 0, 0, { 0, 0, 0 } };
+    cJSON *item = NULL;
+
+    /* reset error position */
+    global_error.json = NULL;
+    global_error.position = 0;
+
+    if (value == NULL)
+    {
+        goto fail;
+    }
+
+    buffer.content = (const unsigned char*)value;
+    buffer.length = strlen((const char*)value) + sizeof("");
+    buffer.offset = 0;
+    buffer.hooks = global_hooks;
+
+    item = cJSON_New_Item(&global_hooks);
+    if (item == NULL) /* memory fail */
+    {
+        goto fail;
+    }
+
+    if (!parse_value(item, buffer_skip_whitespace(&buffer)))
+    {
+        /* parse failure. ep is set. */
+        goto fail;
+    }
+
+    /* if we require null-terminated JSON without appended garbage, skip and then check for a null terminator */
+    if (require_null_terminated)
+    {
+        buffer_skip_whitespace(&buffer);
+        if ((buffer.offset >= buffer.length) || buffer_at_offset(&buffer)[0] != '\0')
+        {
+            goto fail;
+        }
+    }
+    if (return_parse_end)
+    {
+        *return_parse_end = (const char*)buffer_at_offset(&buffer);
+    }
+
+    return item;
+
+fail:
+    if (item != NULL)
+    {
+        cJSON_Delete(item);
+    }
+
+    if (value != NULL)
+    {
+        cJSON_error local_error;
+        local_error.json = (const unsigned char*)value;
+        local_error.position = 0;
+
+        if (buffer.offset < buffer.length)
+        {
+            local_error.position = b
