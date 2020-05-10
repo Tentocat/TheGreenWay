@@ -1,3 +1,4 @@
+
 /******************************************************************************
  * Copyright © 2014-2020 The Komodo Platform Developers.                      *
  *                                                                            *
@@ -15,24 +16,29 @@
  ******************************************************************************/
 
 
-#ifndef CC_HEIR_H
-#define CC_HEIR_H
+#ifndef CC_PAYMENTS_H
+#define CC_PAYMENTS_H
 
 #include "CCinclude.h"
-#include "CCtokens.h"
+#include "../mini-gmp.h"
 
-//#define EVAL_HEIR 0xea
+#define PAYMENTS_TXFEE 10000
+#define PAYMENTS_MERGEOFSET 60 // 1H extra. 
+extern std::vector <std::pair<CAmount, CTxDestination>> vAddressSnapshot;
+extern int32_t lastSnapShotHeight;
 
-bool HeirValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
+bool PaymentsValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
 
-class CoinHelper;
-class TokenHelper;
-
-UniValue HeirFundCoinCaller(int64_t txfee, int64_t coins, std::string heirName, CPubKey heirPubkey, int64_t inactivityTimeSec, std::string memo);
-UniValue HeirFundTokenCaller(int64_t txfee, int64_t satoshis, std::string heirName, CPubKey heirPubkey, int64_t inactivityTimeSec, std::string memo, uint256 tokenid);
-UniValue HeirClaimCaller(uint256 fundingtxid, int64_t txfee, std::string amount);
-UniValue HeirAddCaller(uint256 fundingtxid, int64_t txfee, std::string amount);
-UniValue HeirInfo(uint256 fundingtxid);
-UniValue HeirList();
+// CCcustom
+UniValue PaymentsRelease(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsFund(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsMerge(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsTxidopret(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsCreate(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsAirdrop(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsAirdropTokens(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsInfo(struct CCcontract_info *cp,char *jsonstr);
+UniValue PaymentsList(struct CCcontract_info *cp,char *jsonstr);
 
 #endif
+ 

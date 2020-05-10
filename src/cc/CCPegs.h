@@ -15,24 +15,23 @@
  ******************************************************************************/
 
 
-#ifndef CC_HEIR_H
-#define CC_HEIR_H
+#ifndef CC_PEGS_H
+#define CC_PEGS_H
 
 #include "CCinclude.h"
-#include "CCtokens.h"
 
-//#define EVAL_HEIR 0xea
+bool PegsValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
 
-bool HeirValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
-
-class CoinHelper;
-class TokenHelper;
-
-UniValue HeirFundCoinCaller(int64_t txfee, int64_t coins, std::string heirName, CPubKey heirPubkey, int64_t inactivityTimeSec, std::string memo);
-UniValue HeirFundTokenCaller(int64_t txfee, int64_t satoshis, std::string heirName, CPubKey heirPubkey, int64_t inactivityTimeSec, std::string memo, uint256 tokenid);
-UniValue HeirClaimCaller(uint256 fundingtxid, int64_t txfee, std::string amount);
-UniValue HeirAddCaller(uint256 fundingtxid, int64_t txfee, std::string amount);
-UniValue HeirInfo(uint256 fundingtxid);
-UniValue HeirList();
+// CCcustom
+UniValue PegsCreate(const CPubKey& pk,uint64_t txfee,int64_t amount,std::vector<uint256> bindtxids);
+UniValue PegsFund(const CPubKey& pk,uint64_t txfee,uint256 pegstxid, uint256 tokenid, int64_t amount);
+UniValue PegsGet(const CPubKey& pk,uint64_t txfee,uint256 pegstxid, uint256 tokenid, int64_t amount);
+UniValue PegsRedeem(const CPubKey& pk,uint64_t txfee,uint256 pegstxid, uint256 tokenid);
+UniValue PegsLiquidate(const CPubKey& pk,uint64_t txfee,uint256 pegstxid, uint256 tokenid, uint256 liquidatetxid);
+UniValue PegsExchange(const CPubKey& pk,uint64_t txfee,uint256 pegstxid, uint256 tokenid, int64_t amount);
+UniValue PegsAccountHistory(const CPubKey& pk,uint256 pegstxid);
+UniValue PegsAccountInfo(const CPubKey& pk,uint256 pegstxid);
+UniValue PegsWorstAccounts(uint256 pegstxid);
+UniValue PegsInfo(uint256 pegstxid);
 
 #endif
