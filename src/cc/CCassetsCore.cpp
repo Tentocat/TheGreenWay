@@ -235,4 +235,261 @@ bool ValidateSwapRemainder(int64_t remaining_price,int64_t remaining_nValue,int6
 CScript EncodeAssetCreateOpRet(uint8_t funcid,std::vector<uint8_t> origpubkey,std::string name,std::string description)
 {
     CScript opret; uint8_t evalcode = EVAL_ASSETS;
-    opret << OP_RETURN << E_MARSHAL(ss << evalcode << funcid << 
+    opret << OP_RETURN << E_MARSHAL(ss << evalcode << funcid << origpubkey << name << description);
+    return(opret);
+}
+*/
+
+vscript_t EncodeAssetOpRet(uint8_t assetFuncId, uint256 assetid2, int64_t price, std::vector<uint8_t> origpubkey)
+{
+    vscript_t vopret; 
+	uint8_t evalcode = EVAL_ASSETS;
+
+    switch ( assetFuncId )
+    {
+        //case 't': this cannot be here
+		case 'x': case 'o':
+			vopret = /*<< OP_RETURN <<*/ E_MARSHAL(ss << evalcode << assetFuncId);
+            break;
+        case 's': case 'b': case 'S': case 'B':
+            vopret = /*<< OP_RETURN <<*/ E_MARSHAL(ss << evalcode << assetFuncId << price << origpubkey);
+            break;
+        case 'E': case 'e':
+            assetid2 = revuint256(assetid2);
+            vopret = /*<< OP_RETURN <<*/ E_MARSHAL(ss << evalcode << assetFuncId << assetid2 << price << origpubkey);
+            break;
+        default:
+            LogPrintf("EncodeAssetOpRet: illegal funcid.%02x\n", assetFuncId);
+            //opret << OP_RETURN;
+            break;
+    }
+    return(vopret);
+}
+
+/* it is for compatibility, do not use this for new contracts (use DecodeTokenCreateOpRet)
+bool DecodeAssetCreateOpRet(const CScript &scriptPubKey, std::vector<uint8_t> &origpubkey, std::string &name, std::string &description)
+{
+    std::vector<uint8_t> vopret; uint8_t evalcode,funcid,*script;
+    GetOpReturnData(scriptPubKey, vopret);
+    script = (uint8_t *)vopret.data();
+    if ( script != 0 && vopret.size() > 2 && script[0] == EVAL_ASSETS && script[1] == 'c' )
+    {
+        if ( E_UNMARSHAL(vopret,ss >> evalcode; ss >> funcid; ss >> origpubkey; ss >> name; ss >> description) != 0 )
+            return(true);
+    }
+    return(0);
+} */
+
+uint8_t DecodeAssetTokenOpRet(const CScript &scriptPubKey, uint8_t &assetsEvalCode, uint256 &tokenid, uint256 &assetid2, int64_t &price, std::vector<uint8_t> &origpubkey)
+{
+    vscript_t vopretAssets; //, vopretAssetsStripped;
+	uint8_t *script, funcId = 0, assetsFuncId = 0, dummyEvalCode, dummyAssetFuncId;
+	uint256 dummyTokenid;
+	std::vector<CPubKey> voutPubkeysDummy;
+    std::vector<std::pair<uint8_t, vscript_t>>  oprets;
+
+	tokenid = zeroid;
+	assetid2 = zeroid;
+	price = 0;
+    assetsEvalCode = 0;
+    assetsFuncId = 0;
+
+	// First - decode token opret:
+	funcId = DecodeTokenOpRet(scriptPubKey, dummyEvalCode, tokenid, voutPubkeysDummy, oprets);
+    GetOpretBlob(oprets, OPRETID_ASSETSDATA, vopretAssets);
+
+    LOGSTREAM((char *)"ccassets", CCLOG_DEBUG2, stream << "DecodeAssetTokenOpRet() from DecodeTokenOpRet returned funcId=" << (int)funcId << std::endl);
+
+	if (funcId == 0 || vopretAssets.size() < 2) {
+        LOGSTREAM((char *)"ccassets", CCLOG_INFO, stream << "DecodeAssetTokenOpRet() incorrect opret or no asset's payload" << " funcId=" << (int)funcId << " vopretAssets.size()=" << vopretAssets.size() << std::endl);
+		return (uint8_t)0;
+	}
+
+	//if (!E_UNMARSHAL(vopretAssets, { ss >> vopretAssetsStripped; })) {  //strip string size
+	//	std::cerr << "DecodeAssetTokenOpRet() could not unmarshal vopretAssetsStripped" << std::endl;
+	//	return (uint8_t)0;
+	//}
+
+    // additional check to prevent crash
+    if (vopretAssets.size() >= 2) {
+
+        assetsEvalCode = vopretAssets.begin()[0];
+        assetsFuncId = vopretAssets.begin()[1];
+
+        LOGSTREAM((char *)"ccassets", CCLOG_DEBUG2, stream << "DecodeAssetTokenOpRet() assetsEvalCode=" << (int)assetsEvalCode <<  " funcId=" << (char)(funcId ? funcId : ' ') << " assetsFuncId=" << (char)(assetsFuncId ? assetsFuncId : ' ') << std::endl);
+
+        if (assetsEvalCode == EVAL_ASSETS)
+        {
+            //LogPrintf("DecodeAssetTokenOpRet() decode.[%c] assetFuncId.[%c]\n", funcId, assetFuncId);
+            switch (assetsFuncId)
+            {
+            case 'x': case 'o':
+                if (vopretAssets.size() == 2)   // no data after 'evalcode assetFuncId' allowed
+                {
+                    return(assetsFuncId);
+                }
+                break;
+            case 's': case 'b': case 'S': case 'B':
+                if (E_UNMARSHAL(vopretAssets, ss >> dummyEvalCode; ss >> dummyAssetFuncId; ss >> price; ss >> origpubkey) != 0)
+                {
+                    //LogPrintf("DecodeAssetTokenOpRet() got price %llu\n",(long long)price);
+                    return(assetsFuncId);
+                }
+                break;
+            case 'E': case 'e':
+                if (E_UNMARSHAL(vopretAssets, ss >> dummyEvalCode; ss >> dummyAssetFuncId; ss >> assetid2; ss >> price; ss >> origpubkey) != 0)
+                {
+                    //LogPrintf("DecodeAssetTokenOpRet() got price %llu\n",(long long)price);
+                    assetid2 = revuint256(assetid2);
+                    return(assetsFuncId);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    LOGSTREAM((char *)"ccassets", CCLOG_INFO, stream << "DecodeAssetTokenOpRet() no asset's payload or incorrect assets funcId or evalcode" << " funcId=" << (int)funcId << " vopretAssets.size()=" << vopretAssets.size() << " assetsEvalCode=" << assetsEvalCode << " assetsFuncId=" << assetsFuncId << std::endl);
+    return (uint8_t)0;
+}
+
+// extract sell/buy owner's pubkey from the opret
+bool SetAssetOrigpubkey(std::vector<uint8_t> &origpubkey,int64_t &price,const CTransaction &tx)
+{
+    uint256 assetid,assetid2;
+	uint8_t evalCode;
+
+    if ( tx.vout.size() > 0 && DecodeAssetTokenOpRet(tx.vout[tx.vout.size()-1].scriptPubKey, evalCode, assetid, assetid2, price, origpubkey) != 0 )
+        return(true);
+    else 
+		return(false);
+}
+
+// Calculate seller/buyer's dest cc address from ask/bid tx funcid
+bool GetAssetorigaddrs(struct CCcontract_info *cp, char *origCCaddr, char *origNormalAddr, const CTransaction& vintx)
+{
+    uint256 assetid, assetid2; 
+    int64_t price,nValue=0; 
+    int32_t n; 
+    uint8_t vintxFuncId; 
+	std::vector<uint8_t> origpubkey; 
+	CScript script;
+	uint8_t evalCode;
+
+    n = vintx.vout.size();
+    if( n == 0 || (vintxFuncId = DecodeAssetTokenOpRet(vintx.vout[n-1].scriptPubKey, evalCode, assetid, assetid2, price, origpubkey)) == 0 )
+        return(false);
+
+	bool bGetCCaddr = false;
+    struct CCcontract_info *cpTokens, tokensC;
+    cpTokens = CCinit(&tokensC, EVAL_TOKENS);
+
+	if (vintxFuncId == 's' || vintxFuncId == 'S') {
+		// bGetCCaddr = GetCCaddress(cpTokens, origCCaddr, pubkey2pk(origpubkey));  
+        cpTokens->additionalTokensEvalcode2 = cp->additionalTokensEvalcode2;  // add non-fungible if present
+        bGetCCaddr = GetTokensCCaddress(cpTokens, origCCaddr, pubkey2pk(origpubkey));  // tokens to single-eval token or token+nonfungible
+	}
+	else if (vintxFuncId == 'b' || vintxFuncId == 'B') {
+        cpTokens->additionalTokensEvalcode2 = cp->additionalTokensEvalcode2;  // add non-fungible if present
+        bGetCCaddr = GetTokensCCaddress(cpTokens, origCCaddr, pubkey2pk(origpubkey));  // tokens to single-eval token or token+nonfungible
+	}
+	else  {
+		std::cerr << "GetAssetorigaddrs incorrect vintx funcid=" << (char)(vintxFuncId?vintxFuncId:' ') << std::endl;
+		return false;
+	}
+    if( bGetCCaddr && Getscriptaddress(origNormalAddr, CScript() << origpubkey << OP_CHECKSIG))
+        return(true);
+    else 
+		return(false);
+}
+
+
+int64_t AssetValidateCCvin(struct CCcontract_info *cp,Eval* eval,char *origCCaddr,char *origaddr,const CTransaction &tx,int32_t vini,CTransaction &vinTx)
+{
+	uint256 hashBlock;
+	uint256 assetid, assetid2;
+	int64_t tmpprice;
+	std::vector<uint8_t> tmporigpubkey;
+	uint8_t evalCode;
+
+	char destaddr[64], unspendableAddr[64];
+
+    origaddr[0] = destaddr[0] = origCCaddr[0] = 0;
+
+	uint8_t funcid = 0;
+	if (tx.vout.size() > 0) {
+		uint256 assetid, assetid2;
+		int64_t tmpprice;
+		std::vector<uint8_t> tmporigpubkey;
+		uint8_t evalCode;
+
+		funcid = DecodeAssetTokenOpRet(tx.vout[tx.vout.size() - 1].scriptPubKey, evalCode, assetid, assetid2, tmpprice, tmporigpubkey);
+	}
+
+    if( tx.vin.size() < 2 )
+        return eval->Invalid("not enough for CC vins");
+    else if( tx.vin[vini].prevout.n != 0 )
+        return eval->Invalid("vin1 needs to be buyvin.vout[0]");
+    else if( eval->GetTxUnconfirmed(tx.vin[vini].prevout.hash, vinTx,hashBlock) == 0 )
+    {
+		std::cerr << "AssetValidateCCvin() cannot load vintx for vin=" << vini << " vintx id=" << tx.vin[vini].prevout.hash.GetHex() << std::endl;
+        return eval->Invalid("always should find CCvin, but didnt");
+    }
+    // check source cc unspendable cc address:
+	// if fillSell or cancelSell --> should spend tokens from dual-eval token-assets unspendable addr
+    else if( (funcid == 'S' || funcid == 'x') && 
+		(Getscriptaddress(destaddr, vinTx.vout[tx.vin[vini].prevout.n].scriptPubKey) == 0 || 
+		!GetTokensCCaddress(cp, unspendableAddr, GetUnspendable(cp, NULL)) || 
+		strcmp(destaddr, unspendableAddr) != 0))
+    {
+        LogPrintf("AssetValidateCCvin() cc addr %s is not dual token-evalcode=0x%02x asset unspendable addr %s\n", destaddr, (int)cp->evalcode, unspendableAddr);
+        return eval->Invalid("invalid vin assets CCaddr");
+    }
+	// if fillBuy or cancelBuy --> should spend coins from asset unspendable addr
+	else if ((funcid == 'B' || funcid == 'o') && 
+		(Getscriptaddress(destaddr, vinTx.vout[tx.vin[vini].prevout.n].scriptPubKey) == 0 ||
+		!GetCCaddress(cp, unspendableAddr, GetUnspendable(cp, NULL)) ||
+		strcmp(destaddr, unspendableAddr) != 0))
+	{
+		LogPrintf( "AssetValidateCCvin() cc addr %s is not evalcode=0x%02x asset unspendable addr %s\n", destaddr, (int)cp->evalcode, unspendableAddr);
+		return eval->Invalid("invalid vin assets CCaddr");
+	}
+    // end of check source unspendable cc address
+    //else if ( vinTx.vout[0].nValue < 10000 )
+    //    return eval->Invalid("invalid dust for buyvin");
+    // get user dest cc and normal addresses:
+    else if( GetAssetorigaddrs(cp, origCCaddr, origaddr, vinTx) == 0 )  
+        return eval->Invalid("couldnt get origaddr for buyvin");
+
+    //LogPrintf("AssetValidateCCvin() got %.8f to origaddr.(%s)\n", (double)vinTx.vout[tx.vin[vini].prevout.n].nValue/COIN,origaddr);
+    
+    if ( vinTx.vout[0].nValue == 0 )
+        return eval->Invalid("null value CCvin");
+    return(vinTx.vout[0].nValue);
+}
+
+int64_t AssetValidateBuyvin(struct CCcontract_info *cp,Eval* eval,int64_t &tmpprice,std::vector<uint8_t> &tmporigpubkey,char *CCaddr,char *origaddr,const CTransaction &tx,uint256 refassetid)
+{
+    CTransaction vinTx; int64_t nValue; uint256 assetid,assetid2; uint8_t funcid, evalCode;
+
+    CCaddr[0] = origaddr[0] = 0;
+
+	// validate locked coins on Assets vin[1]
+    if ( (nValue= AssetValidateCCvin(cp, eval, CCaddr, origaddr, tx, 1, vinTx)) == 0 )
+        return(0);  
+    else if ( vinTx.vout[0].scriptPubKey.IsPayToCryptoCondition() == 0 )
+        return eval->Invalid("invalid normal vout0 for buyvin");
+    else if ((funcid = DecodeAssetTokenOpRet(vinTx.vout[vinTx.vout.size() - 1].scriptPubKey, evalCode, assetid, assetid2, tmpprice, tmporigpubkey)) == 'b' &&
+		vinTx.vout[1].scriptPubKey.IsPayToCryptoCondition() == 0 )  // marker is only in 'b'?
+        return eval->Invalid("invalid normal vout1 for buyvin");
+    else
+    {
+        //LogPrintf("have %.8f checking assetid origaddr.(%s)\n",(double)nValue/COIN,origaddr);
+        if ( vinTx.vout.size() > 0 && funcid != 'b' && funcid != 'B' )
+            return eval->Invalid("invalid opreturn for buyvin");
+        else if ( refassetid != assetid )
+            return eval->Invalid("invalid assetid for buyvin");
+        //int32_t i; for (i=31; i>=0; i--)
+        //    LogPrintf("%02x",((uint8_t *)&assetid)[i]);
+        //LogPrintf(" 
