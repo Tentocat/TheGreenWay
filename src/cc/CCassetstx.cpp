@@ -608,4 +608,169 @@ std::string FillBuyOffer(int64_t txfee,uint256 assetid,uint256 bidtxid,int64_t f
 				SetBidFillamounts(paid_amount, remaining_required, bidamount, fillamount, origprice);
 
                 uint8_t additionalTokensEvalcode2 = 0;
-        
+                if (vopretNonfungible.size() > 0)
+                    additionalTokensEvalcode2 = vopretNonfungible.begin()[0];
+                
+				if (inputs > fillamount)
+                    CCchange = (inputs - fillamount);
+                
+				uint8_t unspendableAssetsPrivkey[32];
+				cpAssets = CCinit(&assetsC, EVAL_ASSETS); 
+				CPubKey unspendableAssetsPk = GetUnspendable(cpAssets, unspendableAssetsPrivkey);
+
+				mtx.vout.push_back(MakeCC1vout(EVAL_ASSETS, bidamount - paid_amount, unspendableAssetsPk));     // vout0 coins remainder
+                mtx.vout.push_back(CTxOut(paid_amount,CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));		// vout1 coins to normal
+                mtx.vout.push_back(MakeTokensCC1vout(additionalTokensEvalcode2 == 0 ? EVAL_TOKENS : additionalTokensEvalcode2, fillamount, pubkey2pk(origpubkey)));	// vout2 single-eval tokens sent to the originator
+                mtx.vout.push_back(MakeCC1vout(EVAL_ASSETS, txfee, origpubkey));                                // vout3 marker to origpubkey
+                
+				if (CCchange != 0)
+                    mtx.vout.push_back(MakeCC1vout(EVAL_TOKENS, CCchange, mypk));								// vout4 change in single-eval tokens
+
+                LogPrintf("FillBuyOffer() remaining %llu -> origpubkey\n", (long long)remaining_required);
+
+				char unspendableAssetsAddr[64];
+				cpAssets = CCinit(&assetsC, EVAL_ASSETS);
+				GetCCaddress(cpAssets, unspendableAssetsAddr, unspendableAssetsPk);
+
+				// add additional unspendable addr from Assets:
+				CCaddr2set(cpTokens, EVAL_ASSETS, unspendableAssetsPk, unspendableAssetsPrivkey, unspendableAssetsAddr);
+
+				// token vout verification pubkeys:
+				std::vector<CPubKey> voutTokenPubkeys;
+				voutTokenPubkeys.push_back(pubkey2pk(origpubkey));
+
+                return(FinalizeCCTx(mask, cpTokens, mtx, mypk, txfee, 
+					EncodeTokenOpRet(assetid, voutTokenPubkeys, 
+                        std::make_pair(OPRETID_ASSETSDATA, EncodeAssetOpRet('B', zeroid, remaining_required, origpubkey)))));
+            } else return("dont have any assets to fill bid");
+        }
+    }
+    return("no normal coins left");
+}
+
+
+// send coins, receive tokens 
+std::string FillSell(int64_t txfee, uint256 assetid, uint256 assetid2, uint256 asktxid, int64_t fillunits)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CTransaction vintx,filltx; 
+	uint256 hashBlock; 
+	CPubKey mypk; 
+	std::vector<uint8_t> origpubkey; 
+	double dprice; 
+	uint64_t mask = 0; 
+	int32_t askvout = 0; 
+	int64_t received_assetoshis, total_nValue, orig_assetoshis, paid_nValue, remaining_nValue, inputs, CCchange=0; 
+	//struct CCcontract_info *cpTokens, tokensC;
+	struct CCcontract_info *cpAssets, assetsC;
+
+    if (fillunits < 0)
+    {
+        CCerror = strprintf("negative fillunits %lld\n",(long long)fillunits);
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+    if (assetid2 != zeroid)
+    {
+        CCerror = "asset swaps disabled";
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+
+    std::vector<uint8_t> vopretNonfungible;
+    uint8_t additionalTokensEvalcode2 = 0;
+    GetNonfungibleData(NULL, assetid, vopretNonfungible);
+    if (vopretNonfungible.size() > 0)
+        additionalTokensEvalcode2 = vopretNonfungible.begin()[0];
+
+    cpAssets = CCinit(&assetsC, EVAL_ASSETS);
+
+    if (txfee == 0)
+        txfee = 10000;
+    mypk = pubkey2pk(Mypubkey());
+    //if (AddNormalinputs(mtx, mypk, 2*txfee, 3) > 0)
+    //{
+        //mask = ~((1LL << mtx.vin.size()) - 1);
+        if (myGetTransaction(asktxid, vintx, hashBlock) != 0)
+        {
+            orig_assetoshis = vintx.vout[askvout].nValue;
+            SetAssetOrigpubkey(origpubkey, total_nValue, vintx);
+            dprice = (double)total_nValue / orig_assetoshis;
+            paid_nValue = dprice * fillunits;
+
+            if (assetid2 != zeroid) {
+                inputs = 0; //  = AddAssetInputs(cpAssets, mtx, mypk, assetid2, paid_nValue, 60);  // not implemented yet
+            }
+            else
+            {
+                inputs = AddNormalinputs(mtx, mypk, 2 * txfee + paid_nValue, 60);  // Better to use single AddNormalinputs() to allow payment if user has only single utxo with normal funds
+                mask = ~((1LL << mtx.vin.size()) - 1);
+            }
+            if (inputs > 0)
+            {
+				if (inputs < paid_nValue) {
+					std::cerr << "FillSell(): insufficient coins to fill sell" << std::endl;
+					CCerror = strprintf("insufficient coins to fill sell");
+					return ("");
+				}
+
+                // cc vin should be after normal vin
+                mtx.vin.push_back(CTxIn(asktxid, askvout, CScript()));
+
+				if (assetid2 != zeroid)
+                    SetSwapFillamounts(received_assetoshis, remaining_nValue, orig_assetoshis, paid_nValue, total_nValue);  //not implemented correctly yet
+                else 
+					SetAskFillamounts(received_assetoshis, remaining_nValue, orig_assetoshis, paid_nValue, total_nValue);
+
+                if (assetid2 != zeroid && inputs > paid_nValue)
+                    CCchange = (inputs - paid_nValue);
+
+                // vout.0 tokens remainder to unspendable cc addr:
+                mtx.vout.push_back(MakeTokensCC1vout(EVAL_ASSETS, additionalTokensEvalcode2, orig_assetoshis - received_assetoshis, GetUnspendable(cpAssets, NULL))); 
+                //vout.1 purchased tokens to self token single-eval or dual-eval token+nonfungible cc addr:
+                mtx.vout.push_back(MakeTokensCC1vout(additionalTokensEvalcode2 == 0 ? EVAL_TOKENS : additionalTokensEvalcode2, received_assetoshis, mypk));					
+                
+				if (assetid2 != zeroid) {
+					std::cerr << "FillSell() WARNING: asset swap not implemented yet! (paid_nValue)" << std::endl;
+					// TODO: change MakeCC1vout appropriately when implementing:
+					//mtx.vout.push_back(MakeCC1vout(EVAL_TOKENS, paid_nValue, origpubkey));					//vout.2 tokens... (swap is not implemented yet)
+				}
+				else {
+					//std::cerr << "FillSell() paid_value=" << paid_nValue << " origpubkey=" << HexStr(pubkey2pk(origpubkey)) << std::endl;
+					mtx.vout.push_back(CTxOut(paid_nValue, CScript() << origpubkey << OP_CHECKSIG));		//vout.2 coins to tokens seller's normal addr
+				}
+                mtx.vout.push_back(MakeCC1vout(EVAL_ASSETS,txfee,origpubkey));                              //vout.3 marker to origpubkey
+                
+				// not implemented
+				if (CCchange != 0) {
+					std::cerr << "FillSell() WARNING: asset swap not implemented yet! (CCchange)" << std::endl;
+					// TODO: change MakeCC1vout appropriately when implementing:
+					//mtx.vout.push_back(MakeCC1vout(EVAL_ASSETS, CCchange, mypk));							//vout.3 coins in Assets cc addr (swap not implemented)
+				}
+
+				uint8_t unspendableAssetsPrivkey[32];
+				char unspendableAssetsAddr[64];
+				// init assets 'unspendable' privkey and pubkey
+				CPubKey unspendableAssetsPk = GetUnspendable(cpAssets, unspendableAssetsPrivkey);
+				GetCCaddress(cpAssets, unspendableAssetsAddr, unspendableAssetsPk);
+
+				// add additional eval-tokens unspendable assets privkey:
+				CCaddr2set(cpAssets, EVAL_TOKENS, unspendableAssetsPk, unspendableAssetsPrivkey, unspendableAssetsAddr);
+
+				// vout verification pubkeys:
+				std::vector<CPubKey> voutTokenPubkeys;
+				voutTokenPubkeys.push_back(mypk);
+
+                cpAssets->additionalTokensEvalcode2 = additionalTokensEvalcode2;
+
+                return(FinalizeCCTx(mask, cpAssets, mtx, mypk, txfee,
+					EncodeTokenOpRet(assetid, voutTokenPubkeys, 
+                        std::make_pair(OPRETID_ASSETSDATA, EncodeAssetOpRet(assetid2 != zeroid ? 'E' : 'S', assetid2, remaining_nValue, origpubkey)))));
+            } else {
+                CCerror = strprintf("filltx not enough utxos");
+                LogPrintf("%s\n", CCerror.c_str());
+            }
+        }
+    //}
+    return("");
+}
