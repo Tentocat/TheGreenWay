@@ -15,19 +15,17 @@
  ******************************************************************************/
 
 
-#ifndef CC_FAUCET_H
-#define CC_FAUCET_H
+#ifndef CC_FSM_H
+#define CC_FSM_H
 
 #include "CCinclude.h"
 
-#define EVAL_FAUCET 0xe4
-#define FAUCETSIZE (COIN / 10)
+#define EVAL_FSM 0xe7
 
-bool FaucetValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
+bool FSMValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
 
-// CCcustom
-UniValue FaucetFund(const CPubKey& mypk,uint64_t txfee,int64_t funds);
-UniValue FaucetGet(const CPubKey& mypk,uint64_t txfee);
-UniValue FaucetInfo();
+std::string FSMList();
+std::string FSMInfo(uint256 fsmtxid);
+std::string FSMCreate(uint64_t txfee,std::string name,std::string states);
 
 #endif

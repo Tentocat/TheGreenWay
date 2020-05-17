@@ -1,3 +1,4 @@
+
 /******************************************************************************
  * Copyright © 2014-2020 The Komodo Platform Developers.                      *
  *                                                                            *
@@ -15,19 +16,22 @@
  ******************************************************************************/
 
 
-#ifndef CC_FAUCET_H
-#define CC_FAUCET_H
+#ifndef CC_REWARDS_H
+#define CC_REWARDS_H
 
 #include "CCinclude.h"
+#include "../mini-gmp.h"
 
-#define EVAL_FAUCET 0xe4
-#define FAUCETSIZE (COIN / 10)
+#define EVAL_REWARDS 0xe5
+#define REWARDSCC_MAXAPR (COIN * 25)
 
-bool FaucetValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
+bool RewardsValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn);
+UniValue RewardsInfo(uint256 rewardid);
+UniValue RewardsList();
 
-// CCcustom
-UniValue FaucetFund(const CPubKey& mypk,uint64_t txfee,int64_t funds);
-UniValue FaucetGet(const CPubKey& mypk,uint64_t txfee);
-UniValue FaucetInfo();
+std::string RewardsCreateFunding(uint64_t txfee,char *planstr,int64_t funds,int64_t APR,int64_t minseconds,int64_t maxseconds,int64_t mindeposit);
+std::string RewardsAddfunding(uint64_t txfee,char *planstr,uint256 fundingtxid,int64_t amount);
+std::string RewardsLock(uint64_t txfee,char *planstr,uint256 fundingtxid,int64_t amount);
+std::string RewardsUnlock(uint64_t txfee,char *planstr,uint256 fundingtxid,uint256 locktxid);
 
 #endif
