@@ -756,4 +756,50 @@ UniValue ChannelsInfo(const CPubKey& pk,uint256 channeltxid)
             if ((numvouts=txmempool.vout.size()) > 0 && DecodeChannelsOpRet(txmempool.vout[numvouts-1].scriptPubKey,tokenid,tmp_txid,srcpub,destpub,param1,param2,param3) == 'P' && tmp_txid==channeltxid)
                 txs.push_back(txmempool);                
         }
-        for (std::vector<CTransaction>::const_iterator it=txs.
+        for (std::vector<CTransaction>::const_iterator it=txs.begin(); it!=txs.end(); it++)
+        {
+            tx=*it;
+            if ((numvouts= tx.vout.size()) > 0 )
+            {
+                UniValue obj(UniValue::VOBJ);               
+                if (DecodeChannelsOpRet(tx.vout[numvouts-1].scriptPubKey,tokenid,tmp_txid,srcpub,destpub,param1,param2,param3) == 'O' && tx.GetHash()==channeltxid)
+                {
+                    obj.push_back(Pair("Open",tx.GetHash().GetHex().data()));
+                }
+                else if (DecodeChannelsOpRet(tx.vout[numvouts-1].scriptPubKey,tokenid,opentxid,srcpub,destpub,param1,param2,param3) == 'P' && opentxid==channeltxid)
+                {
+                    if (myGetTransaction(opentxid,opentx,hashBlock) != 0 && (numvouts=opentx.vout.size()) > 0 &&
+                            DecodeChannelsOpRet(opentx.vout[numvouts-1].scriptPubKey,tokenid,tmp_txid,srcpub,destpub,numpayments,payment,hashchain) == 'O')
+                    {
+                        Getscriptaddress(str,tx.vout[3].scriptPubKey);  
+                        obj.push_back(Pair("Payment",tx.GetHash().GetHex().data()));
+                        obj.push_back(Pair("Number of payments",param2));
+                        obj.push_back(Pair("Amount",param2*payment));
+                        obj.push_back(Pair("Destination",str));
+                        obj.push_back(Pair("Secret",param3.ToString().c_str()));
+                        obj.push_back(Pair("Payments left",param1));
+                    }
+                }
+                else if (DecodeChannelsOpRet(tx.vout[numvouts-1].scriptPubKey,tokenid,opentxid,srcpub,destpub,param1,param2,param3) == 'C' && opentxid==channeltxid)
+                {
+                    obj.push_back(Pair("Close",tx.GetHash().GetHex().data()));
+                }
+                else if (DecodeChannelsOpRet(tx.vout[numvouts-1].scriptPubKey,tokenid,opentxid,srcpub,destpub,param1,param2,param3) == 'R' && opentxid==channeltxid)
+                {
+                    Getscriptaddress(str,tx.vout[2].scriptPubKey);                        
+                    obj.push_back(Pair("Refund",tx.GetHash().GetHex().data()));                        
+                    obj.push_back(Pair("Amount",param1*param2));
+                    obj.push_back(Pair("Destination",str));
+                }
+                array.push_back(obj);
+            }
+        }        
+        result.push_back(Pair("Transactions",array));
+    }
+    else
+    {
+        result.push_back(Pair("result","error"));
+        result.push_back(Pair("Error","Channel not found!"));
+    }
+    return(result);
+}
