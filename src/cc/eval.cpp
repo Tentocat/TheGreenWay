@@ -247,3 +247,23 @@ uint256 SafeCheckMerkleBranch(uint256 hash, const std::vector<uint256>& vMerkleB
     {
         if (nIndex & 1) {
             if (*it == hash) {
+                // non canonical. hash may be equal to node but never on the right.
+                return uint256();
+            }
+            hash = Hash(BEGIN(*it), END(*it), BEGIN(hash), END(hash));
+        }
+        else
+            hash = Hash(BEGIN(hash), END(hash), BEGIN(*it), END(*it));
+        nIndex >>= 1;
+    }
+    return hash;
+}
+
+
+uint256 GetMerkleRoot(const std::vector<uint256>& vLeaves)
+{
+    bool fMutated;
+    /* std::vector<uint256> vMerkleTree;
+    return BuildMerkleTree(&fMutated, vLeaves, vMerkleTree); */
+    return ComputeMerkleRoot(vLeaves, &fMutated);
+}
