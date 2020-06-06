@@ -396,4 +396,182 @@ bool ImportGatewayValidate(struct CCcontract_info *cp,Eval *eval,const CTransact
                             return eval->Invalid("vin.0 is normal for gatewaysWithdraw!");
                         else if ( IsCCInput(tmptx.vin[1].scriptSig) == 0 )
                             return eval->Invalid("vin.1 is CC for gatewaysWithdraw!");
-                
+                        else if ( ConstrainVout(tmptx.vout[0],1,cp->unspendableCCaddr,CC_MARKER_VALUE)==0)
+                            return eval->Invalid("invalid marker vout for gatewaysWithdraw!");
+                        else if ( ConstrainVout(tmptx.vout[1],1,importgatewayaddr,amount)==0)
+                            return eval->Invalid("invalid tokens to gateways vout for gatewaysWithdraw!");
+                        else if (tmptx.vout[1].nValue!=amount)
+                            return eval->Invalid("amount in opret not matching tx tokens amount!");
+                        else if (komodo_txnotarizedconfirmed(withdrawtxid) == false)
+                            return eval->Invalid("gatewayswithdraw tx is not yet confirmed(notarised)!");
+                        else if (myGetTransaction(bindtxid,tmptx,hashblock) == 0)
+                            return eval->Invalid("invalid gatewaysbind txid!");
+                        else if ((numvouts=tmptx.vout.size()) < 1 || DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tmptx.vout[numvouts-1].scriptPubKey,tmprefcoin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B')
+                            return eval->Invalid("invalid gatewaysbind OP_RETURN data!"); 
+                        else if (tmprefcoin!=refcoin)
+                            return eval->Invalid("refcoin different than in bind tx");
+                        else if (komodo_txnotarizedconfirmed(bindtxid) == false)
+                            return eval->Invalid("gatewaysbind tx is not yet confirmed(notarised)!");
+                        else if (IsCCInput(tx.vin[0].scriptSig) != 0)
+                            return eval->Invalid("vin.0 is normal for gatewayscompletesigning!");
+                        else if ((*cp->ismyvin)(tx.vin[1].scriptSig) == 0 || myGetTransaction(tx.vin[1].prevout.hash,tmptx,hashblock)==0 || tmptx.vout[tx.vin[1].prevout.n].nValue!=CC_MARKER_VALUE)
+                            return eval->Invalid("vin.1 is CC marker for gatewayscompletesigning or invalid marker amount!");
+                        else if (ConstrainVout(tx.vout[0],1,cp->unspendableCCaddr,CC_MARKER_VALUE) == 0 )
+                            return eval->Invalid("vout.0 invalid marker for gatewayscompletesigning!");
+                        else if (K<M)
+                            return eval->Invalid("invalid number of signs!");
+                        break;                    
+                    case 'M':                        
+                        //vin.0: normal input
+                        //vin.1: CC input of gatewayscompletesigning tx marker to gateways CC address                                               
+                        //vout.0: opreturn - 'M' withdrawtxid refcoin completetxid   
+                        if ((numvouts=tx.vout.size()) > 0 && DecodeImportGatewayMarkDoneOpRet(tx.vout[numvouts-1].scriptPubKey,withdrawtxid,refcoin,completetxid)!='M')
+                            return eval->Invalid("invalid gatewaysmarkdone OP_RETURN data!");
+                        else if (myGetTransaction(completetxid,tmptx,hashblock) == 0)
+                            return eval->Invalid("invalid gatewayscompletesigning txid!");
+                        else if ((numvouts=tmptx.vout.size()) > 0 && DecodeImportGatewayCompleteSigningOpRet(tmptx.vout[numvouts-1].scriptPubKey,withdrawtxid,tmprefcoin,K,hex)!='S')
+                            return eval->Invalid("invalid gatewayscompletesigning OP_RETURN data!"); 
+                        else if (komodo_txnotarizedconfirmed(completetxid) == false)
+                            return eval->Invalid("gatewayscompletesigning tx is not yet confirmed(notarised)!");
+                        else if (myGetTransaction(withdrawtxid,tmptx,hashblock) == 0)
+                            return eval->Invalid("invalid withdraw txid!");
+                        else if ((numvouts=tmptx.vout.size()) > 0 && DecodeImportGatewayWithdrawOpRet(tmptx.vout[numvouts-1].scriptPubKey,bindtxid,tmprefcoin,pubkey,amount)!='W')
+                            return eval->Invalid("invalid gatewayswithdraw OP_RETURN data!"); 
+                        else if (tmprefcoin!=refcoin)
+                            return eval->Invalid("refcoin different than in bind tx");
+                        else if (komodo_txnotarizedconfirmed(withdrawtxid) == false)
+                            return eval->Invalid("gatewayswithdraw tx is not yet confirmed(notarised)!");
+                        else if (myGetTransaction(bindtxid,tmptx,hashblock) == 0)
+                            return eval->Invalid("invalid gatewaysbind txid!");
+                        else if ((numvouts=tmptx.vout.size()) < 1 || DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tmptx.vout[numvouts-1].scriptPubKey,tmprefcoin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B')
+                            return eval->Invalid("invalid gatewaysbind OP_RETURN data!"); 
+                        else if (tmprefcoin!=refcoin)
+                            return eval->Invalid("refcoin different than in bind tx");
+                        else if (komodo_txnotarizedconfirmed(bindtxid) == false)
+                            return eval->Invalid("gatewaysbind tx is not yet confirmed(notarised)!");
+                        else if ( IsCCInput(tx.vin[0].scriptSig) != 0 )
+                            return eval->Invalid("vin.0 is normal for gatewaysmarkdone!");
+                        else if ((*cp->ismyvin)(tx.vin[1].scriptSig) == 0 || myGetTransaction(tx.vin[1].prevout.hash,tmptx,hashblock)==0 || tmptx.vout[tx.vin[1].prevout.n].nValue!=CC_MARKER_VALUE)
+                            return eval->Invalid("vin.1 is CC marker for gatewaysmarkdone or invalid marker amount!");
+                        else if (K<M)
+                            return eval->Invalid("invalid number of signs!");
+                        break;                    
+                }
+            }
+            retval = PreventCC(eval,tx,preventCCvins,numvins,preventCCvouts,numvouts);
+            if ( retval != 0 )
+                LOGSTREAM("importgateway",CCLOG_INFO, stream << "ImportGateway tx validated" << std::endl);
+            else LogPrintf("ImportGateway tx invalid\n");
+            return(retval);
+        // }
+    }
+}
+// end of consensus code
+
+// helper functions for rpc calls in rpcwallet.cpp
+
+std::string ImportGatewayBind(uint64_t txfee,std::string coin,uint256 oracletxid,uint8_t M,uint8_t N,std::vector<CPubKey> pubkeys,uint8_t p1,uint8_t p2,uint8_t p3,uint8_t p4)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CTransaction oracletx; uint8_t taddr,prefix,prefix2,wiftype; CPubKey mypk,importgatewaypk; CScript opret; uint256 hashBlock;
+    struct CCcontract_info *cp,*cpTokens,C,CTokens; std::string name,description,format; int32_t i,numvouts;
+    char destaddr[64],coinaddr[64],myTokenCCaddr[64],str[65],*fstr;
+
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    cpTokens = CCinit(&CTokens,EVAL_TOKENS);
+    if (coin=="KMD")
+    {
+        prefix = KMD_PUBTYPE;
+        prefix2 = KMD_P2SHTYPE;
+        wiftype = KMD_WIFTYPE;
+        taddr = KMD_TADDR;
+    }
+    else
+    {
+        prefix = p1;
+        prefix2 = p2;
+        wiftype = p3;
+        taddr = p4;
+        LOGSTREAM("importgateway",CCLOG_DEBUG1, stream << "set prefix " << prefix << ", prefix2 " << prefix2 << ", wiftype " << wiftype << ", taddr " << taddr << " for " << coin << std::endl);
+    }
+    if ( N == 0 || N > 15 || M > N )
+    {
+        CCerror = strprintf("illegal M.%d or N.%d",M,N);
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( pubkeys.size() != N )
+    {
+        CCerror = strprintf("M.%d N.%d but pubkeys[%d]",M,N,(int32_t)pubkeys.size());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    for (i=0; i<N; i++)
+    {
+        Getscriptaddress(coinaddr,CScript() << ParseHex(HexStr(pubkeys[i])) << OP_CHECKSIG);
+        if ( CCaddress_balance(coinaddr,0) == 0 )
+        {
+            CCerror = strprintf("M.%d N.%d but pubkeys[%d] has no balance",M,N,i);
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+    }
+    if ( txfee == 0 )
+        txfee = 10000;
+    mypk = pubkey2pk(Mypubkey());
+    _GetCCaddress(myTokenCCaddr,EVAL_TOKENS,mypk);
+    importgatewaypk = GetUnspendable(cp,0);
+    if ( _GetCCaddress(destaddr,EVAL_IMPORTGATEWAY,importgatewaypk) == 0 )
+    {
+        CCerror = strprintf("ImportGateway bind.%s can't create globaladdr",coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( myGetTransaction(oracletxid,oracletx,hashBlock) == 0 || (numvouts= oracletx.vout.size()) <= 0 )
+    {
+        CCerror = strprintf("cant find oracletxid %s",uint256_str(str,oracletxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( DecodeOraclesCreateOpRet(oracletx.vout[numvouts-1].scriptPubKey,name,description,format) != 'C' )
+    {
+        CCerror = strprintf("mismatched oracle name %s != %s",name.c_str(),coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( (fstr=(char *)format.c_str()) == 0 || strncmp(fstr,"Ihh",3) != 0 )
+    {
+        CCerror = strprintf("illegal format (%s) != (%s)",fstr,(char *)"Ihh");
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( ImportGatewayBindExists(cp,importgatewaypk,coin) != 0 )
+    {
+        CCerror = strprintf("Gateway bind.%s already exists",coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( AddNormalinputs(mtx,mypk,txfee+CC_MARKER_VALUE,2) > 0 )
+    {
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode,CC_MARKER_VALUE,importgatewaypk));
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeImportGatewayBindOpRet('B',coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype)));
+    }
+    CCerror = strprintf("cant find enough inputs");
+    LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+    return("");
+}
+
+std::string ImportGatewayDeposit(uint64_t txfee,uint256 bindtxid,int32_t height,std::string refcoin,uint256 burntxid,int32_t claimvout,std::string rawburntx,std::vector<uint8_t>proof,CPubKey destpub,int64_t amount)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction(), burntx = CreateNewContextualCMutableTransaction();
+    CTransaction bindtx; CPubKey mypk; uint256 oracletxid,merkleroot,mhash,hashBlock,txid; std::vector<CTxOut> vouts;
+    int32_t i,m,n,numvouts; uint8_t M,N,taddr,prefix,prefix2,wiftype; std::string coin; struct CCcontract_info *cp,C;
+    std::vector<CPubKey> pubkeys,publishers; std::vector<uint256> txids; char str[128],burnaddr[64];
+
+    if (SMARTUSD_EARLYTXID!=zeroid && bindtxid!=SMARTUSD_EARLYTXID)
+    {
+        CCerror = strprintf("invalid import gateway. On this chain only valid import gateway is %s",SMARTUSD_EARLYTXID.GetHex());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    cp = CCinit(&C,E
