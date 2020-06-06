@@ -563,3 +563,196 @@ bool CheckMigration(Eval *eval, const CTransaction &importTx, const CTransaction
             if (v.scriptPubKey.IsPayToCryptoCondition() &&
                 !IsTokenMarkerVout(v))  // should not be marker here
                 ccImportOutputs += v.nValue;
+
+        if (ccBurnOutputs != ccImportOutputs)
+            return eval->Invalid("token-cc-burned-output-not-equal-cc-imported-output");
+
+    }
+    else if (vimportOpret.begin()[0] != EVAL_IMPORTCOIN) {
+        return eval->Invalid("import-tx-incorrect-opret-eval");
+    }
+
+    // for tokens check burn, import, tokenbase tx 
+    if (!tokenid.IsNull()) {
+
+        std::string sourceSymbol;
+        CTransaction tokenbaseTx;
+        if (!E_UNMARSHAL(rawproof, ss >> sourceSymbol; ss >> tokenbaseTx))
+            return eval->Invalid("cannot-unmarshal-rawproof-for-tokens");
+
+        uint256 sourceTokenId;
+        std::vector<std::pair<uint8_t, vscript_t>>  oprets;
+        uint8_t evalCodeInOpret;
+        std::vector<CPubKey> voutTokenPubkeys;
+        if (burnTx.vout.size() > 0 && DecodeTokenOpRet(burnTx.vout.back().scriptPubKey, evalCodeInOpret, sourceTokenId, voutTokenPubkeys, oprets) == 0)
+            return eval->Invalid("cannot-decode-burn-tx-token-opret");
+
+        if (sourceTokenId != tokenbaseTx.GetHash())              // check tokenid in burn tx opret maches the passed tokenbase tx (to prevent cheating by importing user)
+            return eval->Invalid("incorrect-token-creation-tx-passed");
+
+        std::vector<std::pair<uint8_t, vscript_t>>  opretsSrc;
+        vscript_t vorigpubkeySrc;
+        std::string nameSrc, descSrc;
+        if (DecodeTokenCreateOpRet(tokenbaseTx.vout.back().scriptPubKey, vorigpubkeySrc, nameSrc, descSrc, opretsSrc) == 0)
+            return eval->Invalid("cannot-decode-token-creation-tx");
+
+        std::vector<std::pair<uint8_t, vscript_t>>  opretsImport;
+        vscript_t vorigpubkeyImport;
+        std::string nameImport, descImport;
+        if (importTx.vout.size() == 0 || DecodeTokenCreateOpRet(importTx.vout.back().scriptPubKey, vorigpubkeySrc, nameSrc, descSrc, opretsImport) == 0)
+            return eval->Invalid("cannot-decode-token-import-tx");
+
+        // check that name,pubkey,description in import tx correspond ones in token creation tx in the source chain:
+        if (vorigpubkeySrc != vorigpubkeyImport ||
+            nameSrc != nameImport ||
+            descSrc != descImport)
+            return eval->Invalid("import-tx-token-params-incorrect");
+    }
+
+
+    // Check burntx shows correct outputs hash
+//    if (payoutsHash != SerializeHash(payouts))  // done in ImportCoin
+//        return eval->Invalid("wrong-payouts");
+
+
+    TxProof merkleBranchProof;
+    std::vector<uint256> notaryTxids;
+
+    // Check proof confirms existance of burnTx
+    if (proof.IsMerkleBranch(merkleBranchProof)) {
+        uint256 target = merkleBranchProof.second.Exec(burnTx.GetHash());
+        LOGSTREAM("importcoin", CCLOG_DEBUG2, stream << "Eval::ImportCoin() momom target=" << target.GetHex() << " merkleBranchProof.first=" << merkleBranchProof.first.GetHex() << std::endl);
+        if (!CheckMoMoM(merkleBranchProof.first, target)) {
+            LOGSTREAM("importcoin", CCLOG_INFO, stream << "MoMoM check failed for importtx=" << importTx.GetHash().GetHex() << std::endl);
+            return eval->Invalid("momom-check-fail");
+        }
+    }
+    else if (proof.IsNotaryTxids(notaryTxids)) {
+        if (!CheckNotariesApproval(burnTx.GetHash(), notaryTxids)) {
+            return eval->Invalid("notaries-approval-check-fail");
+        }
+    }
+    else {
+        return eval->Invalid("invalid-import-proof");
+    }
+
+/*  if (vimportOpret.begin()[0] == EVAL_TOKENS)
+        return eval->Invalid("test-invalid-tokens-are-good!!");
+    else
+        return eval->Invalid("test-invalid-coins-are-good!!"); */
+    return true;
+}
+
+bool Eval::ImportCoin(const std::vector<uint8_t> params, const CTransaction &importTx, unsigned int nIn)
+{
+    ImportProof proof; 
+    CTransaction burnTx; 
+    std::vector<CTxOut> payouts; 
+    CAmount txfee = 10000, amount;
+    int32_t height, burnvout; 
+    std::vector<CPubKey> publishers;
+    uint32_t targetCcid; 
+    std::string targetSymbol, srcaddr, destaddr, receipt, rawburntx; 
+    uint256 payoutsHash, bindtxid, burntxid;
+    std::vector<uint8_t> rawproof;
+    std::vector<uint256> txids; 
+    CPubKey destpub;
+
+    LOGSTREAM("importcoin", CCLOG_DEBUG1, stream << "Validating import tx..., txid=" << importTx.GetHash().GetHex() << std::endl);
+
+    if (strcmp(ASSETCHAINS_SYMBOL, "CFEKDIMXY6") == 0 && chainActive.Height() <= 44693)
+        return true;
+
+    if (importTx.vout.size() < 2)
+        return Invalid("too-few-vouts");
+
+    // params
+    if (!UnmarshalImportTx(importTx, proof, burnTx, payouts))
+        return Invalid("invalid-params");
+    // Control all aspects of this transaction
+    // It should not be at all malleable
+    if (ASSETCHAINS_SELFIMPORT!="PEGSCC" && MakeImportCoinTransaction(proof, burnTx, payouts).GetHash() != importTx.GetHash())  // ExistsImportTombstone prevents from duplication
+        return Invalid("non-canonical");
+
+    // burn params
+    if (!UnmarshalBurnTx(burnTx, targetSymbol, &targetCcid, payoutsHash, rawproof))
+        return Invalid("invalid-burn-tx");
+    
+    if (burnTx.vout.size() == 0)
+        return Invalid("invalid-burn-tx-no-vouts");
+
+    // check burned normal amount >= import amount  && burned amount <= import amount + txfee (extra txfee is for miners and relaying, see GetImportCoinValue() func)
+    CAmount burnAmount = burnTx.vout.back().nValue;
+    if (burnAmount == 0)
+        return Invalid("invalid-burn-amount");
+    CAmount totalOut = 0;
+    for (auto v : importTx.vout)
+        if (!v.scriptPubKey.IsPayToCryptoCondition())
+            totalOut += v.nValue;
+    if (totalOut > burnAmount || totalOut < burnAmount - txfee)
+        return Invalid("payout-too-high-or-too-low");
+
+    // Check burntx shows correct outputs hash
+    if (payoutsHash != SerializeHash(payouts))
+        return Invalid("wrong-payouts");
+    if (targetCcid < KOMODO_FIRSTFUNGIBLEID)
+        return Invalid("chain-not-fungible");
+
+    if ( targetCcid != 0xffffffff )
+    {
+
+        if (targetCcid != GetAssetchainsCC() || targetSymbol != GetAssetchainsSymbol())
+            return Invalid("importcoin-wrong-chain");
+
+        if (!CheckMigration(this, importTx, burnTx, payouts, proof, rawproof))
+            return false;  // eval->Invalid() is called in the func
+    }
+    else
+    {
+        TxProof merkleBranchProof;
+        if (!proof.IsMerkleBranch(merkleBranchProof)) 
+            return Invalid("invalid-import-proof-for-0xFFFFFFFF");
+
+        if ( targetSymbol == "BEAM" )
+        {
+            if ( ASSETCHAINS_BEAMPORT == 0 )
+                return Invalid("BEAM-import-without-port");
+            else if ( CheckBEAMimport(merkleBranchProof,rawproof,burnTx,payouts) < 0 )
+                return Invalid("BEAM-import-failure");
+        }
+        else if ( targetSymbol == "CODA" )
+        {
+            if ( ASSETCHAINS_CODAPORT == 0 )
+                return Invalid("CODA-import-without-port");
+            else if ( UnmarshalBurnTx(burnTx,srcaddr,receipt)==0 || CheckCODAimport(importTx,burnTx,payouts,srcaddr,receipt) < 0 )
+                return Invalid("CODA-import-failure");
+        }
+        else if ( targetSymbol == "PEGSCC" )
+        {
+            if ( ASSETCHAINS_SELFIMPORT != "PEGSCC" )
+                return Invalid("PEGSCC-import-when-not PEGSCC");
+            // else if ( CheckPUBKEYimport(merkleBranchProof,rawproof,burnTx,payouts) < 0 )
+            //     return Invalid("PEGSCC-import-failure");
+        }
+        else if ( targetSymbol == "PUBKEY" )
+        {
+            if ( ASSETCHAINS_SELFIMPORT != "PUBKEY" )
+                return Invalid("PUBKEY-import-when-not PUBKEY");
+            else if ( CheckPUBKEYimport(merkleBranchProof,rawproof,burnTx,payouts) < 0 )
+                return Invalid("PUBKEY-import-failure");
+        }
+        else
+        {
+            if ( targetSymbol != ASSETCHAINS_SELFIMPORT )
+                return Invalid("invalid-gateway-import-coin");
+            else if ( UnmarshalBurnTx(burnTx,bindtxid,publishers,txids,burntxid,height,burnvout,rawburntx,destpub,amount)==0 || CheckGATEWAYimport(importTx,burnTx,targetSymbol,rawproof,bindtxid,publishers,txids,burntxid,height,burnvout,rawburntx,destpub,amount) < 0 )
+                return Invalid("GATEWAY-import-failure");
+        }
+    }
+
+    // return Invalid("test-invalid");
+    LOGSTREAM("importcoin", CCLOG_DEBUG2, stream << "Valid import tx! txid=" << importTx.GetHash().GetHex() << std::endl);
+       
+    return Valid();
+}
+
