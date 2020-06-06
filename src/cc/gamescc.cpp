@@ -1597,3 +1597,216 @@ UniValue games_finish(uint64_t txfee,struct CCcontract_info *cp,cJSON *params,ch
                     }
                     if ( CCchange + (batonvalue-3*txfee) >= txfee )
                         mtx.vout.push_back(MakeCC1vout(cp->evalcode,CCchange + (batonvalue-3*txfee),gamespk));
+                    Myprivkey(mypriv);
+                    CCaddr1of2set(cp,gamespk,mypk,mypriv,mygamesaddr);
+                    CScript opret;
+                    if ( pname.size() == 0 )
+                        pname = Games_pname;
+                    if ( newdata.size() == 0 )
+                    {
+                        opret = games_finishopret(funcid, gametxid, regslot, mypk, nodata,pname);
+                        rawtx = FinalizeCCTx(0,cp,mtx,mypk,txfee,opret);
+                        //LogPrintf("nodata finalizetx.(%s)\n",rawtx.c_str());
+                    }
+                    else
+                    {
+                        opret = games_finishopret(funcid, gametxid, regslot, mypk, newdata,pname);
+                        char seedstr[32];
+                        sprintf(seedstr,"%llu",(long long)seed);
+                        std::vector<uint8_t> vopretNonfungible;
+                        GetOpReturnData(opret, vopretNonfungible);
+                        rawtx = FinalizeCCTx(0, cp, mtx, mypk, txfee, EncodeTokenCreateOpRet('c', Mypubkey(), std::string(seedstr), gametxid.GetHex(), vopretNonfungible));
+                    }
+                    memset(mypriv,0,sizeof(mypriv));
+                    return(games_rawtxresult(result,rawtx,1));
+                }
+                result.push_back(Pair("result","success"));
+            } else LogPrintf("illegal game err.%d\n",err);
+        } else LogPrintf("parameters only n.%d\n",n);
+    }
+    return(result);
+}
+
+UniValue games_bailout(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    return(games_finish(txfee,cp,params,(char *)"bailout"));
+}
+
+UniValue games_highlander(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    return(games_finish(txfee,cp,params,(char *)"highlander"));
+}
+
+UniValue games_players(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    UniValue result(UniValue::VOBJ),a(UniValue::VARR); int64_t buyin; uint256 tokenid,gametxid,txid,hashBlock; CTransaction playertx,tx; int32_t maxplayers,vout,numvouts; std::vector<uint8_t> playerdata; CPubKey gamespk,mypk,pk; std::string symbol,pname; char coinaddr[64];
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+    gamespk = GetUnspendable(cp,0);
+    mypk = pubkey2pk(Mypubkey());
+    GetTokensCCaddress(cp,coinaddr,mypk);
+    SetCCunspents(unspentOutputs,coinaddr,true);
+    games_univalue(result,"players",-1,-1);
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        //char str[65]; LogPrintf("%s check %s/v%d %.8f\n",coinaddr,uint256_str(str,txid),vout,(double)it->second.satoshis/COIN);
+        if ( it->second.satoshis != 1 || vout > 1 )
+            continue;
+        if ( games_playerdata(cp,gametxid,tokenid,pk,playerdata,symbol,pname,txid) == 0 )//&& pk == mypk )
+        {
+            a.push_back(txid.GetHex());
+            //a.push_back(Pair("playerdata",games_playerobj(playerdata)));
+        }
+    }
+    result.push_back(Pair("playerdata",a));
+    result.push_back(Pair("numplayerdata",(int64_t)a.size()));
+    return(result);
+}
+
+UniValue games_games(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    UniValue result(UniValue::VOBJ),a(UniValue::VARR),b(UniValue::VARR); uint256 txid,hashBlock,gametxid,tokenid,playertxid; int32_t vout,maxplayers,gameheight,numvouts; CPubKey gamespk,mypk; char coinaddr[64]; CTransaction tx,gametx; int64_t buyin;
+    std::vector<uint256> txids;
+    gamespk = GetUnspendable(cp,0);
+    mypk = pubkey2pk(Mypubkey());
+    GetCCaddress1of2(cp,coinaddr,gamespk,mypk);
+    SetCCtxids(txids,coinaddr,true,cp->evalcode,zeroid,'R');
+    games_univalue(result,"games",-1,-1);
+    for (std::vector<uint256>::const_iterator it=txids.begin(); it!=txids.end(); it++)
+    {
+        txid = *it;
+        //char str[65]; fprintf(stderr,"%s check %s/v%d %.8f\n",coinaddr,uint256_str(str,txid),vout,(double)it->second.satoshis/COIN);
+        if ( myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size()) > 1 )
+        {
+            if ( games_registeropretdecode(gametxid,tokenid,playertxid,tx.vout[numvouts-1].scriptPubKey) == 'R' )
+            {
+                if ( games_isvalidgame(cp,gameheight,gametx,buyin,maxplayers,gametxid,0) == 0 )
+                {
+                    if ( CCgettxout(txid,vout,1,0) < 0 )
+                        b.push_back(gametxid.GetHex());
+                    else a.push_back(gametxid.GetHex());
+                }
+            }
+        }
+    }
+    result.push_back(Pair("pastgames",b));
+    result.push_back(Pair("games",a));
+    result.push_back(Pair("numgames",(int64_t)(a.size()+b.size())));
+    return(result);
+}
+
+UniValue games_setname(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    UniValue result(UniValue::VOBJ); int32_t n; char *namestr = 0;
+    games_univalue(result,"setname",-1,-1);
+    if ( params != 0 && (n= cJSON_GetArraySize(params)) > 0 )
+    {
+        if ( n > 0 )
+        {
+            if ( (namestr= jstri(params,0)) != 0 )
+            {
+                result.push_back(Pair("result","success"));
+                result.push_back(Pair("pname",namestr));
+                Games_pname = namestr;
+                return(result);
+            }
+        }
+    }
+    result.push_back(Pair("result","error"));
+    result.push_back(Pair("error","couldnt get name"));
+    return(result);
+}
+
+UniValue games_fund(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    UniValue result(UniValue::VOBJ); std::string rawtx; int64_t amount,inputsum; CPubKey gamespk,mypk; CScript opret;
+    if ( params != 0 && cJSON_GetArraySize(params) == 1 )
+    {
+        amount = jdouble(jitem(params,0),0) * COIN + 0.0000000049;
+        gamespk = GetUnspendable(cp,0);
+        mypk = pubkey2pk(Mypubkey());
+        if ( amount > GAMES_TXFEE )
+        {
+            if ( (inputsum= AddNormalinputs(mtx,mypk,amount+GAMES_TXFEE,64)) >= amount+GAMES_TXFEE )
+            {
+                mtx.vout.push_back(MakeCC1vout(cp->evalcode,amount,gamespk));
+                rawtx = FinalizeCCTx(0,cp,mtx,mypk,GAMES_TXFEE,opret);
+                return(games_rawtxresult(result,rawtx,1));
+            }
+            else
+            {
+                result.push_back(Pair("result","error"));
+                result.push_back(Pair("error","not enough funds"));
+            }
+        }
+        else
+        {
+            result.push_back(Pair("result","error"));
+            result.push_back(Pair("error","amount too small"));
+        }
+    }
+    else
+    {
+        result.push_back(Pair("result","error"));
+        result.push_back(Pair("error","couldnt parse"));
+    }
+    return(result);
+}
+
+int32_t games_playerdata_validate(int64_t *cashoutp,uint256 &playertxid,struct CCcontract_info *cp,std::vector<uint8_t> playerdata,uint256 gametxid,CPubKey pk)
+{
+    static uint32_t good,bad; static uint256 prevgame;
+    char str[512],gamesaddr[64],str2[67],fname[64]; gamesevent *keystrokes; int32_t i,numkeys; std::vector<uint8_t> newdata; uint64_t seed; CPubKey gamespk; struct games_player P;
+    *cashoutp = 0;
+    gamespk = GetUnspendable(cp,0);
+    GetCCaddress1of2(cp,gamesaddr,gamespk,pk);
+    if ( (keystrokes= games_extractgame(0,str,&numkeys,newdata,seed,playertxid,cp,gametxid,gamesaddr)) != 0 )
+    {
+        free(keystrokes);
+        sprintf(fname,"%s.%llu.pack",GAMENAME,(long long)seed);
+        remove(fname);
+        for (i=0; i<newdata.size(); i++)
+            ((uint8_t *)&P)[i] = newdata[i];
+        *cashoutp = games_cashout(&P);
+        if ( newdata == playerdata )
+        {
+            if ( gametxid != prevgame )
+            {
+                prevgame = gametxid;
+                good++;
+            }
+            return(0);
+        }
+        if ( disp_gamesplayer(str,&P) < 0 )
+        {
+            if ( newdata.size() == 0 )
+            {
+                if ( gametxid != prevgame )
+                {
+                    prevgame = gametxid;
+                    good++;
+                }
+                *cashoutp = 0;
+                return(0);
+            }
+        }
+        if ( gametxid != prevgame )
+        {
+            prevgame = gametxid;
+            bad++;
+            disp_gamesplayerdata(newdata);
+            disp_gamesplayerdata(playerdata);
+            LogPrintf("%s playerdata: %s\n",gametxid.GetHex().c_str(),str);
+            LogPrintf("newdata[%d] != playerdata[%d], numkeys.%d %s pub.%s playertxid.%s good.%d bad.%d\n",(int32_t)newdata.size(),(int32_t)playerdata.size(),numkeys,gamesaddr,pubkey33_str(str2,(uint8_t *)&pk),playertxid.GetHex().c_str(),good,bad);
+        }
+    }
+    sprintf(fname,"%s.%llu.pack",GAMENAME,(long long)seed);
+    remove(fname);
+    //LogPrintf("no keys games_extractgame %s\n",gametxid.GetHex().c_str());
+    return(-1);
+}
+
+#endif
+
