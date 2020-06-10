@@ -786,4 +786,223 @@ std::string ImportGatewayPartialSign(uint64_t txfee,uint256 lasttxid,std::string
             LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
             return("");
         }
-        else if (DecodeImportGatewayWithdrawOpRet(tmptx.vout[numvouts-1].scriptPubK
+        else if (DecodeImportGatewayWithdrawOpRet(tmptx.vout[numvouts-1].scriptPubKey,bindtxid,coin,withdrawpub,amount)!='W'
+            || refcoin!=coin)
+        {
+            CCerror = strprintf("invalid withdraw tx %s",uint256_str(str,lasttxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (SMARTUSD_EARLYTXID!=zeroid && bindtxid!=SMARTUSD_EARLYTXID)
+        {
+            CCerror = strprintf("invalid import gateway. On this chain only valid import gateway is %s",SMARTUSD_EARLYTXID.GetHex());
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (komodo_txnotarizedconfirmed(withdrawtxid)==false)
+        {
+            CCerror = strprintf("gatewayswithdraw tx not yet confirmed/notarized");
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (myGetTransaction(bindtxid,tmptx,hashBlock)==0 || (numvouts=tmptx.vout.size())<=0)
+        {
+            CCerror = strprintf("can't find bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tmptx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B'
+            || refcoin!=coin)
+        {
+            CCerror = strprintf("invalid bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+    }
+    if (AddNormalinputs(mtx,mypk,txfee,3)!=0)
+    {
+        mtx.vin.push_back(CTxIn(tx.GetHash(),0,CScript()));
+        mtx.vout.push_back(MakeCC1vout(EVAL_IMPORTGATEWAY,CC_MARKER_VALUE,importgatewaypk));       
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeImportGatewayPartialOpRet('P',withdrawtxid,refcoin,K+1,mypk,hex)));
+    }
+    CCerror = strprintf("error adding funds for partialsign");    
+    LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+    return("");
+}
+
+std::string ImportGatewayCompleteSigning(uint64_t txfee,uint256 lasttxid,std::string refcoin,std::string hex)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CPubKey mypk,importgatewaypk,signerpk,withdrawpub; struct CCcontract_info *cp,C; char funcid,str[65],burnaddr[64]; int64_t amount;
+    std::string coin,tmphex; CTransaction tx, tmptx; CTransactionRef tmptxr; uint256 withdrawtxid,hashBlock,tokenid,bindtxid,oracletxid; int32_t numvouts;
+    uint8_t K=0,M,N,taddr,prefix,prefix2,wiftype; std::vector<CPubKey> pubkeys;
+
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    mypk = pubkey2pk(Mypubkey());
+    importgatewaypk = GetUnspendable(cp,0);
+    if ( txfee == 0 )
+        txfee = 10000;
+    if (myGetTransaction(lasttxid,tx,hashBlock)==0 || (numvouts= tx.vout.size())<=0
+        || (funcid=DecodeImportGatewayOpRet(tx.vout[numvouts-1].scriptPubKey))==0 || (funcid!='W' && funcid!='P'))
+    {
+        CCerror = strprintf("invalid last txid %s",uint256_str(str,lasttxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if (funcid=='W')
+    {
+        withdrawtxid=lasttxid;
+        if (DecodeImportGatewayWithdrawOpRet(tx.vout[numvouts-1].scriptPubKey,bindtxid,coin,withdrawpub,amount)!='W' || refcoin!=coin)
+        {
+            CCerror = strprintf("cannot decode withdraw tx opret %s",uint256_str(str,lasttxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (myGetTransaction(bindtxid,tmptx,hashBlock)==0 || (numvouts=tmptx.vout.size())<=0)
+        {
+            CCerror = strprintf("can't find bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (SMARTUSD_EARLYTXID!=zeroid && bindtxid!=SMARTUSD_EARLYTXID)
+        {
+            CCerror = strprintf("invalid import gateway. On this chain only valid import gateway is %s",SMARTUSD_EARLYTXID.GetHex());
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (komodo_txnotarizedconfirmed(withdrawtxid)==false)
+        {
+            CCerror = strprintf("gatewayswithdraw tx not yet confirmed/notarized");
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (GetTransaction(bindtxid,tmptxr,Params().GetConsensus(),hashBlock,false)==0 || (numvouts=tmptxr->vout.size())<=0)
+        {
+            CCerror = strprintf("can't find bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tmptx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B'
+            || refcoin!=coin)
+        {
+            CCerror = strprintf("invalid bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+    }
+    else if (funcid=='P')
+    {
+        if (DecodeImportGatewayPartialOpRet(tx.vout[numvouts-1].scriptPubKey,withdrawtxid,coin,K,signerpk,tmphex)!='P' || refcoin!=coin)
+        {
+            CCerror = strprintf("cannot decode partialsign tx opret %s",uint256_str(str,lasttxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (myGetTransaction(withdrawtxid,tmptx,hashBlock)==0 || (numvouts=tmptx.vout.size())==0)
+        {
+            CCerror = strprintf("invalid withdraw txid %s",uint256_str(str,withdrawtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (DecodeImportGatewayWithdrawOpRet(tmptx.vout[numvouts-1].scriptPubKey,bindtxid,coin,withdrawpub,amount)!='W' || refcoin!=coin)
+        {
+            CCerror = strprintf("cannot decode withdraw tx opret %s",uint256_str(str,withdrawtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (SMARTUSD_EARLYTXID!=zeroid && bindtxid!=SMARTUSD_EARLYTXID)
+        {
+            CCerror = strprintf("invalid import gateway. On this chain only valid import gateway is %s",SMARTUSD_EARLYTXID.GetHex());
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (komodo_txnotarizedconfirmed(withdrawtxid)==false)
+        {
+            CCerror = strprintf("gatewayswithdraw tx not yet confirmed/notarized");
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (myGetTransaction(bindtxid,tmptx,hashBlock)==0 || (numvouts=tmptx.vout.size())<=0)
+        {
+            CCerror = strprintf("can't find bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+        else if (DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tmptx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B'
+            || refcoin!=coin)
+        {
+            CCerror = strprintf("invalid bind tx %s",uint256_str(str,bindtxid));
+            LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+            return("");
+        }
+    }
+    if (AddNormalinputs(mtx,mypk,txfee,3)!=0) 
+    {
+        mtx.vin.push_back(CTxIn(lasttxid,0,CScript()));
+        mtx.vout.push_back(MakeCC1vout(EVAL_IMPORTGATEWAY,CC_MARKER_VALUE,importgatewaypk));       
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeImportGatewayCompleteSigningOpRet('S',withdrawtxid,refcoin,K+1,hex)));
+    }
+    CCerror = strprintf("error adding funds for completesigning");
+    LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+    return("");
+}
+
+std::string ImportGatewayMarkDone(uint64_t txfee,uint256 completetxid,std::string refcoin)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CPubKey mypk; struct CCcontract_info *cp,C; char str[65],burnaddr[64]; CTransaction tx; int32_t numvouts;
+    uint256 withdrawtxid,bindtxid,oracletxid,tokenid,hashBlock; std::string coin,hex;
+    uint8_t K,M,N,taddr,prefix,prefix2,wiftype; std::vector<CPubKey> pubkeys; int64_t amount; CPubKey withdrawpub;
+
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    mypk = pubkey2pk(Mypubkey());    
+    if ( txfee == 0 )
+        txfee = 10000;
+    if (myGetTransaction(completetxid,tx,hashBlock)==0 || (numvouts= tx.vout.size())<=0)
+    {
+        CCerror = strprintf("invalid completesigning txid %s",uint256_str(str,completetxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (DecodeImportGatewayCompleteSigningOpRet(tx.vout[numvouts-1].scriptPubKey,withdrawtxid,coin,K,hex)!='S' || refcoin!=coin)
+    {
+        CCerror = strprintf("cannot decode completesigning tx opret %s",uint256_str(str,completetxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if (komodo_txnotarizedconfirmed(completetxid)==false)
+    {
+        CCerror = strprintf("gatewayscompletesigning tx not yet confirmed/notarized");
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (myGetTransaction(withdrawtxid,tx,hashBlock)==0 || (numvouts= tx.vout.size())==0)
+    {
+        CCerror = strprintf("invalid withdraw txid %s",uint256_str(str,withdrawtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (DecodeImportGatewayWithdrawOpRet(tx.vout[numvouts-1].scriptPubKey,bindtxid,coin,withdrawpub,amount)!='W' || refcoin!=coin)
+    {
+        CCerror = strprintf("cannot decode withdraw tx opret %s\n",uint256_str(str,withdrawtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (SMARTUSD_EARLYTXID!=zeroid && bindtxid!=SMARTUSD_EARLYTXID)
+    {
+        CCerror = strprintf("invalid import gateway. On this chain only valid import gateway is %s",SMARTUSD_EARLYTXID.GetHex());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (myGetTransaction(bindtxid,tx,hashBlock)==0 || (numvouts=tx.vout.size())<=0)
+    {
+        CCerror = strprintf("can't find bind tx %s",uint256_str(str,bindtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    else if (DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 'B'
+        || refcoin!=coin)
+    {
+        CCerror = strprintf("invalid bind tx %s",uint256_str(str,bindtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        
