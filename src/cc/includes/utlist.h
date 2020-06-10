@@ -61,4 +61,156 @@
  when compiling c++ code), this code uses whatever method is needed
  or, for VS2008 where neither is available, uses casting workarounds. */
 #ifdef _MSC_VER            /* MS compiler */
-#if _MSC_VER >= 1600 && defined(__cplusp
+#if _MSC_VER >= 1600 && defined(__cplusplus)  /* VS2010 or newer in C++ mode */
+#define LDECLTYPE(x) decltype(x)
+#else                     /* VS2008 or older (or VS2010 in C mode) */
+#define NO_DECLTYPE
+#define LDECLTYPE(x) char*
+#endif
+#elif defined(__ICCARM__)
+#define NO_DECLTYPE
+#define LDECLTYPE(x) char*
+#else                      /* GNU, Sun and other compilers */
+#define LDECLTYPE(x) __typeof(x)
+#endif
+
+/* for VS2008 we use some workarounds to get around the lack of decltype,
+ * namely, we always reassign our tmp variable to the list head if we need
+ * to dereference its prev/next pointers, and save/restore the real head.*/
+#ifdef NO_DECLTYPE
+#define _SV(elt,list) _tmp = (char*)(list); {char **_alias = (char**)&(list); *_alias = (elt); }
+#define _NEXT(elt,list,next) ((char*)((list)->next))
+#define _NEXTASGN(elt,list,to,next) { char **_alias = (char**)&((list)->next); *_alias=(char*)(to); }
+/* #define _PREV(elt,list,prev) ((char*)((list)->prev)) */
+#define _PREVASGN(elt,list,to,prev) { char **_alias = (char**)&((list)->prev); *_alias=(char*)(to); }
+#define _RS(list) { char **_alias = (char**)&(list); *_alias=_tmp; }
+#define _CASTASGN(a,b) { char **_alias = (char**)&(a); *_alias=(char*)(b); }
+#else
+#define _SV(elt,list)
+#define _NEXT(elt,list,next) ((elt)->next)
+#define _NEXTASGN(elt,list,to,next) ((elt)->next)=(to)
+/* #define _PREV(elt,list,prev) ((elt)->prev) */
+#define _PREVASGN(elt,list,to,prev) ((elt)->prev)=(to)
+#define _RS(list)
+#define _CASTASGN(a,b) (a)=(b)
+#endif
+
+/******************************************************************************
+ * The sort macro is an adaptation of Simon Tatham's O(n log(n)) mergesort    *
+ * Unwieldy variable names used here to avoid shadowing passed-in variables.  *
+ *****************************************************************************/
+#define LL_SORT(list, cmp)                                                                     \
+LL_SORT2(list, cmp, next)
+
+#define LL_SORT2(list, cmp, next)                                                              \
+do {                                                                                           \
+LDECLTYPE(list) _ls_p;                                                                       \
+LDECLTYPE(list) _ls_q;                                                                       \
+LDECLTYPE(list) _ls_e;                                                                       \
+LDECLTYPE(list) _ls_tail;                                                                    \
+int _ls_insize, _ls_nmerges, _ls_psize, _ls_qsize, _ls_i, _ls_looping;                       \
+if (list) {                                                                                  \
+_ls_insize = 1;                                                                            \
+_ls_looping = 1;                                                                           \
+while (_ls_looping) {                                                                      \
+_CASTASGN(_ls_p,list);                                                                   \
+list = NULL;                                                                             \
+_ls_tail = NULL;                                                                         \
+_ls_nmerges = 0;                                                                         \
+while (_ls_p) {                                                                          \
+_ls_nmerges++;                                                                         \
+_ls_q = _ls_p;                                                                         \
+_ls_psize = 0;                                                                         \
+for (_ls_i = 0; _ls_i < _ls_insize; _ls_i++) {                                         \
+_ls_psize++;                                                                         \
+_SV(_ls_q,list); _ls_q = _NEXT(_ls_q,list,next); _RS(list);                          \
+if (!_ls_q) break;                                                                   \
+}                                                                                      \
+_ls_qsize = _ls_insize;                                                                \
+while (_ls_psize > 0 || (_ls_qsize > 0 && _ls_q)) {                                    \
+if (_ls_psize == 0) {                                                                \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+} else if (_ls_qsize == 0 || !_ls_q) {                                               \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+} else if (cmp(_ls_p,_ls_q) <= 0) {                                                  \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+} else {                                                                             \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+}                                                                                    \
+if (_ls_tail) {                                                                      \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,_ls_e,next); _RS(list);                \
+} else {                                                                             \
+_CASTASGN(list,_ls_e);                                                             \
+}                                                                                    \
+_ls_tail = _ls_e;                                                                    \
+}                                                                                      \
+_ls_p = _ls_q;                                                                         \
+}                                                                                        \
+if (_ls_tail) {                                                                          \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,NULL,next); _RS(list);                     \
+}                                                                                        \
+if (_ls_nmerges <= 1) {                                                                  \
+_ls_looping=0;                                                                         \
+}                                                                                        \
+_ls_insize *= 2;                                                                         \
+}                                                                                          \
+}                                                                                            \
+} while (0)
+
+
+#define DL_SORT(list, cmp)                                                                     \
+DL_SORT2(list, cmp, prev, next)
+
+#define DL_SORT2(list, cmp, prev, next)                                                        \
+do {                                                                                           \
+LDECLTYPE(list) _ls_p;                                                                       \
+LDECLTYPE(list) _ls_q;                                                                       \
+LDECLTYPE(list) _ls_e;                                                                       \
+LDECLTYPE(list) _ls_tail;                                                                    \
+int _ls_insize, _ls_nmerges, _ls_psize, _ls_qsize, _ls_i, _ls_looping;                       \
+if (list) {                                                                                  \
+_ls_insize = 1;                                                                            \
+_ls_looping = 1;                                                                           \
+while (_ls_looping) {                                                                      \
+_CASTASGN(_ls_p,list);                                                                   \
+list = NULL;                                                                             \
+_ls_tail = NULL;                                                                         \
+_ls_nmerges = 0;                                                                         \
+while (_ls_p) {                                                                          \
+_ls_nmerges++;                                                                         \
+_ls_q = _ls_p;                                                                         \
+_ls_psize = 0;                                                                         \
+for (_ls_i = 0; _ls_i < _ls_insize; _ls_i++) {                                         \
+_ls_psize++;                                                                         \
+_SV(_ls_q,list); _ls_q = _NEXT(_ls_q,list,next); _RS(list);                          \
+if (!_ls_q) break;                                                                   \
+}                                                                                      \
+_ls_qsize = _ls_insize;                                                                \
+while (_ls_psize > 0 || (_ls_qsize > 0 && _ls_q)) {                                    \
+if (_ls_psize == 0) {                                                                \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+} else if (_ls_qsize == 0 || !_ls_q) {                                               \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+} else if (cmp(_ls_p,_ls_q) <= 0) {                                                  \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+} else {                                                                             \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+}                                                                                    \
+if (_ls_tail) {                                                                      \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,_ls_e,next); _RS(list);                \
+} else {                                                                             \
+_CASTASGN(list,_ls_e);                                                             \
+}                                                                                    \
+_SV(_ls_e,list); _PREVASGN(_ls_e,list,_ls_tail,prev); _RS(list);                     \
+_ls_tail = _ls_e;                                                                    \
+}                                                                                      \
+_ls_p = _ls_q;                                                                         \
+}                                                                 
