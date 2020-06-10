@@ -1005,4 +1005,218 @@ std::string ImportGatewayMarkDone(uint64_t txfee,uint256 completetxid,std::strin
     {
         CCerror = strprintf("invalid bind tx %s",uint256_str(str,bindtxid));
         LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
-        
+        return("");
+    }
+    if (AddNormalinputs(mtx,mypk,txfee,3)!=0) 
+    {
+        mtx.vin.push_back(CTxIn(completetxid,0,CScript()));
+        mtx.vout.push_back(CTxOut(CC_MARKER_VALUE,CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));        
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeImportGatewayMarkDoneOpRet('M',withdrawtxid,refcoin,completetxid)));
+    }
+    CCerror = strprintf("error adding funds for markdone");
+    LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+    return("");
+}
+
+UniValue ImportGatewayPendingWithdraws(uint256 bindtxid,std::string refcoin)
+{
+    UniValue result(UniValue::VOBJ),pending(UniValue::VARR); CTransaction tx; std::string coin,hex; CPubKey mypk,importgatewaypk,withdrawpub,signerpk;
+    std::vector<CPubKey> msigpubkeys; uint256 hashBlock,txid,tmpbindtxid,tmptokenid,oracletxid,withdrawtxid; uint8_t K,M,N,taddr,prefix,prefix2,wiftype;
+    char funcid,burnaddr[65],coinaddr[65],destaddr[65],str[65],withaddr[65],numstr[32],signeraddr[65],txidaddr[65];
+    int32_t i,n,numvouts,vout,queueflag; int64_t amount,nValue; struct CCcontract_info *cp,C;
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    mypk = pubkey2pk(Mypubkey());
+    importgatewaypk = GetUnspendable(cp,0);
+    _GetCCaddress(coinaddr,EVAL_IMPORTGATEWAY,importgatewaypk);
+    if ( myGetTransaction(bindtxid,tx,hashBlock) == 0 || (numvouts= tx.vout.size()) <= 0 )
+    {
+        CCerror = strprintf("cant find bindtxid %s",uint256_str(str,bindtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,msigpubkeys,taddr,prefix,prefix2,wiftype) != 'B' || refcoin != coin )
+    {
+        CCerror = strprintf("invalid bindtxid %s coin.%s",uint256_str(str,bindtxid),coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    n = msigpubkeys.size();
+    queueflag = 0;
+    for (i=0; i<n; i++)
+        if ( msigpubkeys[i] == mypk )
+        {
+            queueflag = 1;
+            break;
+        }    
+    SetCCunspents(unspentOutputs,coinaddr,true);
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        nValue = (int64_t)it->second.satoshis;
+        K=0;
+        if ( vout == 0 && nValue == CC_MARKER_VALUE && myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size())>0 &&
+            (funcid=DecodeImportGatewayOpRet(tx.vout[numvouts-1].scriptPubKey))!=0 && (funcid=='W' || funcid=='P') && myIsutxo_spentinmempool(ignoretxid,ignorevin,txid,vout) == 0)
+        {
+            if (funcid=='W')
+            {
+                if (DecodeImportGatewayWithdrawOpRet(tx.vout[numvouts-1].scriptPubKey,tmpbindtxid,coin,withdrawpub,amount)==0 || refcoin!=coin || tmpbindtxid!=bindtxid) continue;
+            }
+            else if (funcid=='P')
+            {
+                if (DecodeImportGatewayPartialOpRet(tx.vout[numvouts-1].scriptPubKey,withdrawtxid,coin,K,signerpk,hex)!='P' || myGetTransaction(withdrawtxid,tx,hashBlock)==0
+                    || (numvouts=tx.vout.size())<=0 || DecodeImportGatewayWithdrawOpRet(tx.vout[numvouts-1].scriptPubKey,tmpbindtxid,coin,withdrawpub,amount)!='W'
+                    || refcoin!=coin || tmpbindtxid!=bindtxid)
+                    continue;                    
+            }      
+            Getscriptaddress(destaddr,tx.vout[1].scriptPubKey);
+            GetCustomscriptaddress(withaddr,CScript() << ParseHex(HexStr(withdrawpub)) << OP_CHECKSIG,taddr,prefix,prefix2);
+            if ( strcmp(destaddr,coinaddr) == 0 )
+            {
+                UniValue obj(UniValue::VOBJ);
+                obj.push_back(Pair("withdrawtxid",uint256_str(str,tx.GetHash())));
+                CCCustomtxidaddr(txidaddr,tx.GetHash(),taddr,prefix,prefix2);
+                obj.push_back(Pair("withdrawtxidaddr",txidaddr));
+                obj.push_back(Pair("withdrawaddr",withaddr));
+                sprintf(numstr,"%.8f",(double)tx.vout[1].nValue/COIN);
+                obj.push_back(Pair("amount",numstr));                
+                obj.push_back(Pair("confirmed_or_notarized",komodo_txnotarizedconfirmed(tx.GetHash())));
+                if ( queueflag != 0 )
+                {
+                    obj.push_back(Pair("depositaddr",burnaddr));
+                    GetCustomscriptaddress(signeraddr,CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG,taddr,prefix,prefix2);
+                    obj.push_back(Pair("signeraddr",signeraddr));
+                }
+                if (N>1)
+                {
+                    obj.push_back(Pair("number_of_signs",K));
+                    obj.push_back(Pair("last_txid",uint256_str(str,txid)));
+                    if (K>0) obj.push_back(Pair("hex",hex));
+                }
+                pending.push_back(obj);
+            }
+        }
+    }
+    result.push_back(Pair("coin",refcoin));
+    result.push_back(Pair("pending",pending));
+    result.push_back(Pair("queueflag",queueflag));
+    return(result);
+}
+
+UniValue ImportGatewayProcessedWithdraws(uint256 bindtxid,std::string refcoin)
+{
+    UniValue result(UniValue::VOBJ),processed(UniValue::VARR); CTransaction tx; std::string coin,hex; 
+    CPubKey mypk,importgatewaypk,withdrawpub; std::vector<CPubKey> msigpubkeys;
+    uint256 withdrawtxid,hashBlock,txid,tmptokenid,oracletxid; uint8_t K,M,N,taddr,prefix,prefix2,wiftype;
+    char burnaddr[65],coinaddr[65],str[65],numstr[32],withaddr[65],txidaddr[65];
+    int32_t i,n,numvouts,vout,queueflag; int64_t nValue,amount; struct CCcontract_info *cp,C;
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    mypk = pubkey2pk(Mypubkey());
+    importgatewaypk = GetUnspendable(cp,0);
+    _GetCCaddress(coinaddr,EVAL_IMPORTGATEWAY,importgatewaypk);
+    if ( myGetTransaction(bindtxid,tx,hashBlock) == 0 || (numvouts= tx.vout.size()) <= 0 )
+    {        
+        CCerror = strprintf("cant find bindtxid %s",uint256_str(str,bindtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,msigpubkeys,taddr,prefix,prefix2,wiftype) != 'B' || refcoin != coin)
+    {
+        CCerror = strprintf("invalid bindtxid %s coin.%s",uint256_str(str,bindtxid),coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    n = msigpubkeys.size();
+    queueflag = 0;
+    for (i=0; i<n; i++)
+        if ( msigpubkeys[i] == mypk )
+        {
+            queueflag = 1;
+            break;
+        }    
+    SetCCunspents(unspentOutputs,coinaddr,true);    
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        nValue = (int64_t)it->second.satoshis;
+        if ( vout == 0 && nValue == CC_MARKER_VALUE && myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size())>0 &&
+            DecodeImportGatewayCompleteSigningOpRet(tx.vout[numvouts-1].scriptPubKey,withdrawtxid,coin,K,hex) == 'S' && refcoin == coin && myIsutxo_spentinmempool(ignoretxid,ignorevin,txid,vout) == 0)
+        {   
+            if (myGetTransaction(withdrawtxid,tx,hashBlock) != 0 && (numvouts= tx.vout.size())>0
+                && DecodeImportGatewayWithdrawOpRet(tx.vout[numvouts-1].scriptPubKey,bindtxid,coin,withdrawpub,amount) == 'W' || refcoin!=coin)          
+            {
+                UniValue obj(UniValue::VOBJ);
+                obj.push_back(Pair("completesigningtxid",uint256_str(str,txid)));
+                obj.push_back(Pair("withdrawtxid",uint256_str(str,withdrawtxid)));  
+                CCCustomtxidaddr(txidaddr,withdrawtxid,taddr,prefix,prefix2);
+                obj.push_back(Pair("withdrawtxidaddr",txidaddr));              
+                GetCustomscriptaddress(withaddr,CScript() << ParseHex(HexStr(withdrawpub)) << OP_CHECKSIG,taddr,prefix,prefix2);
+                obj.push_back(Pair("withdrawaddr",withaddr));
+                obj.push_back(Pair("confirmed_or_notarized",komodo_txnotarizedconfirmed(txid)));
+                sprintf(numstr,"%.8f",(double)tx.vout[1].nValue/COIN);
+                obj.push_back(Pair("amount",numstr));
+                obj.push_back(Pair("hex",hex));                
+                processed.push_back(obj);            
+            }
+        }
+    }
+    result.push_back(Pair("coin",refcoin));
+    result.push_back(Pair("processed",processed));
+    result.push_back(Pair("queueflag",queueflag));
+    return(result);
+}
+
+UniValue ImportGatewayList()
+{
+    UniValue result(UniValue::VARR); std::vector<uint256> txids;
+    struct CCcontract_info *cp,C; uint256 txid,hashBlock,oracletxid; CTransaction vintx; std::string coin;
+    char str[65],burnaddr[64]; uint8_t M,N,taddr,prefix,prefix2,wiftype; std::vector<CPubKey> pubkeys;
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    SetCCtxids(txids,cp->unspendableCCaddr,true,cp->evalcode,zeroid,'B');
+    for (std::vector<uint256>::const_iterator it=txids.begin(); it!=txids.end(); it++)
+    {
+        txid = *it;
+        if ( myGetTransaction(txid,vintx,hashBlock) != 0 )
+        {
+            if ( vintx.vout.size() > 0 && DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),vintx.vout[vintx.vout.size()-1].scriptPubKey,coin,oracletxid,M,N,pubkeys,taddr,prefix,prefix2,wiftype) != 0 )
+            {
+                result.push_back(uint256_str(str,txid));
+            }
+        }
+    }
+    return(result);
+}
+
+UniValue ImportGatewayExternalAddress(uint256 bindtxid,CPubKey pubkey)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; uint256 txid,hashBlock,oracletxid; CTransaction tx;
+    std::string coin; int64_t numvouts; char str[65],addr[65],burnaddr[65]; uint8_t M,N,taddr,prefix,prefix2,wiftype; std::vector<CPubKey> msigpubkeys;
+    
+    cp = CCinit(&C,EVAL_IMPORTGATEWAY);
+    if ( myGetTransaction(bindtxid,tx,hashBlock) == 0 || (numvouts= tx.vout.size()) <= 0 )
+    {        
+        CCerror = strprintf("cant find bindtxid %s",uint256_str(str,bindtxid));
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    if ( DecodeImportGatewayBindOpRet(burnaddr,ARRAYSIZE(burnaddr),tx.vout[numvouts-1].scriptPubKey,coin,oracletxid,M,N,msigpubkeys,taddr,prefix,prefix2,wiftype) != 'B')
+    {
+        CCerror = strprintf("invalid bindtxid %s coin.%s",uint256_str(str,bindtxid),coin.c_str());
+        LOGSTREAM("importgateway",CCLOG_INFO, stream << CCerror << std::endl);
+        return("");
+    }
+    GetCustomscriptaddress(addr,CScript() << ParseHex(HexStr(pubkey)) << OP_CHECKSIG,taddr,prefix,prefix2);
+    result.push_back(Pair("result","success"));
+    result.push_back(Pair("address",addr));
+    return(result);
+}
+
+UniValue ImportGatewayDumpPrivKey(uint256 bindtxid,CKey key)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; uint256 txid,hashBlock,oracletxid; CTransaction tx;
+    std::string coin,priv; int64_t numvout
