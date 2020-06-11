@@ -355,4 +355,169 @@ if ((head) == (del)) {                                                          
 _tmp = head;                                                                               \
 while (_tmp->next && (_tmp->next != (del))) {                                              \
 _tmp = _tmp->next;                                                                       \
-}                                                                                       
+}                                                                                          \
+if (_tmp->next) {                                                                          \
+_tmp->next = ((del)->next);                                                              \
+}                                                                                          \
+}                                                                                            \
+} while (0)
+
+/* Here are VS2008 replacements for LL_APPEND and LL_DELETE */
+#define LL_APPEND_VS2008(head,add)                                                             \
+LL_APPEND2_VS2008(head,add,next)
+
+#define LL_APPEND2_VS2008(head,add,next)                                                       \
+do {                                                                                           \
+if (head) {                                                                                  \
+(add)->next = head;     /* use add->next as a temp variable */                             \
+while ((add)->next->next) { (add)->next = (add)->next->next; }                             \
+(add)->next->next=(add);                                                                   \
+} else {                                                                                     \
+(head)=(add);                                                                              \
+}                                                                                            \
+(add)->next=NULL;                                                                            \
+} while (0)
+
+#define LL_DELETE_VS2008(head,del)                                                             \
+LL_DELETE2_VS2008(head,del,next)
+
+#define LL_DELETE2_VS2008(head,del,next)                                                       \
+do {                                                                                           \
+if ((head) == (del)) {                                                                       \
+(head)=(head)->next;                                                                       \
+} else {                                                                                     \
+char *_tmp = (char*)(head);                                                                \
+while ((head)->next && ((head)->next != (del))) {                                          \
+head = (head)->next;                                                                     \
+}                                                                                          \
+if ((head)->next) {                                                                        \
+(head)->next = ((del)->next);                                                            \
+}                                                                                          \
+{                                                                                          \
+char **_head_alias = (char**)&(head);                                                    \
+*_head_alias = _tmp;                                                                     \
+}                                                                                          \
+}                                                                                            \
+} while (0)
+#ifdef NO_DECLTYPE
+#undef LL_APPEND
+#define LL_APPEND LL_APPEND_VS2008
+#undef LL_DELETE
+#define LL_DELETE LL_DELETE_VS2008
+#undef LL_DELETE2
+#define LL_DELETE2 LL_DELETE2_VS2008
+#undef LL_APPEND2
+#define LL_APPEND2 LL_APPEND2_VS2008
+#undef LL_CONCAT /* no LL_CONCAT_VS2008 */
+#undef DL_CONCAT /* no DL_CONCAT_VS2008 */
+#endif
+/* end VS2008 replacements */
+
+#define LL_COUNT(head,el,counter)                                                              \
+LL_COUNT2(head,el,counter,next)                                                            \
+
+#define LL_COUNT2(head,el,counter,next)                                                        \
+{                                                                                              \
+counter = 0;                                                                               \
+LL_FOREACH2(head,el,next){ ++counter; }                                                    \
+}
+
+#define LL_FOREACH(head,el)                                                                    \
+LL_FOREACH2(head,el,next)
+
+#define LL_FOREACH2(head,el,next)                                                              \
+for(el=head;el;el=(el)->next)
+
+#define LL_FOREACH_SAFE(head,el,tmp)                                                           \
+LL_FOREACH_SAFE2(head,el,tmp,next)
+
+#define LL_FOREACH_SAFE2(head,el,tmp,next)                                                     \
+for((el)=(head);(el) && (tmp = (el)->next, 1); (el) = tmp)
+
+#define LL_SEARCH_SCALAR(head,out,field,val)                                                   \
+LL_SEARCH_SCALAR2(head,out,field,val,next)
+
+#define LL_SEARCH_SCALAR2(head,out,field,val,next)                                             \
+do {                                                                                           \
+LL_FOREACH2(head,out,next) {                                                               \
+if ((out)->field == (val)) break;                                                        \
+}                                                                                          \
+} while(0)
+
+#define LL_SEARCH(head,out,elt,cmp)                                                            \
+LL_SEARCH2(head,out,elt,cmp,next)
+
+#define LL_SEARCH2(head,out,elt,cmp,next)                                                      \
+do {                                                                                           \
+LL_FOREACH2(head,out,next) {                                                               \
+if ((cmp(out,elt))==0) break;                                                            \
+}                                                                                          \
+} while(0)
+
+#define LL_REPLACE_ELEM(head, el, add)                                                         \
+do {                                                                                           \
+LDECLTYPE(head) _tmp;                                                                         \
+assert(head != NULL);                                                                         \
+assert(el != NULL);                                                                           \
+assert(add != NULL);                                                                          \
+(add)->next = (el)->next;                                                                     \
+if ((head) == (el)) {                                                                         \
+(head) = (add);                                                                              \
+} else {                                                                                      \
+_tmp = head;                                                                                 \
+while (_tmp->next && (_tmp->next != (el))) {                                                 \
+_tmp = _tmp->next;                                                                          \
+}                                                                                            \
+if (_tmp->next) {                                                                            \
+_tmp->next = (add);                                                                        \
+}                                                                                            \
+}                                                                                             \
+} while (0)
+
+#define LL_PREPEND_ELEM(head, el, add)                                                         \
+do {                                                                                           \
+LDECLTYPE(head) _tmp;                                                                         \
+assert(head != NULL);                                                                         \
+assert(el != NULL);                                                                           \
+assert(add != NULL);                                                                          \
+(add)->next = (el);                                                                           \
+if ((head) == (el)) {                                                                         \
+(head) = (add);                                                                              \
+} else {                                                                                      \
+_tmp = head;                                                                                 \
+while (_tmp->next && (_tmp->next != (el))) {                                                 \
+_tmp = _tmp->next;                                                                          \
+}                                                                                            \
+if (_tmp->next) {                                                                            \
+_tmp->next = (add);                                                                        \
+}                                                                                            \
+}                                                                                             \
+} while (0)                                                                                    \
+
+
+/******************************************************************************
+ * doubly linked list macros (non-circular)                                   *
+ *****************************************************************************/
+#define DL_PREPEND(head,add)                                                                   \
+DL_PREPEND2(head,add,prev,next)
+
+#define DL_PREPEND2(head,add,prev,next)                                                        \
+do {                                                                                           \
+(add)->next = head;                                                                           \
+if (head) {                                                                                   \
+(add)->prev = (head)->prev;                                                                 \
+(head)->prev = (add);                                                                       \
+} else {                                                                                      \
+(add)->prev = (add);                                                                        \
+}                                                                                             \
+(head) = (add);                                                                               \
+} while (0)
+
+#define DL_APPEND(head,add)                                                                    \
+DL_APPEND2(head,add,prev,next)
+
+#define DL_APPEND2(head,add,prev,next)                                                         \
+do {                                                                                           \
+if (head) {                                                                                  \
+(add)->prev = (head)->prev;                                                              \
+(head)->prev->next = (add);                                        
