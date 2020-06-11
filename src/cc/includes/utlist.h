@@ -213,4 +213,146 @@ _SV(_ls_e,list); _PREVASGN(_ls_e,list,_ls_tail,prev); _RS(list);                
 _ls_tail = _ls_e;                                                                    \
 }                                                                                      \
 _ls_p = _ls_q;                                                                         \
-}                                                                 
+}                                                                                        \
+_CASTASGN(list->prev, _ls_tail);                                                         \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,NULL,next); _RS(list);                       \
+if (_ls_nmerges <= 1) {                                                                  \
+_ls_looping=0;                                                                         \
+}                                                                                        \
+_ls_insize *= 2;                                                                         \
+}                                                                                          \
+}                                                                                            \
+} while (0)
+
+#define CDL_SORT(list, cmp)                                                                    \
+CDL_SORT2(list, cmp, prev, next)
+
+#define CDL_SORT2(list, cmp, prev, next)                                                       \
+do {                                                                                           \
+LDECLTYPE(list) _ls_p;                                                                       \
+LDECLTYPE(list) _ls_q;                                                                       \
+LDECLTYPE(list) _ls_e;                                                                       \
+LDECLTYPE(list) _ls_tail;                                                                    \
+LDECLTYPE(list) _ls_oldhead;                                                                 \
+LDECLTYPE(list) _tmp;                                                                        \
+int _ls_insize, _ls_nmerges, _ls_psize, _ls_qsize, _ls_i, _ls_looping;                       \
+if (list) {                                                                                  \
+_ls_insize = 1;                                                                            \
+_ls_looping = 1;                                                                           \
+while (_ls_looping) {                                                                      \
+_CASTASGN(_ls_p,list);                                                                   \
+_CASTASGN(_ls_oldhead,list);                                                             \
+list = NULL;                                                                             \
+_ls_tail = NULL;                                                                         \
+_ls_nmerges = 0;                                                                         \
+while (_ls_p) {                                                                          \
+_ls_nmerges++;                                                                         \
+_ls_q = _ls_p;                                                                         \
+_ls_psize = 0;                                                                         \
+for (_ls_i = 0; _ls_i < _ls_insize; _ls_i++) {                                         \
+_ls_psize++;                                                                         \
+_SV(_ls_q,list);                                                                     \
+if (_NEXT(_ls_q,list,next) == _ls_oldhead) {                                         \
+_ls_q = NULL;                                                                      \
+} else {                                                                             \
+_ls_q = _NEXT(_ls_q,list,next);                                                    \
+}                                                                                    \
+_RS(list);                                                                           \
+if (!_ls_q) break;                                                                   \
+}                                                                                      \
+_ls_qsize = _ls_insize;                                                                \
+while (_ls_psize > 0 || (_ls_qsize > 0 && _ls_q)) {                                    \
+if (_ls_psize == 0) {                                                                \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+if (_ls_q == _ls_oldhead) { _ls_q = NULL; }                                        \
+} else if (_ls_qsize == 0 || !_ls_q) {                                               \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+if (_ls_p == _ls_oldhead) { _ls_p = NULL; }                                        \
+} else if (cmp(_ls_p,_ls_q) <= 0) {                                                  \
+_ls_e = _ls_p; _SV(_ls_p,list); _ls_p =                                            \
+_NEXT(_ls_p,list,next); _RS(list); _ls_psize--;                                  \
+if (_ls_p == _ls_oldhead) { _ls_p = NULL; }                                        \
+} else {                                                                             \
+_ls_e = _ls_q; _SV(_ls_q,list); _ls_q =                                            \
+_NEXT(_ls_q,list,next); _RS(list); _ls_qsize--;                                  \
+if (_ls_q == _ls_oldhead) { _ls_q = NULL; }                                        \
+}                                                                                    \
+if (_ls_tail) {                                                                      \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,_ls_e,next); _RS(list);                \
+} else {                                                                             \
+_CASTASGN(list,_ls_e);                                                             \
+}                                                                                    \
+_SV(_ls_e,list); _PREVASGN(_ls_e,list,_ls_tail,prev); _RS(list);                     \
+_ls_tail = _ls_e;                                                                    \
+}                                                                                      \
+_ls_p = _ls_q;                                                                         \
+}                                                                                        \
+_CASTASGN(list->prev,_ls_tail);                                                          \
+_CASTASGN(_tmp,list);                                                                    \
+_SV(_ls_tail,list); _NEXTASGN(_ls_tail,list,_tmp,next); _RS(list);                       \
+if (_ls_nmerges <= 1) {                                                                  \
+_ls_looping=0;                                                                         \
+}                                                                                        \
+_ls_insize *= 2;                                                                         \
+}                                                                                          \
+}                                                                                            \
+} while (0)
+
+/******************************************************************************
+ * singly linked list macros (non-circular)                                   *
+ *****************************************************************************/
+#define LL_PREPEND(head,add)                                                                   \
+LL_PREPEND2(head,add,next)
+
+#define LL_PREPEND2(head,add,next)                                                             \
+do {                                                                                           \
+(add)->next = head;                                                                          \
+head = add;                                                                                  \
+} while (0)
+
+#define LL_CONCAT(head1,head2)                                                                 \
+LL_CONCAT2(head1,head2,next)
+
+#define LL_CONCAT2(head1,head2,next)                                                           \
+do {                                                                                           \
+LDECLTYPE(head1) _tmp;                                                                       \
+if (head1) {                                                                                 \
+_tmp = head1;                                                                              \
+while (_tmp->next) { _tmp = _tmp->next; }                                                  \
+_tmp->next=(head2);                                                                        \
+} else {                                                                                     \
+(head1)=(head2);                                                                           \
+}                                                                                            \
+} while (0)
+
+#define LL_APPEND(head,add)                                                                    \
+LL_APPEND2(head,add,next)
+
+#define LL_APPEND2(head,add,next)                                                              \
+do {                                                                                           \
+LDECLTYPE(head) _tmp;                                                                        \
+(add)->next=NULL;                                                                            \
+if (head) {                                                                                  \
+_tmp = head;                                                                               \
+while (_tmp->next) { _tmp = _tmp->next; }                                                  \
+_tmp->next=(add);                                                                          \
+} else {                                                                                     \
+(head)=(add);                                                                              \
+}                                                                                            \
+} while (0)
+
+#define LL_DELETE(head,del)                                                                    \
+LL_DELETE2(head,del,next)
+
+#define LL_DELETE2(head,del,next)                                                              \
+do {                                                                                           \
+LDECLTYPE(head) _tmp;                                                                        \
+if ((head) == (del)) {                                                                       \
+(head)=(head)->next;                                                                       \
+} else {                                                                                     \
+_tmp = head;                                                                               \
+while (_tmp->next && (_tmp->next != (del))) {                                              \
+_tmp = _tmp->next;                                                                       \
+}                                                                                       
