@@ -674,4 +674,80 @@ if ((del) == (head)) (head)=(del)->next;                                        
 } while (0)
 
 #define CDL_COUNT(head,el,counter)                                                             \
-CDL_COUNT2(head,el,counter,next)                              
+CDL_COUNT2(head,el,counter,next)                                                           \
+
+#define CDL_COUNT2(head, el, counter,next)                                                     \
+{                                                                                              \
+counter = 0;                                                                               \
+CDL_FOREACH2(head,el,next){ ++counter; }                                                   \
+}
+
+#define CDL_FOREACH(head,el)                                                                   \
+CDL_FOREACH2(head,el,next)
+
+#define CDL_FOREACH2(head,el,next)                                                             \
+for(el=head;el;el=((el)->next==head ? 0L : (el)->next))
+
+#define CDL_FOREACH_SAFE(head,el,tmp1,tmp2)                                                    \
+CDL_FOREACH_SAFE2(head,el,tmp1,tmp2,prev,next)
+
+#define CDL_FOREACH_SAFE2(head,el,tmp1,tmp2,prev,next)                                         \
+for((el)=(head), ((tmp1)=(head)?((head)->prev):NULL);                                        \
+(el) && ((tmp2)=(el)->next, 1);                                                          \
+((el) = (((el)==(tmp1)) ? 0L : (tmp2))))
+
+#define CDL_SEARCH_SCALAR(head,out,field,val)                                                  \
+CDL_SEARCH_SCALAR2(head,out,field,val,next)
+
+#define CDL_SEARCH_SCALAR2(head,out,field,val,next)                                            \
+do {                                                                                           \
+CDL_FOREACH2(head,out,next) {                                                              \
+if ((out)->field == (val)) break;                                                        \
+}                                                                                          \
+} while(0)
+
+#define CDL_SEARCH(head,out,elt,cmp)                                                           \
+CDL_SEARCH2(head,out,elt,cmp,next)
+
+#define CDL_SEARCH2(head,out,elt,cmp,next)                                                     \
+do {                                                                                           \
+CDL_FOREACH2(head,out,next) {                                                              \
+if ((cmp(out,elt))==0) break;                                                            \
+}                                                                                          \
+} while(0)
+
+#define CDL_REPLACE_ELEM(head, el, add)                                                        \
+do {                                                                                           \
+assert(head != NULL);                                                                         \
+assert(el != NULL);                                                                           \
+assert(add != NULL);                                                                          \
+if ((el)->next == (el)) {                                                                     \
+(add)->next = (add);                                                                         \
+(add)->prev = (add);                                                                         \
+(head) = (add);                                                                              \
+} else {                                                                                      \
+(add)->next = (el)->next;                                                                    \
+(add)->prev = (el)->prev;                                                                    \
+(add)->next->prev = (add);                                                                   \
+(add)->prev->next = (add);                                                                   \
+if ((head) == (el)) {                                                                        \
+(head) = (add);                                                                             \
+}                                                                                            \
+}                                                                                             \
+} while (0)
+
+#define CDL_PREPEND_ELEM(head, el, add)                                                        \
+do {                                                                                           \
+assert(head != NULL);                                                                         \
+assert(el != NULL);                                                                           \
+assert(add != NULL);                                                                          \
+(add)->next = (el);                                                                           \
+(add)->prev = (el)->prev;                                                                     \
+(el)->prev = (add);                                                                           \
+(add)->prev->next = (add);                                                                    \
+if ((head) == (el)) {                                                                         \
+(head) = (add);                                                                              \
+}                                                                                             \
+} while (0)                                                                                    \
+
+#endif /* UTLIST_H */
