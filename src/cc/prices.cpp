@@ -258,4 +258,285 @@ uint8_t prices_costbasisopretdecode(CScript scriptPubKey,uint256 &bettxid,CPubKe
 CScript prices_finalopret(bool isRekt, uint256 bettxid, CPubKey pk, int32_t lastheight, int64_t costbasis, int64_t lastprice, int64_t liquidationprice, int64_t equity, int64_t exitfee, uint32_t nonce)
 {
     CScript opret;
-    opret << OP_RETURN << E_MARSHAL(ss << EVAL_PRICES << (isRekt ? 'R' : 'F') << bettxid << pk << lastheight << costbasis << lastprice << liquidationprice << equity << exitfee 
+    opret << OP_RETURN << E_MARSHAL(ss << EVAL_PRICES << (isRekt ? 'R' : 'F') << bettxid << pk << lastheight << costbasis << lastprice << liquidationprice << equity << exitfee << nonce);
+    return(opret);
+}
+
+uint8_t prices_finalopretdecode(CScript scriptPubKey, uint256 &bettxid,  CPubKey &pk, int32_t &lastheight, int64_t &costbasis, int64_t &lastprice, int64_t &liquidationprice, int64_t &equity, int64_t &exitfee)
+{
+    std::vector<uint8_t> vopret; uint8_t e,f;
+    uint32_t nonce;
+
+    GetOpReturnData(scriptPubKey,vopret);
+    if (vopret.size() > 2 && E_UNMARSHAL(vopret, ss >> e; ss >> f; ss >> bettxid; ss >> pk; ss >> lastheight; ss >> costbasis; ss >> lastprice; ss >> liquidationprice; ss >> equity; ss >> exitfee; if (!ss.eof()) ss >> nonce; ) != 0 && e == EVAL_PRICES && (f == 'F' || f == 'R'))
+    {
+        return(f);
+    }
+    return(0);
+}
+
+// price opret basic validation and retrieval
+static uint8_t PricesCheckOpret(const CTransaction & tx, vscript_t &opret)
+{
+    if (tx.vout.size() > 0 && GetOpReturnData(tx.vout.back().scriptPubKey, opret) && opret.size() > 2 && opret.begin()[0] == EVAL_PRICES && IS_CHARINSTR(opret.begin()[1], "BACFR"))
+        return opret.begin()[1];
+    else
+        return (uint8_t)0;
+}
+
+// validate bet tx helper
+static bool ValidateBetTx(struct CCcontract_info *cp, Eval *eval, const CTransaction & bettx)
+{
+    uint256 tokenid;
+    int64_t positionsize, firstprice;
+    int32_t firstheight; 
+    int16_t leverage;
+    CPubKey pk, pricespk; 
+    std::vector<uint16_t> vec;
+
+    // check payment cc config:
+//We haven't early txid contracts
+//    if ( ASSETCHAINS_EARLYTXIDCONTRACT == EVAL_PRICES && SMARTUSD_EARLYTXID_SCRIPTPUB.size() == 0 )
+//        GetKomodoEarlytxidScriptPub();
+
+    if (bettx.vout.size() < 6 || bettx.vout.size() > 7)
+        return eval->Invalid("incorrect vout number for bet tx");
+
+    vscript_t opret;
+    if( prices_betopretdecode(bettx.vout.back().scriptPubKey, pk, firstheight, positionsize, leverage, firstprice, vec, tokenid) != 'B')
+        return eval->Invalid("cannot decode opreturn for bet tx");
+
+    pricespk = GetUnspendable(cp, 0);
+
+    if (MakeCC1vout(cp->evalcode, bettx.vout[0].nValue, pk) != bettx.vout[0])
+        return eval->Invalid("cannot validate vout0 in bet tx with pk from opreturn");
+    if (MakeCC1vout(cp->evalcode, bettx.vout[1].nValue, pricespk) != bettx.vout[1])
+        return eval->Invalid("cannot validate vout1 in bet tx with global pk");
+    if (MakeCC1vout(cp->evalcode, bettx.vout[2].nValue, pricespk) != bettx.vout[2] )
+        return eval->Invalid("cannot validate vout2 in bet tx with pk from opreturn");
+    // This should be all you need to verify it, maybe also check amount? 
+    if ( bettx.vout[4].scriptPubKey != SMARTUSD_EARLYTXID_SCRIPTPUB )
+        return eval->Invalid("the fee was paid to wrong address.");
+
+    int64_t betamount = bettx.vout[2].nValue;
+    if (betamount != PRICES_SUBREVSHAREFEE(positionsize)) {
+        return eval->Invalid("invalid position size in the opreturn");
+    }
+
+    // validate if normal inputs are really signed by originator pubkey (someone not cheating with originator pubkey)
+    CAmount ccOutputs = 0;
+    for (auto vout : bettx.vout)
+        if (vout.scriptPubKey.IsPayToCryptoCondition())  
+            ccOutputs += vout.nValue;
+    CAmount normalInputs = TotalPubkeyNormalInputs(bettx, pk, eval);
+    if (normalInputs < ccOutputs) {
+        return eval->Invalid("bettx normal inputs not signed with pubkey in opret");
+    }
+
+    if (leverage > PRICES_MAXLEVERAGE || leverage < -PRICES_MAXLEVERAGE) {
+        return eval->Invalid("invalid leverage");
+    }
+
+    return true;
+}
+
+// validate add funding tx helper
+static bool ValidateAddFundingTx(struct CCcontract_info *cp, Eval *eval, const CTransaction & addfundingtx, const CTransaction & vintx)
+{
+    uint256 bettxid;
+    int64_t amount;
+    CPubKey pk, pricespk;
+    vscript_t vintxOpret;
+
+    // check payment cc config:
+//We haven't early txid contracts
+//    if (ASSETCHAINS_EARLYTXIDCONTRACT == EVAL_PRICES && SMARTUSD_EARLYTXID_SCRIPTPUB.size() == 0)
+//        GetKomodoEarlytxidScriptPub();
+
+    if (addfundingtx.vout.size() < 4 || addfundingtx.vout.size() > 5)
+        return eval->Invalid("incorrect vout number for add funding tx");
+
+    vscript_t opret;
+    if (prices_addopretdecode(addfundingtx.vout.back().scriptPubKey, bettxid, pk, amount) != 'A')
+        return eval->Invalid("cannot decode opreturn for add funding tx");
+
+    pricespk = GetUnspendable(cp, 0);
+    uint8_t vintxFuncId = PricesCheckOpret(vintx, vintxOpret);
+    if (vintxFuncId != 'A' && vintxFuncId != 'B') { // if vintx is bettx
+        return eval->Invalid("incorrect vintx funcid");
+    }
+
+    if (vintxFuncId == 'B' && vintx.GetHash() != bettxid) {// if vintx is bettx
+        return eval->Invalid("incorrect bet txid in opreturn");
+    }
+
+    if (MakeCC1vout(cp->evalcode, addfundingtx.vout[0].nValue, pk) != addfundingtx.vout[0])
+        return eval->Invalid("cannot validate vout0 in add funding tx with pk from opreturn");
+    if (MakeCC1vout(cp->evalcode, addfundingtx.vout[1].nValue, pricespk) != addfundingtx.vout[1])
+        return eval->Invalid("cannot validate vout1 in add funding tx with global pk");
+
+    // This should be all you need to verify it, maybe also check amount? 
+    if (addfundingtx.vout[2].scriptPubKey != SMARTUSD_EARLYTXID_SCRIPTPUB)
+        return eval->Invalid("the fee was paid to wrong address.");
+
+    int64_t betamount = addfundingtx.vout[1].nValue;
+    if (betamount != PRICES_SUBREVSHAREFEE(amount)) {
+        return eval->Invalid("invalid bet position size in the opreturn");
+    }
+
+    return true;
+}
+
+// validate costbasis tx helper (deprecated)
+/*
+static bool ValidateCostbasisTx(struct CCcontract_info *cp, Eval *eval, const CTransaction & costbasistx, const CTransaction & bettx)
+{
+    uint256 bettxid;
+    int64_t costbasisInOpret;
+    CPubKey pk, pricespk;
+    int32_t height;
+
+    return true;  //deprecated
+
+    // check basic structure:
+    if (costbasistx.vout.size() < 3 || costbasistx.vout.size() > 4)
+        return eval->Invalid("incorrect vout count for costbasis tx");
+
+    vscript_t opret;
+    if (prices_costbasisopretdecode(costbasistx.vout.back().scriptPubKey, bettxid, pk, height, costbasisInOpret) != 'C')
+        return eval->Invalid("cannot decode opreturn for costbasis tx");
+
+    pricespk = GetUnspendable(cp, 0);
+    if (CTxOut(costbasistx.vout[0].nValue, CScript() << ParseHex(HexStr(pk)) << OP_CHECKSIG) != costbasistx.vout[0])  //might go to any pk who calculated costbasis
+        return eval->Invalid("cannot validate vout0 in costbasis tx with pk from opreturn");
+    if (MakeCC1vout(cp->evalcode, costbasistx.vout[1].nValue, pricespk) != costbasistx.vout[1])
+        return eval->Invalid("cannot validate vout1 in costbasis tx with global pk");
+
+    if (bettx.GetHash() != bettxid)
+        return eval->Invalid("incorrect bettx id");
+
+    if (bettx.vout.size() < 1) // for safety and for check encapsulation
+        return eval->Invalid("incorrect bettx no vouts");
+
+    // check costbasis rules:
+    if (costbasistx.vout[0].nValue > bettx.vout[1].nValue / 10) {
+        return eval->Invalid("costbasis myfee too big");
+    }
+
+    uint256 tokenid;
+    int64_t positionsize, firstprice;
+    int32_t firstheight;
+    int16_t leverage;
+    CPubKey betpk;
+    std::vector<uint16_t> vec;
+    if (prices_betopretdecode(bettx.vout.back().scriptPubKey, betpk, firstheight, positionsize, leverage, firstprice, vec, tokenid) != 'B')
+        return eval->Invalid("cannot decode opreturn for bet tx");
+
+    if (firstheight + PRICES_DAYWINDOW + PRICES_SMOOTHWIDTH > chainActive.Height()) {
+        return eval->Invalid("cannot calculate costbasis yet");
+    }
+    
+    int64_t costbasis = 0, profits, lastprice;
+    int32_t retcode = prices_syntheticprofits(costbasis, firstheight, firstheight + PRICES_DAYWINDOW, leverage, vec, positionsize, profits, lastprice);
+    if (retcode < 0) 
+        return eval->Invalid("cannot calculate costbasis yet");
+    std::cerr << "ValidateCostbasisTx() costbasis=" << costbasis << " costbasisInOpret=" << costbasisInOpret << std::endl;
+    if (costbasis != costbasisInOpret) {
+        //std::cerr << "ValidateBetTx() " << "incorrect costbasis value" << std::endl;
+        return eval->Invalid("incorrect costbasis value");
+    }
+
+    return true;
+}
+*/
+
+// validate final tx helper
+static bool ValidateFinalTx(struct CCcontract_info *cp, Eval *eval, const CTransaction & finaltx, const CTransaction & bettx)
+{
+    uint256 bettxid;
+    int64_t amount;
+    CPubKey pk, pricespk;
+    int64_t profits;
+    int32_t lastheight;
+    int64_t firstprice, costbasis, lastprice, liquidationprice, equity, fee;
+    int16_t leverage;
+
+    if (finaltx.vout.size() < 3 || finaltx.vout.size() > 4) {
+        //std::cerr << "ValidateFinalTx()" << " incorrect vout number for final tx =" << finaltx.vout.size() << std::endl;
+        return eval->Invalid("incorrect vout number for final tx");
+    }
+
+    vscript_t opret;
+    uint8_t funcId;
+    if ((funcId = prices_finalopretdecode(finaltx.vout.back().scriptPubKey, bettxid, pk, lastheight, costbasis, lastprice, liquidationprice, equity, fee)) == 0)
+        return eval->Invalid("cannot decode opreturn for final tx");
+
+    // check rekt txid mining:
+//    if( funcId == 'R' && (finaltx.GetHash().begin()[0] != 0 || finaltx.GetHash().begin()[31] != 0) )
+//        return eval->Invalid("incorrect rekt txid");
+
+    if (bettx.GetHash() != bettxid)
+        return eval->Invalid("incorrect bettx id");
+
+    pricespk = GetUnspendable(cp, 0);
+
+    if (CTxOut(finaltx.vout[0].nValue, CScript() << ParseHex(HexStr(pk)) << OP_CHECKSIG) != finaltx.vout[0])
+        return eval->Invalid("cannot validate vout0 in final tx with pk from opreturn");
+
+    if( finaltx.vout.size() == 3 && MakeCC1vout(cp->evalcode, finaltx.vout[1].nValue, pricespk) != finaltx.vout[1] ) 
+        return eval->Invalid("cannot validate vout1 in final tx with global pk");
+
+    // TODO: validate exitfee for 'R'
+    // TODO: validate amount for 'F'
+
+    return true;
+}
+
+// validate prices tx function
+// performed checks:
+// basic tx structure (vout num)
+// basic tx opret structure
+// reference to the bet tx vout
+// referenced bet txid in tx opret
+// referenced bet tx structure 
+// non-final tx has only 1 cc vin
+// cc vouts to self with mypubkey from opret
+// cc vouts to global pk with global pk
+// for bet tx that normal inputs digned with my pubkey from the opret >= cc outputs - disable betting for other pubkeys (Do we need this rule?)
+// TODO:
+// opret params (firstprice,positionsize...) 
+// costbasis calculation
+// cashout balance (PricesExactAmounts)
+// use the special address for 50% fees
+bool PricesValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx, uint32_t nIn)
+{
+    vscript_t vopret;
+
+    if (strcmp(ASSETCHAINS_SYMBOL, "REKT0") == 0 && chainActive.Height() < 5851)
+        return true;
+    // check basic opret rules:
+    if (PricesCheckOpret(tx, vopret) == 0)
+        return eval->Invalid("tx has no prices opreturn");
+
+    uint8_t funcId = vopret.begin()[1];
+
+    CTransaction firstVinTx;
+    vscript_t firstVinTxOpret;
+    bool foundFirst = false;
+    int32_t ccVinCount = 0;
+    uint32_t prevCCoutN = 0;
+
+    // check basic rules:
+
+    // find first cc vin and load vintx (might be either bet or add funding tx):
+    for (auto vin : tx.vin) {
+        if (cp->ismyvin(vin.scriptSig)) {
+            CTransaction vintx;
+            uint256 hashBlock;
+            vscript_t vintxOpret;
+
+            if (!myGetTransaction(vin.prevout.hash, vintx, hashBlock))
+                return eval->Invalid("cannot load vintx");
+
+            if (PricesCheckOpret(vintx, vintxOpret) == 0) {
+              
