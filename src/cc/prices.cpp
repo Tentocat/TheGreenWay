@@ -539,4 +539,329 @@ bool PricesValidate(struct CCcontract_info *cp,Eval* eval,const CTransaction &tx
                 return eval->Invalid("cannot load vintx");
 
             if (PricesCheckOpret(vintx, vintxOpret) == 0) {
-              
+                //return eval->Invalid("cannot find prices opret in vintx");
+                std::cerr << "PricesValidate() " << "cannot find prices opret in vintx" << std::endl;
+            }
+
+            if (!IS_CHARINSTR(funcId, "FR") && vintxOpret.begin()[1] == 'B' && prevCCoutN == 1) {   
+                //return eval->Invalid("cannot spend bet marker");
+                std::cerr << "PricesValidate() " << " non-final tx cannot spend cc marker vout=" << prevCCoutN << std::endl;
+            }
+
+            if (!foundFirst) {
+                prevCCoutN = vin.prevout.n;
+                firstVinTx = vintx;
+                firstVinTxOpret = vintxOpret;
+                foundFirst = true;
+            }
+            ccVinCount++;
+        }
+    }
+    if (!foundFirst)   
+        return eval->Invalid("prices cc vin not found");
+
+    if (!IS_CHARINSTR(funcId, "FR") && ccVinCount > 1) {// for all prices tx except final tx only one cc vin is allowed
+        //return eval->Invalid("only one prices cc vin allowed for this tx");
+        std::cerr << "PricesValidate() " << "only one prices cc vin allowed for this tx" << std::endl;
+    }
+
+    switch (funcId) {
+    case 'B':   // bet 
+        return eval->Invalid("unexpected validate for bet funcid");
+
+    case 'A':   // add funding
+        // check tx structure:
+        if (!ValidateAddFundingTx(cp, eval, tx, firstVinTx)) {
+            std::cerr << "PricesValidate() " << "ValidateAddFundingTx = false " << eval->state.GetRejectReason()  << std::endl;
+            return false;  // invalid state is already set in the func
+        }
+
+        if (firstVinTxOpret.begin()[1] == 'B') {
+            if (!ValidateBetTx(cp, eval, firstVinTx)) {// check tx structure
+                std::cerr << "PricesValidate() " << "funcId=A ValidatebetTx = false " << eval->state.GetRejectReason() << std::endl;
+                return false;  // invalid state is already set in the func
+            }
+        }
+
+        if (prevCCoutN != 0) {   // check spending rules
+            std::cerr << "PricesValidate() " << "addfunding tx incorrect vout to spend=" << prevCCoutN << std::endl;
+            return eval->Invalid("incorrect vintx vout to spend");
+        }
+        break;
+
+ /* not used:  
+    case 'C':   // set costbasis 
+        if (!ValidateCostbasisTx(cp, eval, tx, firstVinTx)) {
+            //return false;
+            std::cerr << "PricesValidate() " << "ValidateCostbasisTx=false " << eval->state.GetRejectReason() << std::endl;
+        }
+        if (!ValidateBetTx(cp, eval, firstVinTx)) {
+            //return false;
+            std::cerr << "PricesValidate() " << "funcId=C ValidateBetTx=false " << eval->state.GetRejectReason() << std::endl;
+        }
+        if (prevoutN != 1) {   // check spending rules
+            // return eval->Invalid("incorrect vout to spend");
+            std::cerr << "PricesValidate() " << "costbasis tx incorrect vout to spend=" << prevoutN << std::endl;
+        }
+        //return eval->Invalid("test: costbasis is good");
+        break; */
+
+    case 'F':   // final tx 
+    case 'R':
+        if (!ValidateFinalTx(cp, eval, tx, firstVinTx)) {
+            std::cerr << "PricesValidate() " << "ValidateFinalTx=false " << eval->state.GetRejectReason() << std::endl;
+            return false;
+        }
+        if (!ValidateBetTx(cp, eval, firstVinTx)) {
+            std::cerr << "PricesValidate() " << "ValidateBetTx=false " << eval->state.GetRejectReason() << std::endl;
+            return false;
+        }
+        if (prevCCoutN != 1) {   // check spending rules
+            std::cerr << "PricesValidate() "<< "final tx incorrect vout to spend=" << prevCCoutN << std::endl;
+            return eval->Invalid("incorrect vout to spend");
+        }
+        break;
+
+    default:
+        return eval->Invalid("invalid funcid");
+    }
+
+    eval->state = CValidationState();
+    return true;
+}
+// end of consensus code
+
+// helper functions for rpc calls in rpcwallet.cpp
+
+int64_t AddPricesInputs(struct CCcontract_info *cp, CMutableTransaction &mtx, char *destaddr, int64_t total, int32_t maxinputs)
+{
+    int64_t nValue, price, totalinputs = 0; uint256 txid, hashBlock; std::vector<uint8_t> origpubkey; CTransaction vintx; int32_t vout, n = 0;
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+
+    SetCCunspents(unspentOutputs, destaddr);
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it = unspentOutputs.begin(); it != unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        //if (vout == exclvout && txid == excltxid)  // exclude vout which is added directly to vins outside this function
+        //    continue;
+        if (myGetTransaction(txid, vintx, hashBlock) != 0 && vout < vintx.vout.size())
+        {
+            vscript_t vopret;
+            uint8_t funcId = PricesCheckOpret(vintx, vopret);
+            if (funcId == 'B' && vout == 1)  // skip cc marker
+                continue;
+
+            if ((nValue = vintx.vout[vout].nValue) >= total / maxinputs && myIsutxo_spentinmempool(ignoretxid, ignorevin, txid, vout) == 0)
+            {
+                if (total != 0 && maxinputs != 0)
+                    mtx.vin.push_back(CTxIn(txid, vout, CScript()));
+                nValue = it->second.satoshis;
+                totalinputs += nValue;
+                n++;
+                if ((total > 0 && totalinputs >= total) || (maxinputs > 0 && n >= maxinputs))
+                    break;
+            }
+        }
+    }
+    return(totalinputs);
+}
+
+// return min equity percentage depending on leverage value
+// for lev=1 2%
+// for lev>=100 10%
+double prices_minmarginpercent(int16_t leverage)
+{
+    int16_t absleverage = std::abs(leverage);
+    if (absleverage < 100)
+        return (absleverage * 0.080808 + 1.9191919) / 100.0;
+    else
+        return 0.1;
+}
+
+
+UniValue prices_rawtxresult(UniValue &result, std::string rawtx, int32_t broadcastflag)
+{
+    CMutableTransaction mtx;
+    if (rawtx.size() > 0)
+    {
+        result.push_back(Pair("hex", rawtx));
+        if (DecodeHexTx(mtx, rawtx) != 0)
+        {
+            CTransaction tx = CTransaction(mtx);
+            if (broadcastflag != 0 && myAddtomempool(tx) != 0)
+                RelayTransaction(tx);
+            result.push_back(Pair("txid", tx.GetHash().ToString()));
+            result.push_back(Pair("result", "success"));
+        }
+        else 
+            result.push_back(Pair("error", "decode hex"));
+    }
+    else 
+        result.push_back(Pair("error", "couldnt finalize CCtx"));
+    return(result);
+}
+
+static std::string prices_getsourceexpression(const std::vector<uint16_t> &vec) {
+
+    std::string expr;
+
+    for (int32_t i = 0; i < vec.size(); i++) 
+    {
+        char name[65];
+        std::string operand;
+        uint16_t opcode = vec[i];
+        int32_t value = (opcode & (SMARTUSD_MAXPRICES - 1));   // index or weight 
+
+        switch (opcode & SMARTUSD_PRICEMASK)
+        {
+        case 0: // indices 
+            smartusd_pricename(name, ARRAYSIZE(name), value);
+            operand = std::string(name);
+            break;
+
+        case PRICES_WEIGHT: // multiply by weight and consume top of stack by updating price
+            operand = std::to_string(value);
+            break;
+
+        case PRICES_MULT:   // "*"
+            operand = std::string("*");
+            break;
+
+        case PRICES_DIV:    // "/"
+            operand = std::string("/");
+            break;
+
+        case PRICES_INV:    // "!"
+            operand = std::string("!");
+            break;
+
+        case PRICES_MDD:    // "*//"
+            operand = std::string("*//");
+            break;
+
+        case PRICES_MMD:    // "**/"
+            operand = std::string("**/");
+            break;
+
+        case PRICES_MMM:    // "***"
+            operand = std::string("***");
+            break;
+
+        case PRICES_DDD:    // "///"
+            operand = std::string("///");
+            break;
+
+        default:
+            return "invalid opcode";
+            break;
+        }
+
+        if (expr.size() > 0)
+            expr += std::string(", ");
+        expr += operand;
+    }
+    return expr;
+}
+
+// helper functions to get synthetic expression reduced:
+
+// return s true and needed operand count if string is opcode
+static bool prices_isopcode(const std::string &s, int &need)
+{
+    if (s == "!") {
+        need = 1;
+        return true;
+    }
+    else if (s == "*" || s == "/") {
+        need = 2;
+        return true;
+    }
+    else if (s == "***" || s == "///" || s == "*//" || s == "**/") {
+        need = 3;
+        return true;
+    }
+    else
+        return false;
+}
+
+// split pair onto two quotes divided by "_" 
+static void prices_splitpair(const std::string &pair, std::string &upperquote, std::string &bottomquote)
+{
+    size_t pos = pair.find('_');   // like BTC_USD
+    if (pos != std::string::npos) {
+        upperquote = pair.substr(0, pos);
+        bottomquote = pair.substr(pos + 1);
+    }
+    else {
+        upperquote = pair;
+        bottomquote = "";
+    }
+    //std::cerr << "prices_splitpair: upperquote=" << upperquote << " bottomquote=" << bottomquote << std::endl;
+}
+
+// invert pair like BTS_USD -> USD_BTC
+static std::string prices_invertpair(const std::string &pair)
+{
+    std::string upperquote, bottomquote;
+    prices_splitpair(pair, upperquote, bottomquote);
+    return bottomquote + std::string("_") + upperquote;
+}
+
+// invert pairs in operation accordingly to "/" operator, convert operator to * or ***
+static void prices_invertoperation(const std::vector<std::string> &vexpr, int p, std::vector<std::string> &voperation)
+{
+    int need;
+
+    voperation.clear();
+    if (prices_isopcode(vexpr[p], need)) {
+        if (need > 1) {
+            if (need == 2) {
+                voperation.push_back(vexpr[p - 2]);
+                if (vexpr[p] == "/")
+                    voperation.push_back(prices_invertpair(vexpr[p - 1]));
+                else
+                    voperation.push_back(vexpr[p - 1]);
+                voperation.push_back("*");
+            }
+
+            if (need == 3) {
+                int i;
+                std::string::const_iterator c;
+                for (c = vexpr[p].begin(), i = -3; c != vexpr[p].end(); c++, i++) {
+                    if (*c == '/')
+                        voperation.push_back(prices_invertpair(vexpr[p + i]));
+                    else
+                        voperation.push_back(vexpr[p + i]);
+                }
+                voperation.push_back("***");
+            }
+        }
+        else if (vexpr[p] == "!") {
+            voperation.push_back(prices_invertpair(vexpr[p - 1]));
+            // do not add operator
+        }
+    }
+
+    //std::cerr << "prices_invert inverted=";
+    //for (auto v : voperation) std::cerr << v << " ";
+    //std::cerr << std::endl;
+}
+
+// reduce pairs in the operation, change or remove opcode if reduced
+static int prices_reduceoperands(std::vector<std::string> &voperation)
+{
+    int opcount = voperation.size() - 1;
+    int need = opcount;
+    //std::cerr << "prices_reduceoperands begin need=" << need << std::endl;
+
+    while (true) {
+        int i;
+        //std::cerr << "prices_reduceoperands opcount=" << opcount << std::endl;
+        for (i = 0; i < opcount; i++) {
+            std::string upperquote, bottomquote;
+            bool breaktostart = false;
+
+            //std::cerr << "prices_reduceoperands voperation[i]=" << voperation[i] << " i=" << i << std::endl;
+            prices_splitpair(voperation[i], upperquote, bottomquote);
+            if (upperquote == 
