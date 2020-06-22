@@ -864,4 +864,305 @@ static int prices_reduceoperands(std::vector<std::string> &voperation)
 
             //std::cerr << "prices_reduceoperands voperation[i]=" << voperation[i] << " i=" << i << std::endl;
             prices_splitpair(voperation[i], upperquote, bottomquote);
-            if (upperquote == 
+            if (upperquote == bottomquote) {
+                std::cerr << "prices_reduceoperands erasing i=" << i << std::endl;
+                voperation.erase(voperation.begin() + i);
+                opcount--;
+                //std::cerr << "prices_reduceoperands erased, size=" << voperation.size() << std::endl;
+
+                if (voperation.size() > 0 && voperation.back() == "*")
+                    voperation.pop_back();
+                breaktostart = true;
+                break;
+            }
+
+
+            int j;
+            for (j = i + 1; j < opcount; j++) {
+
+                //std::cerr << "prices_reduceoperands voperation[j]=" << voperation[j] << " j=" << j << std::endl;
+
+                std::string upperquotej, bottomquotej;
+                prices_splitpair(voperation[j], upperquotej, bottomquotej);
+                if (upperquote == bottomquotej || bottomquote == upperquotej) {
+                    if (upperquote == bottomquotej)
+                        voperation[i] = upperquotej + "_" + bottomquote;
+                    else
+                        voperation[i] = upperquote + "_" + bottomquotej;
+                    //std::cerr << "prices_reduceoperands erasing j=" << j << std::endl;
+                    voperation.erase(voperation.begin() + j);
+                    opcount--;
+                    //std::cerr << "prices_reduceoperands erased, size=" << voperation.size() << std::endl;
+
+                    need--;
+                    if (voperation.back() == "***") {
+                        voperation.pop_back();
+                        voperation.push_back("*");  // convert *** to *
+                    }
+                    else if (voperation.back() == "*") {
+                        voperation.pop_back();      // convert * to nothing
+                    }
+                    breaktostart = true;
+                    break;
+                }
+            }
+            if (breaktostart)
+                break;
+        }
+        if (i >= opcount)  // all seen
+            break;
+    }
+
+    //std::cerr << "prices_reduceoperands end need=" << need << std::endl;
+    return need;
+}
+
+// substitute reduced operation in vectored expr
+static void prices_substitutereduced(std::vector<std::string> &vexpr, int p, std::vector<std::string> voperation)
+{
+    int need;
+    if (prices_isopcode(vexpr[p], need)) {
+        vexpr.erase(vexpr.begin() + p - need, vexpr.begin() + p + 1);
+        vexpr.insert(vexpr.begin() + p - need, voperation.begin(), voperation.end());
+    }
+}
+
+// try to reduce synthetic expression by substituting "BTC_USD, BTC_EUR, 30, /" with "EUR_USD, 30" etc
+static std::string prices_getreducedexpr(const std::string &expr)
+{
+    std::string reduced;
+
+    std::vector<std::string> vexpr;
+    SplitStr(expr, vexpr);
+
+    for (size_t i = 0; i < vexpr.size(); i++) {
+        int need;
+
+        if (prices_isopcode(vexpr[i], need)) {
+            std::vector<std::string> voperation;
+            prices_invertoperation(vexpr, i, voperation);
+            if (voperation.size() > 0)  {
+                int reducedneed = prices_reduceoperands(voperation);
+                if (reducedneed < need) {
+                    prices_substitutereduced(vexpr, i, voperation);
+                }
+            }
+        }
+    }
+
+    for (size_t i = 0; i < vexpr.size(); i++) {
+        if (reduced.size() > 0)
+            reduced += std::string(", ");
+        reduced += vexpr[i];
+    }
+
+    //std::cerr << "reduced=" << reduced << std::endl;
+    return reduced;
+}
+
+// parse synthetic expression into vector of codes
+int32_t prices_syntheticvec(std::vector<uint16_t> &vec, std::vector<std::string> synthetic)
+{
+    int32_t i, need, ind, depth = 0; std::string opstr; uint16_t opcode, weight;
+    if (synthetic.size() == 0) {
+        std::cerr << "prices_syntheticvec() expression is empty" << std::endl;
+        return(-1);
+    }
+    for (i = 0; i < synthetic.size(); i++)
+    {
+        need = 0;
+        opstr = synthetic[i];
+        if (opstr == "*")
+            opcode = PRICES_MULT, need = 2;
+        else if (opstr == "/")
+            opcode = PRICES_DIV, need = 2;
+        else if (opstr == "!")
+            opcode = PRICES_INV, need = 1;
+        else if (opstr == "**/")
+            opcode = PRICES_MMD, need = 3;
+        else if (opstr == "*//")
+            opcode = PRICES_MDD, need = 3;
+        else if (opstr == "***")
+            opcode = PRICES_MMM, need = 3;
+        else if (opstr == "///")
+            opcode = PRICES_DDD, need = 3;
+        else if (!is_weight_str(opstr) && (ind = priceind(opstr.c_str())) >= 0)
+            opcode = ind, need = 0;
+        else if ((weight = atoi(opstr.c_str())) > 0 && weight < SMARTUSD_MAXPRICES)
+        {
+            opcode = PRICES_WEIGHT | weight;
+            need = 1;
+        }
+        else {
+            std::cerr << "prices_syntheticvec() incorrect opcode=" << opstr << std::endl;
+            return(-2);
+        }
+        if (depth < need) {
+            std::cerr << "prices_syntheticvec() incorrect not enough operands for opcode=" << opstr << std::endl;
+            return(-3);
+        }
+        depth -= need;
+        ///std::cerr << "prices_syntheticvec() opcode=" << opcode << " opstr=" << opstr << " need=" << need << " depth=" << depth << std::endl;
+        if ((opcode & SMARTUSD_PRICEMASK) != PRICES_WEIGHT) { // skip weight
+            depth++;                                          // increase operands count
+            ///std::cerr << "depth++=" << depth << std::endl;
+        }
+        if (depth > 3) {
+            std::cerr << "prices_syntheticvec() too many operands, last=" << opstr << std::endl;
+            return(-4);
+        }
+        vec.push_back(opcode);
+    }
+    if (depth != 0)
+    {
+        LogPrintf( "prices_syntheticvec() depth.%d not empty\n", depth);
+        return(-5);
+    }
+    return(0);
+}
+
+// calculates price for synthetic expression
+int64_t prices_syntheticprice(std::vector<uint16_t> vec, int32_t height, int32_t minmax, int16_t leverage)
+{
+    int32_t i, value, errcode, depth, retval = -1;
+    uint16_t opcode;
+    int64_t *pricedata, pricestack[4], a, b, c;
+
+    mpz_t mpzTotalPrice, mpzPriceValue, mpzDen, mpzA, mpzB, mpzC, mpzResult;
+
+    mpz_init(mpzTotalPrice);
+    mpz_init(mpzPriceValue);
+    mpz_init(mpzDen);
+
+    mpz_init(mpzA);
+    mpz_init(mpzB);
+    mpz_init(mpzC);
+    mpz_init(mpzResult);
+
+    pricedata = (int64_t *)calloc(sizeof(*pricedata) * 3, 1 + PRICES_DAYWINDOW * 2 + PRICES_SMOOTHWIDTH);
+    depth = errcode = 0;
+    mpz_set_si(mpzTotalPrice, 0);
+    mpz_set_si(mpzDen, 0);
+
+    for (i = 0; i < vec.size(); i++)
+    {
+        opcode = vec[i];
+        value = (opcode & (SMARTUSD_MAXPRICES - 1));   // index or weight 
+
+        mpz_set_ui(mpzResult, 0);  // clear result to test overflow (see below)
+
+        //std::cerr << "prices_syntheticprice" << " i=" << i << " mpzTotalPrice=" << mpz_get_si(mpzTotalPrice) << " value=" << value << " depth=" << depth <<  " opcode&KOMODO_PRICEMASK=" << (opcode & KOMODO_PRICEMASK) <<std::endl;
+        switch (opcode & SMARTUSD_PRICEMASK)
+        {
+        case 0: // indices 
+            pricestack[depth] = 0;
+            if (priceget(pricedata, value, height, 1) >= 0)
+            {
+                //std::cerr << "prices_syntheticprice" << " pricedata[0]=" << pricedata[0] << " pricedata[1]=" << pricedata[1] << " pricedata[2]=" << pricedata[2] << std::endl;
+                // push price to the prices stack
+                /*if (!minmax)
+                    pricestack[depth] = pricedata[2];   // use smoothed value if we are over 24h
+                else
+                {
+                    // if we are within 24h use min or max price
+                    if (leverage > 0)
+                        pricestack[depth] = (pricedata[1] > pricedata[2]) ? pricedata[1] : pricedata[2]; // MAX
+                    else
+                        pricestack[depth] = (pricedata[1] < pricedata[2]) ? pricedata[1] : pricedata[2]; // MIN
+                }*/
+                pricestack[depth] = pricedata[2];
+            }
+            else
+                errcode = -1;
+
+            if (pricestack[depth] == 0)
+                errcode = -14;
+
+            depth++;
+            break;
+
+        case PRICES_WEIGHT: // multiply by weight and consume top of stack by updating price
+            if (depth == 1) {
+                depth--;
+                // price += pricestack[0] * value;
+                mpz_set_si(mpzPriceValue, pricestack[0]);
+                mpz_mul_si(mpzPriceValue, mpzPriceValue, value);
+                mpz_add(mpzTotalPrice, mpzTotalPrice, mpzPriceValue);              // accumulate weight's value  
+
+                // den += value; 
+                mpz_add_ui(mpzDen, mpzDen, (uint64_t)value);              // accumulate weight's value  
+            }
+            else
+                errcode = -2;
+            break;
+
+        case PRICES_MULT:   // "*"
+            if (depth >= 2) {
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                // pricestack[depth++] = (a * b) / SATOSHIDEN;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_mul(mpzResult, mpzA, mpzB);
+                mpz_tdiv_q_ui(mpzResult, mpzResult, SATOSHIDEN);
+                pricestack[depth++] = mpz_get_si(mpzResult);
+
+            }
+            else
+                errcode = -3;
+            break;
+
+        case PRICES_DIV:    // "/"
+            if (depth >= 2) {
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                // pricestack[depth++] = (a * SATOSHIDEN) / b;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_mul_ui(mpzResult, mpzA, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzB);                 
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -4;
+            break;
+
+        case PRICES_INV:    // "!"
+            if (depth >= 1) {
+                a = pricestack[--depth];
+                // pricestack[depth++] = (SATOSHIDEN * SATOSHIDEN) / a;
+                mpz_set_si(mpzA, a);
+                mpz_set_ui(mpzResult, SATOSHIDEN);
+                mpz_mul_ui(mpzResult, mpzResult, SATOSHIDEN);           
+                mpz_tdiv_q(mpzResult, mpzResult, mpzA);                 
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -5;
+            break;
+
+        case PRICES_MDD:    // "*//"
+            if (depth >= 3) {
+                c = pricestack[--depth];
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                // pricestack[depth++] = (((a * SATOSHIDEN) / b) * SATOSHIDEN) / c;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_set_si(mpzC, c);
+                mpz_mul_ui(mpzResult, mpzA, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzB);                 
+                mpz_mul_ui(mpzResult, mpzResult, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzC);
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -6;
+            break;
+
+        case PRICES_MMD:    // "**/"
+            if (depth >= 3) {
+                c = pricestack[--depth];
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                //
