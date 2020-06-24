@@ -1165,4 +1165,295 @@ int64_t prices_syntheticprice(std::vector<uint16_t> vec, int32_t height, int32_t
                 c = pricestack[--depth];
                 b = pricestack[--depth];
                 a = pricestack[--depth];
-                //
+                // pricestack[depth++] = (a * b) / c;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_set_si(mpzC, c);
+                mpz_mul(mpzResult, mpzA, mpzB);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzC);
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -7;
+            break;
+
+        case PRICES_MMM:    // "***"
+            if (depth >= 3) {
+                c = pricestack[--depth];
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                // pricestack[depth++] = (((a * b) / SATOSHIDEN ) * c) / SATOSHIDEN;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_set_si(mpzC, c);
+                mpz_mul(mpzResult, mpzA, mpzB);
+                mpz_tdiv_q_ui(mpzResult, mpzResult, SATOSHIDEN);
+                mpz_mul(mpzResult, mpzResult, mpzC);
+                mpz_tdiv_q_ui(mpzResult, mpzResult, SATOSHIDEN);
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -8;
+            break;
+                
+        case PRICES_DDD:    // "///"
+            if (depth >= 3) {
+                c = pricestack[--depth];
+                b = pricestack[--depth];
+                a = pricestack[--depth];
+                //pricestack[depth++] = (((((SATOSHIDEN * SATOSHIDEN) / a) * SATOSHIDEN) / b) * SATOSHIDEN) / c;
+                mpz_set_si(mpzA, a);
+                mpz_set_si(mpzB, b);
+                mpz_set_si(mpzC, c);
+                mpz_set_ui(mpzResult, SATOSHIDEN);
+                mpz_mul_ui(mpzResult, mpzResult, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzA);
+                mpz_mul_ui(mpzResult, mpzResult, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzB);
+                mpz_mul_ui(mpzResult, mpzResult, SATOSHIDEN);
+                mpz_tdiv_q(mpzResult, mpzResult, mpzC);
+                pricestack[depth++] = mpz_get_si(mpzResult);
+            }
+            else
+                errcode = -9;
+            break;
+
+        default:
+            errcode = -10;
+            break;
+        }
+
+ //       std::cerr << "prices_syntheticprice test mpzResult=" << mpz_get_si(mpzResult) << std::endl;
+        // check overflow:
+        if (mpz_cmp_si(mpzResult, std::numeric_limits<int64_t>::max()) > 0) {
+            errcode = -13;
+            break;
+        }
+
+        if (errcode != 0)
+            break;
+
+ //       if( depth > 0 )
+ //           std::cerr << "prices_syntheticprice top pricestack[depth-1=" << depth-1 << "]=" << pricestack[depth-1] << std::endl;
+ //       else
+ //           std::cerr << "prices_syntheticprice pricestack empty" << std::endl;
+
+    }
+    free(pricedata);
+    mpz_clear(mpzResult);
+    mpz_clear(mpzA);
+    mpz_clear(mpzB);
+    mpz_clear(mpzC);
+
+    if( mpz_get_si(mpzDen) != 0 )
+        mpz_tdiv_q(mpzTotalPrice, mpzTotalPrice, mpzDen);   // price / den
+    
+    int64_t den = mpz_get_si(mpzDen);
+    int64_t priceIndex = mpz_get_si(mpzTotalPrice);
+
+    mpz_clear(mpzDen);
+    mpz_clear(mpzTotalPrice);
+    mpz_clear(mpzPriceValue);
+
+    if (errcode != 0) 
+        std::cerr << "prices_syntheticprice errcode in switch=" << errcode << std::endl;
+    
+    if( errcode == -1 )  {
+        std::cerr << "prices_syntheticprice error getting price (could be end of chain)" << std::endl;
+        return errcode;
+    }
+
+    if (errcode == -13) {
+        std::cerr << "prices_syntheticprice overflow in price" << std::endl;
+        return errcode;
+    }
+    if (errcode == -14) {
+        std::cerr << "prices_syntheticprice price is zero, not enough historic data yet" << std::endl;
+        return errcode;
+    }
+    if (den == 0) {
+        std::cerr << "prices_syntheticprice den==0 return err=-11" << std::endl;
+        return(-11);
+    }
+    else if (depth != 0) {
+        std::cerr << "prices_syntheticprice depth!=0 err=-12" << std::endl;
+        return(-12);
+    }
+    else if (errcode != 0) {
+        std::cerr << "prices_syntheticprice err=" << errcode << std::endl;
+        return(errcode);
+    }
+//    std::cerr << "prices_syntheticprice priceIndex=totalprice/den=" << priceIndex << " den=" << den << std::endl;
+
+    return priceIndex;
+}
+
+// calculates costbasis and profit/loss for the bet
+int32_t prices_syntheticprofits(int64_t &costbasis, int32_t firstheight, int32_t height, int16_t leverage, std::vector<uint16_t> vec, int64_t positionsize,  int64_t &profits, int64_t &outprice)
+{
+    int64_t price;
+#ifndef TESTMODE
+    const int32_t COSTBASIS_PERIOD = PRICES_DAYWINDOW;
+#else
+    const int32_t COSTBASIS_PERIOD = 7;
+#endif
+
+
+    if (height < firstheight) {
+        LogPrintf( "requested height is lower than bet firstheight.%d\n", height);
+        return -1;
+    }
+
+    int32_t minmax = (height < firstheight + COSTBASIS_PERIOD);  // if we are within 24h then use min or max value 
+
+    if ((price = prices_syntheticprice(vec, height, minmax, leverage)) < 0)
+    {
+        LogPrintf( "error getting synthetic price at height.%d\n", height);
+        return -1;
+    }
+
+    // clear lowest positions:
+    //price /= PRICES_POINTFACTOR;
+    //price *= PRICES_POINTFACTOR;
+    outprice = price;
+   
+    if (minmax)    { // if we are within day window, set temp costbasis to max (or min) price value
+        if (leverage > 0 && price > costbasis) {
+            costbasis = price;  // set temp costbasis
+            //std::cerr << "prices_syntheticprofits() minmax costbasis=" << costbasis << std::endl;
+        }
+        else if (leverage < 0 && (costbasis == 0 || price < costbasis)) {
+            costbasis = price;
+            //std::cerr << "prices_syntheticprofits() minmax costbasis=" << costbasis << std::endl;
+        }
+        //else {  //-> use the previous value
+        //    std::cerr << "prices_syntheticprofits() unchanged costbasis=" << costbasis << " price=" << price << " leverage=" << leverage << std::endl;
+        //}
+    }
+    else   { 
+        //if (height == firstheight + COSTBASIS_PERIOD) {
+            // if costbasis not set, just set it
+            //costbasis = price;
+
+            // use calculated minmax costbasis
+        //std::cerr << "prices_syntheticprofits() use permanent costbasis=" << costbasis << " at height=" << height << std::endl;
+        //}
+    }
+    
+    // normalize to 10,000,000 to prevent underflow
+    //profits = costbasis > 0 ? (((price / PRICES_POINTFACTOR * PRICES_NORMFACTOR) / costbasis) - PRICES_NORMFACTOR / PRICES_POINTFACTOR) * PRICES_POINTFACTOR : 0;
+    //double dprofits = costbasis > 0 ? ((double)price / (double)costbasis - 1) : 0;
+
+    //std::cerr << "prices_syntheticprofits() test value1 (price/PRICES_POINTFACTOR * PRICES_NORMFACTOR)=" << (price / PRICES_POINTFACTOR * PRICES_NORMFACTOR) << std::endl;
+    //std::cerr << "prices_syntheticprofits() test value2 (price/PRICES_POINTFACTOR * PRICES_NORMFACTOR)/costbasis=" << (costbasis != 0 ? (price / PRICES_POINTFACTOR * PRICES_NORMFACTOR)/costbasis : 0) << std::endl;
+
+    //std::cerr << "prices_syntheticprofits() fractional profits=" << profits << std::endl;
+    //std::cerr << "prices_syntheticprofits() profits double=" << (double)price / (double)costbasis -1.0 << std::endl;
+    //double dprofits = (double)price / (double)costbasis - 1.0;
+
+    //profits *= ((int64_t)leverage * (int64_t)positionsize);
+    //profits /= (int64_t)PRICES_NORMFACTOR;  // de-normalize
+
+    //dprofits *= ((double)leverage * (double)positionsize);
+
+    //dprofits *= leverage * positionsize;
+    // profits = dprofits;
+    //std::cerr << "prices_syntheticprofits() dprofits=" << dprofits << std::endl;
+
+    if (costbasis > 0)  {
+        mpz_t mpzProfits;
+        mpz_t mpzCostbasis;
+        mpz_t mpzPrice;
+        mpz_t mpzLeverage;
+
+        mpz_init(mpzProfits);
+        mpz_init(mpzCostbasis);
+        mpz_init(mpzPrice);
+        mpz_init(mpzLeverage);
+
+        mpz_set_si(mpzCostbasis, costbasis);
+        mpz_set_si(mpzPrice, price);
+        mpz_mul_ui(mpzPrice, mpzPrice, SATOSHIDEN);                              // (price*SATOSHIDEN)
+
+        mpz_tdiv_q(mpzProfits, mpzPrice, mpzCostbasis);           // profits = (price*SATOSHIDEN)/costbasis  // normalization
+        mpz_sub_ui(mpzProfits, mpzProfits, SATOSHIDEN);                          // profits -= SATOSHIDEN
+
+        mpz_set_si(mpzLeverage, leverage);
+        mpz_mul(mpzProfits, mpzProfits, mpzLeverage);                            // profits *= leverage
+        mpz_mul_ui(mpzProfits, mpzProfits, positionsize);                        // profits *= positionsize
+        mpz_tdiv_q_ui(mpzProfits, mpzProfits, SATOSHIDEN);          // profits /= SATOSHIDEN   // de-normalization
+
+        profits = mpz_get_si(mpzProfits);
+
+        mpz_clear(mpzLeverage);
+        mpz_clear(mpzProfits);
+        mpz_clear(mpzCostbasis);
+        mpz_clear(mpzPrice);
+
+    }
+    else
+        profits = 0;
+
+    //std::cerr << "prices_syntheticprofits() profits=" << profits << std::endl;
+    return 0; //  (positionsize + addedbets + profits);
+}
+
+// makes result json object
+void prices_betjson(UniValue &result, std::vector<OneBetData> bets, int16_t leverage, int32_t endheight, int64_t lastprice)
+{
+
+    UniValue resultbets(UniValue::VARR);
+    int64_t totalposition = 0;
+    int64_t totalprofits = 0;
+
+    for (auto b : bets) {
+        UniValue entry(UniValue::VOBJ);
+        entry.push_back(Pair("positionsize", ValueFromAmount(b.positionsize)));
+        entry.push_back(Pair("profits", ValueFromAmount(b.profits)));
+        entry.push_back(Pair("costbasis", ValueFromAmount(b.costbasis)));
+        entry.push_back(Pair("firstheight", b.firstheight));
+        resultbets.push_back(entry);
+        totalposition += b.positionsize;
+        totalprofits += b.profits;
+    }
+    int64_t equity = totalposition + totalprofits;
+
+    result.push_back(Pair("bets", resultbets));
+    result.push_back(Pair("leverage", (int64_t)leverage));
+    result.push_back(Pair("TotalPositionSize", ValueFromAmount(totalposition)));
+    result.push_back(Pair("TotalProfits", ValueFromAmount(totalprofits)));
+    result.push_back(Pair("equity", ValueFromAmount(equity)));
+    result.push_back(Pair("LastPrice", ValueFromAmount(lastprice)));
+    result.push_back(Pair("LastHeight", endheight));
+}
+
+// retrieves costbasis from a tx spending bettx vout1 (deprecated)
+int64_t prices_costbasis(CTransaction bettx, uint256 &txidCostbasis)
+{
+    int64_t costbasis = 0;
+    // if vout1 is spent, follow and extract costbasis from opreturn
+    //uint8_t prices_costbasisopretdecode(CScript scriptPubKey,uint256 &bettxid,CPubKey &pk,int32_t &height,int64_t &costbasis)
+    //uint256 txidCostbasis;
+    int32_t vini;
+    int32_t height;
+    txidCostbasis = zeroid;
+/*
+    if (CCgetspenttxid(txidCostbasis, vini, height, bettx.GetHash(), 1) < 0) {
+        std::cerr << "prices_costbasis() no costbasis txid found" << std::endl;
+        return 0;
+    }
+
+    CTransaction txCostbasis;
+    uint256 hashBlock;
+    uint256 bettxid;
+    CPubKey pk;
+    bool isLoaded = false;
+    uint8_t funcId = 0;
+
+    if ((isLoaded = myGetTransaction(txidCostbasis, txCostbasis, hashBlock)) &&
+        txCostbasis.vout.size() > 0 &&
+        (funcId = prices_costbasisopretdecode(txCostbasis.vout.back().scriptPubKey, bettxid, pk, height, costbasis)) != 0) {
+        return costbasis;
+    }
+
+    std::cerr << "prices_costbasis() cannot load costbasis tx or decode opret" << " isLoaded=" << isLoaded <<  " 
