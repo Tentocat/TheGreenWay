@@ -1721,4 +1721,286 @@ UniValue PricesSetcostbasis(int64_t txfee, uint256 bettxid)
         if (prices_betopretdecode(bettx.vout[numvouts - 1].scriptPubKey, pk, firstheight, positionsize, leverage, firstprice, vec, tokenid) == 'B')
         {
             if (nextheight <= firstheight + PRICES_DAYWINDOW + 1) {
-                result.push_back(Pair("r
+                result.push_back(Pair("result", "error"));
+                result.push_back(Pair("error", "cannot calculate costbasis yet"));
+                return(result);
+            }
+
+            addedbets = prices_enumaddedbets(batontxid, bettx, bettxid);
+            mtx.vin.push_back(CTxIn(bettxid, 1, CScript()));              // spend vin1 with betamount
+            //for (i = 0; i < PRICES_DAYWINDOW + 1; i++)   // the last datum for 24h is the actual costbasis value
+            //{
+                int32_t retcode = prices_syntheticprofits(costbasis, firstheight, firstheight + PRICES_DAYWINDOW, leverage, vec, positionsize, addedbets, profits, lastprice);
+                if (retcode < 0) {
+                    result.push_back(Pair("result", "error"));
+                    result.push_back(Pair("error", "cannot calculate costbasis error getting price"));
+                    return(result);
+                }
+                equity = positionsize + addedbets + profits;
+                //if (equity < 0)
+                //{   // we are in loss
+                //    result.push_back(Pair("rekt", (int64_t)1));
+                //    result.push_back(Pair("rektheight", (int64_t)firstheight + i));
+                //    break;
+                //}
+            //}
+            //if (i == PRICES_DAYWINDOW + 1)
+            //    result.push_back(Pair("rekt", 0));
+
+            prices_betjson(result, profits, costbasis, positionsize, addedbets, leverage, firstheight, firstprice, lastprice, equity);
+
+            if (AddNormalinputs(mtx, mypk, txfee, 4) >= txfee)
+            {
+                myfee = bettx.vout[1].nValue / 10;   // fee for setting costbasis
+                result.push_back(Pair("myfee", myfee));
+
+                mtx.vout.push_back(CTxOut(myfee, CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));
+                mtx.vout.push_back(MakeCC1vout(cp->evalcode, bettx.vout[1].nValue - myfee, pricespk));
+                rawtx = FinalizeCCTx(0, cp, mtx, mypk, txfee, prices_costbasisopret(bettxid, mypk, firstheight + PRICES_DAYWINDOW , costbasis));  // -1
+                return(prices_rawtxresult(result, rawtx, 0));
+            }
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "not enough funds"));
+            return(result);
+        }
+    } */
+    result.push_back(Pair("result", "error"));
+    result.push_back(Pair("error", "deprecated")); 
+    return(result);
+}
+
+
+// pricesaddfunding rpc impl: add yet another bet
+UniValue PricesRefillFund(int64_t amount)
+{
+    int32_t nextheight = smartusd_nextheight();
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction(); UniValue result(UniValue::VOBJ);
+    struct CCcontract_info *cp, C;
+    CPubKey pricespk, mypk, pk;
+    std::string rawtx;
+    //char myaddr[64];
+
+    cp = CCinit(&C, EVAL_PRICES);
+    const int64_t   txfee = PRICES_TXFEE;
+    mypk = pubkey2pk(Mypubkey());
+    pricespk = GetUnspendable(cp, 0);
+
+    if (AddNormalinputs(mtx, mypk, amount + txfee, 64) >= amount + txfee)
+    {            
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode, amount, pricespk));    // vout1 added amount
+        rawtx = FinalizeCCTx(0, cp, mtx, mypk, txfee, CScript());
+        return(prices_rawtxresult(result, rawtx, 0));
+        
+    }
+    result.push_back(Pair("result", "error"));
+    result.push_back(Pair("error", "not enough funds"));
+    return(result);
+}
+
+
+int32_t prices_getbetinfo(uint256 bettxid, BetInfo &betinfo)
+{
+    CTransaction bettx;
+    uint256 hashBlock, batontxid, tokenid;
+
+    if (myGetTransaction(bettxid, bettx, hashBlock) && bettx.vout.size() > 3)
+    {
+        if (hashBlock.IsNull())
+            return -2;
+
+
+        // TODO: forget old tx
+        //CBlockIndex *bi = komodo_getblockindex(hashBlock);
+        //if (bi && bi->GetHeight() < 5342)
+        //    return -5;
+
+        OneBetData bet1;
+        if (prices_betopretdecode(bettx.vout.back().scriptPubKey, betinfo.pk, bet1.firstheight, bet1.positionsize, betinfo.leverage, betinfo.firstprice, betinfo.vecparsed, betinfo.tokenid) == 'B')
+        {
+            uint256 finaltxid;
+            int32_t vini;
+            int32_t finaltxheight; //, endheight;
+                                   //std::vector<OneBetData> bets;
+            betinfo.txid = bettxid;
+
+            if (CCgetspenttxid(finaltxid, vini, finaltxheight, bettxid, NVOUT_CCMARKER) == 0)
+                betinfo.isOpen = false;
+            else
+                betinfo.isOpen = true;
+
+            // override with real amount (TODO: check this)
+            //bet1.positionsize = bettx.vout[2].nValue;
+
+            betinfo.bets.push_back(bet1);
+
+            prices_enumaddedbets(batontxid, betinfo.bets, bettxid);
+
+            if (!betinfo.isOpen) {
+                CTransaction finaltx;
+                uint256 hashBlock;
+                vscript_t vopret;
+                if (myGetTransaction(finaltxid, finaltx, hashBlock) && finaltx.vout.size() > 0 && PricesCheckOpret(finaltx, vopret) != 0) {
+                    uint8_t funcId = prices_finalopretdecode(finaltx.vout.back().scriptPubKey, betinfo.txid, betinfo.pk, betinfo.lastheight, betinfo.averageCostbasis, betinfo.lastprice, betinfo.liquidationprice, betinfo.equity, betinfo.exitfee);
+                    if (funcId == 0)
+                        return -3;
+
+                    betinfo.isRekt = (funcId == 'R');
+
+                    // return 0;
+                }
+                else
+                    return -6;
+            }
+
+
+            if (prices_scanchain(betinfo.bets, betinfo.leverage, betinfo.vecparsed, betinfo.lastprice, betinfo.lastheight) < 0) {
+                return -4;
+            }
+
+            mpz_t mpzTotalPosition;
+            mpz_t mpzTotalprofits;
+            mpz_t mpzTotalcostbasis;
+
+            mpz_init(mpzTotalPosition);
+            mpz_init(mpzTotalprofits);
+            mpz_init(mpzTotalcostbasis);
+
+            int64_t totalposition = 0;
+            int64_t totalprofits = 0;
+
+            for (auto b : betinfo.bets) {
+                mpz_t mpzProduct;
+                mpz_t mpzProfits;
+
+                mpz_init(mpzProduct);
+                mpz_init(mpzProfits);
+
+                //totalprofits += b.profits;
+                //dcostbasis += b.amount * (double)b.costbasis;  
+                // costbasis += b.amount * (b.costbasis / PRICES_POINTFACTOR);  // prevent int64 overflow (but we have underflow for 1/BTC)
+                // std::cerr << "PricesInfo() acc dcostbasis=" << dcostbasis << " b.amount=" << b.amount << " b.costbasis/PRICES_POINTFACTOR=" << (b.costbasis / PRICES_POINTFACTOR) << std::endl;
+                //std::cerr << "PricesInfo() acc dcostbasis=" << dcostbasis << " b.amount=" << b.amount << " b.costbasis/PRICES_POINTFACTOR=" << (b.costbasis / PRICES_POINTFACTOR) << std::endl;
+                mpz_set_ui(mpzProduct, b.costbasis);
+                mpz_mul_ui(mpzProduct, mpzProduct, (uint64_t)b.positionsize);         // b.costbasis * b.amount
+                mpz_add(mpzTotalcostbasis, mpzTotalcostbasis, mpzProduct);      //averageCostbasis += b.costbasis * b.amount;
+
+                mpz_add_ui(mpzTotalPosition, mpzTotalPosition, (uint64_t)b.positionsize);     //totalposition += b.amount;
+                mpz_add(mpzTotalprofits, mpzTotalprofits, mpzProfits);          //totalprofits += b.profits;
+
+                totalposition += b.positionsize;
+                totalprofits += b.profits;
+
+                mpz_clear(mpzProduct);
+                mpz_clear(mpzProfits);
+            }
+
+            betinfo.equity = totalposition + totalprofits;
+            //int64_t averageCostbasis = 0;
+
+            if (mpz_get_ui(mpzTotalPosition) != 0) { //prevent zero div
+                mpz_t mpzAverageCostbasis;
+                mpz_init(mpzAverageCostbasis);
+
+                //averageCostbasis =  totalcostbasis / totalposition; 
+                mpz_mul_ui(mpzTotalcostbasis, mpzTotalcostbasis, SATOSHIDEN);                 // profits *= SATOSHIDEN normalization to prevent loss of significance while division
+                mpz_tdiv_q(mpzAverageCostbasis, mpzTotalcostbasis, mpzTotalPosition);
+
+                mpz_tdiv_q_ui(mpzAverageCostbasis, mpzAverageCostbasis, SATOSHIDEN);          // profits /= SATOSHIDEN de-normalization
+
+                betinfo.averageCostbasis = mpz_get_ui(mpzAverageCostbasis);
+                mpz_clear(mpzAverageCostbasis);
+            }
+
+            betinfo.liquidationprice = 0;
+            if (betinfo.leverage != 0) {// prevent zero div
+                betinfo.liquidationprice = betinfo.averageCostbasis - (betinfo.averageCostbasis * (1 - prices_minmarginpercent(betinfo.leverage))) / betinfo.leverage;
+            }
+
+            if (!betinfo.isRekt)    {  // not set by check for final tx 
+
+                if (betinfo.equity > (int64_t)((double)totalposition * prices_minmarginpercent(betinfo.leverage)))
+                    betinfo.isRekt = false;
+                else
+                {
+                    betinfo.isRekt = true;
+                    betinfo.exitfee = (int64_t)(((double)totalposition * prices_minmarginpercent(betinfo.leverage)) / 10);    // was: totalposition / 500
+                }
+            }
+
+            mpz_clear(mpzTotalPosition);
+            mpz_clear(mpzTotalprofits);
+            mpz_clear(mpzTotalcostbasis);
+            return 0;
+        }
+        return -3;
+    }
+    return (-1);
+}
+
+// pricesrekt rpc: anyone can rekt a bet at some block where losses reached limit, collecting fee
+UniValue PricesRekt(int64_t txfee, uint256 bettxid, int32_t rektheight)
+{
+    int32_t nextheight = smartusd_nextheight();
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction(); UniValue result(UniValue::VOBJ);
+    struct CCcontract_info *cp, C; 
+    CTransaction bettx; 
+    int64_t myfee = 0;
+    CPubKey pk, mypk, pricespk; 
+    std::string rawtx;
+    char destaddr[64];
+
+    cp = CCinit(&C, EVAL_PRICES);
+    if (txfee == 0)     // TODO: what did we want to do with txfee in prices?
+        txfee = PRICES_TXFEE;
+    mypk = pubkey2pk(Mypubkey());
+    pricespk = GetUnspendable(cp, 0);
+    GetCCaddress(cp, destaddr, pricespk);
+
+    BetInfo betinfo;
+    int32_t retcode = prices_getbetinfo(bettxid, betinfo);
+    if (retcode < 0) {
+        if (retcode == -1) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant find bettxid or incorrect"));
+        }
+        else if (retcode == -2) {
+            throw std::runtime_error("tx still in mempool");
+        }
+        else if (retcode == -3)
+        {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant decode opret"));
+            return(result);
+        }
+        else if (retcode == -4) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "error scanning chain"));
+        }
+        return(result);
+    }
+
+    int64_t totalposition = 0;
+    int64_t totalprofits = 0;
+
+    for (auto b : betinfo.bets) {
+        totalposition += b.positionsize;
+        totalprofits += b.profits;
+    }
+
+
+    if (!betinfo.isOpen) {
+        result.push_back(Pair("result", "error"));
+        result.push_back(Pair("error", "position closed"));
+        return result;
+    }
+
+    prices_betjson(result, betinfo.bets, betinfo.leverage, betinfo.lastheight, betinfo.lastprice); // fill output 
+    if (betinfo.isRekt)
+    {
+        myfee = betinfo.exitfee; // consolation fee for loss
+    }
+    if (myfee != 0)
+    {
+        int64_t CCchange = 0, inputsum;
+
+     
