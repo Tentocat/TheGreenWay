@@ -2003,4 +2003,299 @@ UniValue PricesRekt(int64_t txfee, uint256 bettxid, int32_t rektheight)
     {
         int64_t CCchange = 0, inputsum;
 
-     
+        mtx.vin.push_back(CTxIn(bettxid, NVOUT_CCMARKER, CScript()));  // spend cc marker
+        if ((inputsum = AddPricesInputs(cp, mtx, destaddr, myfee + txfee, 64)) > myfee + txfee)  // TODO: why do we take txfee from global addr and not from user's addr?
+            CCchange = (inputsum - myfee);
+        mtx.vout.push_back(CTxOut(myfee, CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));
+        if (CCchange >= txfee)
+            mtx.vout.push_back(MakeCC1vout(cp->evalcode, CCchange, pricespk));
+
+        /// mtx.vout.push_back(MakeCC1vout(cp->evalcode, bettx.vout[2].nValue - myfee - txfee, pricespk));  // change
+
+        // make some PoW to get txid=0x00.....00 to 'faucet' rekts
+        LogPrintf( "start PoW at %u\n", (uint32_t)time(NULL));
+        uint32_t nonce = rand() & 0xfffffff;
+        for (int i = 0; i<1000000; i++, nonce++)
+        {
+            CMutableTransaction tmpmtx = mtx;
+            //int32_t len;
+            //uint8_t txbuf[32768];
+
+            rawtx = FinalizeCCTx(0, cp, tmpmtx, mypk, txfee, prices_finalopret(true, bettxid, mypk, betinfo.lastheight, betinfo.averageCostbasis, betinfo.lastprice, betinfo.liquidationprice, betinfo.equity, myfee, nonce));
+            //if ((len = (int32_t)rawtx.size()) > 0 && len < sizeof(txbuf) / sizeof(txbuf[0]) * 2)
+            //{
+            //    len >>= 1;  // sizeof hex divide by 2
+                //decode_hex(txbuf, len, (char *)rawtx.c_str());
+                //bits256 hash = bits256_doublesha256(0, txbuf, len);
+                uint256 hash = tmpmtx.GetHash();
+                //if ((hash.bytes[0] & 0xff) == 0 && (hash.bytes[31] & 0xff) == 0)
+                if ((hash.begin()[0] & 0xff) == 0 && (hash.begin()[31] & 0xff) == 0)
+                {
+                    LogPrintf( "found valid txid after %d iterations %u\n", i, (uint32_t)time(NULL));
+                    return(prices_rawtxresult(result, rawtx, 0));
+                }
+                //LogPrintf("%02x%02x ",hash.bytes[0],hash.bytes[31]);
+            //}
+        }
+        LogPrintf( "couldnt generate valid txid %u\n", (uint32_t)time(NULL));
+
+        result.push_back(Pair("result", "error"));
+        result.push_back(Pair("error", "could not generate valid txid"));
+        return(result);
+    }
+    else
+    {
+        result.push_back(Pair("result", "error"));
+        result.push_back(Pair("error", "position not rekt"));
+        return(result);
+    }
+}
+
+// pricescashout rpc impl: bettor can cashout hit bet if it is not rekt
+UniValue PricesCashout(int64_t txfee, uint256 bettxid)
+{
+    int32_t nextheight = smartusd_nextheight();
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction(); 
+    UniValue result(UniValue::VOBJ);
+    struct CCcontract_info *cp, C; char destaddr[64]; 
+    int64_t CCchange = 0, inputsum;
+    CPubKey pk, mypk, pricespk; 
+    std::string rawtx;
+
+    cp = CCinit(&C, EVAL_PRICES);
+    if (txfee == 0)
+        txfee = PRICES_TXFEE;
+
+    mypk = pubkey2pk(Mypubkey());
+    pricespk = GetUnspendable(cp, 0);
+    GetCCaddress(cp, destaddr, pricespk);
+
+    BetInfo betinfo;
+    int32_t retcode = prices_getbetinfo(bettxid, betinfo);
+    if (retcode < 0) {
+        if (retcode == -1) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant find bettxid or incorrect"));
+        }
+        else if (retcode == -2) {
+            throw std::runtime_error("tx still in mempool");
+        }
+        else if (retcode == -3)
+        {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant decode opret"));
+            return(result);
+        }
+        else if (retcode == -4) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "error scanning chain"));
+        }
+        return(result);
+    }
+
+    int64_t totalposition = 0;
+    int64_t totalprofits = 0;
+
+    for (auto b : betinfo.bets) {
+        totalposition += b.positionsize;
+        totalprofits += b.profits;
+    }
+    
+
+    if (!betinfo.isOpen) {
+        result.push_back(Pair("result", "error"));
+        result.push_back(Pair("error", "position closed"));
+        return result;
+    }
+
+    prices_betjson(result, betinfo.bets, betinfo.leverage, betinfo.lastheight, betinfo.lastprice); // fill output json
+
+    if (betinfo.isRekt)
+    {
+        result.push_back(Pair("result", "error"));
+        result.push_back(Pair("error", "position rekt"));
+        return(result);
+    }
+
+    mtx.vin.push_back(CTxIn(bettxid, NVOUT_CCMARKER, CScript()));  // spend cc marker
+    if ((inputsum = AddPricesInputs(cp, mtx, destaddr, betinfo.equity + txfee, 64)) > betinfo.equity + txfee)   // TODO: why txfee from the fund?
+        CCchange = (inputsum - betinfo.equity);
+    mtx.vout.push_back(CTxOut(betinfo.equity, CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));
+    if (CCchange >= txfee)
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode, CCchange, pricespk));
+    // TODO: what should the opret param be:
+    rawtx = FinalizeCCTx(0, cp, mtx, mypk, txfee, prices_finalopret(false, bettxid, mypk, nextheight-1, betinfo.averageCostbasis, betinfo.lastprice, betinfo.liquidationprice, betinfo.equity, txfee, 0));
+    return(prices_rawtxresult(result, rawtx, 0));
+        
+}
+
+
+// pricesinfo rpc impl
+UniValue PricesInfo(uint256 bettxid, int32_t refheight)
+{
+    UniValue result(UniValue::VOBJ);
+/*    CTransaction bettx;
+    uint256 hashBlock, batontxid, tokenid;
+    int64_t positionsize = 0, firstprice = 0, lastprice = 0;
+    int32_t firstheight = 0, endheight;
+    int16_t leverage = 0;
+    std::vector<uint16_t> vec;
+    CPubKey pk, mypk, pricespk;
+    std::string rawtx; */
+
+    BetInfo betinfo;
+    int32_t retcode = prices_getbetinfo(bettxid, betinfo);
+    if (retcode < 0) {
+        if( retcode == -1 ) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant find bettxid or incorrect"));
+        }
+        else if (retcode == -2) {
+            throw std::runtime_error("tx still in mempool");
+        }
+        else if (retcode == -3)
+        {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "cant decode opret"));
+            return(result);
+        }
+        else if (retcode == -4) {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "error scanning chain"));
+        } 
+        else {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", retcode));
+        }
+        return(result);
+    }
+
+    if (!betinfo.isRekt)
+        result.push_back(Pair("rekt", 0));
+    else
+    {
+        result.push_back(Pair("rekt", (int64_t)1));
+        result.push_back(Pair("rektfee", betinfo.exitfee));
+        result.push_back(Pair("rektheight", betinfo.lastheight));
+    }
+
+    result.push_back(Pair("open", betinfo.isOpen ? 1 : 0 ));
+
+    std::string expr = prices_getsourceexpression(betinfo.vecparsed);
+    result.push_back(Pair("expression", expr));
+    result.push_back(Pair("reduced", prices_getreducedexpr(expr)));
+//            result.push_back(Pair("batontxid", batontxid.GetHex()));
+    result.push_back(Pair("costbasis", ValueFromAmount(betinfo.averageCostbasis)));
+#ifdef TESTMODE
+    result.push_back(Pair("costbasis_test_period", 7));
+#endif
+
+    prices_betjson(result, betinfo.bets, betinfo.leverage, betinfo.lastheight, betinfo.lastprice);
+
+    result.push_back(Pair("LiquidationPrice", ValueFromAmount(betinfo.liquidationprice)));
+
+    return(result);
+}
+
+// priceslist rpc impl
+UniValue PricesList(uint32_t filter, CPubKey mypk)
+{
+    UniValue result(UniValue::VARR); 
+    std::vector<std::pair<CAddressIndexKey, CAmount> > addressIndex, addressIndexCC;
+    struct CCcontract_info *cp, C;
+  
+    cp = CCinit(&C, EVAL_PRICES);
+    //pricespk = GetUnspendable(cp, 0);
+
+    // filters and outputs prices bet txid
+    auto AddBetToList = [&](uint256 txid)
+    {
+        int64_t amount, firstprice; 
+        int32_t height; 
+        int16_t leverage; 
+        uint256 hashBlock, tokenid;
+        CPubKey pk, pricespk;
+        std::vector<uint16_t> vec;
+        CTransaction vintx;
+
+        if (myGetTransaction(txid, vintx, hashBlock) != 0)
+        {
+
+            // TODO: forget old tx
+            //CBlockIndex *bi = komodo_getblockindex(hashBlock);
+            //if (bi && bi->GetHeight() < 5342)
+            //    return;
+
+            bool bAppend = false;
+            if (vintx.vout.size() > 0 && prices_betopretdecode(vintx.vout.back().scriptPubKey, pk, height, amount, leverage, firstprice, vec, tokenid) == 'B' &&
+                (mypk == CPubKey() || mypk == pk))  // if only mypubkey to list
+            {
+                if (filter == 0)
+                    bAppend = true;
+                else {
+                    int32_t vini;
+                    int32_t height;
+                    uint256 finaltxid;
+
+                    int32_t spent = CCgetspenttxid(finaltxid, vini, height, txid, NVOUT_CCMARKER);
+                    if (filter == 1 && spent < 0 ||  // open positions
+                        filter == 2 && spent == 0)   // closed positions
+                        bAppend = true;
+                }
+                if (bAppend)
+                    result.push_back(txid.GetHex());
+            }
+            std::cerr << "PricesList() " << " bettxid=" << txid.GetHex() << " mypk=" << HexStr(mypk) << " opretpk=" << HexStr(pk) << " filter=" << filter << " bAppend=" << bAppend <<  std::endl;
+        }
+    };
+
+
+    SetCCtxids(addressIndex, cp->normaladdr, false);        // old normal marker
+    for (std::vector<std::pair<CAddressIndexKey, CAmount> >::const_iterator it = addressIndex.begin(); it != addressIndex.end(); it++)
+    {
+        if( it->first.index == NVOUT_NORMALMARKER )
+            AddBetToList(it->first.txhash);
+    }
+
+    /* for future when switch to cc marker only
+    SetCCtxids(addressIndexCC, cp->unspendableCCaddr, true);  // cc marker
+    for (std::vector<std::pair<CAddressIndexKey, CAmount> >::const_iterator it = addressIndexCC.begin(); it != addressIndexCC.end(); it++)
+    {
+        priceslist(it, 1);
+    }
+    */
+    return(result);
+}
+
+
+static bool prices_addbookentry(uint256 txid, std::vector<BetInfo> &book)
+{
+    BetInfo betinfo;
+    if (prices_getbetinfo(txid, betinfo) == 0) {
+        book.push_back(betinfo);
+        return true;
+    }
+    return false;
+}
+
+
+static bool prices_ispositionup(const std::vector<uint16_t> &vecparsed, int16_t leverage) {
+    if (vecparsed.size() > 1 && vecparsed.size() <= 3) {
+        uint16_t opcode = vecparsed[0];
+
+        int32_t value = (opcode & (SMARTUSD_MAXPRICES - 1));   // filter index or weight = opcode & (2048-1)
+
+        if ((opcode & SMARTUSD_PRICEMASK) == 0) {
+            char name[65];
+            if (smartusd_pricename(name, ARRAYSIZE(name), value)) {
+                std::string upperquote, bottomquote;
+                prices_splitpair(std::string(name), upperquote, bottomquote);
+                
+                uint16_t opcode1 = vecparsed[1];
+                bool isInverted = ((opcode1 & SMARTUSD_PRICEMASK) == PRICES_INV);
+
+                //std::cerr << "prices_ispositionup upperquote=" << upperquote << " bottomquote=" << bottomquote << " opcode1=" << opcode1 << " (opcode1 & KOMODO_PRICEMASK)=" << (opcode1 & KOMODO_PRICEMASK) << std::endl;
+
+                if (upperquote == "BTC" || bottomquote == "BTC") { // it is relatively btc
+                    if (upperquote == "BTC" && (leverage > 0 && !isInverted || leverage < 0 && isInverted) ||
+                        bottomquote == "BTC" && (l
