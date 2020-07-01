@@ -2548,4 +2548,30 @@ UniValue PricesGetOrderbook()
             entry.push_back(Pair("lastprice", m.second[i].lastprice));
             entry.push_back(Pair("equity", m.second[i].equity));
             entry.push_back(Pair("isUpPosition", (m.second[i].isUp ? 1 : 0)));
-            resbook.push_
+            resbook.push_back(entry);
+        }
+        resheader.push_back(Pair("positions", resbook));
+        resheader.push_back(Pair("DiffLeveragedPosition", matchedTotals[m.first].diffLeveragedPosition));
+        result.push_back(Pair(m.first, resheader));
+    }
+
+    //int64_t totalLiabilities = 0;
+    /* empty
+    for (int i = 0; i < book.size(); i++) {
+        if (book[i].isOpen) {
+            int64_t t = 0;
+            for (auto b : book[i].bets) t += b.positionsize;
+            std::cerr << "book[i].txid=" << book[i].txid.GetHex() << " exp=" << prices_getsourceexpression(book[i].vecparsed) << " totalpos=" << t << " equity=" << book[i].equity << std::endl;
+            totalLiabilities += book[i].equity;
+        }
+    } */
+
+    result.push_back(Pair("TotalFund", ValueFromAmount(fundTotals.totalFund)));
+    result.push_back(Pair("TotalEquity", ValueFromAmount(fundTotals.totalEquity)));
+    result.push_back(Pair("TotalRekt", ValueFromAmount(fundTotals.totalRekt)));
+    result.push_back(Pair("TotalBets", ValueFromAmount(fundTotals.totalActiveBets)));
+    result.push_back(Pair("TotalCashoutBets", ValueFromAmount(fundTotals.totalCashout)));
+    
+//    result.push_back(Pair("TotalLiabilities", ValueFromAmount(totalLiabilities)));
+    return result;
+}
