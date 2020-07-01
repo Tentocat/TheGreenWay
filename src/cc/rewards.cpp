@@ -406,4 +406,259 @@ int64_t AddRewardsInputs(CScript &scriptPubKey,uint64_t maxseconds,struct CCcont
                 }
                 LogPrintf("maxseconds.%d (%c) %.8f %.8f\n",(int32_t)maxseconds,funcid,(double)tx.vout[vout].nValue/COIN,(double)it->second.satoshis/COIN);
                 if ( total != 0 && maxinputs != 0 )
-     
+                {
+                    if ( maxseconds != 0 )
+                        scriptPubKey = tx.vout[1].scriptPubKey;
+                    mtx.vin.push_back(CTxIn(txid,vout,CScript()));
+                }
+                totalinputs += it->second.satoshis;
+                n++;
+                if ( (total > 0 && totalinputs >= total) || (maxinputs > 0 && n >= maxinputs) )
+                    break;
+            } else LogPrintf("null funcid\n");
+        }
+    }
+    if ( maxseconds == 0 && totalinputs < total && (maxinputs == 0 || n < maxinputs-1) )
+    {
+        LogPrintf("search mempool for unlocked and unspent CC rewards output for %.8f\n",(double)(total-totalinputs)/COIN);
+        if ( (nValue= myIs_unlockedtx_inmempool(txid,vout,refsbits,reffundingtxid,total-totalinputs)) > 0 )
+        {
+            mtx.vin.push_back(CTxIn(txid,vout,CScript()));
+            LogPrintf("added mempool vout for %.8f\n",(double)nValue/COIN);
+            totalinputs += nValue;
+            n++;
+        }
+    }
+    return(totalinputs);
+}
+
+int64_t RewardsPlanFunds(uint64_t &lockedfunds,uint64_t refsbits,struct CCcontract_info *cp,CPubKey pk,uint256 reffundingtxid)
+{
+    char coinaddr[64]; uint64_t sbits; int64_t nValue,totalinputs = 0; uint256 txid,hashBlock,fundingtxid; CTransaction tx; int32_t vout; uint8_t funcid;
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+    lockedfunds = 0;
+    GetCCaddress(cp,coinaddr,pk);
+    SetCCunspents(unspentOutputs,coinaddr,true);
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        if ( myGetTransaction(txid,tx,hashBlock) != 0 && tx.vout[vout].scriptPubKey.IsPayToCryptoCondition() != 0 )
+        {
+            if ( (funcid= DecodeRewardsOpRet(txid,tx.vout[tx.vout.size()-1].scriptPubKey,sbits,fundingtxid)) == 'F' || funcid == 'A' || funcid == 'U' || funcid == 'L' )
+            {
+                if ( refsbits == sbits && (funcid == 'F' && reffundingtxid == txid) || reffundingtxid == fundingtxid )
+                {
+                    if ( (nValue= IsRewardsvout(cp,tx,vout,sbits,fundingtxid)) > 0 )
+                    {
+                        if ( funcid == 'L' )
+                            lockedfunds += nValue;
+                        else totalinputs += nValue;
+                    }
+                    else LogPrintf("refsbits.%llx sbits.%llx nValue %.8f\n",(long long)refsbits,(long long)sbits,(double)nValue/COIN);
+                } //else LogPrintf("else case\n");
+            } else LogPrintf("funcid.%d %c skipped %.8f\n",funcid,funcid,(double)tx.vout[vout].nValue/COIN);
+        }
+    }
+    return(totalinputs);
+}
+
+bool RewardsPlanExists(struct CCcontract_info *cp,uint64_t refsbits,CPubKey rewardspk,uint64_t &APR,uint64_t &minseconds,uint64_t &maxseconds,uint64_t &mindeposit)
+{
+    char CCaddr[64]; uint64_t sbits; uint256 txid,hashBlock; CTransaction tx;
+    std::vector<uint256> txids;
+    GetCCaddress(cp,CCaddr,rewardspk);
+    SetCCtxids(txids,CCaddr,true,cp->evalcode,zeroid,'F');
+    for (std::vector<uint256>::const_iterator it=txids.begin(); it!=txids.end(); it++)
+    {
+        //int height = it->first.blockHeight;
+        txid = *it;
+        if ( myGetTransaction(txid,tx,hashBlock) != 0 && tx.vout.size() > 0 && ConstrainVout(tx.vout[0],1,CCaddr,0) != 0 )
+        {
+            //char str[65]; LogPrintf("rewards plan %s\n",uint256_str(str,txid));
+            if ( DecodeRewardsFundingOpRet(tx.vout[tx.vout.size()-1].scriptPubKey,sbits,APR,minseconds,maxseconds,mindeposit) == 'F' )
+            {
+                if ( sbits == refsbits )
+                    return(true);
+            }
+        }
+    }
+    return(false);
+}
+
+UniValue RewardsInfo(uint256 rewardsid)
+{
+    UniValue result(UniValue::VOBJ); uint256 hashBlock; CTransaction vintx; uint64_t lockedfunds,APR,minseconds,maxseconds,mindeposit,sbits,funding; CPubKey rewardspk; struct CCcontract_info *cp,C; char str[67],numstr[65];
+    if ( myGetTransaction(rewardsid,vintx,hashBlock) == 0 )
+    {
+        LogPrintf("cant find fundingtxid\n");
+        result.push_back(Pair("result","error"));
+        result.push_back(Pair("error","cant find fundingtxid"));
+        return(result);
+    }
+    if ( vintx.vout.size() > 0 && DecodeRewardsFundingOpRet(vintx.vout[vintx.vout.size()-1].scriptPubKey,sbits,APR,minseconds,maxseconds,mindeposit) == 0 )
+    {
+        LogPrintf("fundingtxid isnt rewards creation txid\n");
+        result.push_back(Pair("result","error"));
+        result.push_back(Pair("error","fundingtxid isnt rewards creation txid"));
+        return(result);
+    }
+    result.push_back(Pair("result","success"));
+    result.push_back(Pair("fundingtxid",uint256_str(str,rewardsid)));
+    unstringbits(str,sbits);
+    result.push_back(Pair("name",str));
+    result.push_back(Pair("sbits",sbits));
+    sprintf(numstr,"%.8f",(double)APR/COIN);
+    result.push_back(Pair("APR",numstr));
+    result.push_back(Pair("minseconds",minseconds));
+    result.push_back(Pair("maxseconds",maxseconds));
+    sprintf(numstr,"%.8f",(double)mindeposit/COIN);
+    result.push_back(Pair("mindeposit",numstr));
+    cp = CCinit(&C,EVAL_REWARDS);
+    rewardspk = GetUnspendable(cp,0);
+    funding = RewardsPlanFunds(lockedfunds,sbits,cp,rewardspk,rewardsid);
+    sprintf(numstr,"%.8f",(double)funding/COIN);
+    result.push_back(Pair("funding",numstr));
+    sprintf(numstr,"%.8f",(double)lockedfunds/COIN);
+    result.push_back(Pair("locked",numstr));
+    return(result);
+}
+
+UniValue RewardsList()
+{
+    UniValue result(UniValue::VARR); std::vector<uint256> txids; struct CCcontract_info *cp,C; uint256 txid,hashBlock; CTransaction vintx; uint64_t sbits,APR,minseconds,maxseconds,mindeposit; char str[65];
+    cp = CCinit(&C,EVAL_REWARDS);
+    SetCCtxids(txids,cp->normaladdr,false,cp->evalcode,zeroid,'F');
+    for (std::vector<uint256>::const_iterator it=txids.begin(); it!=txids.end(); it++)
+    {
+        txid = *it;
+        if ( myGetTransaction(txid,vintx,hashBlock) != 0 )
+        {
+            if ( vintx.vout.size() > 0 && DecodeRewardsFundingOpRet(vintx.vout[vintx.vout.size()-1].scriptPubKey,sbits,APR,minseconds,maxseconds,mindeposit) != 0 )
+            {
+                result.push_back(uint256_str(str,txid));
+            }
+        }
+    }
+    return(result);
+}
+
+std::string RewardsCreateFunding(uint64_t txfee,char *planstr,int64_t funds,int64_t APR,int64_t minseconds,int64_t maxseconds,int64_t mindeposit)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CPubKey mypk,rewardspk; CScript opret; uint64_t sbits,a,b,c,d; struct CCcontract_info *cp,C;
+    if ( funds < COIN || mindeposit < 0 || minseconds < 0 || maxseconds < 0 )
+    {
+        LogPrintf("negative parameter error\n");
+        return("");
+    }
+    if ( APR > REWARDSCC_MAXAPR )
+    {
+        LogPrintf("25%% APR is maximum\n");
+        return("");
+    }
+    cp = CCinit(&C,EVAL_REWARDS);
+    if ( txfee == 0 )
+        txfee = 10000;
+    mypk = pubkey2pk(Mypubkey());
+    rewardspk = GetUnspendable(cp,0);
+    sbits = stringbits(planstr);
+    if ( RewardsPlanExists(cp,sbits,rewardspk,a,b,c,d) != 0 )
+    {
+        LogPrintf("Rewards plan (%s) already exists\n",planstr);
+        return("");
+    }
+    if ( AddNormalinputs(mtx,mypk,funds+2*txfee,64) > 0 )
+    {
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode,funds,rewardspk));
+        mtx.vout.push_back(CTxOut(txfee,CScript() << ParseHex(HexStr(rewardspk)) << OP_CHECKSIG));
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeRewardsFundingOpRet('F',sbits,APR,minseconds,maxseconds,mindeposit)));
+    }
+    LogPrintf("cant find enough inputs\n");
+    return("");
+}
+
+std::string RewardsAddfunding(uint64_t txfee,char *planstr,uint256 fundingtxid,int64_t amount)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CPubKey mypk,rewardspk; CScript opret; uint64_t sbits,a,b,c,d; struct CCcontract_info *cp,C;
+    if ( amount < 0 )
+    {
+        LogPrintf("negative parameter error\n");
+        return("");
+    }
+    cp = CCinit(&C,EVAL_REWARDS);
+    if ( txfee == 0 )
+        txfee = 10000;
+    mypk = pubkey2pk(Mypubkey());
+    rewardspk = GetUnspendable(cp,0);
+    sbits = stringbits(planstr);
+    if ( RewardsPlanExists(cp,sbits,rewardspk,a,b,c,d) == 0 )
+    {
+        CCerror = strprintf("Rewards plan %s doesnt exist\n",planstr);
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+    sbits = stringbits(planstr);
+    if ( AddNormalinputs(mtx,mypk,amount+txfee,64) > 0 )
+    {
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode,amount,rewardspk));
+        return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeRewardsOpRet('A',sbits,fundingtxid)));
+    } else {
+        CCerror = "cant find enough inputs";
+        LogPrintf("%s\n", CCerror.c_str());
+    }
+    CCerror = "cant find fundingtxid";
+    LogPrintf("%s\n", CCerror.c_str());
+    return("");
+}
+
+std::string RewardsLock(uint64_t txfee,char *planstr,uint256 fundingtxid,int64_t deposit)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    CPubKey mypk,rewardspk; CScript opret; uint64_t lockedfunds,sbits,funding,APR,minseconds,maxseconds,mindeposit; struct CCcontract_info *cp,C;
+    if ( deposit < txfee )
+    {
+        CCerror = "deposit amount less than txfee";
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+    cp = CCinit(&C,EVAL_REWARDS);
+    if ( txfee == 0 )
+        txfee = 10000;
+    mypk = pubkey2pk(Mypubkey());
+    rewardspk = GetUnspendable(cp,0);
+    sbits = stringbits(planstr);
+    if ( RewardsPlanExists(cp,sbits,rewardspk,APR,minseconds,maxseconds,mindeposit) == 0 )
+    {
+        CCerror = strprintf("Rewards plan %s doesnt exist\n",planstr);
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+    if ( deposit < mindeposit )
+    {
+        CCerror = strprintf("Rewards plan %s deposit %.8f < mindeposit %.8f\n",planstr,(double)deposit/COIN,(double)mindeposit/COIN);
+        LogPrintf("%s\n",CCerror.c_str());
+        return("");
+    }
+    if ( (funding= RewardsPlanFunds(lockedfunds,sbits,cp,rewardspk,fundingtxid)) >= deposit ) // arbitrary cmpval
+    {
+        if ( AddNormalinputs(mtx,mypk,deposit+2*txfee,64) > 0 )
+        {
+            mtx.vout.push_back(MakeCC1vout(cp->evalcode,deposit,rewardspk));
+            mtx.vout.push_back(CTxOut(txfee,CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));
+            return(FinalizeCCTx(0,cp,mtx,mypk,txfee,EncodeRewardsOpRet('L',sbits,fundingtxid)));
+        } else {
+            CCerror = strprintf("cant find enough inputs %.8f not enough for %.8f, make sure you imported privkey for the -pubkey address\n",(double)funding/COIN,(double)deposit/COIN);
+            LogPrintf("%s\n",CCerror.c_str());
+        }
+    }
+    LogPrintf("cant find rewards inputs funding %.8f locked %.8f vs deposit %.8f\n",(double)funding/COIN,(double)lockedfunds/COIN,(double)deposit/COIN);
+    return("");
+}
+
+std::string RewardsUnlock(uint64_t txfee,char *planstr,uint256 fundingtxid,uint256 locktxid)
+{
+    CMutableTransaction firstmtx,mtx = CreateNewContextualCMutableTransaction();
+    CTransaction tx; char coinaddr[64]; CPubKey mypk,rewardspk; CScript scriptPubKey,ignore; uint256 hashBlock; uint64_t sbits,APR,minseconds,maxseconds,mindeposit; int64_t funding,reward=0,amount=0,inputs,CCchange=0; struct CCcontract_info *cp,C;
+    cp = CCin
