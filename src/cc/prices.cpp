@@ -2298,4 +2298,254 @@ static bool prices_ispositionup(const std::vector<uint16_t> &vecparsed, int16_t 
 
                 if (upperquote == "BTC" || bottomquote == "BTC") { // it is relatively btc
                     if (upperquote == "BTC" && (leverage > 0 && !isInverted || leverage < 0 && isInverted) ||
-                        bottomquote == "BTC" && (l
+                        bottomquote == "BTC" && (leverage < 0 && !isInverted || leverage > 0 && isInverted)) {
+                        std::cerr << "prices_ispositionup returns true for BTC for expr=" << prices_getsourceexpression(vecparsed) << " lev=" << leverage << std::endl;
+                        return true;
+                    }
+                    else {
+                        std::cerr << "prices_ispositionup returns false for BTC for expr=" << prices_getsourceexpression(vecparsed) << " lev=" << leverage << std::endl;
+                        return false;
+                    }
+                }
+
+                if (upperquote == "USD" || bottomquote == "USD") { // it is relatively usd
+                    if (upperquote == "USD" && (leverage > 0 && !isInverted || leverage < 0 && isInverted) ||
+                        bottomquote == "USD" && (leverage < 0 && !isInverted || leverage > 0 && isInverted)) {
+                        std::cerr << "prices_ispositionup returns true for USD for expr=" << prices_getsourceexpression(vecparsed) << " lev=" << leverage << std::endl;
+                        return true;
+                    }
+                    else {
+                        std::cerr << "prices_ispositionup returns false for USD for expr=" << prices_getsourceexpression(vecparsed) << " lev=" << leverage << std::endl;
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    std::cerr << "prices_ispositionup returns false for expr=" << prices_getsourceexpression(vecparsed) << " lev=" << leverage << std::endl;
+    return false;
+}
+
+static bool prices_isopposite(BetInfo p1, BetInfo p2) {
+    if (p1.vecparsed.size() <= 3 && p2.vecparsed.size() <= 3) {   // simple synthetic exp
+
+        uint16_t opcode1 = p1.vecparsed[0];
+        uint16_t opcode2 = p2.vecparsed[0];
+
+        int32_t value1 = (opcode1 & (SMARTUSD_MAXPRICES - 1));   // index or weight 
+        int32_t value2 = (opcode2 & (SMARTUSD_MAXPRICES - 1));   // index or weight 
+
+        if ( (opcode1 & SMARTUSD_PRICEMASK) == 0 && (opcode2 & SMARTUSD_PRICEMASK) == 0 ) {
+            char name1[65];
+            char name2[65];
+            if (smartusd_pricename(name1, ARRAYSIZE(name1), value1) && smartusd_pricename(name2, ARRAYSIZE(name2), value2)) {
+
+                uint16_t opcode1 = p1.vecparsed[1];
+                uint16_t opcode2 = p2.vecparsed[1];
+
+                std::string upperquote1, bottomquote1, upperquote2, bottomquote2;
+                prices_splitpair(std::string(name1), upperquote1, bottomquote1);
+                prices_splitpair(std::string(name2), upperquote2, bottomquote2);
+
+                bool isInverted1 = ((opcode1 & SMARTUSD_PRICEMASK) != PRICES_INV);
+                bool isInverted2 = ((opcode2 & SMARTUSD_PRICEMASK) != PRICES_INV);
+
+                if (/*upperquote1 == bottomquote2 && bottomquote1 == upperquote2 && (p1.leverage > 0 == p2.leverage > 0 || (opcode1 & KOMODO_PRICEMASK) == PRICES_INV == (opcode2 & KOMODO_PRICEMASK) == PRICES_INV) ||*/
+                    upperquote1 == upperquote2 && bottomquote1 == bottomquote2 && ((p1.leverage > 0) != (p2.leverage > 0) || isInverted1 != isInverted2) )
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+
+static std::string findMatchedBook(const std::vector<uint16_t> &vecparsed, const std::map<std::string, std::vector<BetInfo> > & bookmatched) {
+
+    if (vecparsed.size() > 1 && vecparsed.size() <= 3) {
+        uint16_t opcode = vecparsed[0];
+
+        int32_t value = (opcode & (SMARTUSD_MAXPRICES - 1));   // filter index or weight = opcode & (2048-1)
+
+        if ((opcode & SMARTUSD_PRICEMASK) == 0) {
+            char name[65];
+            if (smartusd_pricename(name, ARRAYSIZE(name), value)) {
+                auto it = bookmatched.find(std::string(name));
+                if (it != bookmatched.end())
+                    return it->first;
+            }
+        }
+    }
+    return std::string("");
+}
+
+
+void prices_getorderbook(std::map<std::string, std::vector<BetInfo> > & bookmatched, std::map<std::string, MatchedBookTotal> &matchedTotals, TotalFund &fundTotals)
+{
+    std::vector<BetInfo> book;
+    std::vector<std::pair<CAddressIndexKey, CAmount> > addressIndex;
+    struct CCcontract_info *cp, C;
+
+    cp = CCinit(&C, EVAL_PRICES);
+
+    // add all bets:
+    SetCCtxids(addressIndex, cp->normaladdr, false);        // old normal marker
+    for (std::vector<std::pair<CAddressIndexKey, CAmount> >::const_iterator it = addressIndex.begin(); it != addressIndex.end(); it++)
+    {
+        if (it->first.index == NVOUT_NORMALMARKER)
+            prices_addbookentry(it->first.txhash, book);
+    }
+
+
+    // calc total fund amount 
+    fundTotals.totalFund = 0;
+    fundTotals.totalRekt = 0;
+    fundTotals.totalEquity = 0;
+    fundTotals.totalActiveBets = 0;
+
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > addressCCunspents;
+    SetCCunspents(addressCCunspents, cp->unspendableCCaddr, true);  // cc marker
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it = addressCCunspents.begin(); it != addressCCunspents.end(); it++)
+    {
+        //std::cerr << "totalfund calc txid=" << it->first.txhash.GetHex() << " nvout=" << it->first.index << " satoshis=" << it->second.satoshis << std::endl;
+        fundTotals.totalFund += it->second.satoshis;
+    }
+
+    // extract out opposite bets:
+    while (book.size() > 0) {
+
+        int64_t totalPos = 0;
+        for (auto bet : book[0].bets) totalPos += bet.positionsize;
+
+        if (book[0].isOpen) {
+
+            fundTotals.totalActiveBets += totalPos;
+            fundTotals.totalEquity += book[0].equity;
+
+            if (book[0].vecparsed.size() <= 3) {   // only short expr check for match: "BTC_USD,1" or "BTC_USD,!,1"
+                char name[65];
+                smartusd_pricename(name, ARRAYSIZE(name), (book[0].vecparsed[0] & (SMARTUSD_MAXPRICES - 1)));
+                std::string sname = name;
+                bookmatched[sname].push_back(book[0]);
+
+                for (int j = 1; j < book.size(); j++) {
+                    if (book[0].isOpen && book[j].isOpen) {
+                        if (prices_isopposite(book[0], book[j])) {
+
+                            bookmatched[sname].push_back(book[j]);
+                            book.erase(book.begin() + j);
+                        }
+                    }
+                }
+            }
+            else {
+                // store as is
+                std::string sname = prices_getsourceexpression(book[0].vecparsed);
+                bookmatched[sname].push_back(book[0]);
+            }
+        }
+        else {
+            if( book[0].isRekt )
+                fundTotals.totalRekt += (totalPos - book[0].exitfee);
+            else
+                fundTotals.totalCashout += (totalPos - book[0].exitfee);
+
+            //TODO: store rekt
+        }
+        book.erase(book.begin());
+    }
+
+    // calculate cancelling amount
+    for (auto &m : bookmatched) {   // note: use reference &m otherwise isUp will be changed only in a copy
+        int64_t totalLeveragedPositionUp = 0;
+        int64_t totalLeveragedPositionDown = 0;
+
+        for (int i = 0; i < m.second.size(); i++) {
+            int64_t totalPos = 0;
+            for (auto bet : m.second[i].bets) totalPos += bet.positionsize;
+            m.second[i].isUp = prices_ispositionup(m.second[i].vecparsed, m.second[i].leverage);
+            if (m.second[i].isUp)
+                totalLeveragedPositionUp += totalPos * abs(m.second[i].leverage);
+            else
+                totalLeveragedPositionDown += totalPos * abs(m.second[i].leverage);
+            //std::cerr << "PricesGetOrderbook 0 m.second[i].isUp=" << m.second[i].isUp << " i=" << i << std::endl;
+
+        }
+        matchedTotals[m.first].diffLeveragedPosition = totalLeveragedPositionUp - totalLeveragedPositionDown;
+    }
+}
+
+static bool prices_isacceptableamount(const std::vector<uint16_t> &vecparsed, int64_t amount, int16_t leverage) {
+
+    std::map<std::string, std::vector<BetInfo> > matchedBook;
+    std::map<std::string, MatchedBookTotal> matchedTotals;
+    TotalFund fundTotals;
+
+    prices_getorderbook(matchedBook, matchedTotals, fundTotals);
+    std::string pricename = findMatchedBook(vecparsed, matchedBook);
+    if (!pricename.empty()) {
+        std::cerr << "prices_isacceptableamount() found matched book=" << pricename << " diffLeveragedPosition=" << matchedTotals[pricename].diffLeveragedPosition << " expr=" << prices_getsourceexpression(vecparsed) << std::endl;
+        // could fit into leveraged amount
+        if (prices_ispositionup(vecparsed, leverage) && amount*abs(leverage) + matchedTotals[pricename].diffLeveragedPosition <= 0) {
+            std::cerr << "prices_isacceptableamount() could fit into opposite negative lev amount" << std::endl;
+            return true;
+        }
+        if (!prices_ispositionup(vecparsed, leverage) && -amount*abs(leverage) + matchedTotals[pricename].diffLeveragedPosition >= 0) {
+            std::cerr << "prices_isacceptableamount() could fit into opposite positive lev amount" << std::endl;
+            return true;
+        }
+    }
+
+    std::cerr << "prices_isacceptableamount() amount=" << amount << " leverage=" << leverage << " fundTotals.totalFund=" << fundTotals.totalFund << " fundTotals.totalEquity=" << fundTotals.totalEquity << std::endl;
+    // if not fit to matched = allow to bet for leveraged amount no more than 10% from free fund
+    if (amount * leverage < (fundTotals.totalFund - fundTotals.totalEquity) * PRICES_MINAVAILFUNDFRACTION)
+        return true;
+
+    return false;
+}
+
+
+// walk through uxtos on the global address
+// calculate the balance:
+// + rekt positions
+// = opposite positions
+// - unbalanced positions
+UniValue PricesGetOrderbook()
+{
+    UniValue result(UniValue::VOBJ);
+    std::map<std::string, std::vector<BetInfo> > matchedBook;
+    std::map<std::string, MatchedBookTotal> matchedTotals;
+    TotalFund fundTotals;
+
+    prices_getorderbook(matchedBook, matchedTotals, fundTotals);
+
+    /*UniValue resbook (UniValue::VARR);
+    for (int i = 0; i < book.size(); i++) {
+        UniValue entry(UniValue::VOBJ);
+        entry.push_back(Pair("expression", prices_getsourceexpression(book[i].vecparsed)));
+        entry.push_back(Pair("costbasis", book[i].averageCostbasis));
+        entry.push_back(Pair("leverage", book[i].leverage));
+        entry.push_back(Pair("equity", book[i].equity));
+        resbook.push_back(entry);
+    }
+    result.push_back(Pair("unmatched", resbook)); */
+
+    // copy to rpc UniResult
+    for (auto &m : matchedBook) {
+        UniValue resheader(UniValue::VOBJ);
+        UniValue resbook(UniValue::VARR);
+        for (int i = 0; i < m.second.size(); i++) {
+            UniValue entry(UniValue::VOBJ);
+
+            int64_t totalPos = 0;
+            for (auto bet : m.second[i].bets) totalPos += bet.positionsize;
+            entry.push_back(Pair("isOpen", (m.second[i].isOpen ? 1 : 0 )));
+            entry.push_back(Pair("expression", prices_getsourceexpression(m.second[i].vecparsed)));
+            entry.push_back(Pair("positionsize", totalPos));
+            entry.push_back(Pair("leverage", m.second[i].leverage));
+            entry.push_back(Pair("costbasis", m.second[i].averageCostbasis));
+            entry.push_back(Pair("lastprice", m.second[i].lastprice));
+            entry.push_back(Pair("equity", m.second[i].equity));
+            entry.push_back(Pair("isUpPosition", (m.second[i].isUp ? 1 : 0)));
+            resbook.push_
