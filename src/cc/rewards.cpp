@@ -661,4 +661,90 @@ std::string RewardsUnlock(uint64_t txfee,char *planstr,uint256 fundingtxid,uint2
 {
     CMutableTransaction firstmtx,mtx = CreateNewContextualCMutableTransaction();
     CTransaction tx; char coinaddr[64]; CPubKey mypk,rewardspk; CScript scriptPubKey,ignore; uint256 hashBlock; uint64_t sbits,APR,minseconds,maxseconds,mindeposit; int64_t funding,reward=0,amount=0,inputs,CCchange=0; struct CCcontract_info *cp,C;
-    cp = CCin
+    cp = CCinit(&C,EVAL_REWARDS);
+    if ( txfee == 0 )
+        txfee = 10000;
+    rewardspk = GetUnspendable(cp,0);
+    mypk = pubkey2pk(Mypubkey());
+    sbits = stringbits(planstr);
+    if ( locktxid == fundingtxid )
+    {
+        LogPrintf("Rewards plan cant unlock fundingtxid\n");
+        CCerror = "Rewards plan cant unlock fundingtxid";
+        return("");
+    }
+    if ( RewardsPlanExists(cp,sbits,rewardspk,APR,minseconds,maxseconds,mindeposit) == 0 )
+    {
+        LogPrintf("Rewards plan %s doesnt exist\n",planstr);
+        CCerror = "Rewards plan does not exist";
+        return("");
+    }
+    LogPrintf("APR %.8f minseconds.%llu maxseconds.%llu mindeposit %.8f\n",(double)APR/COIN,(long long)minseconds,(long long)maxseconds,(double)mindeposit/COIN);
+    if ( locktxid == zeroid )
+        amount = AddRewardsInputs(scriptPubKey,maxseconds,cp,mtx,rewardspk,(1LL << 30),1,sbits,fundingtxid);
+    else
+    {
+        GetCCaddress(cp,coinaddr,rewardspk);
+        if ( (amount= CCutxovalue(coinaddr,locktxid,0,1)) == 0 )
+        {
+            LogPrintf("%s locktxid/v0 is spent\n",coinaddr);
+            CCerror = "locktxid/v0 is spent";
+            return("");
+        }
+        if ( myGetTransaction(locktxid,tx,hashBlock) != 0 && tx.vout.size() > 0 && tx.vout[1].scriptPubKey.IsPayToCryptoCondition() == 0 )
+        {
+            scriptPubKey = tx.vout[1].scriptPubKey;
+            mtx.vin.push_back(CTxIn(locktxid,0,CScript()));
+        }
+        else
+        {
+            LogPrintf("%s no normal vout.1 in locktxid\n",coinaddr);
+            CCerror = "no normal vout.1 in locktxid";
+            return("");
+        }
+    }
+    if ( amount > txfee )
+    {
+        reward = RewardsCalc((int64_t)amount,mtx.vin[0].prevout.hash,(int64_t)APR,(int64_t)minseconds,(int64_t)maxseconds,chainactive_timestamp());
+        if ( scriptPubKey.size() > 0 )
+        {
+            if ( reward > txfee )
+            {
+                firstmtx = mtx;
+                if ( (inputs= AddRewardsInputs(ignore,0,cp,mtx,rewardspk,reward+txfee,30,sbits,fundingtxid)) >= reward+txfee )
+                {
+                    if ( inputs >= (reward + 2*txfee) )
+                        CCchange = (inputs - (reward + txfee));
+                    LogPrintf("inputs %.8f CCchange %.8f amount %.8f reward %.8f\n",(double)inputs/COIN,(double)CCchange/COIN,(double)amount/COIN,(double)reward/COIN);
+                    mtx.vout.push_back(MakeCC1vout(cp->evalcode,CCchange,rewardspk));
+                    mtx.vout.push_back(CTxOut(amount+reward,scriptPubKey));
+                    return(FinalizeCCTx(-1LL,cp,mtx,mypk,txfee,EncodeRewardsOpRet('U',sbits,fundingtxid)));
+                }
+                else
+                {
+                    firstmtx.vout.push_back(CTxOut(amount-txfee*2,scriptPubKey));
+                    LogPrintf("not enough rewards funds to payout %.8f, recover mode tx\n",(double)(reward+txfee)/COIN);
+                    return(FinalizeCCTx(-1LL,cp,firstmtx,mypk,txfee,EncodeRewardsOpRet('U',sbits,fundingtxid)));
+                }
+            }
+            else
+            {
+                CCerror = strprintf("reward %.8f is <= the transaction fee", reward);
+                LogPrintf("%s\n", CCerror.c_str());
+            }
+        }
+        else
+        {
+            CCerror = "invalid scriptPubKey";
+            LogPrintf("%s\n", CCerror.c_str());
+        }
+    }
+    else
+    {
+        CCerror = "amount must be more than txfee";
+        LogPrintf("%s\n", CCerror.c_str());
+    }
+    LogPrintf("amount %.8f -> reward %.8f\n",(double)amount/COIN,(double)reward/COIN);
+    return("");
+}
+
