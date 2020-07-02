@@ -199,4 +199,362 @@
 /* 1.10   2006-03-20  WD        Added explain option, add'l speed optimizations     */
 /* 1.11   2006-03-23  WD        More simple speed optimizations, cleanup, bug fixes */
 /*                                                                                  */
-/*********************
+/************************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+#include <limits.h>
+
+#define SUDOKU_VERSION "1.11"
+
+#define PUZZLE_ORDER 3
+#define PUZZLE_DIM (PUZZLE_ORDER*PUZZLE_ORDER)
+#define PUZZLE_CELLS (PUZZLE_DIM*PUZZLE_DIM)
+
+/* Command line options */
+#ifdef EXPLAIN
+#define OPTIONS "?1acdef:Ggmno:p:r:s"
+#else
+#define OPTIONS "?1acdf:Ggmno:p:r:s"
+#endif
+extern char *optarg;
+extern int optind, opterr, optopt;
+
+static char *myname;    /* Name that we were invoked under */
+
+static FILE *solnfile, *rejects;
+
+/* This is the list of cell coordinates specified on a row basis */
+
+static int const row[PUZZLE_DIM][PUZZLE_DIM] = {
+    {  0,  1,  2,  3,  4,  5,  6,  7,  8 },
+    {  9, 10, 11, 12, 13, 14, 15, 16, 17 },
+    { 18, 19, 20, 21, 22, 23, 24, 25, 26 },
+    { 27, 28, 29, 30, 31, 32, 33, 34, 35 },
+    { 36, 37, 38, 39, 40, 41, 42, 43, 44 },
+    { 45, 46, 47, 48, 49, 50, 51, 52, 53 },
+    { 54, 55, 56, 57, 58, 59, 60, 61, 62 },
+    { 63, 64, 65, 66, 67, 68, 69, 70, 71 },
+    { 72, 73, 74, 75, 76, 77, 78, 79, 80 }};
+
+/* This is the list of cell coordinates specified on a column basis */
+
+static int const col[PUZZLE_DIM][PUZZLE_DIM] = {
+    {  0,  9, 18, 27, 36, 45, 54, 63, 72 },
+    {  1, 10, 19, 28, 37, 46, 55, 64, 73 },
+    {  2, 11, 20, 29, 38, 47, 56, 65, 74 },
+    {  3, 12, 21, 30, 39, 48, 57, 66, 75 },
+    {  4, 13, 22, 31, 40, 49, 58, 67, 76 },
+    {  5, 14, 23, 32, 41, 50, 59, 68, 77 },
+    {  6, 15, 24, 33, 42, 51, 60, 69, 78 },
+    {  7, 16, 25, 34, 43, 52, 61, 70, 79 },
+    {  8, 17, 26, 35, 44, 53, 62, 71, 80 }};
+
+/* This is the list of cell coordinates specified on a 3x3 region basis */
+
+static int const region[PUZZLE_DIM][PUZZLE_DIM] = {
+    {  0,  1,  2,  9, 10, 11, 18, 19, 20 },
+    {  3,  4,  5, 12, 13, 14, 21, 22, 23 },
+    {  6,  7,  8, 15, 16, 17, 24, 25, 26 },
+    { 27, 28, 29, 36, 37, 38, 45, 46, 47 },
+    { 30, 31, 32, 39, 40, 41, 48, 49, 50 },
+    { 33, 34, 35, 42, 43, 44, 51, 52, 53 },
+    { 54, 55, 56, 63, 64, 65, 72, 73, 74 },
+    { 57, 58, 59, 66, 67, 68, 75, 76, 77 },
+    { 60, 61, 62, 69, 70, 71, 78, 79, 80 }};
+
+/* Flags for cellflags member */
+#define GIVEN 1
+#define FOUND 2
+#define STUCK 3
+
+/* Return codes for funcs that modify puzzle markup */
+#define NOCHANGE 0
+#define CHANGE   1
+
+typedef struct grd {
+    short cellflags[PUZZLE_CELLS];
+    short solved[PUZZLE_CELLS];
+    short cell[PUZZLE_CELLS];
+    short tail, givens, exposed, maxlvl, inc, reward;
+    unsigned int score, solncount;
+    struct grd *next;
+} grid;
+
+typedef int (*return_soln)(grid *g);
+
+static grid *soln_list = NULL;
+
+typedef struct {
+    short row, col, region;
+} cellmap;
+
+/* Array structure to help map cell index back to row, column, and region */
+static cellmap const map[PUZZLE_CELLS] = {
+    { 0, 0, 0 },
+    { 0, 1, 0 },
+    { 0, 2, 0 },
+    { 0, 3, 1 },
+    { 0, 4, 1 },
+    { 0, 5, 1 },
+    { 0, 6, 2 },
+    { 0, 7, 2 },
+    { 0, 8, 2 },
+    { 1, 0, 0 },
+    { 1, 1, 0 },
+    { 1, 2, 0 },
+    { 1, 3, 1 },
+    { 1, 4, 1 },
+    { 1, 5, 1 },
+    { 1, 6, 2 },
+    { 1, 7, 2 },
+    { 1, 8, 2 },
+    { 2, 0, 0 },
+    { 2, 1, 0 },
+    { 2, 2, 0 },
+    { 2, 3, 1 },
+    { 2, 4, 1 },
+    { 2, 5, 1 },
+    { 2, 6, 2 },
+    { 2, 7, 2 },
+    { 2, 8, 2 },
+    { 3, 0, 3 },
+    { 3, 1, 3 },
+    { 3, 2, 3 },
+    { 3, 3, 4 },
+    { 3, 4, 4 },
+    { 3, 5, 4 },
+    { 3, 6, 5 },
+    { 3, 7, 5 },
+    { 3, 8, 5 },
+    { 4, 0, 3 },
+    { 4, 1, 3 },
+    { 4, 2, 3 },
+    { 4, 3, 4 },
+    { 4, 4, 4 },
+    { 4, 5, 4 },
+    { 4, 6, 5 },
+    { 4, 7, 5 },
+    { 4, 8, 5 },
+    { 5, 0, 3 },
+    { 5, 1, 3 },
+    { 5, 2, 3 },
+    { 5, 3, 4 },
+    { 5, 4, 4 },
+    { 5, 5, 4 },
+    { 5, 6, 5 },
+    { 5, 7, 5 },
+    { 5, 8, 5 },
+    { 6, 0, 6 },
+    { 6, 1, 6 },
+    { 6, 2, 6 },
+    { 6, 3, 7 },
+    { 6, 4, 7 },
+    { 6, 5, 7 },
+    { 6, 6, 8 },
+    { 6, 7, 8 },
+    { 6, 8, 8 },
+    { 7, 0, 6 },
+    { 7, 1, 6 },
+    { 7, 2, 6 },
+    { 7, 3, 7 },
+    { 7, 4, 7 },
+    { 7, 5, 7 },
+    { 7, 6, 8 },
+    { 7, 7, 8 },
+    { 7, 8, 8 },
+    { 8, 0, 6 },
+    { 8, 1, 6 },
+    { 8, 2, 6 },
+    { 8, 3, 7 },
+    { 8, 4, 7 },
+    { 8, 5, 7 },
+    { 8, 6, 8 },
+    { 8, 7, 8 },
+    { 8, 8, 8 }
+};
+
+static const short symtab[1<<PUZZLE_DIM] = {
+    '.','1','2','.','3','.','.','.','4','.','.','.','.','.','.','.','5','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '6','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '7','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '8','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '9','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
+    '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.'};
+
+static int enumerate_all = 1;
+static int lvl = 0;
+
+#ifdef EXPLAIN
+static int explain = 0;
+#endif
+
+/* Function prototype(s) */
+static int mult_elimination(grid *g);
+static void print_grid(char *sud, FILE *h);
+static char *format_answer(grid *g, char *outbuf);
+static void diagnostic_grid(grid *g, FILE *h);
+
+static inline int is_given(int c) { return (c >= '1') && (c <= '9'); }
+
+#if defined(DEBUG)
+static void mypause()
+{
+    char buf[8];
+    LogPrintf("\tPress enter -> ");
+    fgets(buf, 8, stdin);
+}
+#endif
+
+#if 0
+/* Generic (and slow) bitcount function */
+static int bitcount(short cell)
+{
+    int i, count, mask;
+    
+    mask = 1;
+    for (i = count = 0; i < 16; i++) {
+        if (mask & cell) count++;
+        mask <<= 1;
+    }
+    return count;
+}
+#endif
+
+/*****************************************************/
+/* Return the number of '1' bits in a cell.          */
+/* Rather than count bits, do a quick table lookup.  */
+/* Warning: Only valid for 9 low order bits.         */
+/*****************************************************/
+
+static inline short bitcount(short cell)
+{
+    static const short bcounts[512] = {
+        0,1,1,2,1,2,2,3,1,2,2,3,2,3,3,4,1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,
+        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
+        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8,
+        1,2,2,3,2,3,3,4,2,3,3,4,3,4,4,5,2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8,
+        2,3,3,4,3,4,4,5,3,4,4,5,4,5,5,6,3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,
+        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8,
+        3,4,4,5,4,5,5,6,4,5,5,6,5,6,6,7,4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8,
+        4,5,5,6,5,6,6,7,5,6,6,7,6,7,7,8,5,6,6,7,6,7,7,8,6,7,7,8,7,8,8,9};
+    
+    return bcounts[cell];
+}
+
+#ifdef EXPLAIN
+
+/**************************************************/
+/* Indent two spaces for each level of recursion. */
+/**************************************************/
+static inline void explain_indent(FILE *h)
+{
+    int i;
+    
+    for (i = 0; i < lvl-1; i++) fprintf(h, "  ");
+}
+
+/******************************************************************/
+/* Construct a string representing the possible values a cell may */
+/* contain according to current markup.                           */
+/******************************************************************/
+static char *clues(short cell)
+{
+    int i, m, multi, mask;
+    static char buf[64], *p;
+    
+    multi = m = bitcount(cell);
+    
+    if (!multi) return "NULL";
+    
+    if (multi > 1) {
+        strlcpy(buf, "tuple (",ARRAYSIZE(buf));
+    }
+    else {
+        strlcpy(buf, "value ",ARRAYSIZE(buf));
+    }
+    
+    p = buf + strlen(buf);
+    
+    for (mask = i = 1; i <= PUZZLE_DIM; i++) {
+        if (mask & cell) {
+            *p++ = symtab[mask];
+            multi -= 1;
+            if (multi) { *p++ = ','; *p++ = ' '; }
+        }
+        mask <<= 1;
+    }
+    if (m > 1) *p++ = ')';
+    *p = 0;
+    return buf;
+}
+
+/*************************************************************/
+/* Explain removal of a candidate value from a changed cell. */
+/*************************************************************/
+static void explain_markup_elim(grid *g, int chgd, int clue)
+{
+    int chgd_row, chgd_col, clue_row, clue_col;
+    
+    chgd_row = map[chgd].row+1;
+    chgd_col = map[chgd].col+1;
+    clue_row = map[clue].row+1;
+    clue_col = map[clue].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Candidate %s removed from row %d, col %d because of cell at row %d, col %d\n",
+            clues(g->cell[clue]), chgd_row, chgd_col, clue_row, clue_col);
+}
+
+/*****************************************/
+/* Dump the state of the current markup. */
+/*****************************************/
+static void explain_current_markup(grid *g)
+{
+    if (g->exposed >= PUZZLE_CELLS) return;
+    
+    fprintf(solnfile, "\n");
+    explain_indent(solnfile);
+    fprintf(solnfile, "Current markup is as follows:");
+    diagnostic_grid(g, solnfile);
+    fprintf(solnfile, "\n");
+}
+
+/****************************************/
+/* Explain the solving of a given cell. */
+/****************************************/
+static void explain_solve_cell(grid *g, int chgd)
+{
+    int chgd_row, chgd_col;
+    
+    chgd_row = map[chgd].row+1;
+    chgd_col = map[chgd].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Cell at row %d, col %d solved with %s\n",
+            chgd_row, chgd_col, clues(g->cell[chgd]));
+}
+
+/******************************************************************/
+/* Explain th
