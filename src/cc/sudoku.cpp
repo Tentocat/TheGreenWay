@@ -557,4 +557,311 @@ static void explain_solve_cell(grid *g, int chgd)
 }
 
 /******************************************************************/
-/* Explain th
+/* Explain the current impasse reached during markup elimination. */
+/******************************************************************/
+static void explain_markup_impasse(grid *g, int chgd, int clue)
+{
+    int chgd_row, chgd_col, clue_row, clue_col;
+    
+    chgd_row = map[chgd].row+1;
+    chgd_col = map[chgd].col+1;
+    clue_row = map[clue].row+1;
+    clue_col = map[clue].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Impasse for cell at row %d, col %d because cell at row %d, col %d removes last candidate\n",
+            chgd_row, chgd_col, clue_row, clue_col);
+    explain_current_markup(g);
+}
+
+/****************************************/
+/* Explain naked and/or hidden singles. */
+/****************************************/
+static void explain_singleton(grid *g, int chgd, int mask, char *vdesc)
+{
+    int chgd_row, chgd_col, chgd_reg;
+    
+    chgd_row = map[chgd].row+1;
+    chgd_col = map[chgd].col+1;
+    chgd_reg = map[chgd].region+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Cell of region %d at row %d, col %d will only solve for %s in this %s\n",
+            chgd_reg, chgd_row, chgd_col, clues(mask), vdesc);
+    explain_solve_cell(g, chgd);
+}
+
+/*********************************/
+/* Explain initial puzzle state. */
+/*********************************/
+static void explain_markup()
+{
+    fprintf(solnfile, "\n");
+    explain_indent(solnfile);
+    fprintf(solnfile, "Assume all cells may contain any values in the range: [1 - 9]\n");
+}
+
+/************************/
+/* Explain given clues. */
+/************************/
+static void explain_given(int cell, char val)
+{
+    int cell_row, cell_col;
+    
+    cell_row = map[cell].row+1;
+    cell_col = map[cell].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Cell at row %d, col %d is given clue value %c\n", cell_row, cell_col, val);
+}
+
+/*******************************************/
+/* Explain region/row/column interactions. */
+/*******************************************/
+static void explain_vector_elim(char *desc, int i, int cell, int val, int region)
+{
+    int cell_row, cell_col;
+    
+    cell_row = map[cell].row+1;
+    cell_col = map[cell].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Candidate %s removed from cell at row %d, col %d because it aligns along %s %d in region %d\n",
+            clues(val), cell_row, cell_col, desc, i+1, region+1);
+}
+
+/******************************************************************/
+/* Explain the current impasse reached during vector elimination. */
+/******************************************************************/
+static void explain_vector_impasse(grid *g, char *desc, int i, int cell, int val, int region)
+{
+    int cell_row, cell_col;
+    
+    cell_row = map[cell].row+1;
+    cell_col = map[cell].col+1;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Impasse at cell at row %d, col %d because candidate %s aligns along %s %d in region %d\n",
+            cell_row, cell_col, clues(val), desc, i+1, region+1);
+    explain_current_markup(g);
+}
+
+/*****************************************************************/
+/* Explain the current impasse reached during tuple elimination. */
+/*****************************************************************/
+static void explain_tuple_impasse(grid *g, char *desc, int elt, int tuple, int count, int bits)
+{
+    explain_indent(solnfile);
+    fprintf(solnfile, "Impasse in %s %d because too many (%d) cells have %d-valued %s\n",
+            desc, elt+1, count, bits, clues(tuple));
+    explain_current_markup(g);
+}
+
+/*********************************************************************/
+/* Explain the removal of a tuple of candidate solutions from a cell */
+/*********************************************************************/
+static void explain_tuple_elim(char *desc, int elt, int tuple, int cell)
+{
+    explain_indent(solnfile);
+    fprintf(solnfile, "Values of %s in %s %d removed from cell at row %d, col %d\n",
+            clues(tuple), desc, elt+1, map[cell].row+1, map[cell].col+1);
+    
+}
+
+/**************************************************/
+/* Indicate that a viable solution has been found */
+/**************************************************/
+static void explain_soln_found(grid *g)
+{
+    char buf[90];
+    
+    fprintf(solnfile, "\n");
+    explain_indent(solnfile);
+    fprintf(solnfile, "Solution found: %s\n", format_answer(g, buf));
+    print_grid(buf, solnfile);
+    fprintf(solnfile, "\n");
+}
+
+/***************************/
+/* Show the initial puzzle */
+/***************************/
+static void explain_grid(grid *g)
+{
+    char buf[90];
+    
+    fprintf(solnfile, "Initial puzzle: %s\n", format_answer(g, buf));
+    print_grid(buf, solnfile);
+    explain_current_markup(g);
+    fprintf(solnfile, "\n");
+}
+
+/*************************************************/
+/* Explain attempt at a trial and error solution */
+/*************************************************/
+static void explain_trial(int cell, int value)
+{
+    explain_indent(solnfile);
+    fprintf(solnfile, "Attempt trial where cell at row %d, col %d is assigned value %s\n",
+            map[cell].row+1, map[cell].col+1, clues(value));
+}
+
+/**********************************************/
+/* Explain back out of current trial solution */
+/**********************************************/
+static void explain_backtrack()
+{
+    if (lvl <= 1) return;
+    
+    explain_indent(solnfile);
+    fprintf(solnfile, "Backtracking\n\n");
+}
+
+#define EXPLAIN_MARKUP                                 if (explain) explain_markup()
+#define EXPLAIN_CURRENT_MARKUP(g)                      if (explain) explain_current_markup((g))
+#define EXPLAIN_GIVEN(cell, val)	               if (explain) explain_given((cell), (val))
+#define EXPLAIN_MARKUP_ELIM(g, chgd, clue)             if (explain) explain_markup_elim((g), (chgd), (clue))
+#define EXPLAIN_MARKUP_SOLVE(g, cell)                  if (explain) explain_solve_cell((g), (cell))
+#define EXPLAIN_MARKUP_IMPASSE(g, chgd, clue)          if (explain) explain_markup_impasse((g), (chgd), (clue))
+#define EXPLAIN_SINGLETON(g, chgd, mask, vdesc)        if (explain) explain_singleton((g), (chgd), (mask), (vdesc))
+#define EXPLAIN_VECTOR_ELIM(desc, i, cell, v, r)       if (explain) explain_vector_elim((desc), (i), (cell), (v), (r))
+#define EXPLAIN_VECTOR_IMPASSE(g, desc, i, cell, v, r) if (explain) explain_vector_impasse((g), (desc), (i), (cell), (v), (r))
+#define EXPLAIN_VECTOR_SOLVE(g, cell)                  if (explain) explain_solve_cell((g), (cell))
+#define EXPLAIN_TUPLE_IMPASSE(g, desc, j, c, count, i) if (explain) explain_tuple_impasse((g), (desc), (j), (c), (count), (i))
+#define EXPLAIN_TUPLE_ELIM(desc, j, c, cell)           if (explain) explain_tuple_elim((desc), (j), (c), (cell))
+#define EXPLAIN_TUPLE_SOLVE(g, cell)                   if (explain) explain_solve_cell((g), (cell))
+#define EXPLAIN_SOLN_FOUND(g)			       if (explain) explain_soln_found((g));
+#define EXPLAIN_GRID(g)			               if (explain) explain_grid((g));
+#define EXPLAIN_TRIAL(cell, val)		       if (explain) explain_trial((cell), (val));
+#define EXPLAIN_BACKTRACK                              if (explain) explain_backtrack();
+#define EXPLAIN_INDENT(h)			       if (explain) explain_indent((h))
+
+#else
+
+#define EXPLAIN_MARKUP
+#define EXPLAIN_CURRENT_MARKUP(g)
+#define EXPLAIN_GIVEN(cell, val)
+#define EXPLAIN_MARKUP_ELIM(g, chgd, clue)
+#define EXPLAIN_MARKUP_SOLVE(g, cell)
+#define EXPLAIN_MARKUP_IMPASSE(g, chgd, clue)
+#define EXPLAIN_SINGLETON(g, chgd, mask, vdesc);
+#define EXPLAIN_VECTOR_ELIM(desc, i, cell, v, r)
+#define EXPLAIN_VECTOR_IMPASSE(g, desc, i, cell, v, r)
+#define EXPLAIN_VECTOR_SOLVE(g, cell)
+#define EXPLAIN_TUPLE_IMPASSE(g, desc, j, c, count, i)
+#define EXPLAIN_TUPLE_ELIM(desc, j, c, cell)
+#define EXPLAIN_TUPLE_SOLVE(g, cell)
+#define EXPLAIN_SOLN_FOUND(g)
+#define EXPLAIN_GRID(g)
+#define EXPLAIN_TRIAL(cell, val)
+#define EXPLAIN_BACKTRACK
+#define EXPLAIN_INDENT(h)
+
+#endif
+
+
+/*****************************************************/
+/* Initialize a grid to an empty state.              */
+/* At the start, all cells can have any value        */
+/* so set all 9 lower order bits in each cell.       */
+/* In effect, the 9x9 grid now has markup that       */
+/* specifies that each cell can assume any value     */
+/* of 1 through 9.                                   */
+/*****************************************************/
+
+static void init_grid(grid *g)
+{
+    int i;
+    
+    for (i = 0; i < PUZZLE_CELLS; i++) g->cell[i] = 0x01ff;
+    memset(g->cellflags, 0, PUZZLE_CELLS*sizeof(g->cellflags[0]));
+    g->exposed = 0;
+    g->givens = 0;
+    g->inc = 0;
+    g->maxlvl = 0;
+    g->score = 0;
+    g->solncount = 0;
+    g->reward = 1;
+    g->next = NULL;
+    g->tail = 0;
+    EXPLAIN_MARKUP;
+}
+
+/*****************************************************/
+/* Convert a puzzle from the input format,           */
+/* i.e. a string of 81 non-blank characters          */
+/* with ASCII digits '1' thru '9' specified          */
+/* for the givens, and non-numeric characters        */
+/* for the remaining cells. The string, read         */
+/* left-to-right fills the 9x9 Sudoku grid           */
+/* in left-to-right, top-to-bottom order.            */
+/*****************************************************/
+
+static void cvt_to_grid(grid *g, char *game)
+{
+    int i;
+    
+    init_grid(g);
+    
+    for (i = 0; i < PUZZLE_CELLS; i++) {
+        if (is_given(game[i])) {
+            /* warning -- ASCII charset assumed */
+            g->cell[i] = 1 << (game[i] - '1');
+            g->cellflags[i] = GIVEN;
+            g->givens += 1;
+            g->solved[g->exposed++] = i;
+            EXPLAIN_GIVEN(i, game[i]);
+        }
+    }
+    EXPLAIN_GRID(g);
+}
+
+/****************************************************************/
+/* Print the partially solved puzzle and all associated markup  */
+/* in 9x9 fashion.                                              */
+/****************************************************************/
+
+static void diagnostic_grid(grid *g, FILE *h)
+{
+    int i, j, flag;
+    short c;
+    char line1[40], line2[40], line3[40], cbuf1[5], cbuf2[5], cbuf3[5], outbuf[PUZZLE_CELLS+1];
+    
+    /* Sanity check */
+    for (flag = 1, i = 0; flag && i < PUZZLE_CELLS; i++) {
+        if (bitcount(g->cell[i]) != 1) {
+            flag = 0;
+        }
+    }
+    
+    /* Don't need to print grid with diagnostic markup? */
+    if (flag) {
+        format_answer(g, outbuf);
+        print_grid(outbuf, h);
+        fflush(h);
+        return;
+    }
+    
+    strlcpy(cbuf1, "   |", ARRAYSIZE(cbuf1));
+    strlcpy(cbuf2, cbuf1,  ARRAYSIZE(cbuf2));
+    strlcpy(cbuf3, cbuf1,  ARRAYSIZE(cbuf3));
+    fprintf(h, "\n");
+    
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        
+        *line1 = *line2 = *line3 = 0;
+        
+        for (j = 0; j < PUZZLE_DIM; j++) {
+            
+            c = g->cell[row[i][j]];
+            
+            if (bitcount(c) == 1) {
+                strlcpy(cbuf1, "   |", ARRAYSIZE(cbuf1));
+                strlcpy(cbuf2, cbuf1,  ARRAYSIZE(cbuf2));
+                strlcpy(cbuf3, cbuf1,  ARRAYSIZE(cbuf3));
+                cbuf2[1] = symtab[c];
+            }
+            else {
+                if (c & 1) cbuf1[0] = '*'; else cbuf1[0] = '.';
+                if (c & 2) cbuf1[1] = '*'; else cbuf1[1] = '.';
+                if (c & 4) cbuf1[2] = '*'; else cbuf1[2] = '.';
+             
