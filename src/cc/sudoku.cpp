@@ -864,4 +864,284 @@ static void diagnostic_grid(grid *g, FILE *h)
                 if (c & 1) cbuf1[0] = '*'; else cbuf1[0] = '.';
                 if (c & 2) cbuf1[1] = '*'; else cbuf1[1] = '.';
                 if (c & 4) cbuf1[2] = '*'; else cbuf1[2] = '.';
-             
+                if (c & 8) cbuf2[0] = '*'; else cbuf2[0] = '.';
+                if (c & 16) cbuf2[1] = '*'; else cbuf2[1] = '.';
+                if (c & 32) cbuf2[2] = '*'; else cbuf2[2] = '.';
+                if (c & 64) cbuf3[0] = '*'; else cbuf3[0] = '.';
+                if (c & 128) cbuf3[1] = '*'; else cbuf3[1] = '.';
+                if (c & 256) cbuf3[2] = '*'; else cbuf3[2] = '.';
+            }
+            
+            strlcat(line1, cbuf1,ARRAYSIZE(line1));
+            strlcat(line2, cbuf2,ARRAYSIZE(line2));
+            strlcat(line3, cbuf3,ARRAYSIZE(line3));
+        }
+        
+        EXPLAIN_INDENT(h);
+        fprintf(h, "+---+---+---+---+---+---+---+---+---+\n");
+        EXPLAIN_INDENT(h);
+        fprintf(h, "|%s\n", line1);
+        EXPLAIN_INDENT(h);
+        fprintf(h, "|%s\n", line2);
+        EXPLAIN_INDENT(h);
+        fprintf(h, "|%s\n", line3);
+    }
+    EXPLAIN_INDENT(h);
+    fprintf(h, "+---+---+---+---+---+---+---+---+---+\n"); fflush(h);
+}
+
+/***********************************************************************/
+/* Validate that a sudoku grid contains a valid solution. Return 1 if  */
+/* true, 0 if false. If the verbose argument is non-zero, then print   */
+/* reasons for invalidating the solution to stderr.                    */
+/***********************************************************************/
+
+static int validate(grid *g, int verbose)
+{
+    int i, j, regmask, rowmask, colmask, flag = 1;
+    
+    /* Sanity check */
+    for (i = 0; i < PUZZLE_CELLS; i++) {
+        if (bitcount(g->cell[i]) != 1) {
+            if (verbose) {
+                fprintf(rejects, "Cell %d at row %d, col %d has no unique soln.\n", 1+i, 1+map[i].row, 1+map[i].col); fflush(rejects);
+                flag = 0;
+            } else return 0;
+        }
+    }
+    
+    /* Check rows */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        for (rowmask = j = 0; j < PUZZLE_DIM; j++) {
+            if (bitcount(g->cell[row[i][j]]) == 1) rowmask |= g->cell[row[i][j]];
+        }
+        if (rowmask != 0x01ff) {
+            if (verbose) {
+                fprintf(rejects, "Row %d is inconsistent.\n", 1+i); fflush(rejects);
+                flag = 0;
+            } else return 0;
+        }
+    }
+    
+    /* Check columns */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        for (colmask = j = 0; j < PUZZLE_DIM; j++) {
+            if (bitcount(g->cell[col[i][j]]) == 1) colmask |= g->cell[col[i][j]];
+        }
+        if (colmask != 0x01ff) {
+            if (verbose) {
+                fprintf(rejects, "Column %d is inconsistent.\n", 1+i); fflush(rejects);
+                flag = 0;
+            } else return 0;
+        }
+    }
+    
+    /* Check 3x3 regions */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        for (regmask = j = 0; j < PUZZLE_DIM; j++) {
+            if (bitcount(g->cell[region[i][j]]) == 1) regmask |= g->cell[region[i][j]];
+        }
+        if (regmask != 0x01ff) {
+            if (verbose) {
+                fprintf(rejects, "Region %d is inconsistent.\n", 1+i); fflush(rejects);
+                flag = 0;
+            } else return 0;
+        }
+    }
+    
+    return flag;
+}
+
+/********************************************************************************/
+/* This function uses the cells with unique values, i.e. the given              */
+/* or subsequently discovered solution values, to eliminate said values         */
+/* as candidates in other as yet unsolved cells in the associated               */
+/* rows, columns, and 3x3 regions.                                              */
+/*                                                                              */
+/* The function has three possible return values:                               */
+/*   NOCHANGE - Markup did not change during the last pass,                     */
+/*   CHANGE   - Markup was modified, and                                        */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values */
+/********************************************************************************/
+
+static int mark_cells(grid *g)
+{
+    int i, chgflag, bc;
+    int const *r, *c, *reg;
+    short elt, mask, before;
+    
+    
+    chgflag = NOCHANGE;
+    
+    while (g->tail < g->exposed) {
+        
+        elt = g->solved[g->tail++];
+        
+        r = row[map[elt].row];
+        c = col[map[elt].col];
+        reg = region[map[elt].region];
+        
+        mask = ~g->cell[elt];
+        
+        for (i = 0; i < PUZZLE_DIM; i++) {
+            
+            if (r[i] != elt) {
+                
+                /* Get the cell value */
+                before = g->cell[r[i]];
+                
+                /* Eliminate this candidate value whilst preserving other candidate values */
+                g->cell[r[i]] &= mask;
+                
+                /* Did the cell change value? */
+                if (before != g->cell[r[i]]) {
+                    
+                    chgflag |= CHANGE;	/* Flag that puzzle markup was changed */
+                    g->score += g->inc;	/* More work means higher scoring      */
+                    
+                    if (!(bc = bitcount(g->cell[r[i]]))) {
+                        EXPLAIN_MARKUP_IMPASSE(g, r[i], elt);
+                        return STUCK;	/* Crap out if no candidates remain */
+                    }
+                    
+                    EXPLAIN_MARKUP_ELIM(g, r[i], elt);
+                    
+                    /* Check if we solved for this cell, i.e. bit count indicates a unique value */
+                    if (bc == 1) {
+                        g->cellflags[r[i]] = FOUND;	/* Mark cell as found  */
+                        g->score += g->reward;		/* Add to puzzle score */
+                        g->solved[g->exposed++] = r[i];
+                        EXPLAIN_MARKUP_SOLVE(g, r[i]);
+                    }
+                }
+            }
+            
+            if (c[i] != elt) {
+                
+                /* Get the cell value */
+                before = g->cell[c[i]];
+                
+                /* Eliminate this candidate value whilst preserving other candidate values */
+                g->cell[c[i]] &= mask;
+                
+                /* Did the cell change value? */
+                if (before != g->cell[c[i]]) {
+                    
+                    chgflag |= CHANGE;	/* Flag that puzzle markup was changed */
+                    g->score += g->inc;	/* More work means higher scoring      */
+                    
+                    if (!(bc = bitcount(g->cell[c[i]]))) {
+                        EXPLAIN_MARKUP_IMPASSE(g, c[i], elt);
+                        return STUCK;	/* Crap out if no candidates remain */
+                    }
+                    
+                    EXPLAIN_MARKUP_ELIM(g, c[i], elt);
+                    
+                    /* Check if we solved for this cell, i.e. bit count indicates a unique value */
+                    if (bc == 1) {
+                        g->cellflags[c[i]] = FOUND;	/* Mark cell as found  */
+                        g->score += g->reward;		/* Add to puzzle score */
+                        g->solved[g->exposed++] = c[i];
+                        EXPLAIN_MARKUP_SOLVE(g, c[i]);
+                    }
+                }
+            }
+            
+            if (reg[i] != elt) {
+                
+                /* Get the cell value */
+                before = g->cell[reg[i]];
+                
+                /* Eliminate this candidate value whilst preserving other candidate values */
+                g->cell[reg[i]] &= mask;
+                
+                /* Did the cell change value? */
+                if (before != g->cell[reg[i]]) {
+                    
+                    chgflag |= CHANGE;	/* Flag that puzzle markup was changed */
+                    g->score += g->inc;	/* More work means higher scoring      */
+                    
+                    if (!(bc = bitcount(g->cell[reg[i]]))) {
+                        EXPLAIN_MARKUP_IMPASSE(g, reg[i], elt);
+                        return STUCK;	/* Crap out if no candidates remain */
+                    }
+                    
+                    EXPLAIN_MARKUP_ELIM(g, reg[i], elt);
+                    
+                    /* Check if we solved for this cell, i.e. bit count indicates a unique value */
+                    if (bc == 1) {
+                        g->cellflags[reg[i]] = FOUND;	/* Mark cell as found  */
+                        g->score += g->reward;		/* Add to puzzle score */
+                        g->solved[g->exposed++] = reg[i];
+                        EXPLAIN_MARKUP_SOLVE(g, reg[i]);
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    return chgflag;
+}
+
+
+/*******************************************************************/
+/* Identify and "solve" all cells that, by reason of their markup, */
+/* can only assume one specific value, i.e. the cell is the only   */
+/* one in a row/column/region (specified by vector) that is        */
+/* able to assume a particular value.                              */
+/*                                                                 */
+/* The function has two possible return values:                    */
+/*   NOCHANGE - Markup did not change during the last pass,        */
+/*   CHANGE   - Markup was modified.                               */
+/*******************************************************************/
+
+static int find_singletons(grid *g, int const *vector, char *vdesc)
+{
+    int i, j, mask, hist[PUZZLE_DIM], value[PUZZLE_DIM], found = NOCHANGE;
+    
+    /* We are going to create a histogram of cell candidate values */
+    /* for the specified cell vector (row/column/region).          */
+    /* First set all buckets to zero.                              */
+    memset(hist, 0, sizeof(hist[0])*PUZZLE_DIM);
+    
+    /* For each cell in the vector... */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        
+        /* For each possible candidate value... */
+        for (mask = 1, j = 0; j < PUZZLE_DIM; j++) {
+            
+            /* If the cell may possibly assume this value... */
+            if (g->cell[vector[i]] & mask) {
+                
+                value[j] = vector[i];	/* Save the cell coordinate */
+                hist[j] += 1;		/* Bump bucket in histogram */
+            }
+            
+            mask <<= 1;	/* Next candidate value */
+        }
+    }
+    
+    /* Examine each bucket in the histogram... */
+    for (mask = 1, i = 0; i < PUZZLE_DIM; i++) {
+        
+        /* If the bucket == 1 and the cell is not already solved,  */
+        /* then the cell has a unique solution specified by "mask" */
+        if (hist[i] == 1 && !g->cellflags[value[i]]) {
+            
+            found = CHANGE;			/* Indicate that markup has been changed */
+            g->cell[value[i]] = mask;	/* Assign solution value to cell         */
+            g->cellflags[value[i]] = FOUND;	/* Mark cell as solved                   */
+            g->score += g->reward;		/* Bump puzzle score                     */
+            g->solved[g->exposed++] = value[i];
+            EXPLAIN_SINGLETON(g, value[i], mask, vdesc);
+        }
+        
+        mask <<= 1;		/* Get next candidate value */
+    }
+    
+    return found;
+}
+
+
+/****************************************************************
