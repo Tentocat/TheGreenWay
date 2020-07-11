@@ -1144,4 +1144,280 @@ static int find_singletons(grid *g, int const *vector, char *vdesc)
 }
 
 
-/****************************************************************
+/*******************************************************************/
+/* Find all cells with unique solutions (according to markup)      */
+/* and mark them as found. Do this for each row, column, and       */
+/* region.                                                         */
+/*                                                                 */
+/* The function has two possible return values:                    */
+/*   NOCHANGE - Markup did not change during the last pass,        */
+/*   CHANGE   - Markup was modified.                               */
+/*******************************************************************/
+
+static int eliminate_singles(grid *g)
+{
+    int i, found = NOCHANGE;
+    
+    /* Do rows */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        found |= find_singletons(g, row[i], (char *)"row");
+    }
+    
+    /* Do columns */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        found |= find_singletons(g, col[i], (char *)"column");
+    }
+    
+    /* Do regions */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        found |= find_singletons(g, region[i], (char *)"region");
+    }
+    
+    return found;
+}
+
+/********************************************************************************/
+/* Solves simple puzzles, i.e. single elimination                               */
+/*                                                                              */
+/* The function has three possible return values:                               */
+/*   NOCHANGE - Markup did not change during the last pass,                     */
+/*   CHANGE   - Markup was modified, and                                        */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values */
+/********************************************************************************/
+static int simple_solver(grid *g)
+{
+    int flag = NOCHANGE;
+    
+    /* Mark the unsolved cells with candidate solutions based upon the current set of "givens" and solved cells */
+    while ((flag |= mark_cells(g)) == CHANGE) {
+        
+        g->inc = 1;	     /* After initial markup, we start scoring for additional markup work */
+        
+        EXPLAIN_CURRENT_MARKUP(g);
+        
+        /* Continue to eliminate cells with unique candidate solutions from the game until */
+        /* elimination and repeated markup efforts produce no changes in the remaining     */
+        /* candidate solutions.                                                            */
+        if (eliminate_singles(g) == NOCHANGE) break;
+        
+        EXPLAIN_CURRENT_MARKUP(g);
+    }
+    
+    return flag;
+}
+
+/************************************************************************************/
+/* Test a region to see if the candidate solutions for a paticular number           */
+/* are confined to one row or column, and if so, eliminate                          */
+/* their occurences in the remainder of the given row or column.                    */
+/*                                                                                  */
+/* The function has three possible return values:                                   */
+/*   NOCHANGE - Markup did not change during the last pass,                         */
+/*   CHANGE   - Markup was modified, and                                            */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values     */
+/************************************************************************************/
+
+static int region_vector_elim(grid *g, int region_no, int num)
+{
+    int i, j, r, c, mask, t, found;
+    short rowhist[PUZZLE_DIM], colhist[PUZZLE_DIM];
+    
+    /* Init */
+    found = NOCHANGE;
+    memset(rowhist, 0, sizeof(rowhist[0])*PUZZLE_DIM);
+    memset(colhist, 0, sizeof(colhist[0])*PUZZLE_DIM);
+    
+    mask = 1 << num;
+    
+    /* Create histograms for row and column placements for the value being checked */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        j = region[region_no][i];
+        if ((g->cell[j] & mask)) {
+            rowhist[map[j].row] += 1;
+            colhist[map[j].col] += 1;
+        }
+    }
+    
+    /* Figure out if this number lies in only one row or column */
+    
+    /* Check rows first*/
+    r = c = -1;
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        if (rowhist[i]) {
+            if (r < 0) {
+                r = i;
+            }
+            else {
+                r = -1;
+                break;
+            }
+        }
+    }
+    
+    /* Now check columns */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        if (colhist[i]) {
+            if (c < 0) {
+                c = i;
+            }
+            else {
+                c = -1;
+                break;
+            }
+        }
+    }
+    
+    /* If the number is only in one row, then eliminate this number from the cells in the row outside of this region */
+    if (r >= 0) {
+        for (i = 0; i < PUZZLE_DIM; i++) {
+            j = row[r][i];
+            if (map[j].region != region_no && !g->cellflags[j]) {
+                t = g->cell[j];
+                if ((g->cell[j] &= ~mask) == 0) {
+                    EXPLAIN_VECTOR_IMPASSE(g, "row", r, j, mask, region_no);
+                    g->score += 10;
+                    return STUCK;
+                }
+                if (t != g->cell[j]) {
+                    found = CHANGE;
+                    g->score += g->inc;
+                    EXPLAIN_VECTOR_ELIM("row", r, j, mask, region_no);
+                    if (bitcount(g->cell[j]) == 1) {
+                        g->cellflags[j] = FOUND;
+                        g->score += g->reward;
+                        g->solved[g->exposed++] = j;
+                        EXPLAIN_VECTOR_SOLVE(g, j);
+                    }
+                }
+            }
+        }
+    }
+    
+    /* If the number is only in one column, then eliminate this number from the cells in the column outside of this region */
+    else if (c >= 0) {
+        for (i = 0; i < PUZZLE_DIM; i++) {
+            j = col[c][i];
+            if (map[j].region != region_no && !g->cellflags[j]) {
+                t = g->cell[j];
+                if ((g->cell[j] &= ~mask) == 0) {
+                    EXPLAIN_VECTOR_IMPASSE(g, "column", c, j, mask, region_no);
+                    g->score += 10;
+                    return STUCK;
+                }
+                if (t != g->cell[j]) {
+                    found = CHANGE;
+                    g->score += g->inc;
+                    EXPLAIN_VECTOR_ELIM("column", c, j, mask, region_no);
+                    if (bitcount(g->cell[j]) == 1) {
+                        g->cellflags[j] = FOUND;
+                        g->score += g->reward;
+                        g->solved[g->exposed++] = j;
+                        EXPLAIN_VECTOR_SOLVE(g, j);
+                    }
+                }
+            }
+        }
+    }
+    
+    if (found == CHANGE) {
+        g->score += 10;	/* Bump score for sucessfully invoking this rule */
+    }
+    
+    return found;
+}
+
+/**********************************************************************************/
+/* Test all regions to see if the possibilities for a number                      */
+/* are confined to specific rows or columns, and if so, eliminate                 */
+/* the occurence of candidate solutions from the remainder of the                 */
+/* specified row or column.                                                       */
+/*                                                                                */
+/* The function has three possible return values:                                 */
+/*   NOCHANGE - Markup did not change during the last pass,                       */
+/*   CHANGE   - Markup was modified, and                                          */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values   */
+/**********************************************************************************/
+
+static int vector_elimination(grid *g)
+{
+    int i, j, rc;
+    
+    /* For each region... */
+    for (rc = NOCHANGE, i = 0; i < PUZZLE_DIM && rc != STUCK; i++) {
+        
+        /* For each digit... */
+        for (j = 0; j < PUZZLE_DIM && rc != STUCK; j++) {
+            
+            /* Eliminate candidates outside of regions when a particular */
+            /* candidate value aligns itself to a row or column within   */
+            /* a 3x3 region.                                             */
+            rc |= region_vector_elim(g, i, j);
+        }
+    }
+    
+    return rc;
+}
+
+/**********************************************************************************/
+/* This function implements the rule that when a subset of cells                  */
+/* in a row/column/region contain matching subsets of candidate                   */
+/* solutions, i.e. 2 matching possibilities for 2 cells, 3                        */
+/* matching possibilities for 3 cells, etc., then those                           */
+/* candidates may be eliminated from the other cells in the                       */
+/* row, column, or region.                                                        */
+/*                                                                                */
+/* The function has three possible return values:                                 */
+/*   NOCHANGE - Markup did not change during the last pass,                       */
+/*   CHANGE   - Markup was modified, and                                          */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values   */
+/**********************************************************************************/
+
+static int elim_matches(grid *g, int const *cell_list, char *desc, int ndx)
+{
+    int i, j, k, e, count, rc, flag;
+    short c, mask, tmp, elts[PUZZLE_DIM], eliminated[PUZZLE_DIM];
+    static int counts[1<<PUZZLE_DIM];
+    
+    rc = NOCHANGE;
+    
+    /* Check for two and three valued subsets. Any more than that burns CPU cycles */
+    /* and just slows us down.                                                     */
+    for (i = 2; i < 4; i++) {
+        
+        flag = 0;
+        
+        /* Create histogram to detect cells with matching subsets */
+        for (j = 0; j < PUZZLE_DIM; j++) {
+            k = cell_list[j];
+            elts[j] = g->cell[k];			/* Copy original cell candidates */
+            
+            if (bitcount(g->cell[k]) == i) {
+                counts[g->cell[k]] += 1;        /* The bucket records the number of cells with this subset */
+            }
+        }
+        
+        /* For each cell in the list... */
+        for (e = j = 0; j < PUZZLE_DIM; j++) {
+            
+            c = g->cell[cell_list[j]];		/* Get cell's candidates */
+            
+            /* Check to see if we've already eliminated this subset */
+            for (k = 0; k < e; k++)
+                if (c == eliminated[k]) break;
+            if (e && k < e) continue;
+            
+            /* Get count from histogram bucket */
+            count = (int) (counts[c]);
+            
+            /* If too few solution candidates for the number of cells, then we're stuck */
+            if (count > i) {
+                EXPLAIN_TUPLE_IMPASSE(g, desc, ndx, c, count, i);
+                /* Clean up static array */
+                for (k = 0; k < 9; k++) counts[elts[k]] = 0;
+                g->score += 10;
+                return STUCK;
+            }
+            
+            /* Do candidate and cell counts match? */
+            if (count == i) {
+           
