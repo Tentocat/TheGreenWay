@@ -1717,4 +1717,389 @@ static void print_grid(char *sud, FILE *h)
     fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+45, PUZZLE_ORDER, PUZZLE_ORDER, sud+48, PUZZLE_ORDER, PUZZLE_ORDER, sud+51);
     
     EXPLAIN_INDENT(h);
- 
+    fprintf(h, "+---+---+---+\n");
+    
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+54, PUZZLE_ORDER, PUZZLE_ORDER, sud+57, PUZZLE_ORDER, PUZZLE_ORDER, sud+60);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+63, PUZZLE_ORDER, PUZZLE_ORDER, sud+66, PUZZLE_ORDER, PUZZLE_ORDER, sud+69);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+72, PUZZLE_ORDER, PUZZLE_ORDER, sud+75, PUZZLE_ORDER, PUZZLE_ORDER, sud+78);
+    
+    EXPLAIN_INDENT(h);
+    fprintf(h, "+---+---+---+\n");
+}
+
+/*****************************************************/
+/* Based upon the Left-to-Right-Top-to-Bottom puzzle */
+/* presented in "sbuf", create a 27 octal digit      */
+/* mask of the givens in the 28 character buffer     */
+/* pointed to by "mbuf." Return a pointer to mbuf.   */
+/*****************************************************/
+
+static char *cvt_to_mask(char *mbuf, char *sbuf)
+{
+    char *mask_buf = mbuf;
+    static const char *maskchar = "01234567";
+    int i, m;
+    
+    mask_buf[PUZZLE_DIM*3] = 0;
+    for (i = 0; i < PUZZLE_CELLS; i += 3) {
+        m = 0;
+        if (is_given(sbuf[i])) {
+            m |= 4;
+        }
+        else {
+            sbuf[i] = '0';
+        }
+        if (is_given(sbuf[i+1])) {
+            m |= 2;
+        }
+        else {
+            sbuf[i+1] = '0';
+        }
+        if (is_given(sbuf[i+2])) {
+            m |= 1;
+        }
+        else {
+            sbuf[i+2] = '0';
+        }
+        *mask_buf++ = maskchar[m];
+    }
+    return mbuf;
+}
+
+/*******************/
+/* Mainline logic. */
+/*******************/
+
+int dupree_solver(int32_t dispflag,int32_t *scorep,char *puzzle)
+{
+    int argc; char *argv[4];
+    int i, rc, bog, count, solved, unsolved, solncount=0, flag, prt_count, prt_num, prt_score, prt_answer, prt_depth, prt_grid, prt_mask, prt_givens, prt, len;
+    char *infile=0, *outfile=0, *rejectfile=0, inbuf[128], outbuf[128], mbuf[28];
+    grid g, *s=0;
+    FILE *h=0;
+    soln_list = NULL;
+    myname = (char *)"internal";
+    /* Get our command name from invoking command line
+    if ((myname = strrchr(argv[0], '/')) == NULL)
+        myname = argv[0];
+    else
+        myname++;
+    argc = 3;
+     argv[1] = "-p";
+     argv[2] = puzzle;
+     argv[3] = 0;*/
+    /* Print sign-on message to console */
+    //LogPrintf( "%s version %s\n", myname, SUDOKU_VERSION); fflush(stderr);
+    argc = 1;
+    /* Init */
+    h = 0;//stdin;
+    solnfile = stdout;
+    rejects = stderr;
+    rejectfile = infile = outfile = NULL;
+    rc = bog = prt_mask = prt_grid = prt_score = prt_depth = prt_answer = prt_count = prt_num = prt_givens = 0;
+    *inbuf = 0;
+#ifdef skip
+    /* Parse command line options */
+    while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
+        switch (opt) {
+            case '1':
+                enumerate_all = 0;		/* only find first soln */
+                break;
+            case 'a':
+                prt_answer = 1;		/* print solution */
+                break;
+            case 'c':
+                prt_count = 1;		/* number solutions */
+                break;
+            case 'd':
+                prt_depth = 1;
+                break;
+#ifdef EXPLAIN
+            case 'e':
+                explain = 1;
+                break;
+#endif
+            case 'f':
+                if (*inbuf) {		// -p and -f options are mutually exclusive
+                    LogPrintf( "The -p and -f options are mutually exclusive\n");
+                    usage();
+                    exit(1);
+                }
+                infile = optarg;	// get name of input file
+                break;
+            case 'G':
+                prt_grid = 1;
+                break;
+            case 'g':
+                prt_givens = 1;
+                break;
+            case 'm':
+                prt_mask = 1;
+                break;
+            case 'n':
+                prt_num = 1;
+                break;
+            case 'o':
+                outfile = optarg;
+                break;
+            case 'p':
+                if (infile) {
+                    LogPrintf( "The -p and -f options are mutually exclusive\n");
+                    usage();
+                    exit(1);
+                }
+                if (strlen(optarg) == PUZZLE_CELLS) {
+                    strlcpy(inbuf, optarg,,ARRAYSIZE(inbuf));
+                }
+                else {
+                    LogPrintf( "Invalid puzzle specified: %s\n", optarg);
+                    usage();
+                    exit(1);
+                }
+                h = NULL;
+                break;
+            case 'r':
+                rejectfile = optarg;
+                break;
+            case 's':
+                prt_score = 1;
+                break;
+            default:
+            case '?':
+                usage();
+                exit(1);
+        }
+    }
+    /* Anthing else on the command line is bogus */
+    if (argc > optind) {
+        LogPrintf( "Extraneous args: ");
+        for (i = optind; i < argc; i++) {
+            LogPrintf( "%s ", argv[i]);
+        }
+        LogPrintf( "\n\n");
+        usage();
+        exit(1);
+    }
+    
+    if (!enumerate_all && prt_score) {
+        LogPrintf( "Scoring is meaningless when multi-solution mode is disabled.\n");
+    }
+    
+    if (rejectfile && !(rejects = fopen(rejectfile, "w"))) {
+        LogPrintf( "Failed to open reject output file: %s\n", rejectfile);
+        exit(1);
+    }
+    
+    if (outfile && !(solnfile = fopen(outfile, "w"))) {
+        LogPrintf( "Failed to open solution output file: %s\n", outfile);
+        exit(1);
+    }
+    
+    /*if (infile && strcmp(infile, "-") && !(h = fopen(infile, "r"))) {
+     LogPrintf( "Failed to open input game file: %s\n", infile);
+     exit(1);
+     }
+     if (h) fgets(inbuf, 128, h);*/
+#endif
+    prt_answer = dispflag;		/* print solution */
+    //prt_count = dispflag;		/* number solutions */
+    prt_score = dispflag;
+    prt_givens = dispflag;
+    prt_num = dispflag;
+    /* Set prt flag if we're printing anything at all */
+    prt = prt_mask | prt_grid | prt_score | prt_depth | prt_answer | prt_num | prt_givens;
+    
+    strlcpy(inbuf,puzzle,ARRAYSIZE(inbuf));
+    count = solved = unsolved = 0;
+    //LogPrintf("inbuf.(%s)\n",inbuf);
+    while (*inbuf) {
+        
+        if ((len = (int32_t)strlen(inbuf)) && inbuf[len-1] == '\n') {
+            len -= 1;
+            inbuf[len] = 0;
+        }
+        
+        count += 1;
+        if (len != PUZZLE_CELLS) {
+            fprintf(rejects, "%d: %s bogus puzzle format\n", count, inbuf); fflush(rejects);
+            *inbuf = 0;
+            bog += 1;
+            //if (h) fgets(inbuf, 128, h);
+            continue;
+        }
+        
+        cvt_to_grid(&g, inbuf);
+        if (g.givens < 17) {
+            fprintf(rejects, "%d: %*.*s bogus puzzle has less than 17 givens\n", count, PUZZLE_CELLS, PUZZLE_CELLS, inbuf); fflush(rejects);
+            *inbuf = 0;
+            bog += 1;
+            //if (h) fgets(inbuf, 128, h);
+            continue;
+        }
+        
+        for (s = soln_list; s;) {
+            s = soln_list->next;
+            free(soln_list);
+            soln_list = s;
+        }
+        
+        flag = rsolve(&g, add_soln);
+        if (soln_list) {
+            solved++;
+            for (solncount = 0, s = soln_list; s; s = s->next) {
+                solncount += 1;
+                if (prt_num) {
+                    char nbuf[32];
+                    if (!enumerate_all)
+                        sprintf(nbuf, "%d: ", count);
+                    else
+                        sprintf(nbuf, "%d:%d ", count, solncount);
+                    fprintf(solnfile, "%-s", nbuf);
+                }
+                if (solncount > 1 || !enumerate_all) g.score = 0;
+                if (prt_score) fprintf(solnfile, "score: %-7d ", g.score);
+                if (prt_depth) fprintf(solnfile, "depth: %-3d ", g.maxlvl);
+                if (prt_answer || prt_grid) format_answer(s, outbuf);
+                if (prt_answer) fprintf(solnfile, "%s", outbuf);
+                if (prt_mask) fprintf(solnfile, " %s", cvt_to_mask(mbuf, inbuf));
+                if (prt_givens) fprintf(solnfile, " %d", g.givens);
+                if (prt_grid) print_grid(outbuf, solnfile);
+                if (prt) fprintf(solnfile, "\n");
+                if (s->next == NULL && prt_count) fprintf(solnfile, "count: %d\n", solncount);
+            }
+            if (solncount > 1 && enumerate_all) {
+                rc |= 1;
+            }
+            for (s = soln_list; s;) {
+                s = soln_list->next;
+                free(soln_list);
+                soln_list = s;
+            }
+        }
+        else {
+            unsolved++;
+            rc |= 1;
+            fprintf(rejects, "%d: %*.*s unsolved\n", count, PUZZLE_CELLS, PUZZLE_CELLS, inbuf); fflush(rejects);
+            diagnostic_grid(&g, rejects);
+#if defined(DEBUG)
+            mypause();
+#endif
+        }
+        
+        *inbuf = 0;
+        //if (h) fgets(inbuf, 128, h);
+    }
+    
+    //if (prt) fprintf(solnfile, "\nPuzzles: %d, Solved: %d, Unsolved: %d, Bogus: %d\n", count, solved, unsolved, bog);
+    *scorep = g.score;
+    return solncount;
+}
+// end https://github.com/attractivechaos/plb/blob/master/sudoku/incoming/sudoku_solver.c
+
+// start https://github.com/mentalmove/SudokuGenerator
+//
+//  main.c
+//  SudokuGenerator
+//
+//  Malte Pagel
+//
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <math.h>
+
+
+#define SMALL_LINE 3
+#define LINE 9
+#define TOTAL 81
+
+#define LIMIT 16777216
+
+#define SHOW_SOLVED 1
+
+
+struct dimensions_collection {
+    int row;
+    int column;
+    int small_square;
+};
+
+
+static int indices[TOTAL];
+static int riddle[TOTAL];
+static int solved[TOTAL];
+static int unsolved[TOTAL];
+static int tries_to_set = 0;
+static int taking_back;
+static int global_unset_count = 0;
+
+
+struct dimensions_collection get_collection(int);
+int contains_element(int*, int, int);
+void get_horizontal(int, int*);
+void get_vertical(int, int*);
+void get_square(int, int*);
+int set_values(int, int);
+void take_back(int);
+
+int show_solution(int*);
+
+
+int show_solution (int* solution) {
+    
+    int i;
+    int counter = 0;
+    
+    LogPrintf( " -----------------------------------\n" );
+    
+    for ( i = 0; i < TOTAL; i++ ) {
+        if ( i % LINE == 0 )
+            LogPrintf( "|" );
+        
+        if ( solution[i] ) {
+            LogPrintf( " %d ", solution[i]);
+            counter++;
+        }
+        else
+            LogPrintf( "   ");
+        
+        if ( i % LINE == (LINE - 1) ) {
+            LogPrintf( "|\n" );
+            if ( i != (TOTAL - 1) ) {
+                if ( i % (SMALL_LINE * LINE) == (SMALL_LINE * LINE - 1) )
+                    LogPrintf( "|-----------+-----------+-----------|\n" );
+                else
+                    LogPrintf( "|- - - - - -|- - - - - -|- - - - - -|\n" );
+            }
+        }
+        else {
+            if ( i % SMALL_LINE == (SMALL_LINE - 1) )
+                LogPrintf( "|");
+            else
+                LogPrintf( ":" );
+        }
+    }
+    
+    LogPrintf( " -----------------------------------" );
+    
+    return counter;
+}
+
+
+/**
+ * Takes a position inside the large square and returns
+ *		- the row number
+ *		- the column number
+ *		- the small square number
+ * where this position is situated in
+ */
+struct dimensions_collection get_collection (int index) {
+    struct dimensions_collection ret;
+    
+    ret.row = (int) (index / LINE);
+    ret.column = i
