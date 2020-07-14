@@ -1420,4 +1420,301 @@ static int elim_matches(grid *g, int const *cell_list, char *desc, int ndx)
             
             /* Do candidate and cell counts match? */
             if (count == i) {
-           
+                
+                /* Compute mask used to eliminate candidates from other cells */
+                mask = ~c;
+                
+                /* Record (for later) the values being eliminated */
+                eliminated[e++] = c;
+                
+                /* Eliminate candidates from the other cells in the list */
+                
+                /* For each cell... */
+                for (k = 0; k < PUZZLE_DIM; k++) {
+                    
+                    /* If the cell candidates do not exactly match the current subset... */
+                    if (c != g->cell[cell_list[k]] && !g->cellflags[cell_list[k]]) {
+                        
+                        /* Get cell candidates */
+                        tmp = g->cell[cell_list[k]];
+                        
+                        /* Eliminate candidates with our mask */
+                        g->cell[cell_list[k]] &= mask;
+                        
+                        /* Did the elimination change the candidates? */
+                        if (tmp != g->cell[cell_list[k]]) {
+                            
+                            /* Note the change and bump the score */
+                            flag = CHANGE;
+                            g->score += i;
+                            
+                            EXPLAIN_TUPLE_ELIM(desc, ndx, c, cell_list[k]);
+                            
+                            /* Did we solve the cell under consideration? */
+                            if (bitcount(g->cell[cell_list[k]]) == 1) {
+                                
+                                /* Mark cell as found and bump the score */
+                                g->cellflags[cell_list[k]] = FOUND;
+                                g->score += g->reward;
+                                g->solved[g->exposed++] = cell_list[k];
+                                EXPLAIN_TUPLE_SOLVE(g, cell_list[k]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        /* Cleanup the static histogram array */
+        for (j = 0; j < PUZZLE_DIM; j++) counts[elts[j]] = 0;
+        
+        rc |= flag;
+    }
+    
+    return rc;
+}
+
+/**********************************************************************************/
+/* Eliminate subsets from rows, columns, and regions.                             */
+/*                                                                                */
+/* The function has three possible return values:                                 */
+/*   NOCHANGE - Markup did not change during the last pass,                       */
+/*   CHANGE   - Markup was modified, and                                          */
+/*   STUCK    - Markup results are invalid, i.e. a cell has no candidate values   */
+/**********************************************************************************/
+
+static int mult_elimination(grid *g)
+{
+    int i, rc = NOCHANGE;
+    
+    /* Eliminate subsets from rows */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        rc |= elim_matches(g, row[i], (char *)"row", i);
+    }
+    
+    /* Eliminate subsets from columns */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        rc |= elim_matches(g, col[i], (char *)"column", i);
+    }
+    
+    /* Eliminate subsets from regions */
+    for (i = 0; i < PUZZLE_DIM; i++) {
+        rc |= elim_matches(g, region[i], (char *)"region", i);
+    }
+    
+    return rc;
+}
+
+/**************************************************/
+/* Entry point to the recursive solver algorithm. */
+/**************************************************/
+static int rsolve(grid *g, return_soln soln_callback)
+{
+    int i, j, min, c, weight, mask, flag = 0;
+    grid mygrid;
+    
+    /* Keep track of recursive depth */
+    lvl += 1;
+    if (lvl > g->maxlvl) g->maxlvl = lvl;
+    
+    for (;;) {
+        
+        /* Attempt a simple solution */
+        if (simple_solver(g) == STUCK) break;
+        
+        /* Check for solution */
+        if (g->exposed >= PUZZLE_CELLS) break;
+        
+        g->reward += 2;		/* Bump reward as we graduate to more "advanced" solving techniques */
+        
+        /* Eliminate tuples */
+        if ((flag = mult_elimination(g)) == CHANGE) {
+            EXPLAIN_CURRENT_MARKUP(g);
+            continue;
+        }
+        
+        /* Check if impasse */
+        if (flag == STUCK) break;
+        
+        /* Check for solution */
+        if (g->exposed >= PUZZLE_CELLS) break;
+        
+        /* Eliminate clues aligned within regions from exterior cells in rows or columns */
+        if ((flag = vector_elimination(g)) == CHANGE) {
+            EXPLAIN_CURRENT_MARKUP(g);
+            continue;
+        }
+        
+        /* Check if impasse */
+        if (flag == STUCK) break;
+        
+        /* Check for solution */
+        if (g->exposed >= PUZZLE_CELLS) break;
+        
+        g->reward += 5;		/* Bump reward as we are about to start trial soutions */
+        
+        /* Attempt a trial solution */
+        memcpy(&mygrid, g, sizeof(grid));	/* Make working copy of puzzle */
+        
+        /* Find the first cell with the smallest number of alternatives */
+        for (weight= 0, c = -1, min = PUZZLE_DIM, i = 0; i < PUZZLE_CELLS; i++) {
+            if (!mygrid.cellflags[i]) {
+                j = bitcount(mygrid.cell[i]);
+                weight += 1;
+                if (j < min) {
+                    min = j;
+                    c = i;
+                }
+            }
+        }
+        
+        mygrid.score += weight;	/* Add penalty to score */
+        
+        /* Cell at index 'c' will be our starting point */
+        if (c >= 0) for (mask = 1, i = 0; i < PUZZLE_DIM; i++) {
+            
+            /* Is this a candidate? */
+            if (mask & g->cell[c]) {
+                
+                EXPLAIN_TRIAL(c, mask);
+                
+                mygrid.score += (int)(((50.0 * lvl * weight) / (double)(PUZZLE_CELLS)) + 0.5);	/* Add'l penalty */
+                
+                /* Try one of the possible candidates for this cell */
+                mygrid.cell[c] = mask;
+                mygrid.cellflags[c] = FOUND;
+                mygrid.solved[mygrid.exposed++] = c;
+                
+                EXPLAIN_CURRENT_MARKUP(&mygrid);
+                flag = rsolve(&mygrid, soln_callback);	/* Recurse with working copy of puzzle */
+                
+                /* Did we find a solution? */
+                if (flag == FOUND && !enumerate_all) {
+                    EXPLAIN_BACKTRACK;
+                    lvl -= 1;
+                    return FOUND;
+                }
+                
+                /* Preserve score, solution count and recursive depth as we back out of recursion */
+                g->score = mygrid.score;
+                g->solncount = mygrid.solncount;
+                g->maxlvl = mygrid.maxlvl;
+                memcpy(&mygrid, g, sizeof(grid));
+            }
+            mask <<= 1;	/* Get next possible candidate */
+        }
+        
+        break;
+    }
+    
+    if (g->exposed == PUZZLE_CELLS && validate(g, 0)) {
+        soln_callback(g);
+        g->solncount += 1;
+        EXPLAIN_SOLN_FOUND(g);
+        EXPLAIN_BACKTRACK;
+        lvl -= 1;
+        flag = FOUND;
+    } else {
+        EXPLAIN_BACKTRACK;
+        lvl -= 1;
+        flag = STUCK;
+        if (!lvl && !g->solncount) validate(g, 1);		/* Print verbose diagnostic for insoluble puzzle */
+    }
+    
+    return flag;
+}
+
+/*****************************************************************/
+/* Add a puzzle solution to the singly linked list of solutions. */
+/* Crap out if no memory available.                              */
+/*****************************************************************/
+
+static int add_soln(grid *g)
+{
+    grid *tmp;
+    
+    if ((tmp = (grid *)malloc(sizeof(grid))) == NULL) {
+        LogPrintf( "Out of memory.\n");
+        exit(1);
+    }
+    memcpy(tmp, g, sizeof(grid));
+    tmp->next = soln_list;
+    soln_list = tmp;
+    return 0;
+}
+
+/************************************/
+/* Print hints as to command usage. */
+/************************************/
+
+static void usage()
+{
+    LogPrintf( "Usage:\n\t%s {-p puzzle | -f <puzzle_file>} [-o <outfile>]\n", myname);
+    LogPrintf( "\t\t[-r <reject_file>] [-1][-a][-c][-G][-g][-l][-m][-n][-s]\n");
+    LogPrintf( "where:\n\t-1\tSearch for first solution, otherwise all solutions are returned\n"
+            "\t-a\tRequests that the answer (solution) be printed\n"
+            "\t-c\tPrint a count of solutions for each puzzle\n"
+            "\t-d\tPrint the recursive trial depth required to solve the puzzle\n"
+#ifdef EXPLAIN
+            "\t-e\tPrint a step-by-step explanation of the solution(s)\n"
+#endif
+            "\t-f\tTakes an argument which specifes an input file\n\t\tcontaining one or more unsolved puzzles (default: stdin)\n"
+            "\t-G\tPrint the puzzle solution(s) in a 9x9 grid format\n"
+            "\t-g\tPrint the number of given clues\n"
+            "\t-m\tPrint an octal mask for the puzzle givens\n"
+            "\t-n\tNumber each result\n"
+            "\t-o\tSpecifies an output file for the solutions (default: stdout)\n"
+            "\t-p\tTakes an argument giving a single inline puzzle to be solved\n"
+            "\t-r\tSpecifies an output file for unsolvable puzzles\n\t\t(default: stderr)\n"
+            "\t-s\tPrint the puzzle's score or difficulty rating\n"
+            "\t-?\tPrint usage information\n\n");
+    LogPrintf( "The return code is zero if all puzzles had unique solutions,\n"
+            "(or have one or more solutions when -1 is specified) and non-zero\n"
+            "when no unique solution exists.\n");
+}
+
+/********************************************************/
+/* Print the puzzle as an 81 character string of digits */
+/********************************************************/
+
+static char *format_answer(grid *g, char *outbuf)
+{
+    int i;
+    
+    for (i = 0; i < PUZZLE_CELLS; i++)
+        outbuf[i] = symtab[g->cell[i]];
+    outbuf[i] = 0;
+    
+    return outbuf;
+}
+
+/*******************************************/
+/* Print the puzzle as a standard 9x9 grid */
+/*******************************************/
+
+static void print_grid(char *sud, FILE *h)
+{
+    
+    fprintf(h, "\n");
+    EXPLAIN_INDENT(h);
+    fprintf(h, "+---+---+---+\n");
+    
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud, PUZZLE_ORDER, PUZZLE_ORDER, sud+3, PUZZLE_ORDER, PUZZLE_ORDER, sud+6);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+9, PUZZLE_ORDER, PUZZLE_ORDER, sud+12, PUZZLE_ORDER, PUZZLE_ORDER, sud+15);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+18, PUZZLE_ORDER, PUZZLE_ORDER, sud+21, PUZZLE_ORDER, PUZZLE_ORDER, sud+24);
+    
+    EXPLAIN_INDENT(h);
+    fprintf(h, "+---+---+---+\n");
+    
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+27, PUZZLE_ORDER, PUZZLE_ORDER, sud+30, PUZZLE_ORDER, PUZZLE_ORDER, sud+33);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+36, PUZZLE_ORDER, PUZZLE_ORDER, sud+39, PUZZLE_ORDER, PUZZLE_ORDER, sud+42);
+    EXPLAIN_INDENT(h);
+    fprintf(h, "|%*.*s|%*.*s|%*.*s|\n", PUZZLE_ORDER, PUZZLE_ORDER, sud+45, PUZZLE_ORDER, PUZZLE_ORDER, sud+48, PUZZLE_ORDER, PUZZLE_ORDER, sud+51);
+    
+    EXPLAIN_INDENT(h);
+ 
