@@ -2480,4 +2480,258 @@ void sudoku_gen(uint8_t key32[32],uint8_t unsolved[9][9],uint32_t srandi)
 //////////////////////// start of CClib interface
 // ./komodod -ac_name=SUDOKU -ac_supply=1000000 -pubkey=<yourpubkey> -addnode=5.9.102.210 -gen -genproclimit=1 -ac_cclib=sudoku -ac_perc=10000000 -ac_reward=100000000 -ac_cc=60000 -ac_script=2ea22c80203d1579313abe7d8ea85f48c65ea66fc512c878c0d0e6f6d54036669de940febf8103120c008203000401cc &
 /* cclib "gen" 17 \"10\"
- 5d13c1ad80daf37215c748
+ 5d13c1ad80daf37215c74809a36720c2ada90bacadb2e10bf0866092ce558432
+*/
+
+/* cclib "txidinfo" 17 \"5d13c1ad80daf37215c74809a36720c2ada90bacadb2e10bf0866092ce558432\"
+{
+    "result": "success",
+    "txid": "5d13c1ad80daf37215c74809a36720c2ada90bacadb2e10bf0866092ce558432",
+    "result": "success",
+    "amount": 1.00000000,
+    "unsolved": "46-8---15-75-61-3----4----8-1--75-----3--24----2-----6-4----------73----------36-",
+    "name": "sudoku",
+    "method": "txidinfo"
+}*/
+
+/* cclib "pending" 17
+{
+    "result": "success",
+    "name": "sudoku",
+    "method": "pending",
+    "pending": [
+                "5d13c1ad80daf37215c74809a36720c2ada90bacadb2e10bf0866092ce558432"
+                ]
+}*/
+
+/*
+ cclib "solution" 17 \"[%22fdc9409741f2ede29307da1a06438da0ea6f8d885d2d5c3199c4ef541ec1b5fd%22,%22469823715875961234231457698914675823653182479782394156346219587528736941197548362%22,1548777525,1548777526,...]\"
+ {
+ "name": "sudoku",
+ "method": "solution",
+ "sudokuaddr": "RSeoPJvMUSLfUHM1BomB97geW9zPznwHXk",
+ "amount": 1.00000000,
+ "result": "success",
+ "hex": "0400008085202f8901328455ce926086f00be1b2adac0ba9adc22067a30948c71572f3da80adc1135d010000007b4c79a276a072a26ba067a565802102c57d40c1ddc92a5246a937bd7338823f1e8c916b137f2092d38cf250d74cb5ab8140f92d54f611aa3cb3d187eaadd56b06f3a8c0f5fba23956b26fdefc6038d9b6282de38525f72ebd8945a7994cef63ebca711ecf8fe6baeefcc218cf58efb59dc2a100af03800111a10001ffffffff02f0b9f505000000002321039433dc3749aece1bd568f374a45da3b0bc6856990d7da3cd175399577940a775ac0000000000000000fd9f016a4d9b01115351343639383233373135383735393631323334323331343537363938393134363735383233363533313832343739373832333934313536333436323139353837353238373336393431313937353438333632fd4401000000005c5078355c50783600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000"
+ }
+ 
+ cclib solution 17 \"[%224d50336780d5a300a1f01b12fe36f46a82f3b9935bb115e01e0113dc4f337aae%22,%22234791685716258943589643712865934127341827596927516438492375861178462359653189274%22,0,0,1548859143,1548859146,0,1548859146,0,1548859148,1548859149,0,1548859151,1548859152,0,1548859154,1548859155,1548859158,1548859159,0,0,0,1548859161,1548859163,0,1548859164,1548859168,0,1548859168,1548859170,1548859172,1548859172,1548859175,0,0,1548859176,0,0,1548859178,1548859178,0,0,1548859180,1548859181,1548859183,1548859184,1548859185,1548859186,1548859188,1548859190,1548859191,1548859192,1548859192,0,0,1548859195,1548859196,1548859197,1548859198,0,0,1548859199,1548859202,1548859202,0,1548859204,1548859205,1548859206,1548859209,1548859210,1548859211,1548859212,0,1548859214,1548859216,0,1548859217,1548859218,1548859219,1548859220,0,1548859222,1548859222]\"
+ */
+
+int32_t sudoku_captcha(int32_t dispflag,uint32_t timestamps[81],int32_t height)
+{
+    int32_t i,solvetime,diff,avetime,n = 0,retval = 0; uint64_t variance = 0; std::vector<uint32_t> list;
+    for (i=0; i<81; i++)
+    {
+        if ( timestamps[i] != 0 )
+        {
+            list.push_back(timestamps[i]);
+            n++;
+        }
+    }
+    if ( n > 81/2 )
+    {
+        std::sort(list.begin(),list.end());
+        solvetime = (list[n-1] - list[0]);
+        if ( list[0] >= list[n-1] )
+        {
+            LogPrintf("list[0] %u vs list[%d-1] %u\n",list[0],n,list[n-1]);
+            retval = -1;
+        }
+        else if ( list[n-1] > chainActive.LastTip()->nTime+200 )
+            retval = -2;
+        else if ( solvetime >= 777 )
+            retval = 0;
+        else
+        {
+            avetime = (solvetime / (n-1));
+            if ( avetime == 0 )
+                retval = -3;
+            for (i=0; i<n-1; i++)
+            {
+                diff = (list[i+1] - list[i]);
+                if ( dispflag != 0 )
+                    LogPrintf("%d ",diff);
+                diff -= avetime;
+                variance += (diff * diff);
+            }
+            variance /= (n - 1);
+            if ( dispflag != 0 )
+                LogPrintf("solvetime.%d n.%d avetime.%d variance.%llu vs ave2 %d\n",solvetime,n,avetime,(long long)variance,avetime*avetime);
+            if ( variance < avetime )
+                retval = -5;
+            else return(0);
+        }
+    } else retval = -6;
+    if ( dispflag != 0 && retval != 0 )
+        LogPrintf("ERR >>>>>>>>>>>>>>> ht.%d retval.%d\n",height,retval);
+    if ( height <= 2036 )
+        return(0);
+    else return(retval);
+}
+
+CScript sudoku_genopret(uint8_t unsolved[9][9])
+{
+    CScript opret; uint8_t evalcode = EVAL_SUDOKU; std::vector<uint8_t> data; int32_t i,j;
+    for (i=0; i<9; i++)
+        for (j=0; j<9; j++)
+            data.push_back(unsolved[i][j]);
+    opret << OP_RETURN << E_MARSHAL(ss << evalcode << 'G' << data);
+    return(opret);
+}
+
+CScript sudoku_solutionopret(char *solution,uint32_t timestamps[81])
+{
+    CScript opret; uint8_t evalcode = EVAL_SUDOKU; std::string str(solution); std::vector<uint8_t> data; int32_t i;
+    for (i=0; i<81; i++)
+    {
+        data.push_back((timestamps[i] >> 24) & 0xff);
+        data.push_back((timestamps[i] >> 16) & 0xff);
+        data.push_back((timestamps[i] >> 8) & 0xff);
+        data.push_back(timestamps[i] & 0xff);
+    }
+    opret << OP_RETURN << E_MARSHAL(ss << evalcode << 'S' << str << data);
+    return(opret);
+}
+
+uint8_t sudoku_solutionopreturndecode(char solution[82],uint32_t timestamps[81],CScript scriptPubKey)
+{
+    std::vector<uint8_t> vopret; uint8_t *script,e,f; std::string str; std::vector<uint8_t> data; int32_t i,ind; uint32_t x;
+    GetOpReturnData(scriptPubKey,vopret);
+    script = (uint8_t *)vopret.data();
+    if ( vopret.size() > 2 && E_UNMARSHAL(vopret,ss >> e; ss >> f; ss >> str; ss >> data) != 0 && e == EVAL_SUDOKU && f == 'S' )
+    {
+        if ( data.size() == 81*sizeof(uint32_t) && str.size() == 81 )
+        {
+            strlcpy(solution,str.c_str(),82);
+            for (i=ind=0; i<81; i++)
+            {
+                if ( solution[i] < '1' || solution[i] > '9' )
+                    break;
+                x = data[ind++];
+                x <<= 8, x |= (data[ind++] & 0xff);
+                x <<= 8, x |= (data[ind++] & 0xff);
+                x <<= 8, x |= (data[ind++] & 0xff);
+                timestamps[i] = x;
+            }
+            if ( i == 81 )
+                return(f);
+        } else LogPrintf("datasize %d sol[%d]\n",(int32_t)data.size(),(int32_t)str.size());
+    }
+    return(0);
+}
+
+uint8_t sudoku_genopreturndecode(char *unsolved,CScript scriptPubKey)
+{
+    std::vector<uint8_t> vopret; uint8_t *script,e,f; std::vector<uint8_t> data; int32_t i;
+    GetOpReturnData(scriptPubKey,vopret);
+    script = (uint8_t *)vopret.data();
+    if ( vopret.size() > 2 && E_UNMARSHAL(vopret,ss >> e; ss >> f; ss >> data) != 0 && e == EVAL_SUDOKU && f == 'G' )
+    {
+        if ( data.size() == 81 )
+        {
+            for (i=0; i<81; i++)
+                unsolved[i] = data[i] == 0 ? '-' : '0' + data[i];
+            unsolved[i] = 0;
+            return(f);
+        }
+    }
+    return(0);
+}
+
+UniValue sudoku_generate(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    UniValue result(UniValue::VOBJ); CPubKey sudokupk,pk; uint8_t privkey[32],unsolved[9][9],pub33[33]; uint32_t srandi; int32_t i,score; uint256 hash; char coinaddr[64],str[82],*jsonstr; uint64_t inputsum,amount,change=0; std::string rawtx;
+    amount = COIN;
+    /*if ( params != 0 )
+    {
+        if ( (jsonstr= jprint(params,0)) != 0 )
+        {
+            if ( jsonstr[0] == '"' && jsonstr[strlen(jsonstr)-1] == '"' )
+            {
+                jsonstr[strlen(jsonstr)-1] = 0;
+                jsonstr++;
+            }
+            amount = atof(jsonstr) * COIN + 0.0000000049;
+        }
+    }*/
+    result.push_back(Pair("result","success"));
+    result.push_back(Pair("name","sudoku"));
+    result.push_back(Pair("method","gen"));
+    hash = chainActive.LastTip()->GetBlockHash();
+    memcpy(&srandi,&hash,sizeof(srandi));
+    srandi ^= (uint32_t)time(NULL);
+    while ( 1 )
+    {
+        sudoku_gen(privkey,unsolved,srandi);
+        for (i=0; i<TOTAL; i++)
+            str[i] = '0' + unsolved[i/9][i%9];
+        str[i] = 0;
+        LogPrintf("solve: %s\n",str);
+        if ( dupree_solver(1,&score,str) == 1 )
+        {
+            amount = score * COIN;
+            break;
+        }
+    }
+    priv2addr(coinaddr,pub33,privkey);
+    pk = buf2pk(pub33);
+    sudokupk = GetUnspendable(cp,0);
+    result.push_back(Pair("srand",(int)srandi));
+    result.push_back(Pair("amount",ValueFromAmount(amount)));
+    if ( (inputsum= AddCClibInputs(cp,mtx,sudokupk,amount+2*txfee,16,cp->unspendableCCaddr,1)) >= amount+2*txfee )
+    {
+        //LogPrintf("inputsum %.8f\n",(double)inputsum/COIN);
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode,txfee,sudokupk));
+        mtx.vout.push_back(MakeCC1vout(cp->evalcode,amount,pk));
+        if ( inputsum > amount + 2*txfee )
+            change = (inputsum - amount - 2*txfee);
+        if ( change > txfee )
+        {
+            if ( change > 10000*COIN )
+            {
+                mtx.vout.push_back(MakeCC1vout(cp->evalcode,change/2,sudokupk));
+                mtx.vout.push_back(MakeCC1vout(cp->evalcode,change/2,sudokupk));
+            } else mtx.vout.push_back(MakeCC1vout(cp->evalcode,change,sudokupk));
+        }
+        rawtx = FinalizeCCTx(0,cp,mtx,pubkey2pk(Mypubkey()),txfee,sudoku_genopret(unsolved));
+        if ( rawtx.size() > 0 )
+        {
+            CMutableTransaction mtx;
+            result.push_back(Pair("hex",rawtx));
+            if ( DecodeHexTx(mtx,rawtx) != 0 )
+            {
+                CTransaction tx = CTransaction(mtx);
+                LOCK(cs_main);
+                if ( myAddtomempool(tx) != 0 )
+                {
+                    RelayTransaction(tx);
+                    result.push_back(Pair("txid",tx.GetHash().ToString()));
+                }
+            }
+        } else result.push_back(Pair("error","couldnt finalize CCtx"));
+    } else result.push_back(Pair("error","not enough SUDOKU funds"));
+    return(result);
+}
+
+UniValue sudoku_txidinfo(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    UniValue result(UniValue::VOBJ); int32_t numvouts; char CCaddr[64],str[65],*txidstr; uint256 txid,hashBlock; CTransaction tx; char unsolved[82]; CBlockIndex *pindex;
+    if ( params != 0 )
+    {
+        result.push_back(Pair("result","success"));
+        if ( (txidstr= jprint(params,0)) != 0 )
+        {
+            if ( txidstr[0] == '"' && txidstr[strlen(txidstr)-1] == '"' )
+            {
+                txidstr[strlen(txidstr)-1] = 0;
+                txidstr++;
+            }
+            //LogPrintf("params -> (%s)\n",txidstr);
+            decode_hex((uint8_t *)&txid,32,txidstr);
+            txid = revuint256(txid);
+            result.push_back(Pair("txid",txid.GetHex()));
+            if ( myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size()) > 1 )
+            {
+                if ( sudoku_genopr
