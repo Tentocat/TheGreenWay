@@ -2734,4 +2734,234 @@ UniValue sudoku_txidinfo(uint64_t txfee,struct CCcontract_info *cp,cJSON *params
             result.push_back(Pair("txid",txid.GetHex()));
             if ( myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size()) > 1 )
             {
-                if ( sudoku_genopr
+                if ( sudoku_genopreturndecode(unsolved,tx.vout[numvouts-1].scriptPubKey) == 'G' )
+                {
+                    result.push_back(Pair("result","success"));
+                    if ( (pindex= getblockindex(hashBlock)) != 0 )
+                        result.push_back(Pair("height",pindex->GetHeight()));
+                    Getscriptaddress(CCaddr,tx.vout[1].scriptPubKey);
+                    result.push_back(Pair("sudokuaddr",CCaddr));
+                    result.push_back(Pair("amount",ValueFromAmount(tx.vout[1].nValue)));
+                    result.push_back(Pair("unsolved",unsolved));
+                }
+                else
+                {
+                    result.push_back(Pair("result","error"));
+                    result.push_back(Pair("error","couldnt extract sudoku_generate opreturn"));
+                }
+            }
+            else
+            {
+                result.push_back(Pair("result","error"));
+                result.push_back(Pair("error","couldnt find txid"));
+            }
+        }
+    }
+    else
+    {
+        result.push_back(Pair("result","error"));
+        result.push_back(Pair("error","missing txid in params"));
+    }
+    result.push_back(Pair("name","sudoku"));
+    result.push_back(Pair("method","txidinfo"));
+    return(result);
+}
+
+UniValue sudoku_pending(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    UniValue result(UniValue::VOBJ),a(UniValue::VARR);
+    char coinaddr[64],unsolved[82]; int64_t nValue,total=0; uint256 txid,hashBlock; CTransaction tx; int32_t vout,numvouts; CPubKey sudokupk; CBlockIndex *pindex;
+    std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> > unspentOutputs;
+    sudokupk = GetUnspendable(cp,0);
+    GetCCaddress(cp,coinaddr,sudokupk);
+    SetCCunspents(unspentOutputs,coinaddr,true);
+    for (std::vector<std::pair<CAddressUnspentKey, CAddressUnspentValue> >::const_iterator it=unspentOutputs.begin(); it!=unspentOutputs.end(); it++)
+    {
+        txid = it->first.txhash;
+        vout = (int32_t)it->first.index;
+        //char str[65]; LogPrintf("%s check %s/v%d %.8f\n",coinaddr,uint256_str(str,txid),vout,(double)it->second.satoshis/COIN);
+        if ( it->second.satoshis != txfee || vout != 0 )
+            continue;
+        if ( myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size()) > 1 )
+        {
+            if ( (nValue= IsCClibvout(cp,tx,vout,coinaddr)) == txfee && myIsutxo_spentinmempool(ignoretxid,ignorevin,txid,vout) == 0 )
+            {
+                if ( sudoku_genopreturndecode(unsolved,tx.vout[numvouts-1].scriptPubKey) == 'G' )
+                {
+                    UniValue obj(UniValue::VOBJ);
+                    if ( (pindex= getblockindex(hashBlock)) != 0 )
+                        obj.push_back(Pair("height",pindex->GetHeight()));
+                    obj.push_back(Pair("amount",ValueFromAmount(tx.vout[1].nValue)));
+                    obj.push_back(Pair("txid",txid.GetHex()));
+                    a.push_back(obj);
+                    total += tx.vout[1].nValue;
+                }
+            }
+        }
+    }
+    result.push_back(Pair("result","success"));
+    result.push_back(Pair("name","sudoku"));
+    result.push_back(Pair("method","pending"));
+    result.push_back(Pair("pending",a));
+    result.push_back(Pair("numpending",(int64_t)a.size()));
+    result.push_back(Pair("total",ValueFromAmount(total)));
+    return(result);
+}
+
+UniValue sudoku_solution(uint64_t txfee,struct CCcontract_info *cp,cJSON *params)
+{
+    CMutableTransaction mtx = CreateNewContextualCMutableTransaction();
+    UniValue result(UniValue::VOBJ); int32_t i,j,good,ind,n,numvouts; uint256 txid; char *jsonstr,*newstr,*txidstr,coinaddr[64],checkaddr[64],CCaddr[64],*solution=0,unsolved[82]; CPubKey pk,mypk; uint8_t vals9[9][9],priv32[32],pub33[33]; uint32_t timestamps[81]; uint64_t balance,inputsum; std::string rawtx; CTransaction tx; uint256 hashBlock;
+    mypk = pubkey2pk(Mypubkey());
+    memset(timestamps,0,sizeof(timestamps));
+    result.push_back(Pair("name","sudoku"));
+    result.push_back(Pair("method","solution"));
+    good = 0;
+    if ( params != 0 )
+    {
+        if ( params != 0 && (n= cJSON_GetArraySize(params)) > 0 )
+        {
+            if ( n > 2 && n <= (sizeof(timestamps)/sizeof(*timestamps))+2 )
+            {
+                for (i=2; i<n; i++)
+                {
+                    timestamps[i-2] = juinti(params,i);
+                    //LogPrintf("%u ",timestamps[i]);
+                }
+                if ( (solution= jstri(params,1)) != 0 && strlen(solution) == 81 )
+                {
+                    for (i=ind=0; i<9; i++)
+                        for (j=0; j<9; j++)
+                        {
+                            if ( solution[ind] < '1' || solution[ind] > '9' )
+                            {
+                                result.push_back(Pair("result","error"));
+                                result.push_back(Pair("error","illegal solution"));
+                                return(result);
+                            }
+                            vals9[i][j] = solution[ind++] - '0';
+                        }
+                    sudoku_privkey(priv32,vals9);
+                    priv2addr(coinaddr,pub33,priv32);
+                    pk = buf2pk(pub33);
+                    GetCCaddress(cp,CCaddr,pk);
+                    result.push_back(Pair("sudokuaddr",CCaddr));
+                    balance = CCaddress_balance(CCaddr,1);
+                    result.push_back(Pair("amount",ValueFromAmount(balance)));
+                    if ( sudoku_captcha(1,timestamps,smartusd_nextheight()) < 0 )
+                    {
+                        result.push_back(Pair("result","error"));
+                        result.push_back(Pair("error","captcha failure"));
+                        return(result);
+                    }
+                    else
+                    {
+                        if ( (txidstr= jstri(params,0)) != 0 )
+                        {
+                            decode_hex((uint8_t *)&txid,32,txidstr);
+                            txid = revuint256(txid);
+                            result.push_back(Pair("txid",txid.GetHex()));
+                            if ( CCgettxout(txid,0,1,0) < 0 )
+                                result.push_back(Pair("error","already solved"));
+                            else if ( myGetTransaction(txid,tx,hashBlock) != 0 && (numvouts= tx.vout.size()) > 1 )
+                            {
+                                Getscriptaddress(checkaddr,tx.vout[1].scriptPubKey);
+                                if ( strcmp(checkaddr,CCaddr) != 0 )
+                                {
+                                    result.push_back(Pair("result","error"));
+                                    result.push_back(Pair("error","wrong solution"));
+                                    result.push_back(Pair("yours",CCaddr));
+                                    return(result);
+                                }
+                                if ( sudoku_genopreturndecode(unsolved,tx.vout[numvouts-1].scriptPubKey) == 'G' )
+                                {
+                                    for (i=0; i<81; i++)
+                                    {
+                                        if ( unsolved[i] < '1' || unsolved[i] > '9')
+                                            continue;
+                                        else if ( unsolved[i] != solution[i] )
+                                        {
+                                            LogPrintf("i.%d [%c] != [%c]\n",i,unsolved[i],solution[i]);
+                                            result.push_back(Pair("error","wrong sudoku solved"));
+                                            break;
+                                        }
+                                    }
+                                    if ( i == 81 )
+                                        good = 1;
+                                } else result.push_back(Pair("error","cant decode sudoku"));
+                            } else result.push_back(Pair("error","couldnt find sudoku"));
+                        }
+                        if ( good != 0 )
+                        {
+                            mtx.vin.push_back(CTxIn(txid,0,CScript()));
+                            if ( (inputsum= AddCClibInputs(cp,mtx,pk,balance,16,CCaddr,1)) >= balance )
+                            {
+                                mtx.vout.push_back(CTxOut(balance,CScript() << ParseHex(HexStr(mypk)) << OP_CHECKSIG));
+                                CCaddr2set(cp,cp->evalcode,pk,priv32,CCaddr);
+                                rawtx = FinalizeCCTx(0,cp,mtx,pubkey2pk(Mypubkey()),txfee,sudoku_solutionopret(solution,timestamps));
+                                if ( rawtx.size() > 0 )
+                                {
+                                    result.push_back(Pair("result","success"));
+                                    result.push_back(Pair("hex",rawtx));
+                                }
+                                else result.push_back(Pair("error","couldnt finalize CCtx"));
+                            } else result.push_back(Pair("error","couldnt find funds in solution address"));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                LogPrintf("n.%d params.(%s)\n",n,jprint(params,0));
+                result.push_back(Pair("error","couldnt get all params"));
+            }
+            return(result);
+        }
+        else
+        {
+            result.push_back(Pair("result","error"));
+            result.push_back(Pair("error","couldnt parse parameters"));
+            result.push_back(Pair("parameters",newstr));
+            return(result);
+        }
+    }
+    result.push_back(Pair("result","error"));
+    result.push_back(Pair("error","missing parameters"));
+    return(result);
+}
+
+int32_t sudoku_minval(uint32_t timestamps[81])
+{
+    int32_t i,ind = -1; uint32_t mintimestamp = 0xffffffff;
+    for (i=0; i<81; i++)
+        if ( timestamps[i] != 0 && timestamps[i] < mintimestamp )
+        {
+            mintimestamp = timestamps[i], ind = i;
+            //LogPrintf("%d ",i);
+        }
+    //LogPrintf("mintimestamp.%u\n",mintimestamp);
+    return(ind);
+}
+
+bool sudoku_validate(struct CCcontract_info *cp,int32_t height,Eval *eval,const CTransaction tx)
+{
+    static char laststr[512];
+    CScript scriptPubKey; std::vector<uint8_t> vopret; uint8_t *script,e,f,funcid; int32_t i,ind,errflag,dispflag,score,numvouts; char unsolved[82],solution[82],str[512]; uint32_t timestamps[81]; CTransaction vintx; uint256 hashBlock;
+    if ( (numvouts= tx.vout.size()) > 1 )
+    {
+        scriptPubKey = tx.vout[numvouts-1].scriptPubKey;
+        GetOpReturnData(scriptPubKey,vopret);
+        if ( vopret.size() > 2 )
+        {
+            script = (uint8_t *)vopret.data();
+            if ( script[0] == EVAL_SUDOKU )
+            {
+                switch ( script[1] )
+                {
+                    case 'G':
+                        if ( sudoku_genopreturndecode(unsolved,scriptPubKey) == 'G' )
+                        {
+                            //LogPrintf("unsolved.(%s)\n",unsolved);
+                            if ( dupree_solver(0,&score,unsolved) != 1 || score*COIN != tx.vout[1].nValue )
+                            {
+                                sprintf(str,"ht.%d score.%d vs %.8f %s",height,score,(double)tx.vout[1].nValue/COIN,
