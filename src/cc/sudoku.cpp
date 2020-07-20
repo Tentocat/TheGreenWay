@@ -2964,4 +2964,91 @@ bool sudoku_validate(struct CCcontract_info *cp,int32_t height,Eval *eval,const 
                             //LogPrintf("unsolved.(%s)\n",unsolved);
                             if ( dupree_solver(0,&score,unsolved) != 1 || score*COIN != tx.vout[1].nValue )
                             {
-                                sprintf(str,"ht.%d score.%d vs %.8f %s",height,score,(double)tx.vout[1].nValue/COIN,
+                                sprintf(str,"ht.%d score.%d vs %.8f %s",height,score,(double)tx.vout[1].nValue/COIN,tx.GetHash().ToString().c_str());
+                                if ( strcmp(str,laststr) != 0 )
+                                {
+                                    strlcpy(laststr,str,ARRAYSIZE(laststr));
+                                    LogPrintf("%s\n",str);
+                                }
+                                if ( strcmp(ASSETCHAINS_SYMBOL,"SUDOKU") != 0 || height > 2000 )
+                                    return eval->Invalid("mismatched sudoku value vs score");
+                                else return(true);
+                            } else return(true);
+                        }
+                        LogPrintf("height.%d txid.%s\n",height,tx.GetHash().ToString().c_str());
+                        return eval->Invalid("invalid generate opreturn");
+                    case 'S':
+                        sprintf(str,"SOLVED ht.%d %.8f %s",height,(double)tx.vout[0].nValue/COIN,tx.GetHash().ToString().c_str());
+                        if ( strcmp(str,laststr) != 0 )
+                        {
+                            strlcpy(laststr,str,ARRAYSIZE(laststr));
+                            LogPrintf("%s\n",str);
+                            dispflag = 1;
+                        } else dispflag = 0;
+                        if ( sudoku_solutionopreturndecode(solution,timestamps,scriptPubKey) == 'S' )
+                        {
+                            if ( tx.vin.size() > 1 && tx.vin[0].prevout.hash == tx.vin[1].prevout.hash && tx.vin[0].prevout.n == 0 && tx.vin[1].prevout.n == 1 && myGetTransaction(tx.vin[0].prevout.hash,vintx,hashBlock) != 0 )
+                            {
+                                if ( vintx.vout.size() > 1 && sudoku_genopreturndecode(unsolved,vintx.vout[vintx.vout.size()-1].scriptPubKey) == 'G' )
+                                {
+                                    for (i=errflag=0; i<81; i++)
+                                    {
+                                        if ( 0 && dispflag != 0 )
+                                            LogPrintf("%u ",timestamps[i]);
+                                        if ( (timestamps[i] != 0 && unsolved[i] >= '1' && unsolved[i] <= '9') || (timestamps[i] == 0 && (unsolved[i] < '1' || unsolved[i] > '9')) )
+                                            errflag++;
+                                    }
+                                    if ( errflag != 0 )
+                                    {
+                                        if ( dispflag != 0 )
+                                            LogPrintf("ht.%d errflag.%d %s\n",height,errflag,unsolved);
+                                        if ( (height != 1220 && height != 1383) || strcmp(ASSETCHAINS_SYMBOL,"SUDOKU") != 0  )
+                                            return eval->Invalid("invalid timestamp vs unsolved");
+                                    }
+                                    if ( dupree_solver(0,&score,unsolved) != 1 )
+                                    {
+                                        if ( dispflag != 0 )
+                                            LogPrintf("non-unique sudoku at ht.%d\n",height);
+                                        if ( strcmp(ASSETCHAINS_SYMBOL,"SUDOKU") != 0 )
+                                            return eval->Invalid("invalid sudoku with multiple solutions");
+                                    }
+                                    if ( dispflag != 0 )
+                                        LogPrintf("%s score.%d %s\n",solution,score,unsolved);
+                                    if ( sudoku_captcha(dispflag,timestamps,height) < 0 )
+                                        return eval->Invalid("failed captcha");
+                                    /*for (i=lasttime=0; i<81; i++)
+                                    {
+                                        if ( (ind= sudoku_minval(timestamps)) >= 0 )
+                                        {
+                                            unsolved[ind] = solution[ind];
+                                            if ( lasttime == 0 )
+                                                lasttime = timestamps[ind];
+                                            if ( dupree_solver(0,&score,unsolved) != 1 )
+                                                LogPrintf("i.%d ind.%d non-unique\n",i,ind);
+                                            if ( dispflag != 0 )
+                                                LogPrintf("%d.%d ",score,timestamps[ind]-lasttime);
+                                            lasttime = timestamps[ind];
+                                            timestamps[ind] = 0;
+                                        } else break;
+                                    }
+                                    if ( dispflag != 0 )
+                                        LogPrintf("scores convergence\n");*/
+                                    return(true);
+                                } else return eval->Invalid("invalid solution opret");
+                            }
+                            else if ( strcmp(ASSETCHAINS_SYMBOL,"SUDOKU") == 0 && height == 236 )
+                                return(true);
+                            else return eval->Invalid("invalid solution vin");
+                        }
+                        LogPrintf("solution ht.%d %s bad opret\n",height,tx.GetHash().ToString().c_str());
+                        return eval->Invalid("invalid solution opreturn");
+                    default: return eval->Invalid("invalid funcid");
+                }
+            } else return eval->Invalid("invalid evalcode");
+            
+        }
+    }
+    return eval->Invalid("not enough vouts");
+}
+
+
