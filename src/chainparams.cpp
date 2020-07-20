@@ -331,4 +331,229 @@ public:
         // The best chain should have at least this much work.
         // The value is the chain work of the SmartUSD testnet chain at height
         // 158,460, with best block hash:
-        // cebebb916288ed48cd8a359576d900c55
+        // cebebb916288ed48cd8a359576d900c550203883bf69fc8d5ed92c5d778a1e32
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000010000100");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0xe0a05455d89a54bb7c1b5bb785d6b1b7c5bda42ed4ce8dc19d68652ba8835954"); //130000
+
+        consensus.nAuxpowStartHeight = 128;
+        consensus.nAuxpowChainId = 0x0777;
+        consensus.fStrictChainId = false;
+        consensus.nLegacyBlocksBefore = -1;
+
+        consensus.rules.reset(new Consensus::TestNetConsensus());
+
+        pchMessageStart[0] = 0xca;
+        pchMessageStart[1] = 0x77;
+        pchMessageStart[2] = 0x70;
+        pchMessageStart[3] = 0xda;
+        nDefaultPort = 47333;
+        nPruneAfterHeight = 1000;
+
+        /*
+        {
+            // Search for Genesis Block candidate
+            uint32_t nPowLimitCompact = UintToArith256(consensus.powLimit).GetCompact();
+            arith_uint256 hashTarget = arith_uint256().SetCompact(nPowLimitCompact);
+            uint32_t nNonce = 0x0; uint32_t nTime = 1615075200; // Sun Mar 07 2021 00:00:00 GMT+0000
+
+            std::cerr << "Searching for Testnet Genesis block candidate ..." << std::endl;
+            std::cerr << "Target: 0x" << hashTarget.ToString() << std::endl;
+            while (true) {
+                genesis = CreateTestnetGenesisBlock(nTime, nNonce, nPowLimitCompact, 1, 50 * COIN);
+
+                if ( UintToArith256(genesis.GetHash()) <= hashTarget )
+                    break;
+                if ((genesis.nNonce & 0xFFFFF) == 0 ) {
+                    std::cerr << "nNonce 0x" << strprintf("%08x (%u)", nNonce, nNonce) << ": hash = 0x" << genesis.GetHash().ToString() << std::endl;
+                }
+                ++nNonce;
+                if (nNonce == 0) nTime++;
+            }
+
+            std::cerr << "genesis.nTime = " << genesis.nTime << std::endl;
+            std::cerr << "genesis.nNonce = 0x" << strprintf("%08x (%u)", nNonce, nNonce) << std::endl;
+            std::cerr << "genesis.nVersion = " << genesis.nVersion << std::endl;
+            std::cerr << "genesis.hashMerkleRoot = 0x" << genesis.hashMerkleRoot.ToString() << std::endl;
+            std::cerr << "genesis.GetHash = 0x" << genesis.GetHash().ToString() << std::endl;
+        }
+        */
+
+        genesis = CreateTestnetGenesisBlock(1615075200, 0x061b0d40, 0x1d0fffff, 1, 50 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x00000008847aeebcad7381740577f9076dce511e0c1b4978658802ba2b3b8781"));
+        assert(genesis.hashMerkleRoot == uint256S("0x7aec6215dcca9a09df51d0bab4cf9f43f52f0fbe680f26aeaa3dd45b188ef745"));
+
+        vFixedSeeds.clear();
+        vSeeds.clear();
+        // nodes with support for servicebits filtering should be at the top
+        vSeeds.emplace_back("seed.test.smartusd.org");
+
+        // https://en.bitcoin.it/wiki/List_of_address_prefixes
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,63); // updated for SmartFi (SFUSD) relaunch
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,85);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,188);
+        /* FIXME: Update these below.  */
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+
+        bech32_hrp = "ts";
+
+        vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+
+        fDefaultConsistencyChecks = false;
+        fRequireStandard = false;
+        fMineBlocksOnDemand = false;
+
+
+        checkpointData = {
+            {
+                /*{0, uint256S("00000004ccfcb7808a7c2216a0292061ede3e6281c27ff3b90814c85038b07f0")},*/
+            }
+        };
+
+        chainTxData = ChainTxData{
+            0,
+            0,
+            0.0
+        };
+
+        nUseLicensedMinersAfterHeight = 9999999;
+        vLicensedMinersPubkeys.clear();
+        vLicensedMinersPubkeys.emplace_back("020f6d2d0eb16d95f590bc1ea4e49097fa24c55b5d02839e64e602b46727fdf04e", 9999999); // SQpK545xFPmEyiEt9yjVCgqqZjrjVDoVfd
+        vLicensedMinersPubkeys.emplace_back("038c6fc023b625524bc475c0e7efe99d5e621e190c69e9b6cafeff94857bfdcdbe", 9999999); // SZSQXDpZFtZYijoASjfPzNUuVdf1VyLXH9
+        vLicensedMinersPubkeys.emplace_back("02729b51f9675a9ecb46f3e092e4c68ff569346bdcee759e313954f60e605ada28", 9999999); // ShXGwyEa6S7Gy5ZzwXsTHEynG2eJ1icgWj
+        // std::cerr << "vLicensedMinersPubkeys.size() = " << vLicensedMinersPubkeys.size() << std::endl;
+
+        assert(mapHistoricBugs.empty());
+        assert(!vLicensedMinersPubkeys.empty());
+    }
+
+    int DefaultCheckNameDB () const
+    {
+        return -1;
+    }
+};
+
+/**
+ * Regression test
+ */
+class CRegTestParams : public CChainParams {
+public:
+    CRegTestParams() {
+        strNetworkID = "regtest";
+        consensus.nCCActivationHeight = 0;
+        consensus.nSubsidyHalvingInterval = 150;
+        consensus.BIP16Height = 0; // always enforce P2SH BIP16 on regtest
+        consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
+        consensus.BIP34Hash = uint256();
+        consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
+        consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
+        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPowTargetTimespan = 30 * 60; // 30 minutes (60 blocks)
+        consensus.nPowTargetSpacing = 30; // 30 seconds
+        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.nMinDifficultySince = 0;
+        consensus.fPowNoRetargeting = true;
+        consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x00");
+
+        consensus.nAuxpowStartHeight = 0;
+        consensus.nAuxpowChainId = 0x0001;
+        consensus.fStrictChainId = true;
+        consensus.nLegacyBlocksBefore = 0;
+
+        consensus.rules.reset(new Consensus::RegTestConsensus());
+
+        pchMessageStart[0] = 0xdc;
+        pchMessageStart[1] = 0x11;
+        pchMessageStart[2] = 0x10;
+        pchMessageStart[3] = 0xda;
+        nDefaultPort = 47111;
+        nPruneAfterHeight = 1000;
+
+        genesis = CreateTestnetGenesisBlock(1615075200, 0x00000000, 0x207fffff, 1, 50 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x2038fa5a407cadf93f683635c446a4942de2cbc37097df1b1bf56e08458bf4e4"));
+        assert(genesis.hashMerkleRoot == uint256S("0x7aec6215dcca9a09df51d0bab4cf9f43f52f0fbe680f26aeaa3dd45b188ef745"));
+
+        vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
+        vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
+
+        fDefaultConsistencyChecks = true;
+        fRequireStandard = false;
+        fMineBlocksOnDemand = true;
+
+        checkpointData = {
+            {
+                {0, uint256S("1093283d7efb768e41bd2468de6a528096eca726c1d602ec8a85a69821593b29")},
+            }
+        };
+
+        chainTxData = ChainTxData{
+            0,
+            0,
+            0
+        };
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,63); // updated for SmartFi (SFUSD) relaunch
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,85);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,188);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+
+        bech32_hrp = "scrt";
+
+        assert(mapHistoricBugs.empty());
+    }
+
+    int DefaultCheckNameDB () const
+    {
+        return 0;
+    }
+};
+
+static std::unique_ptr<CChainParams> globalChainParams;
+
+const CChainParams &Params() {
+    assert(globalChainParams);
+    return *globalChainParams;
+}
+
+std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)
+{
+    if (chain == CBaseChainParams::MAIN)
+        return std::unique_ptr<CChainParams>(new CMainParams());
+    else if (chain == CBaseChainParams::TESTNET)
+        return std::unique_ptr<CChainParams>(new CTestNetParams());
+    else if (chain == CBaseChainParams::REGTEST)
+        return std::unique_ptr<CChainParams>(new CRegTestParams());
+    throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
+}
+
+void SelectParams(const std::string& network)
+{
+    SelectBaseParams(network);
+    globalChainParams = CreateChainParams(network);
+}
+
+void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout)
+{
+    globalChainParams->UpdateVersionBitsParameters(d, nStartTime, nTimeout);
+}
