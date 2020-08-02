@@ -82,4 +82,26 @@ typedef int32_t ssize_t;
 #endif
 #endif
 
-#if HAVE
+#if HAVE_DECL_STRNLEN == 0
+size_t strnlen( const char *start, size_t max_len);
+#endif // HAVE_DECL_STRNLEN
+
+#if HAVE_DECL_STRLCPY == 0
+size_t
+strlcpy(char *dst, const char *src, size_t dsize);
+#endif // HAVE_DECL_STRNLEN
+
+#if HAVE_DECL_STRLCAT == 0
+size_t
+strlcat(char *dst, const char *src, size_t dsize);
+#endif // HAVE_DECL_STRLCAT
+
+bool static inline IsSelectableSocket(const SOCKET& s) {
+#ifdef WIN32
+    return true;
+#else
+    return (s < FD_SETSIZE);
+#endif
+}
+
+#endif // BITCOIN_COMPAT_H
