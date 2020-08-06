@@ -1237,3 +1237,271 @@ ROTATE_ARGS
     add	h, y2		; h = h + S1 + CH + k + w
     mov	y2, a		; y2 = a
 	pshufb	XTMP4, SHUF_00BA	; XTMP4 = s1 {00BA}
+    or	y0, c		; y0 = a|c
+    add	d, h		; d = d + h + S1 + CH + k + w
+    and	y2, c		; y2 = a&c
+	paddd	XTMP0, XTMP4	; XTMP0 = {..., ..., W[1], W[0]}
+    and	y0, b		; y0 = (a|c)&b
+    add	h, y1		; h = h + S1 + CH + k + w + S0
+	;; compute high s1
+	pshufd	XTMP2, XTMP0, 01010000b	; XTMP2 = W[-2] {DDCC}
+    or	y0, y2		; y0 = MAJ = (a|c)&b)|(a&c)
+    add	h, y0		; h = h + S1 + CH + k + w + S0 + MAJ
+
+ROTATE_ARGS
+	movdqa	XTMP3, XTMP2	; XTMP3 = W[-2] {DDCC}
+    mov	y0, e		; y0 = e
+    ror	y0, (25-11)	; y0 = e >> (25-11)
+    mov	y1, a		; y1 = a
+	movdqa	X0,    XTMP2	; X0    = W[-2] {DDCC}
+    ror	y1, (22-13)	; y1 = a >> (22-13)
+    xor	y0, e		; y0 = e ^ (e >> (25-11))
+    mov	y2, f		; y2 = f
+    ror	y0, (11-6)	; y0 = (e >> (11-6)) ^ (e >> (25-6))
+	psrlq	XTMP2, 17	; XTMP2 = W[-2] ror 17 {xDxC}
+    xor	y1, a		; y1 = a ^ (a >> (22-13)
+    xor	y2, g		; y2 = f^g
+	psrlq	XTMP3, 19	; XTMP3 = W[-2] ror 19 {xDxC}
+    xor	y0, e		; y0 = e ^ (e >> (11-6)) ^ (e >> (25-6))
+    and	y2, e		; y2 = (f^g)&e
+    ror	y1, (13-2)	; y1 = (a >> (13-2)) ^ (a >> (22-2))
+	psrld	X0,    10	; X0 = W[-2] >> 10 {DDCC}
+    xor	y1, a		; y1 = a ^ (a >> (13-2)) ^ (a >> (22-2))
+    ror	y0, 6		; y0 = S1 = (e>>6) & (e>>11) ^ (e>>25)
+    xor	y2, g		; y2 = CH = ((f^g)&e)^g
+	pxor	XTMP2, XTMP3
+    ror	y1, 2		; y1 = S0 = (a>>2) ^ (a>>13) ^ (a>>22)
+    add	y2, y0		; y2 = S1 + CH
+    add	y2, [rsp + _XFER + 3*4]	; y2 = k + w + S1 + CH
+	pxor	X0, XTMP2	; X0 = s1 {xDxC}
+    mov	y0, a		; y0 = a
+    add	h, y2		; h = h + S1 + CH + k + w
+    mov	y2, a		; y2 = a
+	pshufb	X0, SHUF_DC00	; X0 = s1 {DC00}
+    or	y0, c		; y0 = a|c
+    add	d, h		; d = d + h + S1 + CH + k + w
+    and	y2, c		; y2 = a&c
+	paddd	X0, XTMP0	; X0 = {W[3], W[2], W[1], W[0]}
+    and	y0, b		; y0 = (a|c)&b
+    add	h, y1		; h = h + S1 + CH + k + w + S0
+    or	y0, y2		; y0 = MAJ = (a|c)&b)|(a&c)
+    add	h, y0		; h = h + S1 + CH + k + w + S0 + MAJ
+
+ROTATE_ARGS
+rotate_Xs
+%endm
+
+;; input is [rsp + _XFER + %1 * 4]
+%macro DO_ROUND 1
+    mov	y0, e		; y0 = e
+    ror	y0, (25-11)	; y0 = e >> (25-11)
+    mov	y1, a		; y1 = a
+    xor	y0, e		; y0 = e ^ (e >> (25-11))
+    ror	y1, (22-13)	; y1 = a >> (22-13)
+    mov	y2, f		; y2 = f
+    xor	y1, a		; y1 = a ^ (a >> (22-13)
+    ror	y0, (11-6)	; y0 = (e >> (11-6)) ^ (e >> (25-6))
+    xor	y2, g		; y2 = f^g
+    xor	y0, e		; y0 = e ^ (e >> (11-6)) ^ (e >> (25-6))
+    ror	y1, (13-2)	; y1 = (a >> (13-2)) ^ (a >> (22-2))
+    and	y2, e		; y2 = (f^g)&e
+    xor	y1, a		; y1 = a ^ (a >> (13-2)) ^ (a >> (22-2))
+    ror	y0, 6		; y0 = S1 = (e>>6) & (e>>11) ^ (e>>25)
+    xor	y2, g		; y2 = CH = ((f^g)&e)^g
+    add	y2, y0		; y2 = S1 + CH
+    ror	y1, 2		; y1 = S0 = (a>>2) ^ (a>>13) ^ (a>>22)
+    add	y2, [rsp + _XFER + %1 * 4]	; y2 = k + w + S1 + CH
+    mov	y0, a		; y0 = a
+    add	h, y2		; h = h + S1 + CH + k + w
+    mov	y2, a		; y2 = a
+    or	y0, c		; y0 = a|c
+    add	d, h		; d = d + h + S1 + CH + k + w
+    and	y2, c		; y2 = a&c
+    and	y0, b		; y0 = (a|c)&b
+    add	h, y1		; h = h + S1 + CH + k + w + S0
+    or	y0, y2		; y0 = MAJ = (a|c)&b)|(a&c)
+    add	h, y0		; h = h + S1 + CH + k + w + S0 + MAJ
+    ROTATE_ARGS
+%endm
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; void sha256_sse4(void *input_data, UINT32 digest[8], UINT64 num_blks)
+;; arg 1 : pointer to input data
+;; arg 2 : pointer to digest
+;; arg 3 : Num blocks
+section .text
+global sha256_sse4
+align 32
+sha256_sse4:
+    push	rbx
+%ifndef LINUX
+    push	rsi
+    push	rdi
+%endif
+    push	rbp
+    push	r13
+    push	r14
+    push	r15
+
+    sub	rsp,STACK_SIZE
+%ifndef LINUX
+    movdqa	[rsp + _XMM_SAVE + 0*16],xmm6	
+    movdqa	[rsp + _XMM_SAVE + 1*16],xmm7
+    movdqa	[rsp + _XMM_SAVE + 2*16],xmm8	
+    movdqa	[rsp + _XMM_SAVE + 3*16],xmm9	
+    movdqa	[rsp + _XMM_SAVE + 4*16],xmm10
+    movdqa	[rsp + _XMM_SAVE + 5*16],xmm11
+    movdqa	[rsp + _XMM_SAVE + 6*16],xmm12
+%endif
+
+    shl	NUM_BLKS, 6	; convert to bytes
+    jz	done_hash
+    add	NUM_BLKS, INP	; pointer to end of data
+    mov	[rsp + _INP_END], NUM_BLKS
+
+    ;; load initial digest
+    mov	a,[4*0 + CTX]
+    mov	b,[4*1 + CTX]
+    mov	c,[4*2 + CTX]
+    mov	d,[4*3 + CTX]
+    mov	e,[4*4 + CTX]
+    mov	f,[4*5 + CTX]
+    mov	g,[4*6 + CTX]
+    mov	h,[4*7 + CTX]
+
+    movdqa	BYTE_FLIP_MASK, [PSHUFFLE_BYTE_FLIP_MASK wrt rip]
+    movdqa	SHUF_00BA, [_SHUF_00BA wrt rip]
+    movdqa	SHUF_DC00, [_SHUF_DC00 wrt rip]
+
+loop0:
+    lea	TBL,[K256 wrt rip]
+
+    ;; byte swap first 16 dwords
+    COPY_XMM_AND_BSWAP	X0, [INP + 0*16], BYTE_FLIP_MASK
+    COPY_XMM_AND_BSWAP	X1, [INP + 1*16], BYTE_FLIP_MASK
+    COPY_XMM_AND_BSWAP	X2, [INP + 2*16], BYTE_FLIP_MASK
+    COPY_XMM_AND_BSWAP	X3, [INP + 3*16], BYTE_FLIP_MASK
+    
+    mov	[rsp + _INP], INP
+
+    ;; schedule 48 input dwords, by doing 3 rounds of 16 each
+    mov	SRND, 3
+align 16
+loop1:
+    movdqa	XFER, [TBL + 0*16]
+    paddd	XFER, X0
+    movdqa	[rsp + _XFER], XFER
+    FOUR_ROUNDS_AND_SCHED
+
+    movdqa	XFER, [TBL + 1*16]
+    paddd	XFER, X0
+    movdqa	[rsp + _XFER], XFER
+    FOUR_ROUNDS_AND_SCHED
+
+    movdqa	XFER, [TBL + 2*16]
+    paddd	XFER, X0
+    movdqa	[rsp + _XFER], XFER
+    FOUR_ROUNDS_AND_SCHED
+
+    movdqa	XFER, [TBL + 3*16]
+    paddd	XFER, X0
+    movdqa	[rsp + _XFER], XFER
+    add	TBL, 4*16
+    FOUR_ROUNDS_AND_SCHED
+
+    sub	SRND, 1
+    jne	loop1
+
+    mov	SRND, 2
+loop2:
+    paddd	X0, [TBL + 0*16]
+    movdqa	[rsp + _XFER], X0
+    DO_ROUND	0
+    DO_ROUND	1
+    DO_ROUND	2
+    DO_ROUND	3
+    paddd	X1, [TBL + 1*16]
+    movdqa	[rsp + _XFER], X1
+    add	TBL, 2*16
+    DO_ROUND	0
+    DO_ROUND	1
+    DO_ROUND	2
+    DO_ROUND	3
+
+    movdqa	X0, X2
+    movdqa	X1, X3
+
+    sub	SRND, 1
+    jne	loop2
+
+    addm	[4*0 + CTX],a
+    addm	[4*1 + CTX],b
+    addm	[4*2 + CTX],c
+    addm	[4*3 + CTX],d
+    addm	[4*4 + CTX],e
+    addm	[4*5 + CTX],f
+    addm	[4*6 + CTX],g
+    addm	[4*7 + CTX],h
+
+    mov	INP, [rsp + _INP]
+    add	INP, 64
+    cmp	INP, [rsp + _INP_END]
+    jne	loop0
+
+done_hash:
+%ifndef LINUX
+    movdqa	xmm6,[rsp + _XMM_SAVE + 0*16]
+    movdqa	xmm7,[rsp + _XMM_SAVE + 1*16]
+    movdqa	xmm8,[rsp + _XMM_SAVE + 2*16]
+    movdqa	xmm9,[rsp + _XMM_SAVE + 3*16]
+    movdqa	xmm10,[rsp + _XMM_SAVE + 4*16]
+    movdqa	xmm11,[rsp + _XMM_SAVE + 5*16]
+    movdqa	xmm12,[rsp + _XMM_SAVE + 6*16]
+%endif
+
+    add	rsp, STACK_SIZE
+
+    pop	r15
+    pop	r14
+    pop	r13
+    pop	rbp
+%ifndef LINUX
+    pop	rdi
+    pop	rsi
+%endif
+    pop	rbx
+
+    ret	
+    
+
+section .data
+align 64
+K256:
+    dd	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5
+    dd	0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5
+    dd	0xd807aa98,0x12835b01,0x243185be,0x550c7dc3
+    dd	0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174
+    dd	0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc
+    dd	0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da
+    dd	0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7
+    dd	0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967
+    dd	0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13
+    dd	0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85
+    dd	0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3
+    dd	0xd192e819,0xd6990624,0xf40e3585,0x106aa070
+    dd	0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5
+    dd	0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3
+    dd	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208
+    dd	0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+
+PSHUFFLE_BYTE_FLIP_MASK: ddq 0x0c0d0e0f08090a0b0405060700010203
+
+; shuffle xBxA -> 00BA
+_SHUF_00BA:              ddq 0xFFFFFFFFFFFFFFFF0b0a090803020100
+
+; shuffle xDxC -> DC00
+_SHUF_DC00:              ddq 0x0b0a090803020100FFFFFFFFFFFFFFFF
+*/
+
+#endif
