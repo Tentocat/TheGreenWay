@@ -673,4 +673,353 @@ INTEGER_encode_uper(asn_TYPE_descriptor_t *td,
 	INTEGER_t *st = (INTEGER_t *)sptr;
 	const uint8_t *buf;
 	const uint8_t *end;
-	asn_pe
+	asn_per_constraint_t *ct;
+	long value = 0;
+	unsigned long v = 0;
+
+	if(!st || st->size == 0) ASN__ENCODE_FAILED;
+
+	if(!constraints) constraints = td->per_constraints;
+	ct = constraints ? &constraints->value : 0;
+
+	er.encoded = 0;
+
+	if(ct) {
+		int inext = 0;
+		if(specs && specs->field_unsigned) {
+			unsigned long uval;
+			if(asn_INTEGER2ulong(st, &uval))
+				ASN__ENCODE_FAILED;
+			/* Check proper range */
+			if(ct->flags & APC_SEMI_CONSTRAINED) {
+				if(uval < (unsigned long)ct->lower_bound)
+					inext = 1;
+			} else if(ct->range_bits >= 0) {
+				if(uval < (unsigned long)ct->lower_bound
+				|| uval > (unsigned long)ct->upper_bound)
+					inext = 1;
+			}
+			ASN_DEBUG("Value %lu (%02x/%d) lb %lu ub %lu %s",
+				uval, st->buf[0], st->size,
+				ct->lower_bound, ct->upper_bound,
+				inext ? "ext" : "fix");
+			value = uval;
+		} else {
+			if(asn_INTEGER2long(st, &value))
+				ASN__ENCODE_FAILED;
+			/* Check proper range */
+			if(ct->flags & APC_SEMI_CONSTRAINED) {
+				if(value < ct->lower_bound)
+					inext = 1;
+			} else if(ct->range_bits >= 0) {
+				if(value < ct->lower_bound
+				|| value > ct->upper_bound)
+					inext = 1;
+			}
+			ASN_DEBUG("Value %ld (%02x/%d) lb %ld ub %ld %s",
+				value, st->buf[0], st->size,
+				ct->lower_bound, ct->upper_bound,
+				inext ? "ext" : "fix");
+		}
+		if(ct->flags & APC_EXTENSIBLE) {
+			if(per_put_few_bits(po, inext, 1))
+				ASN__ENCODE_FAILED;
+			if(inext) ct = 0;
+		} else if(inext) {
+			ASN__ENCODE_FAILED;
+		}
+	}
+
+
+	/* X.691-11/2008, #13.2.2, test if constrained whole number */
+	if(ct && ct->range_bits >= 0) {
+		/* #11.5.6 -> #11.3 */
+		ASN_DEBUG("Encoding integer %ld (%lu) with range %d bits",
+			value, value - ct->lower_bound, ct->range_bits);
+		v = value - ct->lower_bound;
+		if(uper_put_constrained_whole_number_u(po, v, ct->range_bits))
+			ASN__ENCODE_FAILED;
+		ASN__ENCODED_OK(er);
+	}
+
+	if(ct && ct->lower_bound) {
+		ASN_DEBUG("Adjust lower bound to %ld", ct->lower_bound);
+		/* TODO: adjust lower bound */
+		ASN__ENCODE_FAILED;
+	}
+
+	for(buf = st->buf, end = st->buf + st->size; buf < end;) {
+		ssize_t mayEncode = uper_put_length(po, end - buf);
+		if(mayEncode < 0)
+			ASN__ENCODE_FAILED;
+		if(per_put_many_bits(po, buf, 8 * mayEncode))
+			ASN__ENCODE_FAILED;
+		buf += mayEncode;
+	}
+
+	ASN__ENCODED_OK(er);
+}
+
+#endif	/* ASN_DISABLE_PER_SUPPORT */
+
+int
+asn_INTEGER2long(const INTEGER_t *iptr, long *lptr) {
+	uint8_t *b, *end;
+	size_t size;
+	long l;
+
+	/* Sanity checking */
+	if(!iptr || !iptr->buf || !lptr) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	/* Cache the begin/end of the buffer */
+	b = iptr->buf;	/* Start of the INTEGER buffer */
+	size = iptr->size;
+	end = b + size;	/* Where to stop */
+
+	if(size > sizeof(long)) {
+		uint8_t *end1 = end - 1;
+		/*
+		 * Slightly more advanced processing,
+		 * able to >sizeof(long) bytes,
+		 * when the actual value is small
+		 * (0x0000000000abcdef would yield a fine 0x00abcdef)
+		 */
+		/* Skip out the insignificant leading bytes */
+		for(; b < end1; b++) {
+			switch(*b) {
+			case 0x00: if((b[1] & 0x80) == 0) continue; break;
+			case 0xff: if((b[1] & 0x80) != 0) continue; break;
+			}
+			break;
+		}
+
+		size = end - b;
+		if(size > sizeof(long)) {
+			/* Still cannot fit the long */
+			errno = ERANGE;
+			return -1;
+		}
+	}
+
+	/* Shortcut processing of a corner case */
+	if(end == b) {
+		*lptr = 0;
+		return 0;
+	}
+
+	/* Perform the sign initialization */
+	/* Actually l = -(*b >> 7); gains nothing, yet unreadable! */
+	if((*b >> 7)) l = -1; else l = 0;
+
+	/* Conversion engine */
+	for(; b < end; b++)
+		l = (l << 8) | *b;
+
+	*lptr = l;
+	return 0;
+}
+
+int
+asn_INTEGER2ulong(const INTEGER_t *iptr, unsigned long *lptr) {
+	uint8_t *b, *end;
+	unsigned long l;
+	size_t size;
+
+	if(!iptr || !iptr->buf || !lptr) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	b = iptr->buf;
+	size = iptr->size;
+	end = b + size;
+
+	/* If all extra leading bytes are zeroes, ignore them */
+	for(; size > sizeof(unsigned long); b++, size--) {
+		if(*b) {
+			/* Value won't fit unsigned long */
+			errno = ERANGE;
+			return -1;
+		}
+	}
+
+	/* Conversion engine */
+	for(l = 0; b < end; b++)
+		l = (l << 8) | *b;
+
+	*lptr = l;
+	return 0;
+}
+
+int
+asn_ulong2INTEGER(INTEGER_t *st, unsigned long value) {
+	uint8_t *buf;
+	uint8_t *end;
+	uint8_t *b;
+	int shr;
+
+	if(value <= LONG_MAX)
+		return asn_long2INTEGER(st, value);
+
+	buf = (uint8_t *)MALLOC(1 + sizeof(value));
+	if(!buf) return -1;
+
+	end = buf + (sizeof(value) + 1);
+	buf[0] = 0;
+	for(b = buf + 1, shr = (sizeof(long)-1)*8; b < end; shr -= 8, b++)
+		*b = (uint8_t)(value >> shr);
+
+	if(st->buf) FREEMEM(st->buf);
+	st->buf = buf;
+	st->size = 1 + sizeof(value);
+
+	return 0;
+}
+
+int
+asn_long2INTEGER(INTEGER_t *st, long value) {
+	uint8_t *buf, *bp;
+	uint8_t *p;
+	uint8_t *pstart;
+	uint8_t *pend1;
+	int littleEndian = 1;	/* Run-time detection */
+	int add;
+
+	if(!st) {
+		errno = EINVAL;
+		return -1;
+	}
+
+	buf = (uint8_t *)MALLOC(sizeof(value));
+	if(!buf) return -1;
+
+	if(*(char *)&littleEndian) {
+		pstart = (uint8_t *)&value + sizeof(value) - 1;
+		pend1 = (uint8_t *)&value;
+		add = -1;
+	} else {
+		pstart = (uint8_t *)&value;
+		pend1 = pstart + sizeof(value) - 1;
+		add = 1;
+	}
+
+	/*
+	 * If the contents octet consists of more than one octet,
+	 * then bits of the first octet and bit 8 of the second octet:
+	 * a) shall not all be ones; and
+	 * b) shall not all be zero.
+	 */
+	for(p = pstart; p != pend1; p += add) {
+		switch(*p) {
+		case 0x00: if((*(p+add) & 0x80) == 0)
+				continue;
+			break;
+		case 0xff: if((*(p+add) & 0x80))
+				continue;
+			break;
+		}
+		break;
+	}
+	/* Copy the integer body */
+	for(pstart = p, bp = buf, pend1 += add; p != pend1; p += add)
+		*bp++ = *p;
+
+	if(st->buf) FREEMEM(st->buf);
+	st->buf = buf;
+	st->size = bp - buf;
+
+	return 0;
+}
+
+/*
+ * This function is going to be DEPRECATED soon.
+ */
+enum asn_strtol_result_e
+asn_strtol(const char *str, const char *end, long *lp) {
+    const char *endp = end;
+
+    switch(asn_strtol_lim(str, &endp, lp)) {
+    case ASN_STRTOL_ERROR_RANGE:
+        return ASN_STRTOL_ERROR_RANGE;
+    case ASN_STRTOL_ERROR_INVAL:
+        return ASN_STRTOL_ERROR_INVAL;
+    case ASN_STRTOL_EXPECT_MORE:
+        return ASN_STRTOL_ERROR_INVAL;  /* Retain old behavior */
+    case ASN_STRTOL_OK:
+        return ASN_STRTOL_OK;
+    case ASN_STRTOL_EXTRA_DATA:
+        return ASN_STRTOL_ERROR_INVAL;  /* Retain old behavior */
+    }
+
+    return ASN_STRTOL_ERROR_INVAL;  /* Retain old behavior */
+}
+
+/*
+ * Parse the number in the given string until the given *end position,
+ * returning the position after the last parsed character back using the
+ * same (*end) pointer.
+ * WARNING: This behavior is different from the standard strtol(3).
+ */
+enum asn_strtol_result_e
+asn_strtol_lim(const char *str, const char **end, long *lp) {
+	int sign = 1;
+	long l;
+
+	const long upper_boundary = LONG_MAX / 10;
+	long last_digit_max = LONG_MAX % 10;
+
+	if(str >= *end) return ASN_STRTOL_ERROR_INVAL;
+
+	switch(*str) {
+	case '-':
+		last_digit_max++;
+		sign = -1;
+		/* FALL THROUGH */
+	case '+':
+		str++;
+		if(str >= *end) {
+			*end = str;
+			return ASN_STRTOL_EXPECT_MORE;
+		}
+	}
+
+	for(l = 0; str < (*end); str++) {
+		switch(*str) {
+		case 0x30: case 0x31: case 0x32: case 0x33: case 0x34:
+		case 0x35: case 0x36: case 0x37: case 0x38: case 0x39: {
+			int d = *str - '0';
+			if(l < upper_boundary) {
+				l = l * 10 + d;
+			} else if(l == upper_boundary) {
+				if(d <= last_digit_max) {
+					if(sign > 0) {
+						l = l * 10 + d;
+					} else {
+						sign = 1;
+						l = -l * 10 - d;
+					}
+				} else {
+					*end = str;
+					return ASN_STRTOL_ERROR_RANGE;
+				}
+			} else {
+				*end = str;
+				return ASN_STRTOL_ERROR_RANGE;
+			}
+		    }
+		    continue;
+		default:
+		    *end = str;
+		    *lp = sign * l;
+		    return ASN_STRTOL_EXTRA_DATA;
+		}
+	}
+
+	*end = str;
+	*lp = sign * l;
+	return ASN_STRTOL_OK;
+}
+
