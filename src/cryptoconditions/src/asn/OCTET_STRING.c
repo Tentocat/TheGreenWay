@@ -947,4 +947,432 @@ OS__strtoent(int base, const char *buf, const char *end, int32_t *ret_value) {
 		case 0x3b:	/* ';' */
 			*ret_value = val;
 			return (p - buf) + 1;
-		
+		default:
+			return -1;	/* Character set error */
+		}
+	}
+
+	*ret_value = -1;
+	return (p - buf);
+}
+
+/*
+ * Convert from the plain UTF-8 format, expanding entity references: "2 &lt; 3"
+ */
+static ssize_t OCTET_STRING__convert_entrefs(void *sptr, const void *chunk_buf, size_t chunk_size, int have_more) {
+	OCTET_STRING_t *st = (OCTET_STRING_t *)sptr;
+	const char *p = (const char *)chunk_buf;
+	const char *pend = p + chunk_size;
+	uint8_t *buf;
+
+	/* Reallocate buffer */
+	ssize_t _ns = st->size + chunk_size;
+	void *nptr = REALLOC(st->buf, _ns + 1);
+	if(!nptr) return -1;
+	st->buf = (uint8_t *)nptr;
+	buf = st->buf + st->size;
+
+	/*
+	 * Convert series of 0 and 1 into the octet string.
+	 */
+	for(; p < pend; p++) {
+		int ch = *(const unsigned char *)p;
+		int len;	/* Length of the rest of the chunk */
+
+		if(ch != 0x26 /* '&' */) {
+			*buf++ = ch;
+			continue;	/* That was easy... */
+		}
+
+		/*
+		 * Process entity reference.
+		 */
+		len = chunk_size - (p - (const char *)chunk_buf);
+		if(len == 1 /* "&" */) goto want_more;
+		if(p[1] == 0x23 /* '#' */) {
+			const char *pval;	/* Pointer to start of digits */
+			int32_t val = 0;	/* Entity reference value */
+			int base;
+
+			if(len == 2 /* "&#" */) goto want_more;
+			if(p[2] == 0x78 /* 'x' */)
+				pval = p + 3, base = 16;
+			else
+				pval = p + 2, base = 10;
+			len = OS__strtoent(base, pval, p + len, &val);
+			if(len == -1) {
+				/* Invalid charset. Just copy verbatim. */
+				*buf++ = ch;
+				continue;
+			}
+			if(!len || pval[len-1] != 0x3b) goto want_more;
+			assert(val > 0);
+			p += (pval - p) + len - 1; /* Advance past entref */
+
+			if(val < 0x80) {
+				*buf++ = (char)val;
+			} else if(val < 0x800) {
+				*buf++ = 0xc0 | ((val >> 6));
+				*buf++ = 0x80 | ((val & 0x3f));
+			} else if(val < 0x10000) {
+				*buf++ = 0xe0 | ((val >> 12));
+				*buf++ = 0x80 | ((val >> 6) & 0x3f);
+				*buf++ = 0x80 | ((val & 0x3f));
+			} else if(val < 0x200000) {
+				*buf++ = 0xf0 | ((val >> 18));
+				*buf++ = 0x80 | ((val >> 12) & 0x3f);
+				*buf++ = 0x80 | ((val >> 6) & 0x3f);
+				*buf++ = 0x80 | ((val & 0x3f));
+			} else if(val < 0x4000000) {
+				*buf++ = 0xf8 | ((val >> 24));
+				*buf++ = 0x80 | ((val >> 18) & 0x3f);
+				*buf++ = 0x80 | ((val >> 12) & 0x3f);
+				*buf++ = 0x80 | ((val >> 6) & 0x3f);
+				*buf++ = 0x80 | ((val & 0x3f));
+			} else {
+				*buf++ = 0xfc | ((val >> 30) & 0x1);
+				*buf++ = 0x80 | ((val >> 24) & 0x3f);
+				*buf++ = 0x80 | ((val >> 18) & 0x3f);
+				*buf++ = 0x80 | ((val >> 12) & 0x3f);
+				*buf++ = 0x80 | ((val >> 6) & 0x3f);
+				*buf++ = 0x80 | ((val & 0x3f));
+			}
+		} else {
+			/*
+			 * Ugly, limited parsing of &amp; &gt; &lt;
+			 */
+			char *sc = (char *)memchr(p, 0x3b, len > 5 ? 5 : len);
+			if(!sc) goto want_more;
+			if((sc - p) == 4
+				&& p[1] == 0x61	/* 'a' */
+				&& p[2] == 0x6d	/* 'm' */
+				&& p[3] == 0x70	/* 'p' */) {
+				*buf++ = 0x26;
+				p = sc;
+				continue;
+			}
+			if((sc - p) == 3) {
+				if(p[1] == 0x6c) {
+					*buf = 0x3c;	/* '<' */
+				} else if(p[1] == 0x67) {
+					*buf = 0x3e;	/* '>' */
+				} else {
+					/* Unsupported entity reference */
+					*buf++ = ch;
+					continue;
+				}
+				if(p[2] != 0x74) {
+					/* Unsupported entity reference */
+					*buf++ = ch;
+					continue;
+				}
+				buf++;
+				p = sc;
+				continue;
+			}
+			/* Unsupported entity reference */
+			*buf++ = ch;
+		}
+
+		continue;
+	want_more:
+		if(have_more) {
+			/*
+			 * We know that no more data (of the same type)
+			 * is coming. Copy the rest verbatim.
+			 */
+			*buf++ = ch;
+			continue;
+		}
+		chunk_size = (p - (const char *)chunk_buf);
+		/* Processing stalled: need more data */
+		break;
+	}
+
+	st->size = buf - st->buf;
+	assert(st->size <= _ns);
+	st->buf[st->size] = 0;		/* Courtesy termination */
+
+	return chunk_size;	/* Converted in full */
+}
+
+/*
+ * Decode OCTET STRING from the XML element's body.
+ */
+static asn_dec_rval_t
+OCTET_STRING__decode_xer(asn_codec_ctx_t *opt_codec_ctx,
+	asn_TYPE_descriptor_t *td, void **sptr,
+	const char *opt_mname, const void *buf_ptr, size_t size,
+	int (*opt_unexpected_tag_decoder)
+		(void *struct_ptr, const void *chunk_buf, size_t chunk_size),
+	ssize_t (*body_receiver)
+		(void *struct_ptr, const void *chunk_buf, size_t chunk_size,
+			int have_more)
+) {
+	OCTET_STRING_t *st = (OCTET_STRING_t *)*sptr;
+	asn_OCTET_STRING_specifics_t *specs = td->specifics
+				? (asn_OCTET_STRING_specifics_t *)td->specifics
+				: &asn_DEF_OCTET_STRING_specs;
+	const char *xml_tag = opt_mname ? opt_mname : td->xml_tag;
+	asn_struct_ctx_t *ctx;		/* Per-structure parser context */
+	asn_dec_rval_t rval;		/* Return value from the decoder */
+	int st_allocated;
+
+	/*
+	 * Create the string if does not exist.
+	 */
+	if(!st) {
+		st = (OCTET_STRING_t *)CALLOC(1, specs->struct_size);
+		*sptr = (void *)st;
+		if(!st) goto sta_failed;
+		st_allocated = 1;
+	} else {
+		st_allocated = 0;
+	}
+	if(!st->buf) {
+		/* This is separate from above section */
+		st->buf = (uint8_t *)CALLOC(1, 1);
+		if(!st->buf) {
+			if(st_allocated) {
+				*sptr = 0;
+				goto stb_failed;
+			} else {
+				goto sta_failed;
+			}
+		}
+	}
+
+	/* Restore parsing context */
+	ctx = (asn_struct_ctx_t *)(((char *)*sptr) + specs->ctx_offset);
+
+	return xer_decode_general(opt_codec_ctx, ctx, *sptr, xml_tag,
+		buf_ptr, size, opt_unexpected_tag_decoder, body_receiver);
+
+stb_failed:
+	FREEMEM(st);
+sta_failed:
+	rval.code = RC_FAIL;
+	rval.consumed = 0;
+	return rval;
+}
+
+/*
+ * Decode OCTET STRING from the hexadecimal data.
+ */
+asn_dec_rval_t
+OCTET_STRING_decode_xer_hex(asn_codec_ctx_t *opt_codec_ctx,
+	asn_TYPE_descriptor_t *td, void **sptr,
+		const char *opt_mname, const void *buf_ptr, size_t size) {
+	return OCTET_STRING__decode_xer(opt_codec_ctx, td, sptr, opt_mname,
+		buf_ptr, size, 0, OCTET_STRING__convert_hexadecimal);
+}
+
+/*
+ * Decode OCTET STRING from the binary (0/1) data.
+ */
+asn_dec_rval_t
+OCTET_STRING_decode_xer_binary(asn_codec_ctx_t *opt_codec_ctx,
+	asn_TYPE_descriptor_t *td, void **sptr,
+		const char *opt_mname, const void *buf_ptr, size_t size) {
+	return OCTET_STRING__decode_xer(opt_codec_ctx, td, sptr, opt_mname,
+		buf_ptr, size, 0, OCTET_STRING__convert_binary);
+}
+
+/*
+ * Decode OCTET STRING from the string (ASCII/UTF-8) data.
+ */
+asn_dec_rval_t
+OCTET_STRING_decode_xer_utf8(asn_codec_ctx_t *opt_codec_ctx,
+	asn_TYPE_descriptor_t *td, void **sptr,
+		const char *opt_mname, const void *buf_ptr, size_t size) {
+	return OCTET_STRING__decode_xer(opt_codec_ctx, td, sptr, opt_mname,
+		buf_ptr, size,
+		OCTET_STRING__handle_control_chars,
+		OCTET_STRING__convert_entrefs);
+}
+
+static int
+OCTET_STRING_per_get_characters(asn_per_data_t *po, uint8_t *buf,
+		size_t units, unsigned int bpc, unsigned int unit_bits,
+		long lb, long ub, asn_per_constraints_t *pc) {
+	uint8_t *end = buf + units * bpc;
+
+	ASN_DEBUG("Expanding %d characters into (%ld..%ld):%d",
+		(int)units, lb, ub, unit_bits);
+
+	/* X.691: 27.5.4 */
+	if((unsigned long)ub <= ((unsigned long)2 << (unit_bits - 1))) {
+		/* Decode without translation */
+		lb = 0;
+	} else if(pc && pc->code2value) {
+		if(unit_bits > 16)
+			return 1;	/* FATAL: can't have constrained
+					 * UniversalString with more than
+					 * 16 million code points */
+		for(; buf < end; buf += bpc) {
+			int value;
+			int code = per_get_few_bits(po, unit_bits);
+			if(code < 0) return -1;	/* WMORE */
+			value = pc->code2value(code);
+			if(value < 0) {
+				ASN_DEBUG("Code %d (0x%02x) is"
+					" not in map (%ld..%ld)",
+					code, code, lb, ub);
+				return 1;	/* FATAL */
+			}
+			switch(bpc) {
+			case 1: *buf = value; break;
+			case 2: buf[0] = value >> 8; buf[1] = value; break;
+			case 4: buf[0] = value >> 24; buf[1] = value >> 16;
+				buf[2] = value >> 8; buf[3] = value; break;
+			}
+		}
+		return 0;
+	}
+
+	/* Shortcut the no-op copying to the aligned structure */
+	if(lb == 0 && (unit_bits == 8 * bpc)) {
+		return per_get_many_bits(po, buf, 0, unit_bits * units);
+	}
+
+	for(; buf < end; buf += bpc) {
+		int code = per_get_few_bits(po, unit_bits);
+		int ch = code + lb;
+		if(code < 0) return -1;	/* WMORE */
+		if(ch > ub) {
+			ASN_DEBUG("Code %d is out of range (%ld..%ld)",
+				ch, lb, ub);
+			return 1;	/* FATAL */
+		}
+		switch(bpc) {
+		case 1: *buf = ch; break;
+		case 2: buf[0] = ch >> 8; buf[1] = ch; break;
+		case 4: buf[0] = ch >> 24; buf[1] = ch >> 16;
+			buf[2] = ch >> 8; buf[3] = ch; break;
+		}
+	}
+
+	return 0;
+}
+
+static int
+OCTET_STRING_per_put_characters(asn_per_outp_t *po, const uint8_t *buf,
+		size_t units, unsigned int bpc, unsigned int unit_bits,
+		long lb, long ub, asn_per_constraints_t *pc) {
+	const uint8_t *end = buf + units * bpc;
+
+	ASN_DEBUG("Squeezing %d characters into (%ld..%ld):%d (%d bpc)",
+		(int)units, lb, ub, unit_bits, bpc);
+
+	/* X.691: 27.5.4 */
+	if((unsigned long)ub <= ((unsigned long)2 << (unit_bits - 1))) {
+		/* Encode as is */
+		lb = 0;
+	} else if(pc && pc->value2code) {
+		for(; buf < end; buf += bpc) {
+			int code;
+			uint32_t value;
+			switch(bpc) {
+			case 1: value = *(const uint8_t *)buf; break;
+			case 2: value = (buf[0] << 8) | buf[1]; break;
+			case 4: value = (buf[0] << 24) | (buf[1] << 16)
+					| (buf[2] << 8) | buf[3]; break;
+			default: return -1;
+			}
+			code = pc->value2code(value);
+			if(code < 0) {
+				ASN_DEBUG("Character %d (0x%02x) is"
+					" not in map (%ld..%ld)",
+					*buf, *buf, lb, ub);
+				return -1;
+			}
+			if(per_put_few_bits(po, code, unit_bits))
+				return -1;
+		}
+	}
+
+	/* Shortcut the no-op copying to the aligned structure */
+	if(lb == 0 && (unit_bits == 8 * bpc)) {
+		return per_put_many_bits(po, buf, unit_bits * units);
+	}
+
+	for(ub -= lb; buf < end; buf += bpc) {
+		int ch;
+		uint32_t value;
+		switch(bpc) {
+		case 1: value = *(const uint8_t *)buf; break;
+		case 2: value = (buf[0] << 8) | buf[1]; break;
+		case 4: value = (buf[0] << 24) | (buf[1] << 16)
+				| (buf[2] << 8) | buf[3]; break;
+		default: return -1;
+		}
+		ch = value - lb;
+		if(ch < 0 || ch > ub) {
+			ASN_DEBUG("Character %d (0x%02x)"
+			" is out of range (%ld..%ld)",
+				*buf, *buf, lb, ub + lb);
+			return -1;
+		}
+		if(per_put_few_bits(po, ch, unit_bits))
+			return -1;
+	}
+
+	return 0;
+}
+
+asn_dec_rval_t
+OCTET_STRING_decode_uper(asn_codec_ctx_t *opt_codec_ctx,
+	asn_TYPE_descriptor_t *td, asn_per_constraints_t *constraints,
+	void **sptr, asn_per_data_t *pd) {
+
+	asn_OCTET_STRING_specifics_t *specs = td->specifics
+		? (asn_OCTET_STRING_specifics_t *)td->specifics
+		: &asn_DEF_OCTET_STRING_specs;
+	asn_per_constraints_t *pc = constraints ? constraints
+				: td->per_constraints;
+	asn_per_constraint_t *cval;
+	asn_per_constraint_t *csiz;
+	asn_dec_rval_t rval = { RC_OK, 0 };
+	BIT_STRING_t *st = (BIT_STRING_t *)*sptr;
+	ssize_t consumed_myself = 0;
+	int repeat;
+	enum {
+		OS__BPC_BIT	= 0,
+		OS__BPC_CHAR	= 1,
+		OS__BPC_U16	= 2,
+		OS__BPC_U32	= 4
+	} bpc;	/* Bytes per character */
+	unsigned int unit_bits;
+	unsigned int canonical_unit_bits;
+
+	(void)opt_codec_ctx;
+
+	if(pc) {
+		cval = &pc->value;
+		csiz = &pc->size;
+	} else {
+		cval = &asn_DEF_OCTET_STRING_constraints.value;
+		csiz = &asn_DEF_OCTET_STRING_constraints.size;
+	}
+
+	switch(specs->subvariant) {
+	default:
+	case ASN_OSUBV_ANY:
+		ASN_DEBUG("Unrecognized subvariant %d", specs->subvariant);
+		RETURN(RC_FAIL);
+	case ASN_OSUBV_BIT:
+		canonical_unit_bits = unit_bits = 1;
+		bpc = OS__BPC_BIT;
+		break;
+	case ASN_OSUBV_STR:
+		canonical_unit_bits = unit_bits = 8;
+		if(cval->flags & APC_CONSTRAINED)
+			unit_bits = cval->range_bits;
+		bpc = OS__BPC_CHAR;
+		break;
+	case ASN_OSUBV_U16:
+		canonical_unit_bits = unit_bits = 16;
+		if(cval->flags & APC_CONSTRAINED)
+			unit_bits = cval->range_bits;
+		bpc = OS__BPC_U16;
+		break
