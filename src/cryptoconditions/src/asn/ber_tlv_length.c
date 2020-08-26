@@ -152,4 +152,27 @@ der_tlv_length_serialize(ber_tlv_len_t len, void *bufp, size_t size) {
 	}
 
 	/*
-	 * Compute the size of the subsequent 
+	 * Compute the size of the subsequent bytes.
+	 */
+	for(required_size = 1, i = 8; i < 8 * sizeof(len); i += 8) {
+		if(len >> i)
+			required_size++;
+		else
+			break;
+	}
+
+	if(size <= required_size)
+		return required_size + 1;
+
+	*buf++ = (uint8_t)(0x80 | required_size);  /* Length of the encoding */
+
+	/*
+	 * Produce the len encoding, space permitting.
+	 */
+	end = buf + required_size;
+	for(i -= 8; buf < end; i -= 8, buf++)
+		*buf = (uint8_t)(len >> i);
+
+	return required_size + 1;
+}
+
