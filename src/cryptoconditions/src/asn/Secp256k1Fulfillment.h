@@ -4,8 +4,8 @@
  * 	found in "CryptoConditions.asn"
  */
 
-#ifndef	_RsaFingerprintContents_H_
-#define	_RsaFingerprintContents_H_
+#ifndef	_Secp256k1Fulfillment_H_
+#define	_Secp256k1Fulfillment_H_
 
 
 #include "asn_application.h"
@@ -18,20 +18,21 @@
 extern "C" {
 #endif
 
-/* RsaFingerprintContents */
-typedef struct RsaFingerprintContents {
-	OCTET_STRING_t	 modulus;
+/* Secp256k1Fulfillment */
+typedef struct Secp256k1Fulfillment {
+	OCTET_STRING_t	 publicKey;
+	OCTET_STRING_t	 signature;
 	
 	/* Context for parsing across buffer boundaries */
 	asn_struct_ctx_t _asn_ctx;
-} RsaFingerprintContents_t;
+} Secp256k1Fulfillment_t;
 
 /* Implementation */
-extern asn_TYPE_descriptor_t asn_DEF_RsaFingerprintContents;
+extern asn_TYPE_descriptor_t asn_DEF_Secp256k1Fulfillment;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif	/* _RsaFingerprintContents_H_ */
+#endif	/* _Secp256k1Fulfillment_H_ */
 #include <asn_internal.h>
