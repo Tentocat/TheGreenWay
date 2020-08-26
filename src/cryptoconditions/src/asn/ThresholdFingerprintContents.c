@@ -104,4 +104,35 @@ static const asn_TYPE_tag2member_t asn_MAP_ThresholdFingerprintContents_tag2el_1
     { (ASN_TAG_CLASS_CONTEXT | (1 << 2)), 1, 0, 0 } /* subconditions2 */
 };
 static asn_SEQUENCE_specifics_t asn_SPC_ThresholdFingerprintContents_specs_1 = {
-	sizeof(stru
+	sizeof(struct ThresholdFingerprintContents),
+	offsetof(struct ThresholdFingerprintContents, _asn_ctx),
+	asn_MAP_ThresholdFingerprintContents_tag2el_1,
+	2,	/* Count of tags in the map */
+	0, 0, 0,	/* Optional elements (not needed) */
+	-1,	/* Start extensions */
+	-1	/* Stop extensions */
+};
+asn_TYPE_descriptor_t asn_DEF_ThresholdFingerprintContents = {
+	"ThresholdFingerprintContents",
+	"ThresholdFingerprintContents",
+	SEQUENCE_free,
+	SEQUENCE_print,
+	SEQUENCE_constraint,
+	SEQUENCE_decode_ber,
+	SEQUENCE_encode_der,
+	SEQUENCE_decode_xer,
+	SEQUENCE_encode_xer,
+	0, 0,	/* No PER support, use "-gen-PER" to enable */
+	0,	/* Use generic outmost tag fetcher */
+	asn_DEF_ThresholdFingerprintContents_tags_1,
+	sizeof(asn_DEF_ThresholdFingerprintContents_tags_1)
+		/sizeof(asn_DEF_ThresholdFingerprintContents_tags_1[0]), /* 1 */
+	asn_DEF_ThresholdFingerprintContents_tags_1,	/* Same as above */
+	sizeof(asn_DEF_ThresholdFingerprintContents_tags_1)
+		/sizeof(asn_DEF_ThresholdFingerprintContents_tags_1[0]), /* 1 */
+	0,	/* No PER visible constraints */
+	asn_MBR_ThresholdFingerprintContents_1,
+	2,	/* Elements count */
+	&asn_SPC_ThresholdFingerprintContents_specs_1	/* Additional specs */
+};
+
