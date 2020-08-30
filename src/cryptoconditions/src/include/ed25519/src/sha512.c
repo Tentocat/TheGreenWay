@@ -123,4 +123,153 @@ static int sha512_compress(sha512_context *md, unsigned char *buf)
        RND(S[4],S[5],S[6],S[7],S[0],S[1],S[2],S[3],i+4);
        RND(S[3],S[4],S[5],S[6],S[7],S[0],S[1],S[2],i+5);
        RND(S[2],S[3],S[4],S[5],S[6],S[7],S[0],S[1],i+6);
-       RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[
+       RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[0],i+7);
+   }
+
+   #undef RND
+
+
+
+    /* feedback */
+   for (i = 0; i < 8; i++) {
+        md->state[i] = md->state[i] + S[i];
+    }
+
+    return 0;
+}
+
+
+/**
+   Initialize the hash state
+   @param md   The hash state you wish to initialize
+   @return 0 if successful
+*/
+int sha512_init(sha512_context * md) {
+    if (md == NULL) return 1;
+
+    md->curlen = 0;
+    md->length = 0;
+    md->state[0] = UINT64_C(0x6a09e667f3bcc908);
+    md->state[1] = UINT64_C(0xbb67ae8584caa73b);
+    md->state[2] = UINT64_C(0x3c6ef372fe94f82b);
+    md->state[3] = UINT64_C(0xa54ff53a5f1d36f1);
+    md->state[4] = UINT64_C(0x510e527fade682d1);
+    md->state[5] = UINT64_C(0x9b05688c2b3e6c1f);
+    md->state[6] = UINT64_C(0x1f83d9abfb41bd6b);
+    md->state[7] = UINT64_C(0x5be0cd19137e2179);
+
+    return 0;
+}
+
+/**
+   Process a block of memory though the hash
+   @param md     The hash state
+   @param in     The data to hash
+   @param inlen  The length of the data (octets)
+   @return 0 if successful
+*/
+int sha512_update (sha512_context * md, const unsigned char *in, size_t inlen)               
+{                                                                                           
+    size_t n;
+    size_t i;                                                                        
+    int           err;     
+    if (md == NULL) return 1;  
+    if (in == NULL) return 1;                                                              
+    if (md->curlen > sizeof(md->buf)) {                             
+       return 1;                                                            
+    }                                                                                       
+    while (inlen > 0) {                                                                     
+        if (md->curlen == 0 && inlen >= 128) {                           
+           if ((err = sha512_compress (md, (unsigned char *)in)) != 0) {               
+              return err;                                                                   
+           }                                                                                
+           md->length += 128 * 8;                                        
+           in             += 128;                                                    
+           inlen          -= 128;                                                    
+        } else {                                                                            
+           n = MIN(inlen, (128 - md->curlen));
+
+           for (i = 0; i < n; i++) {
+            md->buf[i + md->curlen] = in[i];
+           }
+
+
+           md->curlen += n;                                                     
+           in             += n;                                                             
+           inlen          -= n;                                                             
+           if (md->curlen == 128) {                                      
+              if ((err = sha512_compress (md, md->buf)) != 0) {            
+                 return err;                                                                
+              }                                                                             
+              md->length += 8*128;                                       
+              md->curlen = 0;                                                   
+           }                                                                                
+       }                                                                                    
+    }                                                                                       
+    return 0;                                                                        
+}
+
+/**
+   Terminate the hash to get the digest
+   @param md  The hash state
+   @param out [out] The destination of the hash (64 bytes)
+   @return 0 if successful
+*/
+   int sha512_final(sha512_context * md, unsigned char *out)
+   {
+    int i;
+
+    if (md == NULL) return 1;
+    if (out == NULL) return 1;
+
+    if (md->curlen >= sizeof(md->buf)) {
+     return 1;
+ }
+
+    /* increase the length of the message */
+ md->length += md->curlen * UINT64_C(8);
+
+    /* append the '1' bit */
+ md->buf[md->curlen++] = (unsigned char)0x80;
+
+    /* if the length is currently above 112 bytes we append zeros
+     * then compress.  Then we can fall back to padding zeros and length
+     * encoding like normal.
+     */
+     if (md->curlen > 112) {
+        while (md->curlen < 128) {
+            md->buf[md->curlen++] = (unsigned char)0;
+        }
+        sha512_compress(md, md->buf);
+        md->curlen = 0;
+    }
+
+    /* pad upto 120 bytes of zeroes 
+     * note: that from 112 to 120 is the 64 MSB of the length.  We assume that you won't hash
+     * > 2^64 bits of data... :-)
+     */
+while (md->curlen < 120) {
+    md->buf[md->curlen++] = (unsigned char)0;
+}
+
+    /* store length */
+STORE64H(md->length, md->buf+120);
+sha512_compress(md, md->buf);
+
+    /* copy output */
+for (i = 0; i < 8; i++) {
+    STORE64H(md->state[i], out+(8*i));
+}
+
+return 0;
+}
+
+int sha512(const unsigned char *message, size_t message_len, unsigned char *out)
+{
+    sha512_context ctx;
+    int ret;
+    if ((ret = sha512_init(&ctx))) return ret;
+    if ((ret = sha512_update(&ctx, message, message_len))) return ret;
+    if ((ret = sha512_final(&ctx, out))) return ret;
+    return 0;
+}
