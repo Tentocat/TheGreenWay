@@ -374,4 +374,110 @@ per_put_few_bits(asn_per_outp_t *po, uint32_t bits, int obits) {
 	if(off <= 8)	/* Completely within 1 byte */
 		po->nboff = off,
 		bits <<= (8 - off),
-		buf[0] =
+		buf[0] = (buf[0] & omsk) | bits;
+	else if(off <= 16)
+		po->nboff = off,
+		bits <<= (16 - off),
+		buf[0] = (buf[0] & omsk) | (bits >> 8),
+		buf[1] = bits;
+	else if(off <= 24)
+		po->nboff = off,
+		bits <<= (24 - off),
+		buf[0] = (buf[0] & omsk) | (bits >> 16),
+		buf[1] = bits >> 8,
+		buf[2] = bits;
+	else if(off <= 31)
+		po->nboff = off,
+		bits <<= (32 - off),
+		buf[0] = (buf[0] & omsk) | (bits >> 24),
+		buf[1] = bits >> 16,
+		buf[2] = bits >> 8,
+		buf[3] = bits;
+	else {
+		per_put_few_bits(po, bits >> (obits - 24), 24);
+		per_put_few_bits(po, bits, obits - 24);
+	}
+
+	ASN_DEBUG("[PER out %u/%x => %02x buf+%ld]",
+		(int)bits, (int)bits, buf[0],
+		(long)(po->buffer - po->tmpspace));
+
+	return 0;
+}
+
+
+/*
+ * Output a large number of bits.
+ */
+int
+per_put_many_bits(asn_per_outp_t *po, const uint8_t *src, int nbits) {
+
+	while(nbits) {
+		uint32_t value;
+
+		if(nbits >= 24) {
+			value = (src[0] << 16) | (src[1] << 8) | src[2];
+			src += 3;
+			nbits -= 24;
+			if(per_put_few_bits(po, value, 24))
+				return -1;
+		} else {
+			value = src[0];
+			if(nbits > 8)
+				value = (value << 8) | src[1];
+			if(nbits > 16)
+				value = (value << 8) | src[2];
+			if(nbits & 0x07)
+				value >>= (8 - (nbits & 0x07));
+			if(per_put_few_bits(po, value, nbits))
+				return -1;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+/*
+ * Put the length "n" (or part of it) into the stream.
+ */
+ssize_t
+uper_put_length(asn_per_outp_t *po, size_t length) {
+
+	if(length <= 127)	/* #10.9.3.6 */
+		return per_put_few_bits(po, length, 8)
+			? -1 : (ssize_t)length;
+	else if(length < 16384)	/* #10.9.3.7 */
+		return per_put_few_bits(po, length|0x8000, 16)
+			? -1 : (ssize_t)length;
+
+	length >>= 14;
+	if(length > 4) length = 4;
+
+	return per_put_few_bits(po, 0xC0 | length, 8)
+			? -1 : (ssize_t)(length << 14);
+}
+
+
+/*
+ * Put the normally small length "n" into the stream.
+ * This procedure used to encode length of extensions bit-maps
+ * for SET and SEQUENCE types.
+ */
+int
+uper_put_nslength(asn_per_outp_t *po, size_t length) {
+
+	if(length <= 64) {
+		/* #10.9.3.4 */
+		if(length == 0) return -1;
+		return per_put_few_bits(po, length-1, 7) ? -1 : 0;
+	} else {
+		if(uper_put_length(po, length) != (ssize_t)length) {
+			/* This might happen in case of >16K extensions */
+			return -1;
+		}
+	}
+
+	return 0;
+}
+
