@@ -320,4 +320,59 @@ uper_ugot_refill(asn_per_data_t *pd) {
 	}
 
 	if(!arg->repeat) {
-		ASN_DEBUG("Want more but refill doesn't have it
+		ASN_DEBUG("Want more but refill doesn't have it");
+		return -1;
+	}
+
+	next_chunk_bytes = uper_get_length(oldpd, -1, &arg->repeat);
+	ASN_DEBUG("Open type LENGTH %ld bytes at off %ld, repeat %ld",
+		(long)next_chunk_bytes, (long)oldpd->moved, (long)arg->repeat);
+	if(next_chunk_bytes < 0) return -1;
+	if(next_chunk_bytes == 0) {
+		pd->refill = 0;	/* No more refills, naturally */
+		assert(!arg->repeat);	/* Implementation guarantee */
+	}
+	next_chunk_bits = next_chunk_bytes << 3;
+	avail = oldpd->nbits - oldpd->nboff;
+	if(avail >= next_chunk_bits) {
+		pd->nbits = oldpd->nboff + next_chunk_bits;
+		arg->unclaimed = 0;
+		ASN_DEBUG("!+Parent frame %ld bits, alloting %ld [%ld..%ld] (%ld)",
+			(long)next_chunk_bits, (long)oldpd->moved,
+			(long)oldpd->nboff, (long)oldpd->nbits,
+			(long)(oldpd->nbits - oldpd->nboff));
+	} else {
+		pd->nbits = oldpd->nbits;
+		arg->unclaimed = next_chunk_bits - avail;
+		ASN_DEBUG("!-Parent frame %ld, require %ld, will claim %ld",
+			(long)avail, (long)next_chunk_bits,
+			(long)arg->unclaimed);
+	}
+	pd->buffer = oldpd->buffer;
+	pd->nboff = oldpd->nboff;
+	ASN_DEBUG("Refilled pd%s old%s",
+		per_data_string(pd), per_data_string(oldpd));
+	return 0;
+}
+
+static int
+per_skip_bits(asn_per_data_t *pd, int skip_nbits) {
+	int hasNonZeroBits = 0;
+	while(skip_nbits > 0) {
+		int skip;
+
+		/* per_get_few_bits() is more efficient when nbits <= 24 */
+		if(skip_nbits < 24)
+			skip = skip_nbits;
+		else
+			skip = 24;
+		skip_nbits -= skip;
+
+		switch(per_get_few_bits(pd, skip)) {
+		case -1: return -1;	/* Starving */
+		case 0: continue;	/* Skipped empty space */
+		default: hasNonZeroBits = 1; continue;
+		}
+	}
+	return hasNonZeroBits;
+}
