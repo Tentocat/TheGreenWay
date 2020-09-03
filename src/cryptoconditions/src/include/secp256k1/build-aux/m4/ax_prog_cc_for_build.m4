@@ -109,4 +109,17 @@ popdef([ac_cv_objext])dnl
 popdef([ac_cv_exeext])dnl
 popdef([ac_cv_prog_cc_g])dnl
 popdef([ac_cv_prog_cc_cross])dnl
-popdef([ac_cv_prog_cc_wor
+popdef([ac_cv_prog_cc_works])dnl
+popdef([ac_cv_prog_gcc])dnl
+popdef([ac_cv_prog_CPP])dnl
+
+dnl Finally, set Makefile variables
+dnl
+BUILD_EXEEXT=$ac_build_exeext
+BUILD_OBJEXT=$ac_build_objext
+AC_SUBST(BUILD_EXEEXT)dnl
+AC_SUBST(BUILD_OBJEXT)dnl
+AC_SUBST([CFLAGS_FOR_BUILD])dnl
+AC_SUBST([CPPFLAGS_FOR_BUILD])dnl
+AC_SUBST([LDFLAGS_FOR_BUILD])dnl
+])
