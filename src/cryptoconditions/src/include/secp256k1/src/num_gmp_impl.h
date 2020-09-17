@@ -282,4 +282,7 @@ static void secp256k1_num_shift(secp256k1_num *r, int bits) {
 }
 
 static void secp256k1_num_negate(secp256k1_num *r) {
-    r->neg 
+    r->neg ^= 1;
+}
+
+#endif /* SECP256K1_NUM_REPR_IMPL_H */
