@@ -333,4 +333,61 @@ void test_ecdsa_recovery_edge_cases(void) {
             unsigned char orig = sigbder[i];
             /*Try every single-byte change.*/
             for (c = 0; c < 256; c++) {
-       
+                if (c == orig ) {
+                    continue;
+                }
+                sigbder[i] = c;
+                CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &sig, sigbder, sizeof(sigbder)) == 0 || secp256k1_ecdsa_verify(ctx, &sig, msg32, &pubkeyb) == 0);
+            }
+            sigbder[i] = orig;
+        }
+    }
+
+    /* Test r/s equal to zero */
+    {
+        /* (1,1) encoded in DER. */
+        unsigned char sigcder[8] = {0x30, 0x06, 0x02, 0x01, 0x01, 0x02, 0x01, 0x01};
+        unsigned char sigc64[64] = {
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+        };
+        secp256k1_pubkey pubkeyc;
+        CHECK(secp256k1_ecdsa_recoverable_signature_parse_compact(ctx, &rsig, sigc64, 0) == 1);
+        CHECK(secp256k1_ecdsa_recover(ctx, &pubkeyc, &rsig, msg32) == 1);
+        CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &sig, sigcder, sizeof(sigcder)) == 1);
+        CHECK(secp256k1_ecdsa_verify(ctx, &sig, msg32, &pubkeyc) == 1);
+        sigcder[4] = 0;
+        sigc64[31] = 0;
+        CHECK(secp256k1_ecdsa_recoverable_signature_parse_compact(ctx, &rsig, sigc64, 0) == 1);
+        CHECK(secp256k1_ecdsa_recover(ctx, &pubkeyb, &rsig, msg32) == 0);
+        CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &sig, sigcder, sizeof(sigcder)) == 1);
+        CHECK(secp256k1_ecdsa_verify(ctx, &sig, msg32, &pubkeyc) == 0);
+        sigcder[4] = 1;
+        sigcder[7] = 0;
+        sigc64[31] = 1;
+        sigc64[63] = 0;
+        CHECK(secp256k1_ecdsa_recoverable_signature_parse_compact(ctx, &rsig, sigc64, 0) == 1);
+        CHECK(secp256k1_ecdsa_recover(ctx, &pubkeyb, &rsig, msg32) == 0);
+        CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &sig, sigcder, sizeof(sigcder)) == 1);
+        CHECK(secp256k1_ecdsa_verify(ctx, &sig, msg32, &pubkeyc) == 0);
+    }
+}
+
+void run_recovery_tests(void) {
+    int i;
+    for (i = 0; i < count; i++) {
+        test_ecdsa_recovery_api();
+    }
+    for (i = 0; i < 64*count; i++) {
+        test_ecdsa_recovery_end_to_end();
+    }
+    test_ecdsa_recovery_edge_cases();
+}
+
+#endif /* SECP256K1_MODULE_RECOVERY_TESTS_H */
