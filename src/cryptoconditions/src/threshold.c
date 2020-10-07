@@ -135,4 +135,122 @@ static CC *thresholdFromFulfillment(const Fulfillment_t *ffill) {
     CC **subconditions = calloc(size, sizeof(CC*));
 
     for (int i=0; i<size; i++) {
-        subconditions[i]
+        subconditions[i] = (i < threshold) ?
+            fulfillmentToCC(t->subfulfillments.list.array[i]) :
+            mkAnon(t->subconditions.list.array[i-threshold]);
+
+        if (!subconditions[i]) {
+            for (int j=0; j<i; j++) free(subconditions[j]);
+            free(subconditions);
+            return 0;
+        }
+    }
+
+    CC *cond = cc_new(CC_Threshold);
+    cond->threshold = threshold;
+    cond->size = size;
+    cond->subconditions = subconditions;
+    return cond;
+}
+
+
+static Fulfillment_t *thresholdToFulfillment(const CC *cond) {
+    CC *sub;
+    Fulfillment_t *fulfillment;
+
+    // Make a copy of subconditions so we can leave original order alone
+    CC** subconditions = malloc(cond->size*sizeof(CC*));
+    memcpy(subconditions, cond->subconditions, cond->size*sizeof(CC*));
+    
+    qsort(subconditions, cond->size, sizeof(CC*), cmpConditionCost);
+
+    ThresholdFulfillment_t *tf = calloc(1, sizeof(ThresholdFulfillment_t));
+
+    int needed = cond->threshold;
+
+    for (int i=0; i<cond->size; i++) {
+        sub = subconditions[i];
+        if (needed && (fulfillment = asnFulfillmentNew(sub))) {
+            asn_set_add(&tf->subfulfillments, fulfillment);
+            needed--;
+        } else {
+            asn_set_add(&tf->subconditions, asnConditionNew(sub));
+        }
+    }
+
+    free(subconditions);
+
+    if (needed) {
+        ASN_STRUCT_FREE(asn_DEF_ThresholdFulfillment, tf);
+        return NULL;
+    }
+
+    fulfillment = calloc(1, sizeof(Fulfillment_t));
+    fulfillment->present = Fulfillment_PR_thresholdSha256;
+    fulfillment->choice.thresholdSha256 = tf;
+    return fulfillment;
+}
+
+
+static CC *thresholdFromJSON(const cJSON *params, char *err) {
+    cJSON *threshold_item = cJSON_GetObjectItem(params, "threshold");
+    if (!cJSON_IsNumber(threshold_item)) {
+        strlcpy(err, "threshold must be a number", MAX_ERR_LEN);
+        return NULL;
+    }
+
+    cJSON *subfulfillments_item = cJSON_GetObjectItem(params, "subfulfillments");
+    if (!cJSON_IsArray(subfulfillments_item)) {
+        strlcpy(err, "subfulfullments must be an array", MAX_ERR_LEN);
+        return NULL;
+    }
+
+    CC *cond = cc_new(CC_Threshold);
+    cond->threshold = (long) threshold_item->valuedouble;
+    cond->size = cJSON_GetArraySize(subfulfillments_item);
+    cond->subconditions = calloc(cond->size, sizeof(CC*));
+    
+    cJSON *sub;
+    for (int i=0; i<cond->size; i++) {
+        sub = cJSON_GetArrayItem(subfulfillments_item, i);
+        cond->subconditions[i] = cc_conditionFromJSON(sub, err);
+        if (err[0]) return NULL;
+    }
+
+    return cond;
+}
+
+
+static void thresholdToJSON(const CC *cond, cJSON *params) {
+    cJSON *subs = cJSON_CreateArray();
+    cJSON_AddNumberToObject(params, "threshold", cond->threshold);
+    for (int i=0; i<cond->size; i++) {
+        cJSON_AddItemToArray(subs, cc_conditionToJSON(cond->subconditions[i]));
+    }
+    cJSON_AddItemToObject(params, "subfulfillments", subs);
+}
+
+
+static int thresholdIsFulfilled(const CC *cond) {
+    int nFulfilled = 0;
+    for (int i=0; i<cond->size; i++) {
+        if (cc_isFulfilled(cond->subconditions[i])) {
+            nFulfilled++;
+        }
+        if (nFulfilled == cond->threshold) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+static void thresholdFree(CC *cond) {
+    for (int i=0; i<cond->size; i++) {
+        cc_free(cond->subconditions[i]);
+    }
+    free(cond->subconditions);
+}
+
+
+struct CCType CC_ThresholdType = { 2, "threshold-sha-256", Condition_PR_thresholdSha256, &thresholdVisitChildren, &thresholdFingerprint, &thresholdCost, &thresholdSubtypes, &thresholdFromJSON, &thresholdToJSON, &thresholdFromFulfillment, &thresholdToFulfillment, &thresholdIsFulfilled, &thresholdFree };
