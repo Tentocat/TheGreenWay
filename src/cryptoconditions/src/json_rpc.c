@@ -202,3 +202,145 @@ static cJSON *jsonSignTreeEd25519(cJSON *params, char *err) {
     out = cJSON_CreateObject();
     cJSON_AddItemToObject(out, "num_signed", cJSON_CreateNumber(nSigned));
     cJSON_AddItemToObject(out, "condition", cc_conditionToJSON(cond));
+
+END:
+    cc_free(cond);
+    free(msg);
+    free(sk);
+    return out;
+}
+
+
+static cJSON *jsonSignTreeSecp256k1(cJSON *params, char *err) {
+    cJSON *out = 0;
+    unsigned char *msg = 0, *sk = 0;
+
+    cJSON *condition_item = cJSON_GetObjectItem(params, "condition");
+    CC *cond = cc_conditionFromJSON(condition_item, err);
+    if (cond == NULL) {
+        goto END;
+    }
+
+    size_t skLength;
+    if (!jsonGetHex(params, "privateKey", err, &sk, &skLength)) {
+        goto END;
+    }
+
+    if (skLength != SECP256K1_SK_SIZE) {
+        strlcpy(err, "privateKey wrong length", MAX_ERR_LEN);
+    }
+    
+    size_t msgLength;
+    if (!jsonGetHex(params, "message", err, &msg, &msgLength)) {
+        goto END;
+    }
+
+    char msgHash[32];
+    sha256(msg, msgLength, msgHash);
+    int nSigned = cc_signTreeSecp256k1Msg32(cond, sk, msgHash);
+    out = cJSON_CreateObject();
+    cJSON_AddItemToObject(out, "num_signed", cJSON_CreateNumber(nSigned));
+    cJSON_AddItemToObject(out, "condition", cc_conditionToJSON(cond));
+
+END:
+    cc_free(cond);
+    free(msg);
+    free(sk);
+    return out;
+}
+
+
+cJSON *cc_conditionToJSON(const CC *cond) {
+    cJSON *params = cJSON_CreateObject();
+    cJSON_AddItemToObject(params, "type", cJSON_CreateString(cond->type->name));
+    cond->type->toJSON(cond, params);
+    return params;
+}
+
+
+char *cc_conditionToJSONString(const CC *cond) {
+    assert(cond != NULL);
+    cJSON *params = cc_conditionToJSON(cond);
+    char *out = cJSON_Print(params);
+    cJSON_Delete(params);
+    return out;
+}
+
+
+static cJSON *jsonListMethods(cJSON *params, char *err);
+
+
+typedef struct JsonMethod {
+    char *name;
+    cJSON* (*method)(cJSON *params, char *err);
+    char *description;
+} JsonMethod;
+
+
+static JsonMethod cc_jsonMethods[] = {
+    {"encodeCondition", &jsonEncodeCondition, "Encode a JSON condition to binary"},
+    {"decodeCondition", &jsonDecodeCondition, "Decode a binary condition"},
+    {"encodeFulfillment", &jsonEncodeFulfillment, "Encode a JSON condition to a fulfillment"},
+    {"decodeFulfillment", &jsonDecodeFulfillment, "Decode a binary fulfillment"},
+    {"verifyFulfillment", &jsonVerifyFulfillment, "Verify a fulfillment"},
+    {"signTreeEd25519", &jsonSignTreeEd25519, "Sign ed25519 condition nodes"},
+    {"signTreeSecp256k1", &jsonSignTreeSecp256k1, "Sign secp256k1 condition nodes"},
+    {"listMethods", &jsonListMethods, "List available methods"}
+};
+
+
+static int nJsonMethods = sizeof(cc_jsonMethods) / sizeof(*cc_jsonMethods);
+
+
+static cJSON *jsonListMethods(cJSON *params, char *err) {
+    cJSON *list = cJSON_CreateArray();
+    for (int i=0; i<nJsonMethods; i++) {
+        JsonMethod method = cc_jsonMethods[i];
+        cJSON *item = cJSON_CreateObject();
+        cJSON_AddItemToObject(item, "name", cJSON_CreateString(method.name));
+        cJSON_AddItemToObject(item, "description", cJSON_CreateString(method.description));
+        cJSON_AddItemToArray(list, item);
+    }
+    cJSON *out = cJSON_CreateObject();
+    cJSON_AddItemToObject(out, "methods", list);
+    return out;
+}
+
+
+static cJSON* execJsonRPC(cJSON *root, char *err) {
+    cJSON *method_item = cJSON_GetObjectItem(root, "method");
+
+    if (!cJSON_IsString(method_item)) {
+        return jsonErr("malformed method");
+    }
+
+    cJSON *params = cJSON_GetObjectItem(root, "params");
+    if (!cJSON_IsObject(params)) {
+        return jsonErr("params is not an object");
+    }
+
+    for (int i=0; i<nJsonMethods; i++) {
+        JsonMethod method = cc_jsonMethods[i];
+        if (0 == strcmp(method.name, method_item->valuestring)) {
+            return method.method(params, err);
+        }
+    }
+
+    return jsonErr("invalid method");
+}
+
+
+char *cc_jsonRPC(char* input) {
+    char err[MAX_ERR_LEN] = "\0";
+    cJSON *out;
+    cJSON *root = cJSON_Parse(input);
+    if (!root) out = jsonErr("Error parsing JSON request");
+    else {
+        out = execJsonRPC(root, err);
+        if (NULL == out) out = jsonErr(err);
+    }
+    char *res = cJSON_Print(out);
+    cJSON_Delete(out);
+    cJSON_Delete(root);
+    return res;
+}
