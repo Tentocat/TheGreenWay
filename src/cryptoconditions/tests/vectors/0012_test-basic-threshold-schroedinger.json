@@ -1,0 +1,13 @@
+{
+  "json": {
+    "type": "threshold-sha-256",
+    "threshold": 1,
+    "subfulfillments": [
+      {
+        "type": "preimage-sha-256",
+        "preimage": "YWFh"
+      },
+      {
+        "type": "preimage-sha-256",
+        "preimage": "YWFh"
+      
