@@ -333,4 +333,138 @@ void test_exhaustive_recovery_sign(const secp256k1_context *ctx, const secp256k1
 
                 /* Convert to a standard sig then check */
                 secp256k1_ecdsa_recoverable_signature_convert(ctx, &sig, &rsig);
-                secp256k1
+                secp256k1_ecdsa_signature_load(ctx, &r, &s, &sig);
+                /* Note that we compute expected_r *after* signing -- this is important
+                 * because our nonce-computing function function might change k during
+                 * signing. */
+                r_from_k(&expected_r, group, k);
+                CHECK(r == expected_r);
+                CHECK((k * s) % order == (i + r * j) % order ||
+                      (k * (EXHAUSTIVE_TEST_ORDER - s)) % order == (i + r * j) % order);
+
+                /* Overflow means we've tried every possible nonce */
+                if (k < starting_k) {
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void test_exhaustive_recovery_verify(const secp256k1_context *ctx, const secp256k1_ge *group, int order) {
+    /* This is essentially a copy of test_exhaustive_verify, with recovery added */
+    int s, r, msg, key;
+    for (s = 1; s < order; s++) {
+        for (r = 1; r < order; r++) {
+            for (msg = 1; msg < order; msg++) {
+                for (key = 1; key < order; key++) {
+                    secp256k1_ge nonconst_ge;
+                    secp256k1_ecdsa_recoverable_signature rsig;
+                    secp256k1_ecdsa_signature sig;
+                    secp256k1_pubkey pk;
+                    secp256k1_scalar sk_s, msg_s, r_s, s_s;
+                    secp256k1_scalar s_times_k_s, msg_plus_r_times_sk_s;
+                    int recid = 0;
+                    int k, should_verify;
+                    unsigned char msg32[32];
+
+                    secp256k1_scalar_set_int(&s_s, s);
+                    secp256k1_scalar_set_int(&r_s, r);
+                    secp256k1_scalar_set_int(&msg_s, msg);
+                    secp256k1_scalar_set_int(&sk_s, key);
+                    secp256k1_scalar_get_b32(msg32, &msg_s);
+
+                    /* Verify by hand */
+                    /* Run through every k value that gives us this r and check that *one* works.
+                     * Note there could be none, there could be multiple, ECDSA is weird. */
+                    should_verify = 0;
+                    for (k = 0; k < order; k++) {
+                        secp256k1_scalar check_x_s;
+                        r_from_k(&check_x_s, group, k);
+                        if (r_s == check_x_s) {
+                            secp256k1_scalar_set_int(&s_times_k_s, k);
+                            secp256k1_scalar_mul(&s_times_k_s, &s_times_k_s, &s_s);
+                            secp256k1_scalar_mul(&msg_plus_r_times_sk_s, &r_s, &sk_s);
+                            secp256k1_scalar_add(&msg_plus_r_times_sk_s, &msg_plus_r_times_sk_s, &msg_s);
+                            should_verify |= secp256k1_scalar_eq(&s_times_k_s, &msg_plus_r_times_sk_s);
+                        }
+                    }
+                    /* nb we have a "high s" rule */
+                    should_verify &= !secp256k1_scalar_is_high(&s_s);
+
+                    /* We would like to try recovering the pubkey and checking that it matches,
+                     * but pubkey recovery is impossible in the exhaustive tests (the reason
+                     * being that there are 12 nonzero r values, 12 nonzero points, and no
+                     * overlap between the sets, so there are no valid signatures). */
+
+                    /* Verify by converting to a standard signature and calling verify */
+                    secp256k1_ecdsa_recoverable_signature_save(&rsig, &r_s, &s_s, recid);
+                    secp256k1_ecdsa_recoverable_signature_convert(ctx, &sig, &rsig);
+                    memcpy(&nonconst_ge, &group[sk_s], sizeof(nonconst_ge));
+                    secp256k1_pubkey_save(&pk, &nonconst_ge);
+                    CHECK(should_verify ==
+                          secp256k1_ecdsa_verify(ctx, &sig, msg32, &pk));
+                }
+            }
+        }
+    }
+}
+#endif
+
+int main(void) {
+    int i;
+    secp256k1_gej groupj[EXHAUSTIVE_TEST_ORDER];
+    secp256k1_ge group[EXHAUSTIVE_TEST_ORDER];
+
+    /* Build context */
+    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+    /* TODO set z = 1, then do num_tests runs with random z values */
+
+    /* Generate the entire group */
+    secp256k1_gej_set_infinity(&groupj[0]);
+    secp256k1_ge_set_gej(&group[0], &groupj[0]);
+    for (i = 1; i < EXHAUSTIVE_TEST_ORDER; i++) {
+        /* Set a different random z-value for each Jacobian point */
+        secp256k1_fe z;
+        random_fe(&z);
+
+        secp256k1_gej_add_ge(&groupj[i], &groupj[i - 1], &secp256k1_ge_const_g);
+        secp256k1_ge_set_gej(&group[i], &groupj[i]);
+        secp256k1_gej_rescale(&groupj[i], &z);
+
+        /* Verify against ecmult_gen */
+        {
+            secp256k1_scalar scalar_i;
+            secp256k1_gej generatedj;
+            secp256k1_ge generated;
+
+            secp256k1_scalar_set_int(&scalar_i, i);
+            secp256k1_ecmult_gen(&ctx->ecmult_gen_ctx, &generatedj, &scalar_i);
+            secp256k1_ge_set_gej(&generated, &generatedj);
+
+            CHECK(group[i].infinity == 0);
+            CHECK(generated.infinity == 0);
+            CHECK(secp256k1_fe_equal_var(&generated.x, &group[i].x));
+            CHECK(secp256k1_fe_equal_var(&generated.y, &group[i].y));
+        }
+    }
+
+    /* Run the tests */
+#ifdef USE_ENDOMORPHISM
+    test_exhaustive_endomorphism(group, EXHAUSTIVE_TEST_ORDER);
+#endif
+    test_exhaustive_addition(group, groupj, EXHAUSTIVE_TEST_ORDER);
+    test_exhaustive_ecmult(ctx, group, groupj, EXHAUSTIVE_TEST_ORDER);
+    test_exhaustive_sign(ctx, group, EXHAUSTIVE_TEST_ORDER);
+    test_exhaustive_verify(ctx, group, EXHAUSTIVE_TEST_ORDER);
+
+#ifdef ENABLE_MODULE_RECOVERY
+    test_exhaustive_recovery_sign(ctx, group, EXHAUSTIVE_TEST_ORDER);
+    test_exhaustive_recovery_verify(ctx, group, EXHAUSTIVE_TEST_ORDER);
+#endif
+
+    secp256k1_context_destroy(ctx);
+    return 0;
+}
+
