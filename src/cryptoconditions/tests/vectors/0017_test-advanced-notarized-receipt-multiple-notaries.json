@@ -1,0 +1,70 @@
+{
+  "json": {
+    "type": "threshold-sha-256",
+    "threshold": 2,
+    "subfulfillments": [
+      {
+        "type": "prefix-sha-256",
+        "maxMessageLength": 0,
+        "prefix": "Y2FzZXMvNjU3YzEyZGEtOGRjYS00M2IwLTk3Y2EtOGVlOGMzOGFiOWY3L3N0YXRlL2V4ZWN1dGVk",
+        "subfulfillment": {
+          "type": "threshold-sha-256",
+          "threshold": 3,
+          "subfulfillments": [
+            {
+              "type": "prefix-sha-256",
+              "maxMessageLength": 1025,
+              "prefix": "aHR0cHM6Ly9ub3Rhcnk0LmV4YW1wbGUv",
+              "subfulfillment": {
+                "type": "ed25519-sha-256",
+                "publicKey": "Rkvo5cq-MB4FMv5iIUjPy8zxG_MXop9cyHg5xpUf6pg",
+                "signature": "rlayC5_mc7O1szd9hCV8kIVronrH_IYj89BwVubxNmV2CacPp9ASs8UqqLrQPtxIKp7kA-aA5IPjr1mlxK05BA"
+              }
+            },
+            {
+              "type": "prefix-sha-256",
+              "maxMessageLength": 1024,
+              "prefix": "aHR0cHM6Ly9ub3RhcnkxLmV4YW1wbGUv",
+              "subfulfillment": {
+                "type": "ed25519-sha-256",
+                "publicKey": "LlMeiL_oxBn5Ya2ckB3ivdjnoOcUhFUFnonreZhrJSQ",
+                "signature": "hzAaGAj3PCA_DpyBBvEwcQiB2s2sgHwQ00m3mCDcs0B8d7nSPbQoJ2QL3EE4P9xOynYZwXA36HA3pcfPM4F6Dg"
+              }
+            },
+            {
+              "type": "prefix-sha-256",
+              "maxMessageLength": 1024,
+              "prefix": "aHR0cHM6Ly9ub3RhcnkyLmV4YW1wbGUv",
+              "subfulfillment": {
+                "type": "ed25519-sha-256",
+                "publicKey": "WQI-doqchYdsYeuqo07BjmSFf6dmksVamWNfm4jlr5A",
+                "signature": "rPnug4hbpY9ixCtImejOqRWpGS90iMFZLOlZVgtS-Ho3kOA208aVS4dVQUjRMcy682nGimajE3_o-kNooWWgCg"
+              }
+            },
+            {
+              "type": "prefix-sha-256",
+              "maxMessageLength": 1024,
+              "prefix": "aHR0cHM6Ly9ub3RhcnkzLmV4YW1wbGUv",
+              "subfulfillment": {
+                "type": "ed25519-sha-256",
+                "publicKey": "mpisbb_wkOluONgfBUd9-Gs7uw7_wxG8e0LNrJnWvdk",
+                "signature": "l6MrDGHOFRA2ytNZacn5XrVEZepdYpupZav4pqkX8Q3RSr5V0zBUQ45oyRWmtnwd34oMFtLYAfjQuoXv7pu_Dw"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "preimage-sha-256",
+        "preimage": "aHR0cHM6Ly9ub3RhcnkuZXhhbXBsZS9jYXNlcy82NTdjMTJkYS04ZGNhLTQzYjAtOTdjYS04ZWU4YzM4YWI5Zjcvc3RhdGUvZXhlY3V0ZWQ"
+      }
+    ]
+  },
+  "cost": 406738,
+  "subtypes": [
+    "ed25519-sha-256",
+    "prefix-sha-256",
+    "preimage-sha-256"
+  ],
+  "fingerprintContents": "3059800102A154A02580200B4AC3A1E0932CB71B74309FAD7D15DF51BD4D1359ED59FF7C917B35DF24464A810150A12B8020062F2C1BDD08661FE7FEFAC20E02DA8B0184FCD36F6C6C54C53CC28D2E54DD118103062C8282020328",
+  "fulfillment": "A2820272A082026CA052805068747470733A2F2F6E6F746172792E6578616D706C652F63617365732F36353763313264612D386463612D343362302D393763612D3865653863333861623966372F73746174652F6578656375746564A1820214803963617365732F36353763313264612D386463612D343362302D39376361
