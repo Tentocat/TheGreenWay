@@ -528,4 +528,158 @@ void HTTPEvent::trigger(struct timeval* tv)
     else
         evtimer_add(ev, tv); // trigger after timeval passed
 }
-HTTPRequest::HTTPRequest(struct evhttp_request*
+HTTPRequest::HTTPRequest(struct evhttp_request* _req) : req(_req),
+                                                       replySent(false)
+{
+}
+HTTPRequest::~HTTPRequest()
+{
+    if (!replySent) {
+        // Keep track of whether reply was sent to avoid request leaks
+        LogPrintf("%s: Unhandled request\n", __func__);
+        WriteReply(HTTP_INTERNAL, "Unhandled request");
+    }
+    // evhttpd cleans up the request, as long as a reply was sent.
+}
+
+std::pair<bool, std::string> HTTPRequest::GetHeader(const std::string& hdr)
+{
+    const struct evkeyvalq* headers = evhttp_request_get_input_headers(req);
+    assert(headers);
+    const char* val = evhttp_find_header(headers, hdr.c_str());
+    if (val)
+        return std::make_pair(true, val);
+    else
+        return std::make_pair(false, "");
+}
+
+std::string HTTPRequest::ReadBody()
+{
+    struct evbuffer* buf = evhttp_request_get_input_buffer(req);
+    if (!buf)
+        return "";
+    size_t size = evbuffer_get_length(buf);
+    /** Trivial implementation: if this is ever a performance bottleneck,
+     * internal copying can be avoided in multi-segment buffers by using
+     * evbuffer_peek and an awkward loop. Though in that case, it'd be even
+     * better to not copy into an intermediate string but use a stream
+     * abstraction to consume the evbuffer on the fly in the parsing algorithm.
+     */
+    const char* data = (const char*)evbuffer_pullup(buf, size);
+    if (!data) // returns nullptr in case of empty buffer
+        return "";
+    std::string rv(data, size);
+    evbuffer_drain(buf, size);
+    return rv;
+}
+
+void HTTPRequest::WriteHeader(const std::string& hdr, const std::string& value)
+{
+    struct evkeyvalq* headers = evhttp_request_get_output_headers(req);
+    assert(headers);
+    evhttp_add_header(headers, hdr.c_str(), value.c_str());
+}
+
+/** Closure sent to main thread to request a reply to be sent to
+ * a HTTP request.
+ * Replies must be sent in the main loop in the main http thread,
+ * this cannot be done from worker threads.
+ */
+void HTTPRequest::WriteReply(int nStatus, const std::string& strReply)
+{
+    assert(!replySent && req);
+    // Send event to main http thread to send reply message
+    struct evbuffer* evb = evhttp_request_get_output_buffer(req);
+    assert(evb);
+    evbuffer_add(evb, strReply.data(), strReply.size());
+    auto req_copy = req;
+    HTTPEvent* ev = new HTTPEvent(eventBase, true, [req_copy, nStatus]{
+        evhttp_send_reply(req_copy, nStatus, nullptr, nullptr);
+        // Re-enable reading from the socket. This is the second part of the libevent
+        // workaround above.
+        if (event_get_version_number() >= 0x02010600 && event_get_version_number() < 0x02020001) {
+            evhttp_connection* conn = evhttp_request_get_connection(req_copy);
+            if (conn) {
+                bufferevent* bev = evhttp_connection_get_bufferevent(conn);
+                if (bev) {
+                    bufferevent_enable(bev, EV_READ | EV_WRITE);
+                }
+            }
+        }
+    });
+    ev->trigger(nullptr);
+    replySent = true;
+    req = nullptr; // transferred back to main thread
+}
+
+CService HTTPRequest::GetPeer()
+{
+    evhttp_connection* con = evhttp_request_get_connection(req);
+    CService peer;
+    if (con) {
+        // evhttp retains ownership over returned address string
+        const char* address = "";
+        uint16_t port = 0;
+        evhttp_connection_get_peer(con, (char**)&address, &port);
+        peer = LookupNumeric(address, port);
+    }
+    return peer;
+}
+
+std::string HTTPRequest::GetURI()
+{
+    return evhttp_request_get_uri(req);
+}
+
+HTTPRequest::RequestMethod HTTPRequest::GetRequestMethod()
+{
+    switch (evhttp_request_get_command(req)) {
+    case EVHTTP_REQ_GET:
+        return GET;
+        break;
+    case EVHTTP_REQ_POST:
+        return POST;
+        break;
+    case EVHTTP_REQ_HEAD:
+        return HEAD;
+        break;
+    case EVHTTP_REQ_PUT:
+        return PUT;
+        break;
+    default:
+        return UNKNOWN;
+        break;
+    }
+}
+
+void RegisterHTTPHandler(const std::string &prefix, bool exactMatch, const HTTPRequestHandler &handler)
+{
+    LogPrint(BCLog::HTTP, "Registering HTTP handler for %s (exactmatch %d)\n", prefix, exactMatch);
+    pathHandlers.push_back(HTTPPathHandler(prefix, exactMatch, handler));
+}
+
+void UnregisterHTTPHandler(const std::string &prefix, bool exactMatch)
+{
+    std::vector<HTTPPathHandler>::iterator i = pathHandlers.begin();
+    std::vector<HTTPPathHandler>::iterator iend = pathHandlers.end();
+    for (; i != iend; ++i)
+        if (i->prefix == prefix && i->exactMatch == exactMatch)
+            break;
+    if (i != iend)
+    {
+        LogPrint(BCLog::HTTP, "Unregistering HTTP handler for %s (exactmatch %d)\n", prefix, exactMatch);
+        pathHandlers.erase(i);
+    }
+}
+
+std::string urlDecode(const std::string &urlEncoded) {
+    std::string res;
+    if (!urlEncoded.empty()) {
+        char *decoded = evhttp_uridecode(urlEncoded.c_str(), false, nullptr);
+        if (decoded) {
+            res = std::string(decoded);
+            free(decoded);
+        }
+    }
+    return res;
+}
