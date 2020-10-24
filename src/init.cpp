@@ -1418,4 +1418,230 @@ bool AppInitMain()
 
     // cache size calculations
     int64_t nTotalCache = (gArgs.GetArg("-dbcache", nDefaultDbCache) << 20);
-    nTotalCache = std::max(nTotalCache, nMinDbCache << 20); // total cache cannot be
+    nTotalCache = std::max(nTotalCache, nMinDbCache << 20); // total cache cannot be less than nMinDbCache
+    nTotalCache = std::min(nTotalCache, nMaxDbCache << 20); // total cache cannot be greater than nMaxDbcache
+    int64_t nBlockTreeDBCache = nTotalCache / 8;
+
+    nBlockTreeDBCache = std::min(nBlockTreeDBCache, (gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX) ? nMaxBlockDBAndTxIndexCache : nMaxBlockDBCache) << 20);
+
+    if (gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX) || gArgs.GetBoolArg("-spentindex", DEFAULT_SPENTINDEX)) {
+        // enable 3/4 of the cache if addressindex and/or spentindex is enabled
+        nBlockTreeDBCache = nTotalCache * 3 / 4;
+    } else {
+        if (nBlockTreeDBCache > (1 << 21) && !gArgs.GetBoolArg("-txindex", false)) {
+            nBlockTreeDBCache = (1 << 21); // block tree db cache shouldn't be larger than 2 MiB
+        }
+    }
+
+    nTotalCache -= nBlockTreeDBCache;
+    int64_t nCoinDBCache = std::min(nTotalCache / 2, (nTotalCache / 4) + (1 << 23)); // use 25%-50% of the remainder for disk cache
+    nCoinDBCache = std::min(nCoinDBCache, nMaxCoinsDBCache << 20); // cap total coins db cache
+    nTotalCache -= nCoinDBCache;
+    nCoinCacheUsage = nTotalCache; // the rest goes to in-memory cache
+    int64_t nMempoolSizeMax = gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
+    LogPrintf("Cache configuration:\n");
+    LogPrintf("* Using %.1fMiB for block index database\n", nBlockTreeDBCache * (1.0 / 1024 / 1024));
+    LogPrintf("* Using %.1fMiB for chain state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
+    LogPrintf("* Using %.1fMiB for in-memory UTXO set (plus up to %.1fMiB of unused mempool space)\n", nCoinCacheUsage * (1.0 / 1024 / 1024), nMempoolSizeMax * (1.0 / 1024 / 1024));
+
+    if ( fReindex == 0 )
+    {
+        bool checkval,fAddressIndex,fSpentIndex;
+        pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReindex));
+        fAddressIndex = gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX);
+        pblocktree->ReadFlag("addressindex", checkval);
+        if ( checkval != fAddressIndex && fAddressIndex != 0 )
+        {
+            pblocktree->WriteFlag("addressindex", fAddressIndex);
+            LogPrintf("set addressindex, will reindex. could take a while.\n");
+            fReindex = true;
+        }
+        fSpentIndex = gArgs.GetBoolArg("-spentindex", DEFAULT_SPENTINDEX);
+        pblocktree->ReadFlag("spentindex", checkval);
+        if ( checkval != fSpentIndex && fSpentIndex != 0 )
+        {
+            pblocktree->WriteFlag("spentindex", fSpentIndex);
+            LogPrintf("set spentindex, will reindex. could take a while.\n");
+            fReindex = true;
+        }
+    }
+
+    bool fLoaded = false;
+    while (!fLoaded && !fRequestShutdown) {
+        bool fReset = fReindex;
+        std::string strLoadError;
+
+        uiInterface.InitMessage(_("Loading block index..."));
+
+        nStart = GetTimeMillis();
+        do {
+            try {
+                UnloadBlockIndex();
+                pcoinsTip.reset();
+                pcoinsdbview.reset();
+                pcoinscatcher.reset();
+                // new CBlockTreeDB tries to delete the existing file, which
+                // fails if it's still open from the previous loop. Close it first:
+                pblocktree.reset();
+                pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
+
+                if (fReset) {
+                    pblocktree->WriteReindexing(true);
+                    //If we're reindexing in prune mode, wipe away unusable block files and all undo data files
+                    if (fPruneMode)
+                        CleanupBlockRevFiles();
+                }
+
+                if (fRequestShutdown) break;
+
+                // LoadBlockIndex will load fTxIndex from the db, or set it if
+                // we're reindexing. It will also load fHavePruned if we've
+                // ever removed a block file from disk.
+                // Note that it also sets fReindex based on the disk flag!
+                // From here on out fReindex and fReset mean something different!
+                if (!LoadBlockIndex(chainparams)) {
+                    strLoadError = _("Error loading block database");
+                    break;
+                }
+
+                // If the loaded chain has a wrong genesis, bail out immediately
+                // (we're likely using a testnet datadir, or the other way around).
+                if (!mapBlockIndex.empty() && mapBlockIndex.count(chainparams.GetConsensus().hashGenesisBlock) == 0)
+                    return InitError(_("Incorrect or no genesis block found. Wrong datadir for network?"));
+
+                // Check for changed -txindex state
+                if (fTxIndex != gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
+                    strLoadError = _("You need to rebuild the database using -reindex to change -txindex");
+                    break;
+                }
+
+                // Check for changed -prune state.  What we are concerned about is a user who has pruned blocks
+                // in the past, but is now trying to run unpruned.
+                if (fHavePruned && !fPruneMode) {
+                    strLoadError = _("You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain");
+                    break;
+                }
+
+                // At this point blocktree args are consistent with what's on disk.
+                // If we're not mid-reindex (based on disk + args), add a genesis block on disk
+                // (otherwise we use the one already on disk).
+                // This is called again in ThreadImport after the reindex completes.
+                if (!fReindex && !LoadGenesisBlock(chainparams)) {
+                    strLoadError = _("Error initializing block database");
+                    break;
+                }
+
+                // At this point we're either in reindex or we've loaded a useful
+                // block tree into mapBlockIndex!
+
+                pcoinsdbview.reset(new CCoinsViewDB(nCoinDBCache, false, fReset || fReindexChainState));
+                pcoinscatcher.reset(new CCoinsViewErrorCatcher(pcoinsdbview.get()));
+
+                // If necessary, upgrade from older database format.
+                // This is a no-op if we cleared the coinsviewdb with -reindex or -reindex-chainstate
+                if (!pcoinsdbview->Upgrade()) {
+                    strLoadError = _("Error upgrading chainstate database");
+                    break;
+                }
+
+                // ReplayBlocks is a no-op if we cleared the coinsviewdb with -reindex or -reindex-chainstate
+                if (!ReplayBlocks(chainparams, pcoinsdbview.get())) {
+                    strLoadError = _("Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.");
+                    break;
+                }
+
+                // The on-disk coinsdb is now in a good state, create the cache
+                pcoinsTip.reset(new CCoinsViewCache(pcoinscatcher.get()));
+
+                bool is_coinsview_empty = fReset || fReindexChainState || pcoinsTip->GetBestBlock().IsNull();
+                if (!is_coinsview_empty) {
+                    // LoadChainTip sets chainActive based on pcoinsTip's best block
+                    if (!LoadChainTip(chainparams)) {
+                        strLoadError = _("Error initializing block database");
+                        break;
+                    }
+                    assert(chainActive.Tip() != nullptr);
+                }
+
+                if (!fReset) {
+                    // Note that RewindBlockIndex MUST run even if we're about to -reindex-chainstate.
+                    // It both disconnects blocks based on chainActive, and drops block data in
+                    // mapBlockIndex based on lack of available witness data.
+                    uiInterface.InitMessage(_("Rewinding blocks..."));
+                    if (!RewindBlockIndex(chainparams)) {
+                        strLoadError = _("Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain");
+                        break;
+                    }
+                }
+
+                if (!is_coinsview_empty) {
+                    uiInterface.InitMessage(_("Verifying blocks..."));
+                    if (fHavePruned && gArgs.GetArg("-checkblocks", DEFAULT_CHECKBLOCKS) > MIN_BLOCKS_TO_KEEP) {
+                        LogPrintf("Prune: pruned datadir may not have more than %d blocks; only checking available blocks",
+                            MIN_BLOCKS_TO_KEEP);
+                    }
+
+                    {
+                        LOCK(cs_main);
+                        CBlockIndex* tip = chainActive.Tip();
+                        RPCNotifyBlockChange(true, tip);
+                        if (tip && tip->nTime > GetAdjustedTime() + 2 * 60 * 60) {
+                            strLoadError = _("The block database contains a block which appears to be from the future. "
+                                    "This may be due to your computer's date and time being set incorrectly. "
+                                    "Only rebuild the block database if you are sure that your computer's date and time are correct");
+                            break;
+                        }
+                    }
+
+                    if (!CVerifyDB().VerifyDB(chainparams, pcoinsdbview.get(), gArgs.GetArg("-checklevel", DEFAULT_CHECKLEVEL),
+                                  gArgs.GetArg("-checkblocks", DEFAULT_CHECKBLOCKS))) {
+                        strLoadError = _("Corrupted block database detected");
+                        break;
+                    }
+                }
+            } catch (const std::exception& e) {
+                LogPrintf("%s\n", e.what());
+                strLoadError = _("Error opening block database");
+                break;
+            }
+
+            fLoaded = true;
+        } while(false);
+
+        if (!fLoaded && !fRequestShutdown) {
+            // first suggest a reindex
+            if (!fReset) {
+                bool fRet = uiInterface.ThreadSafeQuestion(
+                    strLoadError + ".\n\n" + _("Do you want to rebuild the block database now?"),
+                    strLoadError + ".\nPlease restart with -reindex or -reindex-chainstate to recover.",
+                    "", CClientUIInterface::MSG_ERROR | CClientUIInterface::BTN_ABORT);
+                if (fRet) {
+                    fReindex = true;
+                    fRequestShutdown = false;
+                } else {
+                    LogPrintf("Aborted block database rebuild. Exiting.\n");
+                    return false;
+                }
+            } else {
+                return InitError(strLoadError);
+            }
+        }
+    }
+
+    // As LoadBlockIndex can take several minutes, it's possible the user
+    // requested to kill the GUI during the last operation. If so, exit.
+    // As the program has not fully started yet, Shutdown() is possibly overkill.
+    if (fRequestShutdown)
+    {
+        LogPrintf("Shutdown requested. Exiting.\n");
+        return false;
+    }
+    if (fLoaded) {
+        LogPrintf(" block index %15dms\n", GetTimeMillis() - nStart);
+    }
+
+    fs::path est_path = GetDataDir() / FEE_ESTIMATES_FILENAME;
+    CAutoFile est_filein(fsbridge::fopen(est_path, "rb"), SER_DISK, CLIENT_VERSION);
+    // Allowed to fail as this file IS missing on first startup.
+    if (!est_filein.IsNull())
+     
