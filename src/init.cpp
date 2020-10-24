@@ -1644,4 +1644,186 @@ bool AppInitMain()
     CAutoFile est_filein(fsbridge::fopen(est_path, "rb"), SER_DISK, CLIENT_VERSION);
     // Allowed to fail as this file IS missing on first startup.
     if (!est_filein.IsNull())
-     
+        ::feeEstimator.Read(est_filein);
+    fFeeEstimatesInitialized = true;
+
+    // ********************************************************* Step 8: load wallet
+#ifdef ENABLE_WALLET
+    if (!OpenWallets())
+        return false;
+
+    // TODO: refactor all of these (work with multiple wallets in CC), there shouldn't be any pwalletMain across all init
+    // and CC code, but for now just will set pwalletMain as first available wallet
+
+    extern CWallet* pwalletMain;
+    typedef CWallet* CWalletRef;
+    extern std::vector<CWalletRef> vpwallets;
+
+    if (ASSETCHAINS_CC !=0) {
+        const bool is_multiwallet = gArgs.GetArgs("-wallet").size() > 1;
+        if (is_multiwallet) {
+            return InitError("CC currently only allowed work with a single wallet file");
+        }
+        if (!pwalletMain && vpwallets.size() == 1) {
+            pwalletMain = vpwallets[0];
+        } else
+            return InitError("Loading wallet error");
+    }
+#else
+    LogPrintf("No wallet support compiled in!\n");
+#endif
+
+    // ********************************************************* Step 9: data directory maintenance
+
+    // if pruning, unset the service bit and perform the initial blockstore prune
+    // after any wallet rescanning has taken place.
+    if (fPruneMode) {
+        LogPrintf("Unsetting NODE_NETWORK on prune mode\n");
+        nLocalServices = ServiceFlags(nLocalServices & ~NODE_NETWORK);
+        if (!fReindex) {
+            uiInterface.InitMessage(_("Pruning blockstore..."));
+            PruneAndFlush();
+        }
+    }
+
+    if ( gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX) != 0 )
+        nLocalServices = ServiceFlags(nLocalServices | NODE_ADDRINDEX);
+    if ( gArgs.GetBoolArg("-spentindex", DEFAULT_SPENTINDEX) != 0 )
+        nLocalServices = ServiceFlags(nLocalServices | NODE_SPENTINDEX);
+    LogPrintf("nLocalServices %llx %d, %d\n",(long long)nLocalServices,gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX),gArgs.GetBoolArg("-spentindex", DEFAULT_SPENTINDEX));
+
+    if (chainparams.GetConsensus().vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout != 0) {
+        // Only advertise witness capabilities if they have a reasonable start time.
+        // This allows us to have the code merged without a defined softfork, by setting its
+        // end time to 0.
+        // Note that setting NODE_WITNESS is never required: the only downside from not
+        // doing so is that after activation, no upgraded nodes will fetch from you.
+        nLocalServices = ServiceFlags(nLocalServices | NODE_WITNESS);
+    }
+
+    // ********************************************************* Step 10: import blocks
+
+    if (!CheckDiskSpace())
+        return false;
+
+    // Either install a handler to notify us when genesis activates, or set fHaveGenesis directly.
+    // No locking, as this happens before any background thread is started.
+    if (chainActive.Tip() == nullptr) {
+        uiInterface.NotifyBlockTip.connect(BlockNotifyGenesisWait);
+    } else {
+        fHaveGenesis = true;
+    }
+
+    if (gArgs.IsArgSet("-blocknotify"))
+        uiInterface.NotifyBlockTip.connect(BlockNotifyCallback);
+
+    std::vector<fs::path> vImportFiles;
+    for (const std::string& strFile : gArgs.GetArgs("-loadblock")) {
+        vImportFiles.push_back(strFile);
+    }
+
+    threadGroup.create_thread(boost::bind(&ThreadImport, vImportFiles));
+
+    // Wait for genesis block to be processed
+    {
+        WaitableLock lock(cs_GenesisWait);
+        // We previously could hang here if StartShutdown() is called prior to
+        // ThreadImport getting started, so instead we just wait on a timer to
+        // check ShutdownRequested() regularly.
+        while (!fHaveGenesis && !ShutdownRequested()) {
+            condvar_GenesisWait.wait_for(lock, std::chrono::milliseconds(500));
+        }
+        uiInterface.NotifyBlockTip.disconnect(BlockNotifyGenesisWait);
+    }
+
+    if (ShutdownRequested()) {
+        return false;
+    }
+
+    // ********************************************************* Step 11: start node
+
+    int chain_active_height;
+
+    //// debug print
+    {
+        LOCK(cs_main);
+        LogPrintf("mapBlockIndex.size() = %u\n", mapBlockIndex.size());
+        chain_active_height = chainActive.Height();
+    }
+    LogPrintf("nBestHeight = %d\n", chain_active_height);
+
+    if (gArgs.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION))
+        StartTorControl(threadGroup, scheduler);
+
+    Discover(threadGroup);
+
+    // Map ports with UPnP
+    MapPort(gArgs.GetBoolArg("-upnp", DEFAULT_UPNP));
+
+    CConnman::Options connOptions;
+    connOptions.nLocalServices = nLocalServices;
+    connOptions.nMaxConnections = nMaxConnections;
+    connOptions.nMaxOutbound = std::min(MAX_OUTBOUND_CONNECTIONS, connOptions.nMaxConnections);
+    connOptions.nMaxAddnode = MAX_ADDNODE_CONNECTIONS;
+    connOptions.nMaxFeeler = 1;
+    connOptions.nBestHeight = chain_active_height;
+    connOptions.uiInterface = &uiInterface;
+    connOptions.m_msgproc = peerLogic.get();
+    connOptions.nSendBufferMaxSize = 1000*gArgs.GetArg("-maxsendbuffer", DEFAULT_MAXSENDBUFFER);
+    connOptions.nReceiveFloodSize = 1000*gArgs.GetArg("-maxreceivebuffer", DEFAULT_MAXRECEIVEBUFFER);
+    connOptions.m_added_nodes = gArgs.GetArgs("-addnode");
+
+    connOptions.nMaxOutboundTimeframe = nMaxOutboundTimeframe;
+    connOptions.nMaxOutboundLimit = nMaxOutboundLimit;
+
+    for (const std::string& strBind : gArgs.GetArgs("-bind")) {
+        CService addrBind;
+        if (!Lookup(strBind.c_str(), addrBind, GetListenPort(), false)) {
+            return InitError(ResolveErrMsg("bind", strBind));
+        }
+        connOptions.vBinds.push_back(addrBind);
+    }
+    for (const std::string& strBind : gArgs.GetArgs("-whitebind")) {
+        CService addrBind;
+        if (!Lookup(strBind.c_str(), addrBind, 0, false)) {
+            return InitError(ResolveErrMsg("whitebind", strBind));
+        }
+        if (addrBind.GetPort() == 0) {
+            return InitError(strprintf(_("Need to specify a port with -whitebind: '%s'"), strBind));
+        }
+        connOptions.vWhiteBinds.push_back(addrBind);
+    }
+
+    for (const auto& net : gArgs.GetArgs("-whitelist")) {
+        CSubNet subnet;
+        LookupSubNet(net.c_str(), subnet);
+        if (!subnet.IsValid())
+            return InitError(strprintf(_("Invalid netmask specified in -whitelist: '%s'"), net));
+        connOptions.vWhitelistedRange.push_back(subnet);
+    }
+
+    connOptions.vSeedNodes = gArgs.GetArgs("-seednode");
+
+    // Initiate outbound connections unless connect=0
+    connOptions.m_use_addrman_outgoing = !gArgs.IsArgSet("-connect");
+    if (!connOptions.m_use_addrman_outgoing) {
+        const auto connect = gArgs.GetArgs("-connect");
+        if (connect.size() != 1 || connect[0] != "0") {
+            connOptions.m_specified_outgoing = connect;
+        }
+    }
+    if (!connman.Start(scheduler, connOptions)) {
+        return false;
+    }
+
+    // ********************************************************* Step 12: finished
+
+    SetRPCWarmupFinished();
+    uiInterface.InitMessage(_("Done loading"));
+
+#ifdef ENABLE_WALLET
+    StartWallets(scheduler);
+#endif
+
+    return true;
+}
