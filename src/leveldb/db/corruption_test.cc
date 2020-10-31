@@ -192,4 +192,183 @@ class CorruptionTest {
     return Slice(*storage);
   }
 
-  // Return th
+  // Return the value to associate with the specified key
+  Slice Value(int k, std::string* storage) {
+    Random r(k);
+    return test::RandomString(&r, kValueSize, storage);
+  }
+};
+
+TEST(CorruptionTest, Recovery) {
+  Build(100);
+  Check(100, 100);
+  Corrupt(kLogFile, 19, 1);      // WriteBatch tag for first record
+  Corrupt(kLogFile, log::kBlockSize + 1000, 1);  // Somewhere in second block
+  Reopen();
+
+  // The 64 records in the first two log blocks are completely lost.
+  Check(36, 36);
+}
+
+TEST(CorruptionTest, RecoverWriteError) {
+  env_.writable_file_error_ = true;
+  Status s = TryReopen();
+  ASSERT_TRUE(!s.ok());
+}
+
+TEST(CorruptionTest, NewFileErrorDuringWrite) {
+  // Do enough writing to force minor compaction
+  env_.writable_file_error_ = true;
+  const int num = 3 + (Options().write_buffer_size / kValueSize);
+  std::string value_storage;
+  Status s;
+  for (int i = 0; s.ok() && i < num; i++) {
+    WriteBatch batch;
+    batch.Put("a", Value(100, &value_storage));
+    s = db_->Write(WriteOptions(), &batch);
+  }
+  ASSERT_TRUE(!s.ok());
+  ASSERT_GE(env_.num_writable_file_errors_, 1);
+  env_.writable_file_error_ = false;
+  Reopen();
+}
+
+TEST(CorruptionTest, TableFile) {
+  Build(100);
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+  dbi->TEST_CompactRange(0, NULL, NULL);
+  dbi->TEST_CompactRange(1, NULL, NULL);
+
+  Corrupt(kTableFile, 100, 1);
+  Check(90, 99);
+}
+
+TEST(CorruptionTest, TableFileRepair) {
+  options_.block_size = 2 * kValueSize;  // Limit scope of corruption
+  options_.paranoid_checks = true;
+  Reopen();
+  Build(100);
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+  dbi->TEST_CompactRange(0, NULL, NULL);
+  dbi->TEST_CompactRange(1, NULL, NULL);
+
+  Corrupt(kTableFile, 100, 1);
+  RepairDB();
+  Reopen();
+  Check(95, 99);
+}
+
+TEST(CorruptionTest, TableFileIndexData) {
+  Build(10000);  // Enough to build multiple Tables
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+
+  Corrupt(kTableFile, -2000, 500);
+  Reopen();
+  Check(5000, 9999);
+}
+
+TEST(CorruptionTest, MissingDescriptor) {
+  Build(1000);
+  RepairDB();
+  Reopen();
+  Check(1000, 1000);
+}
+
+TEST(CorruptionTest, SequenceNumberRecovery) {
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v1"));
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v2"));
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v3"));
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v4"));
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v5"));
+  RepairDB();
+  Reopen();
+  std::string v;
+  ASSERT_OK(db_->Get(ReadOptions(), "foo", &v));
+  ASSERT_EQ("v5", v);
+  // Write something.  If sequence number was not recovered properly,
+  // it will be hidden by an earlier write.
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "v6"));
+  ASSERT_OK(db_->Get(ReadOptions(), "foo", &v));
+  ASSERT_EQ("v6", v);
+  Reopen();
+  ASSERT_OK(db_->Get(ReadOptions(), "foo", &v));
+  ASSERT_EQ("v6", v);
+}
+
+TEST(CorruptionTest, CorruptedDescriptor) {
+  ASSERT_OK(db_->Put(WriteOptions(), "foo", "hello"));
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+  dbi->TEST_CompactRange(0, NULL, NULL);
+
+  Corrupt(kDescriptorFile, 0, 1000);
+  Status s = TryReopen();
+  ASSERT_TRUE(!s.ok());
+
+  RepairDB();
+  Reopen();
+  std::string v;
+  ASSERT_OK(db_->Get(ReadOptions(), "foo", &v));
+  ASSERT_EQ("hello", v);
+}
+
+TEST(CorruptionTest, CompactionInputError) {
+  Build(10);
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+  const int last = config::kMaxMemCompactLevel;
+  ASSERT_EQ(1, Property("leveldb.num-files-at-level" + NumberToString(last)));
+
+  Corrupt(kTableFile, 100, 1);
+  Check(5, 9);
+
+  // Force compactions by writing lots of values
+  Build(10000);
+  Check(10000, 10000);
+}
+
+TEST(CorruptionTest, CompactionInputErrorParanoid) {
+  options_.paranoid_checks = true;
+  options_.write_buffer_size = 512 << 10;
+  Reopen();
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+
+  // Make multiple inputs so we need to compact.
+  for (int i = 0; i < 2; i++) {
+    Build(10);
+    dbi->TEST_CompactMemTable();
+    Corrupt(kTableFile, 100, 1);
+    env_.SleepForMicroseconds(100000);
+  }
+  dbi->CompactRange(NULL, NULL);
+
+  // Write must fail because of corrupted table
+  std::string tmp1, tmp2;
+  Status s = db_->Put(WriteOptions(), Key(5, &tmp1), Value(5, &tmp2));
+  ASSERT_TRUE(!s.ok()) << "write did not fail in corrupted paranoid db";
+}
+
+TEST(CorruptionTest, UnrelatedKeys) {
+  Build(10);
+  DBImpl* dbi = reinterpret_cast<DBImpl*>(db_);
+  dbi->TEST_CompactMemTable();
+  Corrupt(kTableFile, 100, 1);
+
+  std::string tmp1, tmp2;
+  ASSERT_OK(db_->Put(WriteOptions(), Key(1000, &tmp1), Value(1000, &tmp2)));
+  std::string v;
+  ASSERT_OK(db_->Get(ReadOptions(), Key(1000, &tmp1), &v));
+  ASSERT_EQ(Value(1000, &tmp2).ToString(), v);
+  dbi->TEST_CompactMemTable();
+  ASSERT_OK(db_->Get(ReadOptions(), Key(1000, &tmp1), &v));
+  ASSERT_EQ(Value(1000, &tmp2).ToString(), v);
+}
+
+}  // namespace leveldb
+
+int main(int argc, char** argv) {
+  return leveldb::test::RunAllTests();
+}
