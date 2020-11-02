@@ -109,4 +109,19 @@ Status TableCache::Get(const ReadOptions& options,
                        void* arg,
                        void (*saver)(void*, const Slice&, const Slice&)) {
   Cache::Handle* handle = NULL;
-  Status s = FindTable(file_nu
+  Status s = FindTable(file_number, file_size, &handle);
+  if (s.ok()) {
+    Table* t = reinterpret_cast<TableAndFile*>(cache_->Value(handle))->table;
+    s = t->InternalGet(options, k, arg, saver);
+    cache_->Release(handle);
+  }
+  return s;
+}
+
+void TableCache::Evict(uint64_t file_number) {
+  char buf[sizeof(file_number)];
+  EncodeFixed64(buf, file_number);
+  cache_->Erase(Slice(buf, sizeof(buf)));
+}
+
+}  // namespace leveldb
