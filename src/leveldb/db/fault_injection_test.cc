@@ -505,4 +505,50 @@ class FaultInjectionTest {
 
   void NoWriteTestReopenWithFault(ResetMethod reset_method) {
     CloseDB();
-    Re
+    ResetDBState(reset_method);
+    ASSERT_OK(OpenDB());
+  }
+
+  void DoTest() {
+    Random rnd(0);
+    ASSERT_OK(OpenDB());
+    for (size_t idx = 0; idx < kNumIterations; idx++) {
+      int num_pre_sync = rnd.Uniform(kMaxNumValues);
+      int num_post_sync = rnd.Uniform(kMaxNumValues);
+
+      PartialCompactTestPreFault(num_pre_sync, num_post_sync);
+      PartialCompactTestReopenWithFault(RESET_DROP_UNSYNCED_DATA,
+                                        num_pre_sync,
+                                        num_post_sync);
+
+      NoWriteTestPreFault();
+      NoWriteTestReopenWithFault(RESET_DROP_UNSYNCED_DATA);
+
+      PartialCompactTestPreFault(num_pre_sync, num_post_sync);
+      // No new files created so we expect all values since no files will be
+      // dropped.
+      PartialCompactTestReopenWithFault(RESET_DELETE_UNSYNCED_FILES,
+                                        num_pre_sync + num_post_sync,
+                                        0);
+
+      NoWriteTestPreFault();
+      NoWriteTestReopenWithFault(RESET_DELETE_UNSYNCED_FILES);
+    }
+  }
+};
+
+TEST(FaultInjectionTest, FaultTestNoLogReuse) {
+  ReuseLogs(false);
+  DoTest();
+}
+
+TEST(FaultInjectionTest, FaultTestWithLogReuse) {
+  ReuseLogs(true);
+  DoTest();
+}
+
+}  // namespace leveldb
+
+int main(int argc, char** argv) {
+  return leveldb::test::RunAllTests();
+}
