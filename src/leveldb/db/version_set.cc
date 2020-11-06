@@ -1466,4 +1466,70 @@ Compaction::~Compaction() {
 bool Compaction::IsTrivialMove() const {
   const VersionSet* vset = input_version_->vset_;
   // Avoid a move if there is lots of overlapping grandparent data.
-  // Otherwise, the move could create a parent file that will requ
+  // Otherwise, the move could create a parent file that will require
+  // a very expensive merge later on.
+  return (num_input_files(0) == 1 && num_input_files(1) == 0 &&
+          TotalFileSize(grandparents_) <=
+              MaxGrandParentOverlapBytes(vset->options_));
+}
+
+void Compaction::AddInputDeletions(VersionEdit* edit) {
+  for (int which = 0; which < 2; which++) {
+    for (size_t i = 0; i < inputs_[which].size(); i++) {
+      edit->DeleteFile(level_ + which, inputs_[which][i]->number);
+    }
+  }
+}
+
+bool Compaction::IsBaseLevelForKey(const Slice& user_key) {
+  // Maybe use binary search to find right entry instead of linear search?
+  const Comparator* user_cmp = input_version_->vset_->icmp_.user_comparator();
+  for (int lvl = level_ + 2; lvl < config::kNumLevels; lvl++) {
+    const std::vector<FileMetaData*>& files = input_version_->files_[lvl];
+    for (; level_ptrs_[lvl] < files.size(); ) {
+      FileMetaData* f = files[level_ptrs_[lvl]];
+      if (user_cmp->Compare(user_key, f->largest.user_key()) <= 0) {
+        // We've advanced far enough
+        if (user_cmp->Compare(user_key, f->smallest.user_key()) >= 0) {
+          // Key falls in this file's range, so definitely not base level
+          return false;
+        }
+        break;
+      }
+      level_ptrs_[lvl]++;
+    }
+  }
+  return true;
+}
+
+bool Compaction::ShouldStopBefore(const Slice& internal_key) {
+  const VersionSet* vset = input_version_->vset_;
+  // Scan to find earliest grandparent file that contains key.
+  const InternalKeyComparator* icmp = &vset->icmp_;
+  while (grandparent_index_ < grandparents_.size() &&
+      icmp->Compare(internal_key,
+                    grandparents_[grandparent_index_]->largest.Encode()) > 0) {
+    if (seen_key_) {
+      overlapped_bytes_ += grandparents_[grandparent_index_]->file_size;
+    }
+    grandparent_index_++;
+  }
+  seen_key_ = true;
+
+  if (overlapped_bytes_ > MaxGrandParentOverlapBytes(vset->options_)) {
+    // Too much overlap for current output; start new output
+    overlapped_bytes_ = 0;
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void Compaction::ReleaseInputs() {
+  if (input_version_ != NULL) {
+    input_version_->Unref();
+    input_version_ = NULL;
+  }
+}
+
+}  // namespace leveldb
