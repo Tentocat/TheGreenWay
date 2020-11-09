@@ -397,4 +397,132 @@ class Benchmark {
     Env::Default()->GetTestDirectory(&test_dir);
     snprintf(file_name, sizeof(file_name),
              "%s/dbbench_polyDB-%d.kct",
-    
+             test_dir.c_str(),
+             db_num_);
+
+    // Create tuning options and open the database
+    int open_options = kyotocabinet::PolyDB::OWRITER |
+                       kyotocabinet::PolyDB::OCREATE;
+    int tune_options = kyotocabinet::TreeDB::TSMALL |
+        kyotocabinet::TreeDB::TLINEAR;
+    if (FLAGS_compression) {
+      tune_options |= kyotocabinet::TreeDB::TCOMPRESS;
+      db_->tune_compressor(&comp_);
+    }
+    db_->tune_options(tune_options);
+    db_->tune_page_cache(FLAGS_cache_size);
+    db_->tune_page(FLAGS_page_size);
+    db_->tune_map(256LL<<20);
+    if (sync) {
+      open_options |= kyotocabinet::PolyDB::OAUTOSYNC;
+    }
+    if (!db_->open(file_name, open_options)) {
+      fprintf(stderr, "open error: %s\n", db_->error().name());
+    }
+  }
+
+  void Write(bool sync, Order order, DBState state,
+             int num_entries, int value_size, int entries_per_batch) {
+    // Create new database if state == FRESH
+    if (state == FRESH) {
+      if (FLAGS_use_existing_db) {
+        message_ = "skipping (--use_existing_db is true)";
+        return;
+      }
+      delete db_;
+      db_ = NULL;
+      Open(sync);
+      Start();  // Do not count time taken to destroy/open
+    }
+
+    if (num_entries != num_) {
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%d ops)", num_entries);
+      message_ = msg;
+    }
+
+    // Write to database
+    for (int i = 0; i < num_entries; i++)
+    {
+      const int k = (order == SEQUENTIAL) ? i : (rand_.Next() % num_entries);
+      char key[100];
+      snprintf(key, sizeof(key), "%016d", k);
+      bytes_ += value_size + strlen(key);
+      std::string cpp_key = key;
+      if (!db_->set(cpp_key, gen_.Generate(value_size).ToString())) {
+        fprintf(stderr, "set error: %s\n", db_->error().name());
+      }
+      FinishedSingleOp();
+    }
+  }
+
+  void ReadSequential() {
+    kyotocabinet::DB::Cursor* cur = db_->cursor();
+    cur->jump();
+    std::string ckey, cvalue;
+    while (cur->get(&ckey, &cvalue, true)) {
+      bytes_ += ckey.size() + cvalue.size();
+      FinishedSingleOp();
+    }
+    delete cur;
+  }
+
+  void ReadRandom() {
+    std::string value;
+    for (int i = 0; i < reads_; i++) {
+      char key[100];
+      const int k = rand_.Next() % reads_;
+      snprintf(key, sizeof(key), "%016d", k);
+      db_->get(key, &value);
+      FinishedSingleOp();
+    }
+  }
+};
+
+}  // namespace leveldb
+
+int main(int argc, char** argv) {
+  std::string default_db_path;
+  for (int i = 1; i < argc; i++) {
+    double d;
+    int n;
+    char junk;
+    if (leveldb::Slice(argv[i]).starts_with("--benchmarks=")) {
+      FLAGS_benchmarks = argv[i] + strlen("--benchmarks=");
+    } else if (sscanf(argv[i], "--compression_ratio=%lf%c", &d, &junk) == 1) {
+      FLAGS_compression_ratio = d;
+    } else if (sscanf(argv[i], "--histogram=%d%c", &n, &junk) == 1 &&
+               (n == 0 || n == 1)) {
+      FLAGS_histogram = n;
+    } else if (sscanf(argv[i], "--num=%d%c", &n, &junk) == 1) {
+      FLAGS_num = n;
+    } else if (sscanf(argv[i], "--reads=%d%c", &n, &junk) == 1) {
+      FLAGS_reads = n;
+    } else if (sscanf(argv[i], "--value_size=%d%c", &n, &junk) == 1) {
+      FLAGS_value_size = n;
+    } else if (sscanf(argv[i], "--cache_size=%d%c", &n, &junk) == 1) {
+      FLAGS_cache_size = n;
+    } else if (sscanf(argv[i], "--page_size=%d%c", &n, &junk) == 1) {
+      FLAGS_page_size = n;
+    } else if (sscanf(argv[i], "--compression=%d%c", &n, &junk) == 1 &&
+               (n == 0 || n == 1)) {
+      FLAGS_compression = (n == 1) ? true : false;
+    } else if (strncmp(argv[i], "--db=", 5) == 0) {
+      FLAGS_db = argv[i] + 5;
+    } else {
+      fprintf(stderr, "Invalid flag '%s'\n", argv[i]);
+      exit(1);
+    }
+  }
+
+  // Choose a location for the test database if none given with --db=<path>
+  if (FLAGS_db == NULL) {
+      leveldb::Env::Default()->GetTestDirectory(&default_db_path);
+      default_db_path += "/dbbench";
+      FLAGS_db = default_db_path.c_str();
+  }
+
+  leveldb::Benchmark benchmark;
+  benchmark.Run();
+  return 0;
+}
