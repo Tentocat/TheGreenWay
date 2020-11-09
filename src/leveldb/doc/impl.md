@@ -149,4 +149,22 @@ to do 100K file opens in directories with varying number of files:
 |-------------------:|----------------------------:|
 |               1000 |                           9 |
 |              10000 |                          10 |
-|             100000 |                      
+|             100000 |                          16 |
+
+So maybe even the sharding is not necessary on modern filesystems?
+
+## Recovery
+
+* Read CURRENT to find name of the latest committed MANIFEST
+* Read the named MANIFEST file
+* Clean up stale files
+* We could open all sstables here, but it is probably better to be lazy...
+* Convert log chunk to a new level-0 sstable
+* Start directing new writes to a new log file with recovered sequence#
+
+## Garbage collection of files
+
+`DeleteObsoleteFiles()` is called at the end of every compaction and at the end
+of recovery. It finds the names of all files in the database. It deletes all log
+files that are not the current log file. It deletes all table files that are not
+referenced from some level and are not the output of an active compaction.
