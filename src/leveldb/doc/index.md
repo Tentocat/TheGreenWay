@@ -304,4 +304,220 @@ new key format (e.g., adding an optional third part to the keys processed by
 version number for new keys (c) change the comparator function so it uses the
 version numbers found in the keys to decide how to interpret them.
 
-## Per
+## Performance
+
+Performance can be tuned by changing the default values of the types defined in
+`include/leveldb/options.h`.
+
+### Block size
+
+leveldb groups adjacent keys together into the same block and such a block is
+the unit of transfer to and from persistent storage. The default block size is
+approximately 4096 uncompressed bytes.  Applications that mostly do bulk scans
+over the contents of the database may wish to increase this size. Applications
+that do a lot of point reads of small values may wish to switch to a smaller
+block size if performance measurements indicate an improvement. There isn't much
+benefit in using blocks smaller than one kilobyte, or larger than a few
+megabytes. Also note that compression will be more effective with larger block
+sizes.
+
+### Compression
+
+Each block is individually compressed before being written to persistent
+storage. Compression is on by default since the default compression method is
+very fast, and is automatically disabled for uncompressible data. In rare cases,
+applications may want to disable compression entirely, but should only do so if
+benchmarks show a performance improvement:
+
+```c++
+leveldb::Options options;
+options.compression = leveldb::kNoCompression;
+... leveldb::DB::Open(options, name, ...) ....
+```
+
+### Cache
+
+The contents of the database are stored in a set of files in the filesystem and
+each file stores a sequence of compressed blocks. If options.cache is non-NULL,
+it is used to cache frequently used uncompressed block contents.
+
+```c++
+#include "leveldb/cache.h"
+
+leveldb::Options options;
+options.cache = leveldb::NewLRUCache(100 * 1048576);  // 100MB cache
+leveldb::DB* db;
+leveldb::DB::Open(options, name, &db);
+... use the db ...
+delete db
+delete options.cache;
+```
+
+Note that the cache holds uncompressed data, and therefore it should be sized
+according to application level data sizes, without any reduction from
+compression. (Caching of compressed blocks is left to the operating system
+buffer cache, or any custom Env implementation provided by the client.)
+
+When performing a bulk read, the application may wish to disable caching so that
+the data processed by the bulk read does not end up displacing most of the
+cached contents. A per-iterator option can be used to achieve this:
+
+```c++
+leveldb::ReadOptions options;
+options.fill_cache = false;
+leveldb::Iterator* it = db->NewIterator(options);
+for (it->SeekToFirst(); it->Valid(); it->Next()) {
+  ...
+}
+```
+
+### Key Layout
+
+Note that the unit of disk transfer and caching is a block. Adjacent keys
+(according to the database sort order) will usually be placed in the same block.
+Therefore the application can improve its performance by placing keys that are
+accessed together near each other and placing infrequently used keys in a
+separate region of the key space.
+
+For example, suppose we are implementing a simple file system on top of leveldb.
+The types of entries we might wish to store are:
+
+    filename -> permission-bits, length, list of file_block_ids
+    file_block_id -> data
+
+We might want to prefix filename keys with one letter (say '/') and the
+`file_block_id` keys with a different letter (say '0') so that scans over just
+the metadata do not force us to fetch and cache bulky file contents.
+
+### Filters
+
+Because of the way leveldb data is organized on disk, a single `Get()` call may
+involve multiple reads from disk. The optional FilterPolicy mechanism can be
+used to reduce the number of disk reads substantially.
+
+```c++
+leveldb::Options options;
+options.filter_policy = NewBloomFilterPolicy(10);
+leveldb::DB* db;
+leveldb::DB::Open(options, "/tmp/testdb", &db);
+... use the database ...
+delete db;
+delete options.filter_policy;
+```
+
+The preceding code associates a Bloom filter based filtering policy with the
+database.  Bloom filter based filtering relies on keeping some number of bits of
+data in memory per key (in this case 10 bits per key since that is the argument
+we passed to `NewBloomFilterPolicy`). This filter will reduce the number of
+unnecessary disk reads needed for Get() calls by a factor of approximately
+a 100. Increasing the bits per key will lead to a larger reduction at the cost
+of more memory usage. We recommend that applications whose working set does not
+fit in memory and that do a lot of random reads set a filter policy.
+
+If you are using a custom comparator, you should ensure that the filter policy
+you are using is compatible with your comparator. For example, consider a
+comparator that ignores trailing spaces when comparing keys.
+`NewBloomFilterPolicy` must not be used with such a comparator. Instead, the
+application should provide a custom filter policy that also ignores trailing
+spaces. For example:
+
+```c++
+class CustomFilterPolicy : public leveldb::FilterPolicy {
+ private:
+  FilterPolicy* builtin_policy_;
+
+ public:
+  CustomFilterPolicy() : builtin_policy_(NewBloomFilterPolicy(10)) {}
+  ~CustomFilterPolicy() { delete builtin_policy_; }
+
+  const char* Name() const { return "IgnoreTrailingSpacesFilter"; }
+
+  void CreateFilter(const Slice* keys, int n, std::string* dst) const {
+    // Use builtin bloom filter code after removing trailing spaces
+    std::vector<Slice> trimmed(n);
+    for (int i = 0; i < n; i++) {
+      trimmed[i] = RemoveTrailingSpaces(keys[i]);
+    }
+    return builtin_policy_->CreateFilter(&trimmed[i], n, dst);
+  }
+};
+```
+
+Advanced applications may provide a filter policy that does not use a bloom
+filter but uses some other mechanism for summarizing a set of keys. See
+`leveldb/filter_policy.h` for detail.
+
+## Checksums
+
+leveldb associates checksums with all data it stores in the file system. There
+are two separate controls provided over how aggressively these checksums are
+verified:
+
+`ReadOptions::verify_checksums` may be set to true to force checksum
+verification of all data that is read from the file system on behalf of a
+particular read.  By default, no such verification is done.
+
+`Options::paranoid_checks` may be set to true before opening a database to make
+the database implementation raise an error as soon as it detects an internal
+corruption. Depending on which portion of the database has been corrupted, the
+error may be raised when the database is opened, or later by another database
+operation. By default, paranoid checking is off so that the database can be used
+even if parts of its persistent storage have been corrupted.
+
+If a database is corrupted (perhaps it cannot be opened when paranoid checking
+is turned on), the `leveldb::RepairDB` function may be used to recover as much
+of the data as possible
+
+## Approximate Sizes
+
+The `GetApproximateSizes` method can used to get the approximate number of bytes
+of file system space used by one or more key ranges.
+
+```c++
+leveldb::Range ranges[2];
+ranges[0] = leveldb::Range("a", "c");
+ranges[1] = leveldb::Range("x", "z");
+uint64_t sizes[2];
+leveldb::Status s = db->GetApproximateSizes(ranges, 2, sizes);
+```
+
+The preceding call will set `sizes[0]` to the approximate number of bytes of
+file system space used by the key range `[a..c)` and `sizes[1]` to the
+approximate number of bytes used by the key range `[x..z)`.
+
+## Environment
+
+All file operations (and other operating system calls) issued by the leveldb
+implementation are routed through a `leveldb::Env` object. Sophisticated clients
+may wish to provide their own Env implementation to get better control.
+For example, an application may introduce artificial delays in the file IO
+paths to limit the impact of leveldb on other activities in the system.
+
+```c++
+class SlowEnv : public leveldb::Env {
+  ... implementation of the Env interface ...
+};
+
+SlowEnv env;
+leveldb::Options options;
+options.env = &env;
+Status s = leveldb::DB::Open(options, ...);
+```
+
+## Porting
+
+leveldb may be ported to a new platform by providing platform specific
+implementations of the types/methods/functions exported by
+`leveldb/port/port.h`.  See `leveldb/port/port_example.h` for more details.
+
+In addition, the new platform may need a new default `leveldb::Env`
+implementation.  See `leveldb/util/env_posix.h` for an example.
+
+## Other Information
+
+Details about the leveldb implementation may be found in the following
+documents:
+
+1. [Implementation notes](impl.md)
+2. [Format of an immutable Table file](table_format.md)
+3. [Format of a log file](log_format.md)
