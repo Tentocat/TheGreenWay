@@ -376,4 +376,105 @@ void BlockAssembler::addPackageTxs(int &nPackagesSelected, int &nDescendantsUpda
                     CompareTxMemPoolEntryByAncestorFee()(*modit, CTxMemPoolModifiedEntry(iter))) {
                 // The best entry in mapModifiedTx has higher score
                 // than the one from mapTx.
-           
+                // Switch which transaction (package) to consider
+                iter = modit->iter;
+                fUsingModified = true;
+            } else {
+                // Either no entry in mapModifiedTx, or it's worse than mapTx.
+                // Increment mi for the next loop iteration.
+                ++mi;
+            }
+        }
+
+        // We skip mapTx entries that are inBlock, and mapModifiedTx shouldn't
+        // contain anything that is inBlock.
+        assert(!inBlock.count(iter));
+
+        uint64_t packageSize = iter->GetSizeWithAncestors();
+        CAmount packageFees = iter->GetModFeesWithAncestors();
+        int64_t packageSigOpsCost = iter->GetSigOpCostWithAncestors();
+        if (fUsingModified) {
+            packageSize = modit->nSizeWithAncestors;
+            packageFees = modit->nModFeesWithAncestors;
+            packageSigOpsCost = modit->nSigOpCostWithAncestors;
+        }
+
+        if (packageFees < blockMinFeeRate.GetFee(packageSize)) {
+            // Everything else we might consider has a lower fee rate
+            return;
+        }
+
+        if (!TestPackage(packageSize, packageSigOpsCost)) {
+            if (fUsingModified) {
+                // Since we always look at the best entry in mapModifiedTx,
+                // we must erase failed entries so that we can consider the
+                // next best entry on the next loop iteration
+                mapModifiedTx.get<ancestor_score>().erase(modit);
+                failedTx.insert(iter);
+            }
+
+            ++nConsecutiveFailed;
+
+            if (nConsecutiveFailed > MAX_CONSECUTIVE_FAILURES && nBlockWeight >
+                    nBlockMaxWeight - 4000) {
+                // Give up if we're close to full and haven't succeeded in a while
+                break;
+            }
+            continue;
+        }
+
+        CTxMemPool::setEntries ancestors;
+        uint64_t nNoLimit = std::numeric_limits<uint64_t>::max();
+        std::string dummy;
+        mempool.CalculateMemPoolAncestors(*iter, ancestors, nNoLimit, nNoLimit, nNoLimit, nNoLimit, dummy, false);
+
+        onlyUnconfirmed(ancestors);
+        ancestors.insert(iter);
+
+        // Test if all tx's are Final
+        if (!TestPackageTransactions(ancestors) || !DbLockLimitOk(ancestors)) {
+            if (fUsingModified) {
+                mapModifiedTx.get<ancestor_score>().erase(modit);
+                failedTx.insert(iter);
+            }
+            continue;
+        }
+
+        // This transaction will make it in; reset the failed counter.
+        nConsecutiveFailed = 0;
+
+        // Package can be added. Sort the entries in a valid order.
+        std::vector<CTxMemPool::txiter> sortedEntries;
+        SortForBlock(ancestors, iter, sortedEntries);
+
+        for (size_t i=0; i<sortedEntries.size(); ++i) {
+            AddToBlock(sortedEntries[i]);
+            // Erase from the modified set, if present
+            mapModifiedTx.erase(sortedEntries[i]);
+        }
+
+        ++nPackagesSelected;
+
+        // Update transactions that depend on each of these
+        nDescendantsUpdated += UpdatePackagesForAdded(ancestors, mapModifiedTx);
+    }
+}
+
+void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)
+{
+    // Update nExtraNonce
+    static uint256 hashPrevBlock;
+    if (hashPrevBlock != pblock->hashPrevBlock)
+    {
+        nExtraNonce = 0;
+        hashPrevBlock = pblock->hashPrevBlock;
+    }
+    ++nExtraNonce;
+    unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
+    CMutableTransaction txCoinbase(*pblock->vtx[0]);
+    txCoinbase.vin[0].scriptSig = (CScript() << nHeight << CScriptNum(nExtraNonce)) + COINBASE_FLAGS;
+    assert(txCoinbase.vin[0].scriptSig.size() <= 100);
+
+    pblock->vtx[0] = MakeTransactionRef(std::move(txCoinbase));
+    pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
+}
