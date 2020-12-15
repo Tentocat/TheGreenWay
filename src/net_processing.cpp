@@ -237,4 +237,261 @@ struct CNodeState {
 
     ChainSyncTimeoutState m_chain_sync;
 
-    //! Time of l
+    //! Time of last new block announcement
+    int64_t m_last_block_announcement;
+
+    CNodeState(CAddress addrIn, std::string addrNameIn) : address(addrIn), name(addrNameIn) {
+        fCurrentlyConnected = false;
+        nMisbehavior = 0;
+        fShouldBan = false;
+        pindexBestKnownBlock = nullptr;
+        hashLastUnknownBlock.SetNull();
+        pindexLastCommonBlock = nullptr;
+        pindexBestHeaderSent = nullptr;
+        nUnconnectingHeaders = 0;
+        fSyncStarted = false;
+        nHeadersSyncTimeout = 0;
+        nStallingSince = 0;
+        nDownloadingSince = 0;
+        nBlocksInFlight = 0;
+        nBlocksInFlightValidHeaders = 0;
+        fPreferredDownload = false;
+        fPreferHeaders = false;
+        fPreferHeaderAndIDs = false;
+        fProvidesHeaderAndIDs = false;
+        fHaveWitness = false;
+        fWantsCmpctWitness = false;
+        fSupportsDesiredCmpctVersion = false;
+        m_chain_sync = { 0, nullptr, false, false };
+        m_last_block_announcement = 0;
+    }
+};
+
+/** Map maintaining per-node state. Requires cs_main. */
+std::map<NodeId, CNodeState> mapNodeState;
+
+// Requires cs_main.
+CNodeState *State(NodeId pnode) {
+    std::map<NodeId, CNodeState>::iterator it = mapNodeState.find(pnode);
+    if (it == mapNodeState.end())
+        return nullptr;
+    return &it->second;
+}
+
+void UpdatePreferredDownload(CNode* node, CNodeState* state)
+{
+    nPreferredDownload -= state->fPreferredDownload;
+
+    // Whether this node should be marked as a preferred download node.
+    state->fPreferredDownload = (!node->fInbound || node->fWhitelisted) && !node->fOneShot && !node->fClient;
+
+    nPreferredDownload += state->fPreferredDownload;
+}
+
+void PushNodeVersion(CNode *pnode, CConnman* connman, int64_t nTime)
+{
+    ServiceFlags nLocalNodeServices = pnode->GetLocalServices();
+    uint64_t nonce = pnode->GetLocalNonce();
+    int nNodeStartingHeight = pnode->GetMyStartingHeight();
+    NodeId nodeid = pnode->GetId();
+    CAddress addr = pnode->addr;
+
+    CAddress addrYou = (addr.IsRoutable() && !IsProxy(addr) ? addr : CAddress(CService(), addr.nServices));
+    CAddress addrMe = CAddress(CService(), nLocalNodeServices);
+
+    connman->PushMessage(pnode, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::VERSION, PROTOCOL_VERSION, (uint64_t)nLocalNodeServices, nTime, addrYou, addrMe,
+            nonce, strSubVersion, nNodeStartingHeight, ::fRelayTxes));
+
+    if (fLogIPs) {
+        LogPrint(BCLog::NET, "send version message: version %d, blocks=%d, us=%s, them=%s, peer=%d\n", PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), addrYou.ToString(), nodeid);
+    } else {
+        LogPrint(BCLog::NET, "send version message: version %d, blocks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid);
+    }
+}
+
+// Requires cs_main.
+// Returns a bool indicating whether we requested this block.
+// Also used if a block was /not/ received and timed out or started with another peer
+bool MarkBlockAsReceived(const uint256& hash) {
+    std::map<uint256, std::pair<NodeId, std::list<QueuedBlock>::iterator> >::iterator itInFlight = mapBlocksInFlight.find(hash);
+    if (itInFlight != mapBlocksInFlight.end()) {
+        CNodeState *state = State(itInFlight->second.first);
+        assert(state != nullptr);
+        state->nBlocksInFlightValidHeaders -= itInFlight->second.second->fValidatedHeaders;
+        if (state->nBlocksInFlightValidHeaders == 0 && itInFlight->second.second->fValidatedHeaders) {
+            // Last validated block on the queue was received.
+            nPeersWithValidatedDownloads--;
+        }
+        if (state->vBlocksInFlight.begin() == itInFlight->second.second) {
+            // First block on the queue was received, update the start download time for the next one
+            state->nDownloadingSince = std::max(state->nDownloadingSince, GetTimeMicros());
+        }
+        state->vBlocksInFlight.erase(itInFlight->second.second);
+        state->nBlocksInFlight--;
+        state->nStallingSince = 0;
+        mapBlocksInFlight.erase(itInFlight);
+        return true;
+    }
+    return false;
+}
+
+// Requires cs_main.
+// returns false, still setting pit, if the block was already in flight from the same peer
+// pit will only be valid as long as the same cs_main lock is being held
+bool MarkBlockAsInFlight(NodeId nodeid, const uint256& hash, const CBlockIndex* pindex = nullptr, std::list<QueuedBlock>::iterator** pit = nullptr) {
+    CNodeState *state = State(nodeid);
+    assert(state != nullptr);
+
+    // Short-circuit most stuff in case its from the same node
+    std::map<uint256, std::pair<NodeId, std::list<QueuedBlock>::iterator> >::iterator itInFlight = mapBlocksInFlight.find(hash);
+    if (itInFlight != mapBlocksInFlight.end() && itInFlight->second.first == nodeid) {
+        if (pit) {
+            *pit = &itInFlight->second.second;
+        }
+        return false;
+    }
+
+    // Make sure it's not listed somewhere already.
+    MarkBlockAsReceived(hash);
+
+    std::list<QueuedBlock>::iterator it = state->vBlocksInFlight.insert(state->vBlocksInFlight.end(),
+            {hash, pindex, pindex != nullptr, std::unique_ptr<PartiallyDownloadedBlock>(pit ? new PartiallyDownloadedBlock(&mempool) : nullptr)});
+    state->nBlocksInFlight++;
+    state->nBlocksInFlightValidHeaders += it->fValidatedHeaders;
+    if (state->nBlocksInFlight == 1) {
+        // We're starting a block download (batch) from this peer.
+        state->nDownloadingSince = GetTimeMicros();
+    }
+    if (state->nBlocksInFlightValidHeaders == 1 && pindex != nullptr) {
+        nPeersWithValidatedDownloads++;
+    }
+    itInFlight = mapBlocksInFlight.insert(std::make_pair(hash, std::make_pair(nodeid, it))).first;
+    if (pit)
+        *pit = &itInFlight->second.second;
+    return true;
+}
+
+/** Check whether the last unknown block a peer advertised is not yet known. */
+void ProcessBlockAvailability(NodeId nodeid) {
+    CNodeState *state = State(nodeid);
+    assert(state != nullptr);
+
+    if (!state->hashLastUnknownBlock.IsNull()) {
+        BlockMap::iterator itOld = mapBlockIndex.find(state->hashLastUnknownBlock);
+        if (itOld != mapBlockIndex.end() && itOld->second->nChainWork > 0) {
+            if (state->pindexBestKnownBlock == nullptr || itOld->second->nChainWork >= state->pindexBestKnownBlock->nChainWork)
+                state->pindexBestKnownBlock = itOld->second;
+            state->hashLastUnknownBlock.SetNull();
+        }
+    }
+}
+
+/** Update tracking information about which blocks a peer is assumed to have. */
+void UpdateBlockAvailability(NodeId nodeid, const uint256 &hash) {
+    CNodeState *state = State(nodeid);
+    assert(state != nullptr);
+
+    ProcessBlockAvailability(nodeid);
+
+    BlockMap::iterator it = mapBlockIndex.find(hash);
+    if (it != mapBlockIndex.end() && it->second->nChainWork > 0) {
+        // An actually better block was announced.
+        if (state->pindexBestKnownBlock == nullptr || it->second->nChainWork >= state->pindexBestKnownBlock->nChainWork)
+            state->pindexBestKnownBlock = it->second;
+    } else {
+        // An unknown block was announced; just assume that the latest one is the best one.
+        state->hashLastUnknownBlock = hash;
+    }
+}
+
+void MaybeSetPeerAsAnnouncingHeaderAndIDs(NodeId nodeid, CConnman* connman) {
+    AssertLockHeld(cs_main);
+    CNodeState* nodestate = State(nodeid);
+    if (!nodestate || !nodestate->fSupportsDesiredCmpctVersion) {
+        // Never ask from peers who can't provide witnesses.
+        return;
+    }
+    if (nodestate->fProvidesHeaderAndIDs) {
+        for (std::list<NodeId>::iterator it = lNodesAnnouncingHeaderAndIDs.begin(); it != lNodesAnnouncingHeaderAndIDs.end(); it++) {
+            if (*it == nodeid) {
+                lNodesAnnouncingHeaderAndIDs.erase(it);
+                lNodesAnnouncingHeaderAndIDs.push_back(nodeid);
+                return;
+            }
+        }
+        connman->ForNode(nodeid, [connman](CNode* pfrom){
+            uint64_t nCMPCTBLOCKVersion = (pfrom->GetLocalServices() & NODE_WITNESS) ? 2 : 1;
+            if (lNodesAnnouncingHeaderAndIDs.size() >= 3) {
+                // As per BIP152, we only get 3 of our peers to announce
+                // blocks using compact encodings.
+                connman->ForNode(lNodesAnnouncingHeaderAndIDs.front(), [connman, nCMPCTBLOCKVersion](CNode* pnodeStop){
+                    connman->PushMessage(pnodeStop, CNetMsgMaker(pnodeStop->GetSendVersion()).Make(NetMsgType::SENDCMPCT, /*fAnnounceUsingCMPCTBLOCK=*/false, nCMPCTBLOCKVersion));
+                    return true;
+                });
+                lNodesAnnouncingHeaderAndIDs.pop_front();
+            }
+            connman->PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(NetMsgType::SENDCMPCT, /*fAnnounceUsingCMPCTBLOCK=*/true, nCMPCTBLOCKVersion));
+            lNodesAnnouncingHeaderAndIDs.push_back(pfrom->GetId());
+            return true;
+        });
+    }
+}
+
+bool TipMayBeStale(const Consensus::Params &consensusParams)
+{
+    AssertLockHeld(cs_main);
+    if (g_last_tip_update == 0) {
+        g_last_tip_update = GetTime();
+    }
+    return g_last_tip_update < GetTime() - consensusParams.nPowTargetSpacing * 3 && mapBlocksInFlight.empty();
+}
+
+// Requires cs_main
+bool CanDirectFetch(const Consensus::Params &consensusParams)
+{
+    return chainActive.Tip()->GetBlockTime() > GetAdjustedTime() - consensusParams.nPowTargetSpacing * 20;
+}
+
+// Requires cs_main
+bool PeerHasHeader(CNodeState *state, const CBlockIndex *pindex)
+{
+    if (state->pindexBestKnownBlock && pindex == state->pindexBestKnownBlock->GetAncestor(pindex->nHeight))
+        return true;
+    if (state->pindexBestHeaderSent && pindex == state->pindexBestHeaderSent->GetAncestor(pindex->nHeight))
+        return true;
+    return false;
+}
+
+/** Update pindexLastCommonBlock and add not-in-flight missing successors to vBlocks, until it has
+ *  at most count entries. */
+void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<const CBlockIndex*>& vBlocks, NodeId& nodeStaller, const Consensus::Params& consensusParams) {
+    if (count == 0)
+        return;
+
+    vBlocks.reserve(vBlocks.size() + count);
+    CNodeState *state = State(nodeid);
+    assert(state != nullptr);
+
+    // Make sure pindexBestKnownBlock is up to date, we'll need it.
+    ProcessBlockAvailability(nodeid);
+
+    if (state->pindexBestKnownBlock == nullptr || state->pindexBestKnownBlock->nChainWork < chainActive.Tip()->nChainWork || state->pindexBestKnownBlock->nChainWork < nMinimumChainWork) {
+        // This peer has nothing interesting.
+        return;
+    }
+
+    if (state->pindexLastCommonBlock == nullptr) {
+        // Bootstrap quickly by guessing a parent of our best tip is the forking point.
+        // Guessing wrong in either direction is not a problem.
+        state->pindexLastCommonBlock = chainActive[std::min(state->pindexBestKnownBlock->nHeight, chainActive.Height())];
+    }
+
+    // If the peer reorganized, our previous pindexLastCommonBlock may not be an ancestor
+    // of its current tip anymore. Go back enough to fix that.
+    state->pindexLastCommonBlock = LastCommonAncestor(state->pindexLastCommonBlock, state->pindexBestKnownBlock);
+    if (state->pindexLastCommonBlock == state->pindexBestKnownBlock)
+        return;
+
+    std::vector<const CBlockIndex*> vToFetch;
+    const CBlockIndex *pindexWalk = state->pindexLastCommonBlock;
+    // Never fetch further than the best block we know the pee
