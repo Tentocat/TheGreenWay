@@ -806,4 +806,66 @@ public:
 
     void PushAddress(const CAddress& _addr, FastRandomContext &insecure_rand)
     {
-        // Known checking here is only to save space from d
+        // Known checking here is only to save space from duplicates.
+        // SendMessages will filter it again for knowns that were added
+        // after addresses were pushed.
+        if (_addr.IsValid() && !addrKnown.contains(_addr.GetKey())) {
+            if (vAddrToSend.size() >= MAX_ADDR_TO_SEND) {
+                vAddrToSend[insecure_rand.randrange(vAddrToSend.size())] = _addr;
+            } else {
+                vAddrToSend.push_back(_addr);
+            }
+        }
+    }
+
+
+    void AddInventoryKnown(const CInv& inv)
+    {
+        {
+            LOCK(cs_inventory);
+            filterInventoryKnown.insert(inv.hash);
+        }
+    }
+
+    void PushInventory(const CInv& inv)
+    {
+        LOCK(cs_inventory);
+        if (inv.type == MSG_TX) {
+            if (!filterInventoryKnown.contains(inv.hash)) {
+                setInventoryTxToSend.insert(inv.hash);
+            }
+        } else if (inv.type == MSG_BLOCK) {
+            vInventoryBlockToSend.push_back(inv.hash);
+        }
+    }
+
+    void PushBlockHash(const uint256 &hash)
+    {
+        LOCK(cs_inventory);
+        vBlockHashesToAnnounce.push_back(hash);
+    }
+
+    void AskFor(const CInv& inv);
+
+    void CloseSocketDisconnect();
+
+    void copyStats(CNodeStats &stats);
+
+    ServiceFlags GetLocalServices() const
+    {
+        return nLocalServices;
+    }
+
+    std::string GetAddrName() const;
+    //! Sets the addrName only if it was not previously set
+    void MaybeSetAddrName(const std::string& addrNameIn);
+};
+
+
+
+
+
+/** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
+int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
+
+#endif // BITCOIN_NET_H
