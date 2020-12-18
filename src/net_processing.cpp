@@ -1730,4 +1730,273 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         if (pfrom->nVersion <= 70012) {
             CDataStream finalAlert(ParseHex("60010000000000000000000000ffffff7f00000000ffffff7ffeffff7f01ffffff7f00000000ffffff7f00ffffff7f002f555247454e543a20416c657274206b657920636f6d70726f6d697365642c2075706772616465207265717569726564004630440220653febd6410f470f6bae11cad19c48413becb1ac2c17f908fd0fd53bdc3abd5202206d0e9c96fe88d4a0f01ed9dedae2b6f9e00da94cad0fecaae66ecf689bf71b50"), SER_NETWORK, PROTOCOL_VERSION);
             connman->PushMessage(pfrom, CNetMsgMaker(nSendVersion).Make("alert", finalAlert));
-  
+        }
+
+        // Feeler connections exist only to verify if address is online.
+        if (pfrom->fFeeler) {
+            assert(pfrom->fInbound == false);
+            pfrom->fDisconnect = true;
+        }
+        return true;
+    }
+
+
+    else if (pfrom->nVersion == 0)
+    {
+        // Must have a version message before anything else
+        LOCK(cs_main);
+        Misbehaving(pfrom->GetId(), 1);
+        return false;
+    }
+
+    // At this point, the outgoing message serialization version can't change.
+    const CNetMsgMaker msgMaker(pfrom->GetSendVersion());
+
+    if (strCommand == NetMsgType::VERACK)
+    {
+        pfrom->SetRecvVersion(std::min(pfrom->nVersion.load(), PROTOCOL_VERSION));
+
+        if (!pfrom->fInbound) {
+            // Mark this node as currently connected, so we update its timestamp later.
+            LOCK(cs_main);
+            State(pfrom->GetId())->fCurrentlyConnected = true;
+            LogPrintf("New outbound peer connected: version: %d, blocks=%d, peer=%d%s\n",
+                      pfrom->nVersion.load(), pfrom->nStartingHeight, pfrom->GetId(),
+                      (fLogIPs ? strprintf(", peeraddr=%s", pfrom->addr.ToString()) : ""));
+        }
+
+        if (pfrom->nVersion >= SENDHEADERS_VERSION) {
+            // Tell our peer we prefer to receive headers rather than inv's
+            // We send this to non-NODE NETWORK peers as well, because even
+            // non-NODE NETWORK peers can announce blocks (such as pruning
+            // nodes)
+            connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::SENDHEADERS));
+        }
+        if (pfrom->nVersion >= SHORT_IDS_BLOCKS_VERSION) {
+            // Tell our peer we are willing to provide version 1 or 2 cmpctblocks
+            // However, we do not request new block announcements using
+            // cmpctblock messages.
+            // We send this to non-NODE NETWORK peers as well, because
+            // they may wish to request compact blocks from us
+            bool fAnnounceUsingCMPCTBLOCK = false;
+            uint64_t nCMPCTBLOCKVersion = 2;
+            if (pfrom->GetLocalServices() & NODE_WITNESS)
+                connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::SENDCMPCT, fAnnounceUsingCMPCTBLOCK, nCMPCTBLOCKVersion));
+            nCMPCTBLOCKVersion = 1;
+            connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::SENDCMPCT, fAnnounceUsingCMPCTBLOCK, nCMPCTBLOCKVersion));
+        }
+        pfrom->fSuccessfullyConnected = true;
+    }
+
+    else if (!pfrom->fSuccessfullyConnected)
+    {
+        // Must have a verack message before anything else
+        LOCK(cs_main);
+        Misbehaving(pfrom->GetId(), 1);
+        return false;
+    }
+
+    else if (strCommand == NetMsgType::ADDR)
+    {
+        std::vector<CAddress> vAddr;
+        vRecv >> vAddr;
+
+        // Don't want addr from older versions unless seeding
+        if (pfrom->nVersion < CADDR_TIME_VERSION && connman->GetAddressCount() > 1000)
+            return true;
+        if (vAddr.size() > 1000)
+        {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), 20, strprintf("message addr size() = %u", vAddr.size()));
+            return false;
+        }
+
+        // Store the new addresses
+        std::vector<CAddress> vAddrOk;
+        int64_t nNow = GetAdjustedTime();
+        int64_t nSince = nNow - 10 * 60;
+        for (CAddress& addr : vAddr)
+        {
+            if (interruptMsgProc)
+                return true;
+
+            // We only bother storing full nodes, though this may include
+            // things which we would not make an outbound connection to, in
+            // part because we may make feeler connections to them.
+            if (!MayHaveUsefulAddressDB(addr.nServices))
+                continue;
+
+            if (addr.nTime <= 100000000 || addr.nTime > nNow + 10 * 60)
+                addr.nTime = nNow - 5 * 24 * 60 * 60;
+            pfrom->AddAddressKnown(addr);
+            bool fReachable = IsReachable(addr);
+            if (addr.nTime > nSince && !pfrom->fGetAddr && vAddr.size() <= 10 && addr.IsRoutable())
+            {
+                // Relay to a limited number of other nodes
+                RelayAddress(addr, fReachable, connman);
+            }
+            // Do not store addresses outside our network
+            if (fReachable)
+                vAddrOk.push_back(addr);
+        }
+        connman->AddNewAddresses(vAddrOk, pfrom->addr, 2 * 60 * 60);
+        if (vAddr.size() < 1000)
+            pfrom->fGetAddr = false;
+        if (pfrom->fOneShot)
+            pfrom->fDisconnect = true;
+    }
+
+    else if (strCommand == NetMsgType::SENDHEADERS)
+    {
+        LOCK(cs_main);
+        State(pfrom->GetId())->fPreferHeaders = true;
+    }
+
+    else if (strCommand == NetMsgType::SENDCMPCT)
+    {
+        bool fAnnounceUsingCMPCTBLOCK = false;
+        uint64_t nCMPCTBLOCKVersion = 0;
+        vRecv >> fAnnounceUsingCMPCTBLOCK >> nCMPCTBLOCKVersion;
+        if (nCMPCTBLOCKVersion == 1 || ((pfrom->GetLocalServices() & NODE_WITNESS) && nCMPCTBLOCKVersion == 2)) {
+            LOCK(cs_main);
+            // fProvidesHeaderAndIDs is used to "lock in" version of compact blocks we send (fWantsCmpctWitness)
+            if (!State(pfrom->GetId())->fProvidesHeaderAndIDs) {
+                State(pfrom->GetId())->fProvidesHeaderAndIDs = true;
+                State(pfrom->GetId())->fWantsCmpctWitness = nCMPCTBLOCKVersion == 2;
+            }
+            if (State(pfrom->GetId())->fWantsCmpctWitness == (nCMPCTBLOCKVersion == 2)) // ignore later version announces
+                State(pfrom->GetId())->fPreferHeaderAndIDs = fAnnounceUsingCMPCTBLOCK;
+            if (!State(pfrom->GetId())->fSupportsDesiredCmpctVersion) {
+                if (pfrom->GetLocalServices() & NODE_WITNESS)
+                    State(pfrom->GetId())->fSupportsDesiredCmpctVersion = (nCMPCTBLOCKVersion == 2);
+                else
+                    State(pfrom->GetId())->fSupportsDesiredCmpctVersion = (nCMPCTBLOCKVersion == 1);
+            }
+        }
+    }
+
+
+    else if (strCommand == NetMsgType::INV)
+    {
+        std::vector<CInv> vInv;
+        vRecv >> vInv;
+        if (vInv.size() > MAX_INV_SZ)
+        {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), 20, strprintf("message inv size() = %u", vInv.size()));
+            return false;
+        }
+
+        bool fBlocksOnly = !fRelayTxes;
+
+        // Allow whitelisted peers to send data other than blocks in blocks only mode if whitelistrelay is true
+        if (pfrom->fWhitelisted && gArgs.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY))
+            fBlocksOnly = false;
+
+        LOCK(cs_main);
+
+        uint32_t nFetchFlags = GetFetchFlags(pfrom);
+
+        for (CInv &inv : vInv)
+        {
+            if (interruptMsgProc)
+                return true;
+
+            bool fAlreadyHave = AlreadyHave(inv);
+            LogPrint(BCLog::NET, "got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom->GetId());
+
+            if (inv.type == MSG_TX) {
+                inv.type |= nFetchFlags;
+            }
+
+            if (inv.type == MSG_BLOCK) {
+                UpdateBlockAvailability(pfrom->GetId(), inv.hash);
+                if (!fAlreadyHave && !fImporting && !fReindex && !mapBlocksInFlight.count(inv.hash)) {
+                    // We used to request the full block here, but since headers-announcements are now the
+                    // primary method of announcement on the network, and since, in the case that a node
+                    // fell back to inv we probably have a reorg which we should get the headers for first,
+                    // we now only provide a getheaders response here. When we receive the headers, we will
+                    // then ask for the blocks we need.
+                    connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::GETHEADERS, chainActive.GetLocator(pindexBestHeader), inv.hash));
+                    LogPrint(BCLog::NET, "getheaders (%d) %s to peer=%d\n", pindexBestHeader->nHeight, inv.hash.ToString(), pfrom->GetId());
+                }
+            }
+            else
+            {
+                pfrom->AddInventoryKnown(inv);
+                if (fBlocksOnly) {
+                    LogPrint(BCLog::NET, "transaction (%s) inv sent in violation of protocol peer=%d\n", inv.hash.ToString(), pfrom->GetId());
+                } else if (!fAlreadyHave && !fImporting && !fReindex && !IsInitialBlockDownload()) {
+                    pfrom->AskFor(inv);
+                }
+            }
+        }
+    }
+
+
+    else if (strCommand == NetMsgType::GETDATA)
+    {
+        std::vector<CInv> vInv;
+        vRecv >> vInv;
+        if (vInv.size() > MAX_INV_SZ)
+        {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), 20, strprintf("message getdata size() = %u", vInv.size()));
+            return false;
+        }
+
+        LogPrint(BCLog::NET, "received getdata (%u invsz) peer=%d\n", vInv.size(), pfrom->GetId());
+
+        if (vInv.size() > 0) {
+            LogPrint(BCLog::NET, "received getdata for: %s peer=%d\n", vInv[0].ToString(), pfrom->GetId());
+        }
+
+        pfrom->vRecvGetData.insert(pfrom->vRecvGetData.end(), vInv.begin(), vInv.end());
+        ProcessGetData(pfrom, chainparams.GetConsensus(), connman, interruptMsgProc);
+    }
+
+
+    else if (strCommand == NetMsgType::GETBLOCKS)
+    {
+        CBlockLocator locator;
+        uint256 hashStop;
+        vRecv >> locator >> hashStop;
+
+        // We might have announced the currently-being-connected tip using a
+        // compact block, which resulted in the peer sending a getblocks
+        // request, which we would otherwise respond to without the new block.
+        // To avoid this situation we simply verify that we are on our best
+        // known chain now. This is super overkill, but we handle it better
+        // for getheaders requests, and there are no known nodes which support
+        // compact blocks but still use getblocks to request blocks.
+        {
+            std::shared_ptr<const CBlock> a_recent_block;
+            {
+                LOCK(cs_most_recent_block);
+                a_recent_block = most_recent_block;
+            }
+            CValidationState dummy;
+            ActivateBestChain(dummy, Params(), a_recent_block);
+        }
+
+        LOCK(cs_main);
+
+        // Find the last block the caller has in the main chain
+        const CBlockIndex* pindex = FindForkInGlobalIndex(chainActive, locator);
+
+        // Send the rest of the chain
+        if (pindex)
+            pindex = chainActive.Next(pindex);
+        int nLimit = 500;
+        LogPrint(BCLog::NET, "getblocks %d to %s limit %d from peer=%d\n", (pindex ? pindex->nHeight : -1), hashStop.IsNull() ? "end" : hashStop.ToString(), nLimit, pfrom->GetId());
+        for (; pindex; pindex = chainActive.Next(pindex))
+        {
+            if (pindex->GetBlockHash() == hashStop)
+            {
+                LogPrint(BCLog::NET, "  getblocks stopping at %d %s\n", pindex->nHeight, pindex->GetBlockHash().ToString());
+                break;
+            }
+            // If pruning, don't inv blocks unless we have on disk and are likely to still have
+            // for some reasonable time window (1 hour) that block relay might require.
+            const int nPrunedBlocksLikelyToHave = MIN_BLOCKS_TO_KEEP - 3600 / chainparams.GetConsensus().nPowTargetSpacing;
+            if (fPrun
