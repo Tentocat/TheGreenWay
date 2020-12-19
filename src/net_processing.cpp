@@ -2469,4 +2469,225 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 }
                 if (req.indexes.empty()) {
                     // Dirty hack to jump to BLOCKTXN code (TODO: move message handling into their own functions)
-               
+                    BlockTransactions txn;
+                    txn.blockhash = cmpctblock.header.GetHash();
+                    blockTxnMsg << txn;
+                    fProcessBLOCKTXN = true;
+                } else {
+                    req.blockhash = pindex->GetBlockHash();
+                    connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::GETBLOCKTXN, req));
+                }
+            } else {
+                // This block is either already in flight from a different
+                // peer, or this peer has too many blocks outstanding to
+                // download from.
+                // Optimistically try to reconstruct anyway since we might be
+                // able to without any round trips.
+                PartiallyDownloadedBlock tempBlock(&mempool);
+                ReadStatus status = tempBlock.InitData(cmpctblock, vExtraTxnForCompact);
+                if (status != READ_STATUS_OK) {
+                    // TODO: don't ignore failures
+                    return true;
+                }
+                std::vector<CTransactionRef> dummy;
+                status = tempBlock.FillBlock(*pblock, dummy);
+                if (status == READ_STATUS_OK) {
+                    fBlockReconstructed = true;
+                }
+            }
+        } else {
+            if (fAlreadyInFlight) {
+                // We requested this block, but its far into the future, so our
+                // mempool will probably be useless - request the block normally
+                std::vector<CInv> vInv(1);
+                vInv[0] = CInv(MSG_BLOCK | GetFetchFlags(pfrom), cmpctblock.header.GetHash());
+                connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::GETDATA, vInv));
+                return true;
+            } else {
+                // If this was an announce-cmpctblock, we want the same treatment as a header message
+                fRevertToHeaderProcessing = true;
+            }
+        }
+        } // cs_main
+
+        if (fProcessBLOCKTXN)
+            return ProcessMessage(pfrom, NetMsgType::BLOCKTXN, blockTxnMsg, nTimeReceived, chainparams, connman, interruptMsgProc);
+
+        if (fRevertToHeaderProcessing) {
+            // Headers received from HB compact block peers are permitted to be
+            // relayed before full validation (see BIP 152), so we don't want to disconnect
+            // the peer if the header turns out to be for an invalid block.
+            // Note that if a peer tries to build on an invalid chain, that
+            // will be detected and the peer will be banned.
+            return ProcessHeadersMessage(pfrom, connman, {cmpctblock.header}, chainparams, /*punish_duplicate_invalid=*/false);
+        }
+
+        if (fBlockReconstructed) {
+            // If we got here, we were able to optimistically reconstruct a
+            // block that is in flight from some other peer.
+            {
+                LOCK(cs_main);
+                mapBlockSource.emplace(pblock->GetHash(), std::make_pair(pfrom->GetId(), false));
+            }
+            bool fNewBlock = false;
+            // Setting fForceProcessing to true means that we bypass some of
+            // our anti-DoS protections in AcceptBlock, which filters
+            // unrequested blocks that might be trying to waste our resources
+            // (eg disk space). Because we only try to reconstruct blocks when
+            // we're close to caught up (via the CanDirectFetch() requirement
+            // above, combined with the behavior of not requesting blocks until
+            // we have a chain with at least nMinimumChainWork), and we ignore
+            // compact blocks with less work than our tip, it is safe to treat
+            // reconstructed compact blocks as having been requested.
+            ProcessNewBlock(chainparams, pblock, /*fForceProcessing=*/true, &fNewBlock);
+            if (fNewBlock) {
+                pfrom->nLastBlockTime = GetTime();
+            } else {
+                LOCK(cs_main);
+                mapBlockSource.erase(pblock->GetHash());
+            }
+            LOCK(cs_main); // hold cs_main for CBlockIndex::IsValid()
+            if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS)) {
+                // Clear download state for this block, which is in
+                // process from some other peer.  We do this after calling
+                // ProcessNewBlock so that a malleated cmpctblock announcement
+                // can't be used to interfere with block relay.
+                MarkBlockAsReceived(pblock->GetHash());
+            }
+        }
+
+    }
+
+    else if (strCommand == NetMsgType::BLOCKTXN && !fImporting && !fReindex) // Ignore blocks received while importing
+    {
+        BlockTransactions resp;
+        vRecv >> resp;
+
+        std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
+        bool fBlockRead = false;
+        {
+            LOCK(cs_main);
+
+            std::map<uint256, std::pair<NodeId, std::list<QueuedBlock>::iterator> >::iterator it = mapBlocksInFlight.find(resp.blockhash);
+            if (it == mapBlocksInFlight.end() || !it->second.second->partialBlock ||
+                    it->second.first != pfrom->GetId()) {
+                LogPrint(BCLog::NET, "Peer %d sent us block transactions for block we weren't expecting\n", pfrom->GetId());
+                return true;
+            }
+
+            PartiallyDownloadedBlock& partialBlock = *it->second.second->partialBlock;
+            ReadStatus status = partialBlock.FillBlock(*pblock, resp.txn);
+            if (status == READ_STATUS_INVALID) {
+                MarkBlockAsReceived(resp.blockhash); // Reset in-flight state in case of whitelist
+                Misbehaving(pfrom->GetId(), 100, strprintf("Peer %d sent us invalid compact block/non-matching block transactions\n", pfrom->GetId()));
+                return true;
+            } else if (status == READ_STATUS_FAILED) {
+                // Might have collided, fall back to getdata now :(
+                std::vector<CInv> invs;
+                invs.push_back(CInv(MSG_BLOCK | GetFetchFlags(pfrom), resp.blockhash));
+                connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::GETDATA, invs));
+            } else {
+                // Block is either okay, or possibly we received
+                // READ_STATUS_CHECKBLOCK_FAILED.
+                // Note that CheckBlock can only fail for one of a few reasons:
+                // 1. bad-proof-of-work (impossible here, because we've already
+                //    accepted the header)
+                // 2. merkleroot doesn't match the transactions given (already
+                //    caught in FillBlock with READ_STATUS_FAILED, so
+                //    impossible here)
+                // 3. the block is otherwise invalid (eg invalid coinbase,
+                //    block is too big, too many legacy sigops, etc).
+                // So if CheckBlock failed, #3 is the only possibility.
+                // Under BIP 152, we don't DoS-ban unless proof of work is
+                // invalid (we don't require all the stateless checks to have
+                // been run).  This is handled below, so just treat this as
+                // though the block was successfully read, and rely on the
+                // handling in ProcessNewBlock to ensure the block index is
+                // updated, reject messages go out, etc.
+                MarkBlockAsReceived(resp.blockhash); // it is now an empty pointer
+                fBlockRead = true;
+                // mapBlockSource is only used for sending reject messages and DoS scores,
+                // so the race between here and cs_main in ProcessNewBlock is fine.
+                // BIP 152 permits peers to relay compact blocks after validating
+                // the header only; we should not punish peers if the block turns
+                // out to be invalid.
+                mapBlockSource.emplace(resp.blockhash, std::make_pair(pfrom->GetId(), false));
+            }
+        } // Don't hold cs_main when we call into ProcessNewBlock
+        if (fBlockRead) {
+            bool fNewBlock = false;
+            // Since we requested this block (it was in mapBlocksInFlight), force it to be processed,
+            // even if it would not be a candidate for new tip (missing previous block, chain not long enough, etc)
+            // This bypasses some anti-DoS logic in AcceptBlock (eg to prevent
+            // disk-space attacks), but this should be safe due to the
+            // protections in the compact block handler -- see related comment
+            // in compact block optimistic reconstruction handling.
+            ProcessNewBlock(chainparams, pblock, /*fForceProcessing=*/true, &fNewBlock);
+            if (fNewBlock) {
+                pfrom->nLastBlockTime = GetTime();
+            } else {
+                LOCK(cs_main);
+                mapBlockSource.erase(pblock->GetHash());
+            }
+        }
+    }
+
+
+    else if (strCommand == NetMsgType::HEADERS && !fImporting && !fReindex) // Ignore headers received while importing
+    {
+        std::vector<CBlockHeader> headers;
+
+        // Bypass the normal CBlock deserialization, as we don't want to risk deserializing 2000 full blocks.
+        unsigned int nCount = ReadCompactSize(vRecv);
+        if (nCount > MAX_HEADERS_RESULTS) {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), 20, strprintf("headers message size = %u", nCount));
+            return false;
+        }
+        headers.resize(nCount);
+        for (unsigned int n = 0; n < nCount; n++) {
+            vRecv >> headers[n];
+            ReadCompactSize(vRecv); // ignore tx count; assume it is 0.
+        }
+
+        // Headers received via a HEADERS message should be valid, and reflect
+        // the chain the peer is on. If we receive a known-invalid header,
+        // disconnect the peer if it is using one of our outbound connection
+        // slots.
+        bool should_punish = !pfrom->fInbound && !pfrom->m_manual_connection;
+        return ProcessHeadersMessage(pfrom, connman, headers, chainparams, should_punish);
+    }
+
+    else if (strCommand == NetMsgType::BLOCK && !fImporting && !fReindex) // Ignore blocks received while importing
+    {
+        std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
+        vRecv >> *pblock;
+
+        LogPrint(BCLog::NET, "received block %s peer=%d\n", pblock->GetHash().ToString(), pfrom->GetId());
+
+        bool forceProcessing = false;
+        const uint256 hash(pblock->GetHash());
+        {
+            LOCK(cs_main);
+            // Also always process if we requested the block explicitly, as we may
+            // need it even though it is not a candidate for a new best tip.
+            forceProcessing |= MarkBlockAsReceived(hash);
+            // mapBlockSource is only used for sending reject messages and DoS scores,
+            // so the race between here and cs_main in ProcessNewBlock is fine.
+            mapBlockSource.emplace(hash, std::make_pair(pfrom->GetId(), true));
+        }
+        bool fNewBlock = false;
+        ProcessNewBlock(chainparams, pblock, forceProcessing, &fNewBlock);
+        if (fNewBlock) {
+            pfrom->nLastBlockTime = GetTime();
+        } else {
+            LOCK(cs_main);
+            mapBlockSource.erase(pblock->GetHash());
+        }
+    }
+
+
+    else if (strCommand == NetMsgType::GETADDR)
+    {
+        // This asymmetric behavior for inbound and outbound connections was introduced
+        // to prevent a fingerprinting attack: an attacker can send sp
