@@ -1262,4 +1262,22 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QValidatedLineEdit</
+   <class>QValidatedLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qt/qvalidatedlineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BitcoinAmountField</class>
+   <extends>QLineEdit</extends>
+   <header>qt/bitcoinamountfield.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../bitcoin.qrc"/>
+ </resources>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="groupFee"/>
+ </buttongroups>
+</ui>
