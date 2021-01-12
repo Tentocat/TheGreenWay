@@ -764,4 +764,438 @@
     </context>
 <context>
     <name>OverviewPage</name>
-    <
+    <message>
+        <source>Form</source>
+        <translation>Vorm</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Beskikbaar:</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Balans</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Totaal:</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Bedrag</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Geen</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>onbekend</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>&amp;Information</source>
+        <translation>Informasie</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Bedrag:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Boodskap:</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopieer etiket</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Address</source>
+        <translation>Adres</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Bedrag</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiket</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Boodskap</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiket</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Boodskap</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen etiket)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Stuur Munstukke</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Onvoldoende fondse</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Hoeveelheid:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Grepe:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Bedrag:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Fooi:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Verander:</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Transaksie fooi:</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Steek weg</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Stuur aan vele ontvangers op eens</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Stof:</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balans:</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>S&amp;tuur</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopieer hoeveelheid</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopieer fooi</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopieer na fooi</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopieer grepe</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopieer stof</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopieer verandering</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 tot %2</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>of</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen etiket)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>&amp;Bedrag:</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Boodskap:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Teken boodskap</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Handtekening</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Teken &amp;Boodskap</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Van</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>onbekend</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Na</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>eie adres</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>etiket</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Krediet</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>nie aanvaar nie</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Debiet</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Transaksie fooi</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Netto bedrag</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Boodskap</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>Transaksie ID</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaksie</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Bedrag</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>waar</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>onwaar</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipe</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiket</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Ontvang met</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>Ontvang van</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Gestuur na</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>Betalings Aan/na jouself</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Gemyn</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(n.v.t)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen etiket)</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>Datum en tyd wat die transaksie ontvang was.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>Tipe transaksie.</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>Alles</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>Vandag</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>Hierdie week</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>Hierdie maand</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>Verlede maand</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>Hierdie jaar</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>Reeks...</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Ontvang met</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Gestuur na</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>Aan/na jouself</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Gemyn</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Ander</translatio
