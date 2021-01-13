@@ -476,4 +476,358 @@
     <message>
         <source>Information</source>
         <translation>معلومات</translation>
-    
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>محدث</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>بين اشارة المساعدة %1 للحصول على قائمة من خيارات اوامر البت كوين المحتملة </translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>الزبون %1</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>اتصال إلي القرناء...</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>اللحاق بالركب ...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>التاريخ %1
+
+
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>الكمية %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>نوع %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>علامه: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>عنوان %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>المعاملات  المرسلة</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>المعاملات الواردة</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>توليد المفاتيح الهرمية الحتمية HD &lt;b&gt;مفعل&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>توليد المفاتيح الهرمية الحتمية HD &lt;b&gt;معطل&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>المحفظة &lt;b&gt;مشفرة&lt;/b&gt; و &lt;b&gt;مفتوحة&lt;/b&gt; حاليا</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>المحفظة &lt;b&gt;مشفرة&lt;/b&gt; و &lt;b&gt;مقفلة&lt;/b&gt; حاليا</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>خطأ فادح حدث . لا يمكن اتمام بيتكوين بامان سيتم الخروج</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>اختيار العمله</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>الكمية :</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>بايت</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>القيمة :</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>رسوم :</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>غبار:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>بعد الرسوم :</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>تعديل :</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>عدم اختيار الجميع</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>صيغة الشجرة</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>صيغة القائمة</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>مبلغ</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>مستقبل مع ملصق</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>مستقبل مع عنوان</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>تاريخ</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>تأكيدات</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>تأكيد</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>  انسخ عنوان</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation> انسخ التسمية</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>نسخ الكمية</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>نسخ رقم العملية</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>قفل غير المنفق</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>فتح غير المنفق</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>نسخ الكمية </translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>نسخ الرسوم</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>نسخ بعد الرسوم</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>نسخ البايتات </translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>نسخ الغبار</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>نسخ التعديل</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>نعم</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>لا</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>يتحول هذا الملصق إلى اللون الأحمر إذا تلقى أي مستلم كمية أصغر من عتبة الغبار الحالية.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>يمكن أن يختلف +/- %1 من ساتوشي(s) لكل إدخال.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(لا وصف)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(تغير)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>عدل العنوان</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;وصف</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>الملصق المرتبط بقائمة العناوين المدخلة</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>العنوان المرتبط بقائمة العناوين المدخلة. و التي يمكن تعديلها فقط بواسطة ارسال العناوين</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;العنوان</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>عنوان أستلام جديد</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>عنوان إرسال جديد</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>تعديل عنوان الأستلام</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>تعديل عنوان الارسال</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>العنوان المدخل "%1" ليس عنوان بيت كوين صحيح.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>هدا العنوان "%1" موجود مسبقا في دفتر العناوين</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation> يمكن فتح المحفظة.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>فشل توليد مفتاح جديد.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>سيتم انشاء دليل بيانات جديد.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>الاسم</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>الدليل موجوج بالفعل. أضف %1 اذا نويت إنشاء دليل جديد هنا.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>المسار موجود بالفعل، وهو ليس دليلاً.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>لا يمكن انشاء دليل بيانات هنا .</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>النسخة</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-بت)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>حوالي %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>خيارات سطر الأوامر</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>المستخدم</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>خيارات سطر الأوامر</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>خيارات واجهة المستخدم</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>اختر دليل البيانات عند بدء التشغير (افتراضي: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>أضع لغة, على سبيل المثال " de_DE "  (افتراضي:- مكان النظام)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>البدء مصغراً</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>أضع شهادة بروتوكول الشبقة الأمنية لطلب المدفوع (افتراضي: -نظام-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>أظهر شاشة البداية عند بدء التشغيل (افتراضي: %u)</translation>
+    </message>
+    <message>
+        <source>
