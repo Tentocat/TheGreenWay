@@ -1198,4 +1198,134 @@
     </message>
     <message>
         <source>Other</source>
-        <translation>Ander</translatio
+        <translation>Ander</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>Min bedrag</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Maak kopie van adres</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopieer etiket</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopieer transaksie ID</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Koma geskeide lêer (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Bevestig</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tipe</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiket</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adres</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Uitvoering Misluk</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>Reeks:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>aan</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Stuur Munstukke</translation>
+    </message>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Uitvoer</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Voer inligting uit van die huidige blad na n lêer</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Opsies:</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Fout: Hardeskyf spasie is baie laag!</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Invoer proses tans besig..</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informasie</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Waarskuwing</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Onvoldoende fondse</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Laai blok indeks...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Laai beursie...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Klaar gelaai</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fout</translation>
+    </message>
+</context>
+</TS>
