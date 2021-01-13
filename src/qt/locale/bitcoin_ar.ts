@@ -830,4 +830,261 @@
         <translation>أظهر شاشة البداية عند بدء التشغيل (افتراضي: %u)</translation>
     </message>
     <message>
-        <source>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>اعد تعديل جميع النظم المتغيرة في GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>أهلا</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation> اهلا بكم في %1</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>بما انه هذه اول مرة لانطلاق هذا البرنامج, فيمكنك ان تختار اين سيخزن %1 بياناته</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>عند النقر على "موافق" ، سيبدأ %1 في تنزيل ومعالجة سلسلة الكتل %4 الكاملة (%2 جيجابايت) بدءًا من المعاملات الأقدم في %3 عند تشغيل %4 في البداية.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>تُعد هذه المزامنة الأولية أمرًا شاقًا للغاية، وقد تعرض جهاز الكمبيوتر الخاص بك للمشاكل الذي لم يلاحظها أحد سابقًا. في كل مرة تقوم فيها بتشغيل %1، سيتابع التحميل من حيث تم التوقف.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>إذا كنت قد اخترت تقييد تخزين سلسلة الكتل (التجريد)، فيجب تحميل البيانات القديمة ومعالجتها، ولكن سيتم حذفها بعد ذلك للحفاظ على انخفاض استخدام القرص.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>استخدام دليل البانات الافتراضي</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>استخدام دليل بيانات مخصص:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>بتكوين</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>سيتم تخزين %1 جيجابايت على الأقل من البيانات في هذا الدليل، وستنمو مع الوقت.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>سيتم تخزين %1 جيجابايت تقريباً من البيانات في هذا الدليل.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>سيقوم %1 بتنزيل نسخة من سلسلة كتل بتكوين وتخزينها.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>سوف يتم تخزين المحفظة في هذا الدليل.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>خطأ: لا يمكن تكوين دليل بيانات مخصص ل %1</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform><numerusform>%n جيجابايت من المساحة المتوفرة</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform><numerusform>(من %n جيجابايت اللازمة)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>نمودج</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>قد لا تكون المعاملات الأخيرة مرئية بعد، وبالتالي قد يكون رصيد محفظتك غير صحيح. ستكون هذه المعلومات صحيحة بمجرد الانتهاء من محفظتك مع شبكة البيتكوين، كما هو مفصل أدناه.</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>لن تقبل الشبكة محاولة إنفاق البتكوين المتأثرة بالمعاملات التي لم يتم عرضها بعد.</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>عدد الكتل الفاضلة</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>غير معرف</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>اخر وقت الكتلة</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>تقدم</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>تقدم يزيد بلساعة</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>تحسب الان...</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>الوقت المتبقي للمزامنة</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>إخفاء</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>غير معروف. مزامنة الرؤوس (%1) ...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>افتح URL</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>حدد طلب الدفع من ملف او URI</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>العنوان:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>حدد ملف طلب الدفع</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>حدد ملف طلب الدفع لفتحه</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>خيارات ...</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;الرئيسي</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>ابدأ تلقائيًا %1 بعد تسجيل الدخول إلى النظام.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>تشغيل %1 عند الدخول إلى النظام</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>حجم ذاكرة التخزين المؤقت لقاعدة البيانات</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>م ب</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>عدد مؤشرات التحقق من البرنامج النصي</translation>
+    </message>
+    <message>
+        <source>Shows if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation>إظهار ما إذا كان وكيل SOCKS5 الافتراضي الموفر تم استخدامه للوصول إلى النظراء عبر نوع الشبكة هذا.</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation>استخدام وكيل SOCKS5 منفصل للوصول إلى الأقران عبر خدمات Tor المخفية:</translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation>إخفاء الآيقونة من صينية النظام.</translation>
+    </message>
+    <message>
+        <source>&amp;Hide tray icon</source>
+        <translation>اخفاء آيقونة الصينية</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>التصغير بدلاً من الخروج من التطبيق عند إغلاق النافذة. عند تفعيل هذا الخيار، سيتم إغلاق التطبيق فقط بعد اختيار الخروج من القائمة.</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>خيارات سطر الأوامر النشطة التي تتجاوز الخيارات أعلاه:</translation>
+    </message>
+    <message>
+        <source>Open the %1 configuration file from the working directory.</source>
+        <translation>فتح ملف الإعدادات %1 من الدليل العامل.</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>فتح ملف الإعدادات</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>إعادة تعيين كل إعدادات العميل للحالة الإفتراضية.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;استعادة الخيارات</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;الشبكة</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>&amp;محفظة</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>تصدير</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>تفعيل ميزات التحكم في العملة</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>دفع الفكة غير المؤكدة</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>ربط المنفذ باستخدام UPnP</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside.</source>
+        <translation>قبول الاتصالات من الخارج.</translation>
+    </message>
+    <message>
+        <source>Allow incomin&amp;g connections</source>
+        <translation>السماح بالاتصالات الواردة.</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>الاتصال بشبكة البتكوين عبر وكيل SOCKS5.</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <trans
