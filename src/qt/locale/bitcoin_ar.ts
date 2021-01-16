@@ -1087,4 +1087,315 @@
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
-        <trans
+        <translation>الاتصال من خلال وكيل SOCKS5 (الوكيل الافتراضي):</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>بروكسي &amp;اي بي:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;المنفذ:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>منفذ البروكسي (مثلا 9050)</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>مستخدم للاتصال بالاصدقاء من خلال:</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>تور</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>قم بالاتصال بشبكة بتكوين عبر وكيل SOCKS5 منفصل لخدمات تور المخفية.</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>نافذه</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>إظهار آيقونة الصينية فقط بعد تصغير النافذة.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>التصغير إلى صينية النظام بدلاً من شريط المهام</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>تصغير عند الإغلاق</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;عرض</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>واجهة المستخدم &amp;اللغة:</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>الوحدة لإظهار المبالغ فيها:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>اختر وحدة التقسيم الفرعية الافتراضية للعرض في الواجهة وعند إرسال العملات.</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>ما اذا أردت إظهار ميزات التحكم في العملة أم لا.</translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs</source>
+        <translation>العناوين (URL) لجهات خارجية</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>تم</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>الغاء</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>الافتراضي</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>لا شيء</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>تأكيد استعادة الخيارات</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>يتطلب إعادة تشغيل العميل لتفعيل التغييرات.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>سوف يتم إيقاف العميل تماماً. هل تريد الإستمرار؟</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>إعداد الخيارات</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>لم تتمكن من فتح ملف الإعدادات.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>هذا التغيير يتطلب إعادة تشغيل العميل بشكل كامل.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>عنوان الوكيل توفيره غير صالح.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>نمودج</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>قد تكون المعلومات المعروضة قديمة. تتزامن محفظتك تلقائيًا مع شبكة البتكوين بعد إنشاء الاتصال، ولكن هذه العملية لم تكتمل بعد.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>مشاهدة فقط:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>متوفر</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>رصيدك القابل للصرف</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>معلق:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>إجمالي المعاملات التي لم يتم تأكيدها بعد ولا تحتسب ضمن الرصيد القابل للانفاق</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>غير ناضجة</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>الرصيد المعدّن الذي لم ينضج بعد</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>الأرصدة</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>المجموع:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>رصيدك الكلي الحالي</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>رصيدك الحالي في العناوين المشاهدة فقط</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>قابل للصرف:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>أحدث المعاملات</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>معاملات غير مؤكدة للعناوين المشاهدة فقط</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>الرصيد المعدّن في العناوين المشاهدة فقط التي لم تنضج بعد</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>الرصيد الإجمالي الحالي في العناوين المشاهدة فقط</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>خطأ في طلب الدفع</translation>
+    </message>
+    <message>
+        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <translation>لا يمكن تشغيل بتكوين: معالج النقر للدفع</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>التعامل مع العنوان</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>عنوان الدفع غير صالح %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>لا يمكن تحليل العنوان (URI)! يمكن أن يحدث هذا بسبب عنوان بتكوين غير صالح أو معلمات عنوان (URI) غير صحيحة.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>التعامل مع ملف طلب الدفع</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>لا يمكن قراءة ملف طلب الدفع! يمكن أن يحدث هذا بسبب ملف لطلب الدفع غير صالح.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>تم رفض طلب الدفع</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>لا تتطابق شبكة طلب الدفع مع شبكة العميل.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>انتهاء صلاحية طلب الدفع.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>لم يتم تهيئة طلب الدفع.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>طلبات الدفع غير المؤكدة إلى نصوص الدفع المخصصة غير مدعومة.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>طلب دفع غير صالح.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>المبلغ المطلوب للدفع %1 صغير جداً (يعتبر غبار).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>إعادة مال من %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>طلب الدفع %1 كبير جداً (%2 بايت، المسموح به %3 بايت).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>حدث خطأ في الاتصال بـ %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>لا يمكن تحليل طلب الدفع!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>استجابة سيئة من الملقم %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>خطأ في طلب الشبكة</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>اعتراف بالدفع</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>وكيل المستخدم</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>عقدة/خدمة</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>رقم العقدة</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>رنين</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>تم الإرسال</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>إستقبل</translation>
+    </message>
+</
