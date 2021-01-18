@@ -1760,4 +1760,325 @@
     </message>
     <message>
         <source>Type %1 for an overview of available commands.</source>
-        <translation>اكتب 
+        <translation>اكتب %1 للحصول على نظرة عامة على الأوامر المتوفرة.</translation>
+    </message>
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>لمزيد من المعلومات حول استخدام نوع وحدة التحكم هذه اكتب %1.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>تحذير: المخادعون نشطون، ويطلبون من المستخدمين كتابة الأوامر هنا، من أجل سرقة محتويات محفظتهم. لا تستخدم وحدة التحكم هذه بدون فهم تبعات الأمر بشكل كامل.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>تم تعطيل نشاط الشبكة</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(معرف العقدة: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>خلال %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>ابدا</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>داخل</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>خارجي</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>نعم</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>لا</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>غير معرف</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;القيمة</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;وصف :</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;رسالة:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>رسالة اختيارية لإرفاقها بطلب الدفع، والتي سيتم عرضها عند فتح الطلب. ملاحظة: لن يتم إرسال الرسالة مع الدفعة عبر شبكة البتكوين.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>تسمية اختيارية لربطها بعنوان المستلم الجديد.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>استخدم هذا النموذج لطلب الدفعات. جميع الحقول &lt;b&gt;اختيارية&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>مبلغ اختياري للطلب. اترك هذا فارغًا أو صفراً لعدم طلب مبلغ محدد.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>مسح كل حقول النموذج المطلوبة</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>مسح</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>سجل طلبات الدفع</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;طلب دفعة</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>إظهار الطلب المحدد (يقوم بنفس نتيجة النقر المزدوج على أي إدخال)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>عرض</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>قم بإزالة الإدخالات المحددة من القائمة</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>ازل</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>نسخ العنوان</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation> انسخ التسمية</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>انسخ الرسالة</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>نسخ الكمية</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>رمز كيو ار</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>نسخ  &amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>نسخ &amp;العنوان</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;حفظ الصورة</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>طلب الدفعة إلى %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>معلومات الدفع</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation> URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>عنوان</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>مبلغ</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>وصف</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>رسالة </translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>العنوان المستخدم طويل جدًا، حاول أن تقوم بتقليل نص التسمية / الرسالة.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>خطأ في ترميز العنوان إلى الرمز المربع.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>تاريخ</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>وصف</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>رسالة </translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(لا وصف)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>( لا رسائل )</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(لا يوجد مبلغ مطلوب)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>تم الطلب</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>إرسال Coins</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>ميزات التحكم بالعملة</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>المدخلات...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>اختيار تلقائيا</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>الرصيد غير كافي!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>الكمية :</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>بايت</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>القيمة :</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>رسوم :</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>بعد الرسوم :</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>تعديل :</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>إذا تم تنشيط هذا، ولكن عنوان الفكة فارغ أو غير صالح، فسيتم إرسال الفكة إلى عنوان تم إنشاؤه حديثًا.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>تغيير عنوان الفكة</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>رسوم المعاملة:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>إختر …</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>تحذير: تقدير الرسوم غير ممكن في الوقت الحالي.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>خفض اعدادات الرسوم</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>لكل كيلوبايت</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>إخفاء</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>إن دفع الحد الأدنى فقط من الرسوم يجوز طالما أن حجم المعاملات أقل من المساحة الموجودة في الكتل. ولكن كن على علم بأن هذا يمكن أن ينتهي في معاملة غير مؤكدة أبداً عندما يكون هناك طلب أكبر على معاملات البتكوين مما تستطيع الشبكة معالجته.</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(اقرأ تلميح الأدوات)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>موصى به:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>تخصيص:</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(الرسوم الذكية لم يتم تهيئتها بعد. عادة ما يستغرق ذلك بضع كتل ...)</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>إرسال إلى عدة مستلمين في وقت واحد</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>أضافة &amp;مستلم</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>مسح كل حقول النموذج المطلوبة</translation>
+   
