@@ -1398,4 +1398,366 @@
         <source>Received</source>
         <translation>إستقبل</translation>
     </message>
-</
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>مبلغ</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>ادخل عنوان محفطة البتكوين (مثال %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 يوم</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 ساعة</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 دقيقة</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 ثانية</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>لا شيء</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>غير معروف</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 جزء من الثانية</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>%n ثانية</numerusform><numerusform>%n ثانية</numerusform><numerusform>%n ثانية</numerusform><numerusform>%n ثواني</numerusform><numerusform>%n ثانية</numerusform><numerusform>%n ثانية</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n دقيقة</numerusform><numerusform>%n دقيقة</numerusform><numerusform>%n دقيقة</numerusform><numerusform>%n دقائق</numerusform><numerusform>%n دقيقة</numerusform><numerusform>%n دقيقة</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n ساعة</numerusform><numerusform>%n ساعة</numerusform><numerusform>%n ساعة</numerusform><numerusform>%n ساعة</numerusform><numerusform>%n ساعات</numerusform><numerusform>%n ساعة</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n أيام</numerusform><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n أسبوع</numerusform><numerusform>%n أسبوع</numerusform><numerusform>%n أسبوع</numerusform><numerusform>%n أسابيع</numerusform><numerusform>%n أسابيع</numerusform><numerusform>%n أسابيع</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 و %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n يوم</numerusform><numerusform>%n أيام</numerusform><numerusform>%n أيام</numerusform><numerusform>%n أيام</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 بايت</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 كيلو بايت</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 ميقا بايت</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 قيقا بايت</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 لم يخرج بعد بأمان...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>غير معروف</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>خطأ: دليل البيانات المحدد "%1" غير موجود.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>خطأ: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;حفظ الصورة</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;نسخ الصورة</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>حفظ رمز الاستجابة السريعة QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>صورة PNG (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>غير معروف</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>نسخه العميل</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>المعلومات</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>نافذة المعالجة</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>عام</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>باستخدام BerkeleyDB إصدار</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>دليل البيانات</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>وقت البدء</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>الشبكه</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>الاسم</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>عدد الاتصالات</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>سلسلة الكتل</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>عدد الكتل الحالي</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>تجمع الذاكرة</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>عدد المعاملات الحالي</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>استخدام الذاكرة</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>إعادة تعيين</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>إستقبل</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>تم الإرسال</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;اصدقاء</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>الأقران الممنوعين</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>حدد نظير لعرض معلومات مفصلة.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>اللائحة البيضاء</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>جهة</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>الإصدار</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>كتلة البداية</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>رؤوس متزامنة</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>كتل متزامنة</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>وكيل المستخدم</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>تصغير حجم الخط</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>تكبير حجم الخط</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>خدمات</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>نقاط الحظر</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>مدة الاتصال</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>آخر استقبال</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>آخر إرسال</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>وقت الرنين</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>مدة الرنين المعلقة حالياً.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>انتظار الرنين</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>أقل رنين</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>إزاحة الوقت</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>اخر وقت الكتلة</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>الفتح</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>وحدة التحكم</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;حركة مرور الشبكة</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>المجاميع</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>داخل:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>خارج:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>تصحيح ملف السجل</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>مسح وحدة التحكم</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;ساعة</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp; يوم</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp; اسبوع</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp; سنة</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>قطع الاتصال</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>حظر ل</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>رفع الحظر</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>مرحبًا بك في وحدة التحكم %1 RPC.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>استخدم السهمين لأعلى ولأسفل لتصفح السجل، و%1 لمسح الشاشة.</translation>
+    </message>
+    <message>
+        <source>Type %1 for an overview of available commands.</source>
+        <translation>اكتب 
