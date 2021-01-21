@@ -2081,4 +2081,309 @@
     <message>
         <source>Clear all fields of the form.</source>
         <translation>مسح كل حقول النموذج المطلوبة</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>غبار:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>هدف وقت التأكيد:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>تفعيل الإستبدال بواسطة الرسوم</translation>
+    </message>
+    <message>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <translation>مع الإستبدال بواسطة الرسوم (BIP-125) يمكنك زيادة رسوم المعاملة بعد إرسالها. وبدون ذلك، قد نوصي برسوم أعلى للتعويض عن مخاطر تأخير المعاملة المتزايدة.</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>مسح الكل</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>الرصيد:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>تأكيد الإرسال</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;ارسال</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>نسخ الكمية </translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>نسخ الكمية</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>نسخ الرسوم</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>نسخ بعد الرسوم</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>نسخ البايتات </translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>نسخ الغبار</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>نسخ التعديل</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 كثلة)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 الى %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>هل أنت متأكد من أنك تريد أن ترسل؟</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>أضيفت كرسوم للمعاملة</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>إجمالي المبلغ %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>أو</translation>
+    </message>
+    <message>
+        <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
+        <translation>يمكنك زيادة الرسوم لاحقًا (بإشارة الإستبدال بواسطة الرسوم، BIP-125).</translation>
+    </message>
+    <message>
+        <source>Not signalling Replace-By-Fee, BIP-125.</source>
+        <translation>لا يشير إلى الإستبدال بواسطة الرسوم، BIP-125.</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>تأكيد الإرسال Coins</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>عنوان المستلم غير صالح. يرجى إعادة الفحص.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>المبلغ المدفوع يجب ان يكون اكبر من 0</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>القيمة تتجاوز رصيدك</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>المجموع يتجاوز رصيدك عندما يتم اضافة %1 رسوم العملية</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>تم العثور على عنوان مكرر: يجب استخدام العناوين مرة واحدة فقط.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>فشل في إنشاء المعاملة!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>تم رفض المعاملة للسبب التالي: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>تعتبر الرسوم الأعلى من %1 رسوماً باهظة.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>انتهاء صلاحية طلب الدفع.</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>دفع فقط الرسوم المطلوبة ل %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>Estimated to begin confirmation within %n block(s).</source>
+        <translation><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform></translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>تحذير: عنوان بتكوين غير صالح</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>تحذير: عنوان الفكة غير معروف</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>تأكيد تغيير العنوان الفكة</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(لا وصف)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>&amp;القيمة</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>ادفع &amp;الى :</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;وصف :</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>اختر عنوانا مستخدم سابقا</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>هذا دفع اعتيادي</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation>عنوان البت كوين المرسل اليه الدفع</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>انسخ العنوان من لوحة المفاتيح</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>ازل هذه المداخله</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>سيتم خصم الرسوم من المبلغ الذي يتم إرساله. لذا سوف يتلقى المستلم مبلغ أقل من البتكوين المدخل في حقل المبلغ. في حالة تحديد عدة مستلمين، يتم تقسيم الرسوم بالتساوي.</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>طرح الرسوم من المبلغ</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>استخدام الرصيد المتاح</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>الرسائل</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</source>
+        <translation>هذا طلب دفع لم يتم مصادقته.</translation>
+    </message>
+    <message>
+        <source>This is an authenticated payment request.</source>
+        <translation>هذا طلب دفع تمت مصادقته.</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation>أدخل تسمية لهذا العنوان لإضافته إلى قائمة العناوين المستخدمة</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>الرسالة التي تم إرفاقها مع البتكوين: العنوان الذي سيتم تخزينه مع المعاملة للرجوع إليه. ملاحظة: لن يتم إرسال هذه الرسالة عبر شبكة البتكوين.</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>ادفع &amp;الى :</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>مذكرة:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>إدخال تسمية لهذا العنوان لإضافته إلى دفتر العناوين الخاص بك</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>نعم</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>اتمام إيقاف %1...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>لا توقف عمل الكمبيوتر حتى تختفي هذه النافذة</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>التواقيع - التوقيع / التحقق من الرسالة</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;توقيع الرسالة</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>عنوان البتكوين لتوقيع الرسالة به</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>اختر عنوانا مستخدم سابقا</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>انسخ العنوان من لوحة المفاتيح</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>ادخل الرسالة التي تريد توقيعها هنا</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>التوقيع</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>نسخ التوقيع الحالي إلى حافظة النظام</translation>
+    </message>
    
