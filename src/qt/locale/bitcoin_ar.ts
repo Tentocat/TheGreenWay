@@ -2386,4 +2386,333 @@
         <source>Copy the current signature to the system clipboard</source>
         <translation>نسخ التوقيع الحالي إلى حافظة النظام</translation>
     </message>
-   
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>وقع الرسالة لتثبت انك تمتلك عنوان البت كوين هذا</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>توقيع $الرسالة</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>إعادة تعيين كافة حقول رسالة التوقيع</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>مسح الكل</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;تحقق رسالة</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>عنوان البتكوين الذي تم توقيع الرسالة به</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>تحقق من الرسالة للتأكد من توقيعها مع عنوان البتكوين المحدد</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>تحقق &amp;الرسالة</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>إعادة تعيين جميع حقول التحقق من الرسالة</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>اضغط  "توقيع الرسالة" لتوليد التوقيع</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>العنوان المدخل غير صالح</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>الرجاء التأكد من العنوان والمحاولة مرة اخرى</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>العنوان المدخل لا يشير الى مفتاح</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>تم الغاء عملية فتح المحفظة</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>المفتاح الخاص للعنوان المدخل غير موجود.</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>فشل توقيع الرسالة.</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>الرسالة موقعة.</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>لا يمكن فك تشفير التوقيع.</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>فضلا تاكد من التوقيع وحاول مرة اخرى</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>لم يتطابق التوقيع مع ملخص الرسالة.</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>فشلت عملية التأكد من الرسالة.</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>تم تأكيد الرسالة.</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>كيلوبايت/ث</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message numerus="yes">
+        <source>Open for %n more block(s)</source>
+        <translation><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلات إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform><numerusform>مفتوح ل %n كتلة إضافية</numerusform></translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>مفتوح حتى %1</translation>
+    </message>
+    <message>
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation>تعارضت مع معاملة لديها %1 تأكيدات</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1 غير متواجد</translation>
+    </message>
+    <message>
+        <source>in memory pool</source>
+        <translation>في تجمع الذاكرة</translation>
+    </message>
+    <message>
+        <source>not in memory pool</source>
+        <translation>ليس في تجمع الذاكرة</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>مهجور</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>غير مؤكدة/%1</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>تأكيد %1</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>الحالة.</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>,  لم يتم حتى الآن البث بنجاح</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>تاريخ</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>المصدر</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>تم اصداره.</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>من</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>غير معروف</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>الى</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>عنوانه</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>مشاهدة فقط</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>علامة</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>رصيد</translation>
+    </message>
+    <message numerus="yes">
+        <source>matures in %n more block(s)</source>
+        <translation><numerusform>تنضج خلال %n كتل إضافية</numerusform><numerusform>تنضج خلال %n كتل إضافية</numerusform><numerusform>تنضج خلال %n كتل إضافية</numerusform><numerusform>تنضج خلال %n كتل إضافية</numerusform><numerusform>تنضج خلال %n كتل إضافية</numerusform><numerusform>تنضج خلال %n كتل إضافية</numerusform></translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>غير مقبولة</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>دين</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>إجمالي الخصم</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>إجمالي الرصيد</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>رسوم المعاملة</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>صافي المبلغ</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>رسالة </translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>تعليق</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>رقم المعاملة</translation>
+    </message>
+    <message>
+        <source>Transaction total size</source>
+        <translation>الحجم الكلي للمعاملات</translation>
+    </message>
+    <message>
+        <source>Output index</source>
+        <translation>مؤشر المخرجات</translation>
+    </message>
+    <message>
+        <source>Merchant</source>
+        <translation>تاجر</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>معلومات التصحيح</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>معاملة</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>المدخلات</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>مبلغ</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>صحيح</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>خاطئ</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>يبين هذا الجزء وصفا مفصلا لهده المعاملة</translation>
+    </message>
+    <message>
+        <source>Details for %1</source>
+        <translation>تفاصيل عن %1</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>تاريخ</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>النوع</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>وصف</translation>
+    </message>
+    <message numerus="yes">
+        <source>Open for %n more block(s)</source>
+        <translation><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform><numerusform>مفتوح لـ %n كتلة إضافية</numerusform></translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>مفتوح حتى %1</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>غير متصل</translation>
+    </message>
+    <message>
+        <source>Unconfirmed</source>
+        <translation>غير مؤكد</translation>
+    </message>
+    <message>
+        <source>Abandoned</source>
+        <translation>مهجور</translation>
+    </message>
+    <message>
+        <source>Confirming (%1 of %2 recommended confirmations)</source>
+        <translation>قيد التأكيد (%1 من %2 تأكيد موصى به)</translation>
+    </message>
+    <message>
+        <source>Conflicted</source>
+        <translation>يتعارض</translation>
+    </message>
+    <message>
+        <source>Immature (%1 confirmations, will be available after %2)</source>
+        <translation>غير ناضجة (تأكيدات %1 ، ستكون متوفرة بعد %2)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>لم يتم تلقى هذه الكتلة (Block) من قبل أي العقد الأخرى وربما لن تكون مقبولة!</translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>ولدت ولكن لم ت
