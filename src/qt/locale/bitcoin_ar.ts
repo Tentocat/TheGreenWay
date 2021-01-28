@@ -2715,4 +2715,353 @@
     </message>
     <message>
         <source>Generated but not accepted</source>
-        <translation>ولدت ولكن لم ت
+        <translation>ولدت ولكن لم تقبل</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>استقبل مع</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>استقبل من</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>أرسل إلى</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>دفع لنفسك</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Mined</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>مشاهدة فقط</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>غير متوفر</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(لا وصف)</translation>
+    </message>
+    <message>
+        <source>Transaction status. Hover over this field to show number of confirmations.</source>
+        <translation>حالة التحويل. مرر فوق هذا الحقل لعرض عدد  التأكيدات.</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>التاريخ والوقت الذي تم فيه تلقي المعاملة.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>نوع المعاملات</translation>
+    </message>
+    <message>
+        <source>Whether or not a watch-only address is involved in this transaction.</source>
+        <translation>ما إذا كان العنوان المشاهدة فقط متضمنًا في هذه المعاملة أم لا.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>المبلغ الذي أزيل أو أضيف الى الرصيد</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>الكل</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>اليوم</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>هدا الاسبوع</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>هدا الشهر</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>الشهر الماضي</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>هدا العام</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>المدى...</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>استقبل مع</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>أرسل إلى</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>إليك</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Mined</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>اخرى</translation>
+    </message>
+    <message>
+        <source>Enter address, transaction id, or label to search</source>
+        <translation>أدخل العنوان أو معرف المعاملة أو التصنيف للبحث</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>الحد الأدنى</translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation>التخلي عن المعاملة</translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation>زيادة رسوم المعاملة</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>  انسخ عنوان</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation> انسخ التسمية</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>نسخ الكمية</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>نسخ رقم العملية</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>نسخ المعاملة الخام</translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation>نسخ كامل تفاصيل المعاملة</translation>
+    </message>
+    <message>
+        <source>Edit label</source>
+        <translation>عدل الوصف</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>عرض تفاصيل المعاملة</translation>
+    </message>
+    <message>
+        <source>Export Transaction History</source>
+        <translation>تصدير تفاصيل المعاملات</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>ملف مفصول بفواصل (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>تأكيد</translation>
+    </message>
+    <message>
+        <source>Watch-only</source>
+        <translation>مشاهدة فقط</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>تاريخ</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>النوع</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>وصف</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>عنوان</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>العنوان</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>فشل التصدير</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the transaction history to %1.</source>
+        <translation>حدث خطأ أثناء محاولة حفظ محفوظات المعاملة إلى %1.</translation>
+    </message>
+    <message>
+        <source>Exporting Successful</source>
+        <translation>نجح التصدير</translation>
+    </message>
+    <message>
+        <source>The transaction history was successfully saved to %1.</source>
+        <translation>تم حفظ محفوظات المعاملة بنجاح إلى %1.</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>المدى:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>الى</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>الوحدة لإظهار المبالغ فيها. انقر لتحديد وحدة أخرى.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    <message>
+        <source>No wallet has been loaded.</source>
+        <translation>لا يوجد محفظة تم تحميلها.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>إرسال Coins</translation>
+    </message>
+    <message>
+        <source>Fee bump error</source>
+        <translation>خطأ في زيادة الرسوم</translation>
+    </message>
+    <message>
+        <source>Increasing transaction fee failed</source>
+        <translation>فشل في زيادة رسوم المعاملة</translation>
+    </message>
+    <message>
+        <source>Do you want to increase the fee?</source>
+        <translation>هل تريد زيادة الرسوم؟</translation>
+    </message>
+    <message>
+        <source>Current fee:</source>
+        <translation>الأجر الحالي:</translation>
+    </message>
+    <message>
+        <source>Increase:</source>
+        <translation>زيادة:</translation>
+    </message>
+    <message>
+        <source>New fee:</source>
+        <translation>أجر جديد:</translation>
+    </message>
+    <message>
+        <source>Confirm fee bump</source>
+        <translation>تأكيد زيادة الرسوم</translation>
+    </message>
+    <message>
+        <source>Can't sign transaction.</source>
+        <translation>لا يمكن توقيع المعاملة.</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>لا يمكن تنفيذ المعاملة</translation>
+    </message>
+</context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;تصدير</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>تحميل البيانات في علامة التبويب الحالية إلى ملف.</translation>
+    </message>
+    <message>
+        <source>Backup Wallet</source>
+        <translation>نسخ احتياط للمحفظة</translation>
+    </message>
+    <message>
+        <source>Wallet Data (*.dat)</source>
+        <translation>بيانات المحفظة (*.dat)</translation>
+    </message>
+    <message>
+        <source>Backup Failed</source>
+        <translation>فشل النسخ الاحتياطي</translation>
+    </message>
+    <message>
+        <source>Backup Successful</source>
+        <translation>نجاح  النسخ الاحتياطي</translation>
+    </message>
+    <message>
+        <source>The wallet data was successfully saved to %1.</source>
+        <translation>تم حفظ بيانات المحفظة بنجاح إلى %1.</translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>خيارات: </translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>حدد مجلد المعلومات</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>حدد العنوان العام لمحفظتك</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>قبول أوامر وحدة التحكم وأوامر JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>خطأ: حدث خطأ داخلي فادح، راجع debug.log للحصول على التفاصيل</translation>
+    </message>
+    <message>
+        <source>Pruning blockstore...</source>
+        <translation>تجريد مخزن الكتل...</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>تشغيل في الخلفية بشكل مخفي لقبول الأوامر</translation>
+    </message>
+    <message>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>غير قادر على بدء خادم ال HTTP. راجع سجل تصحيح الأخطاء للحصول على التفاصيل.</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>جوهر بيتكوين</translation>
+    </message>
+    <message>
+        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
+        <translation>لا يمكن الحصول على قفل على دليل البيانات %s. من المحتمل أن %s يعمل بالفعل.</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation>لا يمكن توفير اتصالات محددة ولابد أن يكون لدى addrman اتصالات صادرة في نفس الوقت.</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the block
