@@ -3064,4 +3064,273 @@
         <translation>لا يمكن توفير اتصالات محددة ولابد أن يكون لدى addrman اتصالات صادرة في نفس الوقت.</translation>
     </message>
     <message>
-        <source>Delete all wallet transactions and only recover those parts of the block
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>حذف جميع معاملات المحفظة واسترداد فقط تلك الأجزاء من سلسلة الكتل عبر -escan عند بدء التشغيل</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation>يرجى المساهمة إذا وجدت %s مفيداً. تفضل بزيارة %s لمزيد من المعلومات حول البرنامج.</translation>
+    </message>
+    <message>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect used)</source>
+        <translation>الاستعلام عن عناوين النظراء من خلال البحث عبر ال DNS إذا كان عدد العناوين منخفضاً (القيمة الافتراضية: 1 ، إلّا في حالة استخدام -connect)</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; يمكن أن يكون</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>قبول الاتصالات من خارج</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>إلحاق تعليق إلى سلسلة وكيل المستخدم</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>محاولة استرداد المفاتيح الخاصة من المحفظة في حالة تلفها عند بدء التشغيل</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>خيارات إنشاء الكتل:</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>خيارات اختيار السلسلة:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>فهرس الفكة خارج النطاق</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>خيارات الاتصال:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>حقوق الطبع والنشر (C) %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>تم الكشف عن قاعدة بيانات كتل تالفة</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>خيارات التصحيح / الاختبار:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>لا تقم بتحميل المحفظة وتعطيل استدعاءات RPC للمحفظة</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>هل تريد إعادة بناء قاعدة بيانات الكتل الآن؟</translation>
+    </message>
+    <message>
+        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
+        <translation>خطأ في إنشاء %s: لا يمكنك إنشاء محافظ بلا خاصية الهرمية الحتمية non-HD باستخدام هذا الإصدار.</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>خطأ في تحميل %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>خطأ في تحميل قاعدة بيانات الكتل</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>خطأ في فتح قاعدة بيانات الكتل</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>تحذير: مساحة القرص منخفضة</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>فشل في الاستماع على أي منفذ. استخدام الاستماع = 0 إذا كنت تريد هذا.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>استيراد...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>لم يتم العثور على كتلة تكوين أو لم تكون صحيحة. datadir خاطئة للشبكة؟</translation>
+    </message>
+    <message>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>فشل بالتحقق في اختبار التعقل. تم إيقاف %s.</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>تحميل عناوين P2P...</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>جاري تحميل قائمة الحظر...</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>موقع ملف تعريف ارتباط المصادقة (القيمة الافتراضية: دليل البيانات)</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>لا تتوفر واصفات ملفات كافية.</translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>اطبع رسالة المساعدة هذه واخرج منها</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>طباعة النسخة ومن ثم الخروج</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>لا يمكن تهيئة التجريد بقيمة سالبة.</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>وضع التجريد غير متوافق مع -txindex.</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation>إعادة لعب الكتل...</translation>
+    </message>
+    <message>
+        <source>Rewinding blocks...</source>
+        <translation>العودة بالكتل...</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>تحديد ملف المحفظة (داخل دليل البيانات)</translation>
+    </message>
+    <message>
+        <source>The source code is available from %s.</source>
+        <translation>شفرة المصدر متاحة من %s.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -tor found, use -onion.</source>
+        <translation>تم العثور على وسيطة غير مدعومة -tor ، استخدم -onion.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>ترقية قاعدة بيانات UTXO</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>إستخدم السلسلة التجريبية</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>التحقق من الكتل...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>خيارات تصحيح / اختبار المحفظة:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>يلزم إعادة كتابة المحفظة: إعادة تشغيل %s لإكمال العملية</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>خيارات المحفظة :</translation>
+    </message>
+    <message>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>عشوائية وثائق الاعتماد لكل اتصال عبر وكيل. يتيح ذلك عزل تيار تور (القيمة الافتراضية: %u)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>قيمة المعاملة صغيرة جدًا ولا يمكن إرسالها بعد خصم الرسوم</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>تحتاج إلى إعادة إنشاء قاعدة البيانات باستخدام -reindex للعودة إلى الوضعية الغير مجردة. هذا سوف يعيد تحميل سلسلة الكتل بأكملها</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(القيمة الافتراضية: %u)</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>قبول طلبات REST العامة (القيمة الافتراضية: %u)</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>إنشاء خدمة تور المخفية تلقائيًا (القيمة الافتراضية: %d)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>الاتصال من خلال وكيل SOCKS5</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
+        <translation>خطأ أثناء تحميل %s: لا يمكنك تعطيل خاصية الهرمية الحتمية HD في محفظة مفعلة بخاصية الهرمية الحتمية HD مسبقاً</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>خطأ في القراءة من قاعدة البيانات ، والتوقف.</translation>
+    </message>
+    <message>
+        <source>Error upgrading chainstate database</source>
+        <translation>خطأ في ترقية قاعدة بيانات chainstate</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <translation>استيراد كتل من ملف blk000??.dat الخارجي عند بدء التشغيل</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>معلومات</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>خيارات ترحيل العقد:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>خيارات خادم RPC:</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>فشل توقيع المعاملة</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>قيمة المعاملة صغيرة جدا لدفع الأجر</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>هذا برنامج تجريبي.</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>كلمة مرور منفذ تحكم تور (القيمة الافتراضية: فارغة)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>منفذ تحكم Tor لاستخدامه في حالة تفعيل الاستماع بالبصل (افتراضي: %s)</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>قيمة العملية صغيره جدا</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>قيمة المعاملة كبيرة جدا لسياسة الأجر</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>المعاملة كبيرة جدا</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>يتعذر الربط مع %s على هذا الكمبيوتر (الربط انتج خطأ %s)</translation>
+    </message>
+    <message>
+        <source>Unable to generate initial keys</source>
+        <translation>غير قادر على توليد مفاتيح أولية
