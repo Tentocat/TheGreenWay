@@ -3333,4 +3333,95 @@
     </message>
     <message>
         <source>Unable to generate initial keys</source>
-        <translation>غير قادر على توليد مفاتيح أولية
+        <translation>غير قادر على توليد مفاتيح أولية</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>ترقية المحفظة إلى التنسيق الأحدث عند بدء التشغيل</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>اسم المستخدم لاتصالات JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Verifying wallet(s)...</source>
+        <translation>التحقق من المحفظة (المحافظ)...</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>تحذير</translation>
+    </message>
+    <message>
+        <source>Zapping all transactions from wallet...</source>
+        <translation>إزالة جميع المعاملات من المحفظة...</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
+        <translation>خطأ أثناء تحميل %s: لا يمكنك تفعيل خاصية الهرمية الحتمية HD في محفظة لا تملك خاصية الهرمية الحتمية non-HD مسبقاً</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
+        <translation>استخدام وكيل SOCKS5 منفصل للوصول إلى الأقران عبر خدمات تور المخفية (القيمة الافتراضية: %s)</translation>
+    </message>
+    <message>
+        <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
+        <translation>تحذير: ملف المحفظة فاسد ، تم انقاذ البيانات! تم حفظ %s الأصلي ك %s في %s؛ إذا كان رصيدك أو كانت معاملاتك غير صحيحة، فيجب عليك الإستعادة من نسخة احتياطية.</translation>
+    </message>
+    <message>
+        <source>%s is set very high!</source>
+        <translation>%s عالٍ جداً</translation>
+    </message>
+    <message>
+        <source>(default: %s)</source>
+        <translation>(القيمة الافتراضية: %s)</translation>
+    </message>
+    <message>
+        <source>Make the wallet broadcast transactions</source>
+        <translation>إنتاج معاملات بث المحفظة</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation>بدء مؤشرات شبكة الاتصال...</translation>
+    </message>
+    <message>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>سوف تتجنب المحفظة دفع أقل من الحد الأدنى لرسوم التتابع.</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>يجب ألا تكون قيمة المعاملة سلبية</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>يجب أن تحتوي المعاملة على مستلم واحد على الأقل</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>اموال غير كافية</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>تحميل مؤشر الكتلة</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>تحميل المحفظه</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>لا يمكن تخفيض قيمة المحفظة</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>إعادة مسح</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>انتهاء التحميل</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطأ</translation>
+    </message>
+</context>
+</TS>
