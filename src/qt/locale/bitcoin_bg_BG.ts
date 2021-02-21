@@ -466,4 +466,437 @@
     <name>FreespaceChecker</name>
     <message>
         <source>name</source>
-        <translat
+        <translation>име</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>версия</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Добре дошли</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>грешка</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>форма</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>прогрес</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>изчисляване</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Настроики</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Отворете конфигурационния файл</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Експерт</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>нищо</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Потвърдете опциите за нулиране</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Опции за конфигуриране</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>грешка</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>форма</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Гледайте само:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>На разположение:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Текущото Ви разходоносно салдо</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>В очакване на:</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Незрялото:</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>баланс</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Обща сума:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Текущото Ви общо салдо</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Последни транзакции</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Заявката за плащане е изтекла.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Невалидна заявка за плащане.</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>Потребителски агент</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>пинг</translation>
+    </message>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Количество</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>нито един</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>неизвестен</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Client version</source>
+        <translation>Клиентска версия</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Прозорец за отстраняване на грешки</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Общ</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Време за стартиране</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>мрежа</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>име</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Потребителски агент</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>Copy label</source>
+        <translation>Копиране на етикета</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Копиране на сумата</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Количество</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Етикет</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Дата</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Етикет</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без етикет)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Quantity:</source>
+        <translation>Количество:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Количество:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Такса:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>След такса:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Промяна:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>прах:</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Копиране на количеството</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Копиране на сумата</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Копирай такса</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Копирайте след такса</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Промяна на копирането</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Заявката за плащане е изтекла.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без етикет)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Status</source>
+        <translation>Статус</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Дата</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>източник</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Генериран</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>от</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>неизвестен</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>към</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>собствен адрес</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>кредит</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Количество</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Дата</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Етикет</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без етикет)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Copy address</source>
+        <translation>Копирайте адреса</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Копиране на етикета</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Копиране на сумата</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Копиране на ID на транзакцията</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Comma separated file (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Потвърдено</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Дата</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Етикет</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Изнасянето се провали</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>Изнеси</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Изнеси данните в избрания раздел към файл</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Биткойн ядро</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Информация</transl
