@@ -95,4 +95,375 @@
     </message>
     <message>
         <source>There was an error trying to save the address list to %1. Please try again.</source>
-        <translation>Получи се грешка при запазването на листа с 
+        <translation>Получи се грешка при запазването на листа с адреси към %1. Моля опитайте пак.</translation>
+    </message>
+</context>
+<context>
+    <name>AddressTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Етикет</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без етикет)</translation>
+    </message>
+</context>
+<context>
+    <name>AskPassphraseDialog</name>
+    <message>
+        <source>Passphrase Dialog</source>
+        <translation>Диалог за пропуск</translation>
+    </message>
+    <message>
+        <source>Enter passphrase</source>
+        <translation>Въведи парола</translation>
+    </message>
+    <message>
+        <source>New passphrase</source>
+        <translation>Нова парола</translation>
+    </message>
+    <message>
+        <source>Repeat new passphrase</source>
+        <translation>Повтори парола</translation>
+    </message>
+    <message>
+        <source>Encrypt wallet</source>
+        <translation>Криптирай портфейл</translation>
+    </message>
+    <message>
+        <source>This operation needs your wallet passphrase to unlock the wallet.</source>
+        <translation>Тази операция изисква вашата парола на портфейла за отключването на портфейла.</translation>
+    </message>
+    <message>
+        <source>Unlock wallet</source>
+        <translation>Отключи портфейла</translation>
+    </message>
+    <message>
+        <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
+        <translation>Тази операция изисква вашата парола на портфейла за декриптирането на портфейла.</translation>
+    </message>
+    <message>
+        <source>Decrypt wallet</source>
+        <translation>Декриптирай портфейл</translation>
+    </message>
+    <message>
+        <source>Change passphrase</source>
+        <translation>Промени парола</translation>
+    </message>
+    <message>
+        <source>Confirm wallet encryption</source>
+        <translation>Потвърди криптирането на порфейла</translation>
+    </message>
+    <message>
+        <source>Wallet encrypted</source>
+        <translation>портфейлa е шифрован</translation>
+    </message>
+    <message>
+        <source>Wallet unlock failed</source>
+        <translation>Отключването не бе успешно</translation>
+    </message>
+    <message>
+        <source>Wallet decryption failed</source>
+        <translation>Отключването не бе успешно</translation>
+    </message>
+    <message>
+        <source>Warning: The Caps Lock key is on!</source>
+        <translation>Внимание:Бутонът Caps Lock е включен.</translation>
+    </message>
+</context>
+<context>
+    <name>BanTableModel</name>
+    <message>
+        <source>IP/Netmask</source>
+        <translation>IP/Мрежова маска</translation>
+    </message>
+    <message>
+        <source>Banned Until</source>
+        <translation>Блокиран до</translation>
+    </message>
+</context>
+<context>
+    <name>BitcoinGUI</name>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Подпиши съобщение...</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>Синхронизиране с мрежата...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>Преглед</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>Възел</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>Покажи общ преглед на портфейла</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>Транзакции</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>Разгледай история на транзакциите</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>Изход</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>Излез от приложението</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation>За %1</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>Покажи информация за %1</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>Относно Qt</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>Покажи информация отностно Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>Настройки...</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>Промени конфигурации за %1</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>Криптирай портфейл</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>Направи резервно копие на портфейла...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>Промени паролата...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>Адреси за пращане...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>Адреси за получаване...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>Отвори URI</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>Повторно индексиране на блоковете на диска...</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>портфейл</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;изпращам</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;получавам</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Лентата с инструменти</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>грешка</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Информация</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Актуално</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 клиент</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Наваксвам</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Дата: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Изпратена транзакция</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Входяща транзакция</translation>
+    </message>
+    </context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Избор на монети</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Количество:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Количество:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Такса:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>прах:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>След такса:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Промяна:</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>списък Режим</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Количество</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Дата</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>потвърждения</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Потвърдено</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Копирайте адреса</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Копиране на етикета</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Копиране на сумата</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Копиране на ID на транзакцията</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Заключи неусвоени</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Отключете неизползваните</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Копиране на количеството</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Копирай такса</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Копирайте след такса</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Промяна на копирането</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>да</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>не</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без етикет)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Редактирайте адреса</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Нов адрес за получаване</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Нов адрес за изпращане</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Редактиране на получаващия адрес</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Редактиране на адрес за изпращане</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Не може да отключите портфейла.</translation>
+    </message>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translat
