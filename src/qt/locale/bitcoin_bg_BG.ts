@@ -899,4 +899,15 @@
     </message>
     <message>
         <source>Information</source>
-        <translation>Информация</transl
+        <translation>Информация</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>грешка</translation>
+    </message>
+</context>
+</TS>
