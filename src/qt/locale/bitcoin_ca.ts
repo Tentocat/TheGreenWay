@@ -153,4 +153,278 @@
     </message>
     <message>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
-        <translation>Aquesta operació requereix la contr
+        <translation>Aquesta operació requereix la contrasenya del moneder per desencriptar-lo.</translation>
+    </message>
+    <message>
+        <source>Decrypt wallet</source>
+        <translation>Desencripta el moneder</translation>
+    </message>
+    <message>
+        <source>Change passphrase</source>
+        <translation>Canvia la contrasenya</translation>
+    </message>
+    <message>
+        <source>Enter the old passphrase and new passphrase to the wallet.</source>
+        <translation>Introduïu la contrasenya antiga i la contrasenya nova al moneder.</translation>
+    </message>
+    <message>
+        <source>Confirm wallet encryption</source>
+        <translation>Confirma l'encriptació del moneder</translation>
+    </message>
+    <message>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINS&lt;/b&gt;!</source>
+        <translation>Avís: si encripteu el vostre moneder i perdeu la contrasenya, &lt;b&gt;PERDREU TOTS ELS VOSTRES BITCOINS&lt;/b&gt;!</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to encrypt your wallet?</source>
+        <translation>Esteu segur que voleu encriptar el vostre moneder?</translation>
+    </message>
+    <message>
+        <source>Wallet encrypted</source>
+        <translation>Moneder encriptat</translation>
+    </message>
+    <message>
+        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your bitcoins from being stolen by malware infecting your computer.</source>
+        <translation>Ara es tancarà el %1 per finalitzar el procés d'encriptació. Recordeu que encriptar el vostre moneder no garanteix que les vostres bitcoins no puguin ser robades per programari maliciós que infecti l'ordinador.</translation>
+    </message>
+    <message>
+        <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
+        <translation>IMPORTANT: Tota copia de seguretat que hàgiu realitzat hauria de ser reemplaçada pel, recentment generat, fitxer encriptat del moneder. Per motius de seguretat, les còpies de seguretat anteriors del fitxer de moneder no encriptat esdevindran inusables tan aviat com començar a utilitzar el nou moneder encriptat.</translation>
+    </message>
+    <message>
+        <source>Wallet encryption failed</source>
+        <translation>L'encriptació del moneder ha fallat</translation>
+    </message>
+    <message>
+        <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
+        <translation>L'encriptació del moneder ha fallat per un error intern. El moneder no ha estat encriptat.</translation>
+    </message>
+    <message>
+        <source>The supplied passphrases do not match.</source>
+        <translation>Les contrasenyes introduïdes no coincideixen.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock failed</source>
+        <translation>El desbloqueig del moneder ha fallat</translation>
+    </message>
+    <message>
+        <source>The passphrase entered for the wallet decryption was incorrect.</source>
+        <translation>La contrasenya introduïda per a desencriptar el moneder és incorrecta.</translation>
+    </message>
+    <message>
+        <source>Wallet decryption failed</source>
+        <translation>La desencriptació del moneder ha fallat</translation>
+    </message>
+    <message>
+        <source>Wallet passphrase was successfully changed.</source>
+        <translation>La contrasenya del moneder ha estat modificada correctament.</translation>
+    </message>
+    <message>
+        <source>Warning: The Caps Lock key is on!</source>
+        <translation>Avís: Les lletres majúscules estan activades!</translation>
+    </message>
+</context>
+<context>
+    <name>BanTableModel</name>
+    <message>
+        <source>IP/Netmask</source>
+        <translation>IP / Màscara de xarxa</translation>
+    </message>
+    <message>
+        <source>Banned Until</source>
+        <translation>Bandejat fins</translation>
+    </message>
+</context>
+<context>
+    <name>BitcoinGUI</name>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Signa el &amp;missatge...</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>S'està sincronitzant amb la xarxa ...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>&amp;Panorama general</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>Node</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>Mostra el panorama general del moneder</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>&amp;Transaccions</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>Cerca a l'historial de transaccions</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>S&amp;urt</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>Surt de l'aplicació</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation>Qu&amp;ant al %1</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>Mosta informació sobre el %1</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>Quant a &amp;Qt</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>Mostra informació sobre Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>&amp;Opcions...</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>Modifica les opcions de configuració de %1</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Encripta el moneder...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Realitza una còpia de seguretat del moneder...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Canvia la contrasenya...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>Adreces d'e&amp;nviament...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>Adreces de &amp;recepció...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>Obre un &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation>Feu clic per inhabilitar l'activitat de la xarxa.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>S'ha inhabilitat l'activitat de la xarxa.</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Feu clic per tornar a habilitar l'activitat de la xarxa.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Sincronitzant Capçaleres (%1%)...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>S'estan reindexant els blocs al disc...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>Envia monedes a una adreça Bitcoin</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>Realitza una còpia de seguretat del moneder a una altra ubicació</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Canvia la contrasenya d'encriptació del moneder</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Finestra de depuració</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Obre la consola de diagnòstic i depuració</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Verifica el missatge...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Moneder</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Envia</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Rep</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Mostra / Amaga</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Mostra o amaga la finestra principal</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Encripta les claus privades pertanyents al moneder</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Signa el missatges amb la seva adreça de Bitcoin per provar que les poseeixes</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Verifiqueu els missatges per assegurar-vos que han estat signats amb una adreça Bitcoin específica.</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Fitxer</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Configuració</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Ajuda</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Barra d'eines de les pestanyes</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Sol·licita pagaments (genera codis QR i bitcoin: URI)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Mostra la llista d'adreces d'enviament i etiquetes utilitzades</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Mostra la llista d'adreces de recepció i etiquetes utilitzades</tr
