@@ -3111,4 +3111,135 @@
     </message>
     <message>
         <source>Unable to start HTTP server. See debug log for details.</source>
-        <translation>No 
+        <translation>No s'ha pogut iniciar el servidor HTTP. Vegeu debug.log per a més detalls.</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin Core</translation>
+    </message>
+    <message>
+        <source>The %s developers</source>
+        <translation>Els desenvolupadors %s</translation>
+    </message>
+    <message>
+        <source>A fee rate (in %s/kB) that will be used when fee estimation has insufficient data (default: %s)</source>
+        <translation>Una taxa de tarifes (en %s / kB) que s'utilitzarà quan l'estimació de tarifes no tingui prou dades (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)</source>
+        <translation>Acceptar les transaccions retransmeses rebudes de nodes de llista blanca, fins i tot quan no es retransmetin transaccions (per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>Vincula a una adreça específica i sempre escolta-hi. Utilitza la notació [host]:port per IPv6</translation>
+    </message>
+    <message>
+        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
+        <translation>No es pot obtenir un bloqueig al directori de dades %s. %s probablement ja s'estigui executant.</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>Elimina totes les transaccions del moneder i només recupera aquelles de la cadena de blocs a través de -rescan a l'inici</translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation>S'ha produït un error en llegir %s. Totes les claus es llegeixen correctament, però les dades de la transacció o les entrades de la llibreta d'adreces podrien faltar o ser incorrectes.</translation>
+    </message>
+    <message>
+        <source>Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.</source>
+        <translation>Excloeu la informació de depuració d'una categoria. Pot ser usat juntament amb -debug = 1 per generar registres de depuració per a totes les categories, excepte una o més categories especificades.</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Executa una ordre quan una transacció del moneder canviï (%s en cmd es canvia per TxID)</translation>
+    </message>
+    <message>
+        <source>Extra transactions to keep in memory for compact block reconstructions (default: %u)</source>
+        <translation>Transaccions addicionals a conservar en memòria per a les reconstruccions de blocs compactes (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)</source>
+        <translation>Si aquest bloc es troba a la cadena, suposa que ell i els seus avantpassats són vàlids i que es pot saltar la seva verificació d'script (0 per verificar-ho tot, per defecte: %s, testnet: %s)</translation>
+    </message>
+    <message>
+        <source>Maximum allowed median peer time offset adjustment. Local perspective of time may be influenced by peers forward or backward by this amount. (default: %u seconds)</source>
+        <translation>Màxim ajust mitjà permès per desplaçament del temps d'iguals. La perspectiva local del temps pot estar influenciada per iguals avançats o endarrerits per aquesta quantitat. (per defecte: %u segons)</translation>
+    </message>
+    <message>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation>Tarifes totals màximes (en %s) per utilitzar-les en una sola transacció de monedes o transaccions en brut; establir-lo massa baix pot cancel·lar grans transaccions (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <translation>Comproveu que la data i hora de l'ordinador són correctes. Si el rellotge és incorrecte, %s no funcionarà correctament.</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation>Contribueix si trobes %s útil. Visita %s per obtenir més informació sobre el programari.</translation>
+    </message>
+    <message>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect used)</source>
+        <translation>Consulta adreces d'iguals a través de la cerca del DNS, si tens poques adreces (per defecte: 1, tret que s'utilitzi la connexió)</translation>
+    </message>
+    <message>
+        <source>Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, &gt;%u = automatically prune block files to stay under the specified target size in MiB)</source>
+        <translation>Redueix els requisits d'emmagatzematge permetent la poda (supressió) dels blocs antics. Això permet executar la crida RPC prunblockclass per eliminar blocs específics i permet la poda automàtica de blocs antics si es proporciona una mida de destinació en MiB. Aquest mode és incompatible amb -txindex i -rescan. Advertència: si torna a iniciar aquesta configuració, cal que torneu a baixar la cadena de blocs completa. (per defecte: 0 = desactivar poda de blocs, 1 = permetre la poda manual a través de RPC,&gt;%u = poda automàticament els fitxers de bloc per quedar sota la mida de destinació especificada en MiB)</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>Defineix el nombre de fils de verificació d'scripts (%u a %d, 0 = auto, &lt;0 = deixa tants nuclis lliures, per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <translation>La base de dades de blocs conté un bloc que sembla ser del futur. Això pot ser degut a que la data i l'hora del vostre ordinador s'estableix incorrectament. Només reconstruïu la base de dades de blocs si esteu segur que la data i l'hora del vostre ordinador són correctes</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>Aquesta és una versió de pre-llançament - utilitza-la sota la teva responsabilitat - No usar per a minería o aplicacions de compra-venda</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation>Aquesta és la tarifa de transacció que podeu descartar si el canvi és menor que el polsim a aquest nivell</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>No es poden reproduir els blocs. Haureu de reconstruir la base de dades mitjançant -reindex- chainstate.</translation>
+    </message>
+    <message>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <translation>No es pot rebobinar la base de dades a un estat de pre-bifurcament. Haureu de tornar a descarregar la cadena de blocks</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>Utilitzeu UPnP per mapejar el port d'escolta (per defecte: 1 quan s'escolta i no -proxy)</translation>
+    </message>
+    <message>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times</source>
+        <translation>Nom d'usuari i contrasenya resumida per a les connexions JSON-RPC. El camp &lt;userpw&gt; ve en el format: &lt;USERNAME&gt; : &lt;SALT&gt; $ &lt;HASH&gt; . Un script canònic python està inclòs a share / rpcuser. El client es connecta normalment utilitzant rpcuser =&lt;USERNAME&gt;/ rpcpassword =&lt;PASSWORD&gt; com a parell d'arguments. Aquesta opció es pot especificar diverses vegades</translation>
+    </message>
+    <message>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u)</source>
+        <translation>El moneder no crearà transaccions que infringeixin els límits de la cadena mempool (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Avís: la xarxa no sembla que hi estigui plenament d'acord. Alguns miners sembla que estan experimentant problemes.</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>Avís: sembla que no estem plenament d'acord amb els nostres iguals! Podria caler que actualitzar l'aplicació, o potser que ho facin altres nodes.</translation>
+    </message>
+    <message>
+        <source>Whether to save the mempool on shutdown and load on restart (default: %u)</source>
+        <translation>Si es guarda el mempool quan s'apaga i es carrega quan es reinicia (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>%d dels últims 100 blocs tenen una versió inesperada</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s està malmès, el rescat de les dades ha fallat</translation>
+    </message>
+    <message>
+      
