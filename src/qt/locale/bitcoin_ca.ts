@@ -3491,4 +3491,200 @@
     </message>
     <message>
         <source>Verifying blocks...</source>
-        <translation>S'es
+        <translation>S'estan verificant els blocs...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Opcions de depuració/proves del moneder:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Cal reescriure el moneder: reinicieu %s per a completar-ho</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Opcions de moneder:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Permet les connexions JSON-RPC d'una font específica. Vàlid per a &lt;ip&gt; són una IP individual (p. ex., 1.2.3.4), una xarxa / màscara de xarxa (p. ex., 1.2.3.4/255.255.255.0) o una xarxa/CIDR (p. ex., 1.2.3.4/24). Es pot especificar aquesta opció moltes vegades</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Vincula l'adreça donada i posa a la llista blanca els iguals que s'hi connectin. Feu servir la notació [host]:port per a IPv6</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>Crea fitxers nous amb els permisos per defecte del sistema, en comptes de l'umask 077 (només efectiu amb la funcionalitat de moneder inhabilitada)</translation>
+    </message>
+    <message>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+        <translation>Descobreix l'adreça IP pròpia (per defecte: 1 quan s'escolta i no -externalip o -proxy)</translation>
+    </message>
+    <message>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation>Error: ha fallat escoltar les connexions entrants (l'escoltament ha retornat l'error %s)</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>Executa l'ordre quan es rebi un avís rellevant o veiem una forquilla molt llarga (%s en cmd és reemplaçat per un missatge)</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation>Les comissions (en %s/kB) més petites que això es consideren tarifes zero per a la retransmissió, la mineria i la creació de transaccions (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>Si no s'especifica una paytxfee (comissió de transacció de pagament), inclogueu suficient comissió per tal que les transaccions comencin a confirmar-se en una mitja de n blocs (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation>Import no vàlid per a -maxtxfee=&lt;amount&gt;: '%s' (cal que sigui com a mínim la comissió de minrelay de %s per evitar que les comissions s'encallin)</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>Mida màxima de les dades en les transaccions de l'operador en què confiem i en les meves (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>Genera a l'atzar credencials per a cada connexió proxy. Això habilita l'aïllament del flux de Tor (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>L'import de la transacció és massa petit per enviar-la després que se'n dedueixi la comissió</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>Els iguals en la llista blanca no poden ser bandejats per DoS i es transmetran sempre llurs transaccions, fins i tot si ja són a la mempool. Això és útil, p. ex., per a una passarel·la</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>Cal que torneu a construir la base de dades fent servir -reindex per tornar al mode no podat. Això tornarà a baixar la cadena de blocs sencera</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>Accepta sol·licituds REST públiques (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>Crea automàticament el servei ocult de Tor (per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Connecta a través del proxy SOCKS5</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
+        <translation>S'ha produït un error en carregar %s: no es pot desactivar HD en un moneder HD ja existent</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>Error en llegir la base de dades, tancant.</translation>
+    </message>
+    <message>
+        <source>Error upgrading chainstate database</source>
+        <translation>S'ha produït un error en actualitzar la base de dades de chainstate</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <translation>Importa blocs de fitxers externs blk000?.dat a l'inici de l'apliació</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informació</translation>
+    </message>
+    <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>Adreça o nom de l'ordinador -onion no vàlida: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid -proxy address or hostname: '%s'</source>
+        <translation>Adreça o nom de l'ordinador -proxy no vàlida: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>Import no vàlid per a -paytxfee=&lt;amount&gt;: «%s» (ha de ser com a mínim %s)</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>S'ha especificat una màscara de xarxa no vàlida a -whitelist: «%s»</translation>
+    </message>
+    <message>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation>Manté com a màxim &lt;n&gt; transaccions no connectables en memòria (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>Cal especificar un port amb -whitebind: «%s»</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Opcions de transmissió del node:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>Opcions del servidor RPC:</translation>
+    </message>
+    <message>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation>Reducció de -maxconnections de %d a %d, a causa de les limitacions del sistema.</translation>
+    </message>
+    <message>
+        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <translation>Reescaneja la cadena de blocs per a les operacions del moneder que falten a l'inici</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Envia informació de traça/depuració a la consola en comptes del fitxer debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Mostra totes les opcions de depuració (ús: --help  --help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Redueix el fitxer debug.log durant l'inici del client (per defecte: 1 quan no -debug)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>Ha fallat la signatura de la transacció</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>L'import de la transacció és massa petit per pagar-ne una comissió</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>Això és programari experimental.</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Contrasenya del port de control Tor (per defecte: buida)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>Port de control de tor si l'escolta onion està  habilitada (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>Import de la transacció massa petit</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>Transacció massa gran per a la política de comissions</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>La transacció és massa gran</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>No s'ha pogut vincular a %s en aquest ordinador (la vinculació ha retornat l'error %s)</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>Actual
