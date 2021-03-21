@@ -940,4 +940,262 @@
         <translation>&amp;Principal</translation>
     </message>
     <message>
-        <source>Automatically start %1 after loggi
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>Inicieu %1 automàticament després d'entrar en el sistema.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>&amp;Inicia %1 en l'entrada al sistema</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>Mida de la memòria cau de la base de &amp;dades</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>Nombre de fils de &amp;verificació d'scripts</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Adreça IP del proxy (p. ex. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>Minimitza en comptes de sortir de l'aplicació quan la finestra es tanca. Quan s'habilita aquesta opció l'aplicació es tancara només quan se selecciona Surt del menú. </translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>URL de terceres parts (p. ex. explorador de blocs) que apareix en la pestanya de transaccions com elements del menú contextual. %s en l'URL es reemplaçat pel resum de la transacció. Diferents URL estan separades per una barra vertical |.</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>Opcions de línies d'ordre active que sobreescriuen les opcions de dalt:</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Obre el fitxer de configuració</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>Reestableix totes les opcions del client.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Reestableix les opcions</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Xarxa</translation>
+    </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation>(0 = auto, &lt;0 = deixa tants nuclis lliures)</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>&amp;Moneder</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Expert</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>Activa les funcions de &amp;control de les monedes</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation>Si inhabiliteu la despesa d'un canvi sense confirmar, el canvi d'una transacció no pot ser utilitzat fins que la transacció no tingui com a mínim una confirmació. Això també afecta com es calcula el vostre balanç.</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>&amp;Gasta el canvi sense confirmar</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Obre el port del client de Bitcoin al router de forma automàtica. Això només funciona quan el router implementa UPnP i l'opció està activada.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Port obert amb &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>Connecta a la xarxa Bitcoin a través d'un proxy SOCKS5.</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>&amp;Connecta a través d'un proxy SOCKS5 (proxy per defecte):</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>&amp;IP del proxy:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Port del proxy (per exemple 9050)</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>Utilitzat per arribar als iguals mitjançant:</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Conectar a la red de Bitcoin a través de un proxy SOCKS5 per als serveis ocults de Tor</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Finestra</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Mostra només la icona de la barra en minimitzar la finestra.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimitza a la barra d'aplicacions en comptes de la barra de tasques</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimitza en tancar</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Pantalla</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>&amp;Llengua de la interfície d'usuari:</translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation>Aquí es pot definir la llengua de la interfície d'usuari. Aquest paràmetre tindrà efecte en reiniciar el %1.</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Unitats per mostrar els imports en:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Selecciona la unitat de subdivisió per defecte per mostrar en la interfície quan s'envien monedes.</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Si voleu mostrar les funcions de control de monedes o no.</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;D'acord</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Cancel·la</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>Per defecte</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>cap</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Confirmeu el reestabliment de les opcions</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Cal reiniciar el client per activar els canvis.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>S'aturarà el client. Voleu procedir?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Opcions de configuració</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>No s'ha pogut obrir el fitxer de configuració.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Amb aquest canvi cal un reinici del client.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>L'adreça proxy introduïda és invalida.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulari</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>La informació mostrada pot no estar al día. El teu moneder es sincronitza automàticament amb la xarxa Bitcoin un cop s'ha establert connexió, però aquest proces no s'ha completat encara.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Només lectura:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Disponible:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>El balanç que podeu gastar actualment</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Pendent:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>Total de transaccions que encara han de confirmar-se i que encara no compten en el balanç que es pot gastar</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Immadur:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Balanç minat que encara no ha madurat</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Balances</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Total:</translation>
+    </message>
+    <
