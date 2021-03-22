@@ -1528,4 +1528,354 @@
         <source>Direction</source>
         <translation>Direcció</translation>
     </message>
-    <message
+    <message>
+        <source>Version</source>
+        <translation>Versió</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Bloc d'inici</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Capçaleres sincronitzades</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Blocs sincronitzats</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Agent d'usuari</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Serveis</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Puntuació de bandeig</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Temps de connexió</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Darrer enviament</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Darrera recepció</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Temps de ping</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>La duració d'un ping més destacat actualment.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Espera de ping</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Diferència horària</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Últim temps de bloc</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Obre</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Consola</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>Trà&amp;nsit de la xarxa</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Totals</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>Dins:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Fora:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Fitxer de registre de depuració</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Neteja la consola</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;hora</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;dia</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;setmana</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;any</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(id del node: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>a través de %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>mai</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Entrant</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Sortint</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Sí</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Desconegut</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Im&amp;port:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiqueta:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Missatge:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>Un missatge opcional que s'adjuntarà a la sol·licitud de pagament, que es mostrarà quan s'obri la sol·licitud. Nota: El missatge no s'enviarà amb el pagament per la xarxa Bitcoin.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>Una etiqueta opcional que s'associarà amb la nova adreça receptora.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Utilitzeu aquest formulari per sol·licitar pagaments. Tots els camps són &lt;b&gt;opcionals&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Un import opcional per sol·licitar. Deixeu-ho en blanc o zero per no sol·licitar cap import específic.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Esborra tots els camps del formuari.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Neteja</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>Historial de pagaments sol·licitats</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;Sol·licitud de pagament</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>Mostra la sol·licitud seleccionada (fa el mateix que el doble clic a una entrada)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Mostra</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>Esborra les entrades seleccionades de la llista</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Esborra</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copia l'etiqueta</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Copia el missatge</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copia l'import</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>Codi QR</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>Copia l'&amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>Copia l'&amp;adreça</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>De&amp;sa la imatge...</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>Sol·licita un pagament a %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Informació de pagament</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adreça</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Import</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiqueta</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Missatge</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>URI resultant massa llarga, intenta reduir el text per a la etiqueta / missatge</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Error en codificar l'URI en un codi QR.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiqueta</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Missatge</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(sense etiqueta)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(sense missatge)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(no s'ha sol·licitat import)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Sol·licitat</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Envia monedes</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Característiques de control de les monedes</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Entrades...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>seleccionat automàticament</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Fons insuficients!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Quantitat:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Import:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Comissió:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Comissió posterior:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Canvi:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>Si s'activa això, però l'adreça de canvi està buida o bé no és vàlida, el canvi s'enviarà a una adreça generada de nou.<
