@@ -2157,4 +2157,281 @@
 </context>
 <context>
     <name>ShutdownWindow</name>
-  
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>No apagueu l'ordinador fins que no desaparegui aquesta finestra.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Signatures - Signa / verifica un missatge</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Signa el missatge</translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Podeu signar missatges/acords amb les vostres adreces per provar que rebeu les bitcoins que s'hi envien. Aneu amb compte no signar res que sigui vague o aleatori, perquè en alguns atacs de suplantació es pot provar que hi signeu la vostra identitat. Només signeu aquelles declaracions completament detallades en què hi esteu d'acord. </translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>L'adreça Bitcoin amb què signar el missatge</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Escull una adreça feta servir anteriorment</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alta+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Enganxar adreça del porta-retalls</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Introduïu aquí el missatge que voleu signar</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signatura</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Copia la signatura actual al porta-retalls del sistema</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Signa el missatge per provar que ets propietari d'aquesta adreça Bitcoin</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Signa el &amp;missatge</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>Neteja tots els camps de clau</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Neteja-ho &amp;tot</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Verifica el missatge</translation>
+    </message>
+    <message>
+        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation>Introduïu l'adreça del receptor, el missatge (assegureu-vos de copiar els salts de línia, espais, tabuladors, etc. exactament) i signatura de sota per verificar el missatge. Tingueu cura de no llegir més en la signatura del que està al missatge signat, per evitar ser enganyat per un atac d'home-en-el-mig. Tingueu en compte que això només demostra que la part que signa rep amb l'adreça, i no es pot provar l'enviament de qualsevol transacció!</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>L'adreça Bitcoin amb què va ser signat el missatge</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Verificar el missatge per assegurar-se que ha estat signat amb una adreça Bitcoin específica</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>Verifica el &amp;missatge</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>Neteja tots els camps de verificació de missatge</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>Feu clic a «Signa el missatge» per a generar una signatura</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>L'adreça introduïda no és vàlida.</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>Comproveu l'adreça i torneu-ho a provar.</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>L'adreça introduïda no referencia a cap clau.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>El desbloqueig del moneder ha estat cancelat.</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>La clau privada per a la adreça introduïda no està disponible.</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>La signatura del missatge ha fallat.</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>Missatge signat.</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>La signatura no s'ha pogut descodificar.</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>Comproveu la signatura i torneu-ho a provar.</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>La signatura no coincideix amb el resum del missatge.</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>Ha fallat la verificació del missatge.</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>Missatge verificat.</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>Obert fins %1</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1/fora de línia</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>abandonada</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/sense confirmar</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 confirmacions</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Estat</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, encara no ha estat emès correctement</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>Font</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Generada</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>De</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>desconegut</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>A</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>adreça pròpia</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>només lectura</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>etiqueta</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Crèdit</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>no acceptat</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Dèbit</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>Dèbit total</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>Crèdit total</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Comissió de transacció</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Import net</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Missatge</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Comentari</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>ID de la transacció</translation>
+    </message>
+    <message>
+        <source>Merchant</source>
+        <translation>Mercader</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation>Les monedes generades han de madurar %1 blocs abans de poder ser gastades. Quan genereu aquest bloc, es farà saber a la xarxa per tal d'afegir-lo a la cadena de blocs. Si no pot fer-se lloc a la cadena, el seu estat canviarà a «no acceptat» i no es podrà gastar. Això pot passar ocasionalment si un altre node genera un bloc en un marge de segons respecte al vostre.</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>Informació de depuració</translation>
+    </message>
+    <message>
+        <source>Transaction</source
