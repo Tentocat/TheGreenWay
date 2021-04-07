@@ -2786,4 +2786,213 @@
         <translation>Opcions:</translation>
     </message>
     <message>
-        <source>Specify data direc
+        <source>Specify data directory</source>
+        <translation>Especifica el directori de dades</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Connecta al node per obtenir les adreces de les connexions, i desconnecta</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Especifiqueu la vostra adreça pública</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Accepta la línia d'ordres i ordres JSON-RPC </translation>
+    </message>
+    <message>
+        <source>If &lt;category&gt; is not supplied or if &lt;category&gt; = 1, output all debugging information.</source>
+        <translation>Si no es proporciona &lt;category&gt; o si &lt;category&gt; = 1, treu a la sortida tota la informació de depuració.</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation>Poda configurada per sota el mínim de %d MiB. Utilitzeu un nombre superior.</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation>Poda: la darrera sincronització del moneder va més enllà de les dades podades. Cal que activeu -reindex (baixeu tota la cadena de blocs de nou en cas de node podat)</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Els rescanejos no són possible en el mode de poda. Caldrà que utilitzeu -reindex, que tornarà a baixar la cadena de blocs sencera.</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>Error: s'ha produït un error intern fatal. Vegeu debug.log per a més detalls</translation>
+    </message>
+    <message>
+        <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
+        <translation>Comissió (en %s/kB) per afegir a les transaccions que envieu (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Pruning blockstore...</source>
+        <translation>S'està podant la cadena de blocs...</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Executa en segon pla com a programa dimoni i accepta ordres</translation>
+    </message>
+    <message>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>No s'ha pogut iniciar el servidor HTTP. Vegeu debug.log per a més detalls.</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin Core</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>Vincula a una adreça específica i sempre escolta-hi. Utilitza la notació [host]:port per IPv6</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>Elimina totes les transaccions del moneder i només recupera aquelles de la cadena de blocs a través de -rescan a l'inici</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Executa una ordre quan una transacció del moneder canviï (%s en cmd es canvia per TxID)</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>Defineix el nombre de fils de verificació d'scripts (%u a %d, 0 = auto, &lt;0 = deixa tants nuclis lliures, per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>Aquesta és una versió de pre-llançament - utilitza-la sota la teva responsabilitat - No usar per a minería o aplicacions de compra-venda</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Avís: la xarxa no sembla que hi estigui plenament d'acord. Alguns miners sembla que estan experimentant problemes.</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>Avís: sembla que no estem plenament d'acord amb els nostres iguals! Podria caler que actualitzar l'aplicació, o potser que ho facin altres nodes.</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; pot ser:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Accepta connexions de fora (per defecte: 1 si no -proxy o -connect)</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Opcions de la creació de blocs:</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Opcions de connexió:</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>S'ha detectat una base de dades de blocs corrupta</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>Opcions de depuració/proves:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>No carreguis el moneder i inhabilita les crides RPC del moneder</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Voleu reconstruir la base de dades de blocs ara?</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Error carregant la base de dades de blocs</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Error inicialitzant l'entorn de la base de dades del moneder %s!</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Error carregant la base de dades del bloc</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Error en obrir la base de dades de blocs</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Error: Espai al disc baix!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Ha fallat escoltar a qualsevol port. Feu servir -listen=0 si voleu fer això.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>S'està important...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>No s'ha trobat el bloc de gènesi o és incorrecte. El directori de dades de la xarxa és incorrecte?</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>No hi ha suficient descriptors de fitxers disponibles.</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Només connecta als nodes de la xarxa &lt;net&gt; (ipv4, ipv6 o onion)</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>La poda no es pot configurar amb un valor negatiu.</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>El mode de poda és incompatible amb -txindex.</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>Defineix la mida de la memòria cau de la base de dades en megabytes (%d a %d, per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Especifica un fitxer de moneder (dins del directori de dades)</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>Utilitza UPnP per a mapejar el port d'escolta (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>Utilitza la cadena de proves</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>S'estan verificant els blocs...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Opcions de depuració/proves del moneder:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Cal reescriure el moneder: reinicieu %s per a completar-ho</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Opcions de moneder:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Permet les connexions JSON-RPC d'una font específica. Vàlid per a &lt;ip&gt; són una IP individual (p. ex., 1.2.3.4), una xarxa / màscara de xarxa (p. ex., 1.2.3.4/255.255.255.0) o una xarxa/CIDR (p. ex., 1.2.3.4/24). Es pot especificar aquesta opció moltes vegades</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Vincula l'adreça donada i posa a la llista blanca els iguals que s'hi connectin. Feu servir la notació [host]:port per a IPv6</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>Crea fitxers nous amb els permisos per defecte del sistema, en comptes de l'umask 077 (només efectiu amb la funcionalitat de moneder inhabilitada)</translation>
+    </message>
+    <message>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+  
