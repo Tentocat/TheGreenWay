@@ -3198,4 +3198,104 @@
         <translation>Escolta les connexions en &lt;port&gt; (per defecte: %u o testnet: %u)</translation>
     </message>
     <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (defau
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>Manté com a màxim &lt;n&gt; connexions a iguals (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Make the wallet broadcast transactions</source>
+        <translation>Fes que el moneder faci difusió de les transaccions</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Memòria intermèdia màxima de recepció per connexió, &lt;n&gt;*1000 bytes (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Memòria intermèdia màxima d'enviament per connexió, &lt;n&gt;*1000 bytes (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation>Posa davant de la sortida de depuració una marca horària (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation>Retransmet i mina les transaccions de l'operador (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation>Retransmet multisig no P2SH (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation>Defineix la mida clau disponible a &lt;n&gt; (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation>Defineix el nombre de fils a crides de servei RPC (per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>Especifica el fitxer de configuració (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>Especifica el temps d'espera de la connexió en milisegons (mínim: 1, per defecte: %d)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>Especifica el fitxer pid (per defecte: %s)</translation>
+    </message>
+    <message>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation>Gasta el canvi no confirmat en enviar les transaccions (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation>S'estan iniciant els fils de la xarxa...</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>Llindar per a desconnectar els iguals de comportament qüestionable (per defecte: %u)</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>Els imports de la transacció no han de ser negatius</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>La transacció ha de tenir com a mínim un destinatari</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>Xarxa desconeguda especificada a -onlynet: '%s'</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Balanç insuficient</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>S'està carregant l'índex de blocs...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>S'està carregant el moneder...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>No es pot reduir la versió del moneder</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>S'està reescanejant...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Ha acabat la càrrega</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+</context>
+</TS>
