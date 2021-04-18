@@ -710,4 +710,270 @@
     <name>OpenURIDialog</name>
     <message>
         <source>Open URI</source>
-     
+        <translation>Άνοιγμα &amp;URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Ανοιχτό αίτημα πληρωμής από URI ή από αρχείο</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Επιλέξτε πληρωμή αρχείου αίτησης</translation>
+    </message>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Ρυθμίσεις</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Κύριο</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>Μέγεθος κρυφής μνήμης βάσης δεδομένων.</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>Αριθμός script και γραμμές επαλήθευσης </translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Διεύθυνση IP του διαμεσολαβητή (π.χ. 127.0.0.1  / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>Ελαχιστοποίηση αντί για έξοδο κατά το κλείσιμο του παραθύρου. Όταν αυτή η επιλογή είναι ενεργοποιημένη, η εφαρμογή θα κλείνει μόνο αν επιλεχθεί η Έξοδος στο μενού.</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>URLs από τρίτους (π.χ. ένας εξερευνητής μπλοκ) τα οποία εμφανίζονται στην καρτέλα συναλλαγών ως στοιχεία μενού. Το %s στα URL αντικαθίσταται από την τιμή της κατατεμαχισμένης συναλλαγής.</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>Ενεργές επιλογές γραμμής-εντολών που παρακάμπτουν τις παραπάνω επιλογές:</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Άνοιγμα Αρχείου Ρυθμίσεων</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>Επαναφορά όλων των επιλογών του πελάτη στις αρχικές.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>Επαναφορά ρυθμίσεων</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Δίκτυο</translation>
+    </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation>(0 = αυτόματο, &lt;0 = ελεύθεροι πυρήνες)</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>Π&amp;ορτοφόλι</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Έμπειρος</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>Ενεργοποίηση δυνατοτήτων ελέγχου κερμάτων</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation>Εάν απενεργοποιήσετε το ξόδεμα μη επικυρωμένων ρέστων, τα ρέστα από μια συναλλαγή δεν μπορούν να χρησιμοποιηθούν έως ότου αυτή η συναλλαγή έχει έστω μια επικύρωση. Αυτό επίσης επηρεάζει το πως υπολογίζεται το υπόλοιπό σας.</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>&amp;Ξόδεμα μη επικυρωμένων ρέστων</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Αυτόματο άνοιγμα των θυρών Bitcoin στον δρομολογητή. Λειτουργεί μόνο αν ο δρομολογητής σας υποστηρίζει τη λειτουργία UPnP.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Απόδοση θυρών με χρήστη &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>Σύνδεση στο δίκτυο Bitcoin μέσω διαμεσολαβητή SOCKS5 (π.χ. για σύνδεση μέσω Tor)</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>&amp;Σύνδεση μέσω διαμεσολαβητή SOCKS5 (προεπιλεγμένος)</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>&amp;IP διαμεσολαβητή:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Θύρα:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Θύρα διαμεσολαβητή</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Παράθυρο</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Εμφάνιση μόνο εικονιδίου στην περιοχή ειδοποιήσεων κατά την ελαχιστοποίηση.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Ελαχιστοποίηση στην περιοχή ειδοποιήσεων αντί της γραμμής εργασιών</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>Ε&amp;λαχιστοποίηση κατά το κλείσιμο</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Απεικόνιση</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>Γλώσσα περιβάλλοντος εργασίας:</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Μονάδα μέτρησης:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Διαλέξτε την προεπιλεγμένη υποδιαίρεση που θα εμφανίζεται όταν στέλνετε νομίσματα.</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Επιλογή κατά πόσο να αναδείχνονται οι δυνατότητες ελέγχου κερμάτων.</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;ΟΚ</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Ακύρωση</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>προεπιλογή</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>κανένα</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Επιβεβαίωση των επιλογών επαναφοράς</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Χρειάζεται επανεκκίνηση του προγράμματος για να ενεργοποιηθούν οι αλλαγές.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Σφάλμα</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Η αλλαγή αυτή θα χρειαστεί επανεκκίνηση του προγράμματος</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Δεν είναι έγκυρη η διεύθυνση διαμεσολαβητή</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Φόρμα</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Οι πληροφορίες που εμφανίζονται μπορεί να είναι ξεπερασμένες. Το πορτοφόλι σας συγχρονίζεται αυτόματα με το δίκτυο Bitcoin μετά από μια σύνδεση, αλλά αυτή η διαδικασία δεν έχει ακόμη ολοκληρωθεί. </translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Επίβλεψη μόνο:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Διαθέσιμο:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Το τρέχον διαθέσιμο υπόλοιπο</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Εκκρεμούν:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>Το άθροισμα των συναλλαγών που δεν έχουν ακόμα επιβεβαιωθεί και δεν προσμετρώνται στο τρέχον διαθέσιμο υπόλοιπό σας</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Ανώριμος</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Εξορυγμένο υπόλοιπο που δεν έχει ακόμα ωριμάσει</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Υπόλοιπο:</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Σύνολο:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Το τρέχον συνολικό υπόλοιπο</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Το τρέχον υπόλοιπο σας σε διευθύνσεις παρακολούθησης μόνο</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Ξοδεμένα:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Πρόσφατες συναλλαγές</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Μη επικυρωμένες συναλλαγές σε διευθύνσεις παρακολούθησης μόνο</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Εξορυγμένο υπόλοιπο σε διευθύνσεις παρακολούθησης μόνο που δεν έχει ωριμάσει ακόμα</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Το τρέχον συνολικό υπόλοιπο σε διευθύνσεις παρακολούθησης μόνο</tra
