@@ -1716,4 +1716,274 @@
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>Αντ
+        <translation>Αντιγραφή ποσού</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Αντιγραφή ταυτότητας συναλλαγής</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>Αντιγραφή ανεπεξέργαστης συναλλαγής</translation>
+    </message>
+    <message>
+        <source>Edit label</source>
+        <translation>Επεξεργασία ετικέτας</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Αρχείο οριοθετημένο με κόμματα (*.csv)</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Ημερομηνία</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Ετικέτα</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Διεύθυνση</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Αποτυχία Εξαγωγής</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>Μονάδα μέτρησης προβολής ποσών. Κάντε κλικ για επιλογή άλλης μονάδας.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Επιλογές:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Ορισμός φακέλου δεδομένων</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Σύνδεση σε έναν κόμβο για την ανάκτηση διευθύνσεων από ομότιμους, και αποσύνδεση</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Διευκρινίστε τη δικιά σας δημόσια διεύθυνση.</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Αποδοχή εντολών κονσόλας και JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Εκτέλεση στο παρασκήνιο και αποδοχή εντολών</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin Core</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>Δέσμευση σε συγκεκριμένη διεύθυνση και συνεχόμενη παρακολούθηση σε αυτή. Χρησιμοποιήστε τη σημειογραφία [διακομιστή]:θύρα για IPv6</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Εκτέλεσε την εντολή όταν το καλύτερο μπλοκ αλλάξει(%s στην εντολή αντικαθίσταται από το hash του μπλοκ)</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Να δέχεσαι συνδέσεις από έξω(προεπιλογή:1)</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Επιλογές δημιουργίας μπλοκ:</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Επιλογές σύνδεσης:</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Εντοπίσθηκε διεφθαρμένη βάση δεδομένων των μπλοκ</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Θέλετε να δημιουργηθεί τώρα η βάση δεδομένων των μπλοκ;</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Σφάλμα κατά την ενεργοποίηση της βάσης δεδομένων των μπλοκ</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Σφάλμα κατά την ενεργοποίηση της βάσης δεδομένων πορτοφολιού %s!</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Σφάλμα φόρτωσης της βάσης δεδομένων των μπλοκ</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Σφάλμα φόρτωσης της βάσης δεδομένων των μπλοκ</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Σφάλμα: Χαμηλός χώρος στο δίσκο!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Αποτυχία παρακολούθησης σε οποιαδήποτε θύρα. Χρησιμοποιήστε -listen=0 αν θέλετε αυτό.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Εισαγωγή...</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>Δεν υπάρχουν αρκετοί περιγραφείς αρχείων διαθέσιμοι.</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Σύνδεση μόνο σε κόμβους του δικτύου &lt;net&gt; (ipv4, ipv6 ή onion)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Επιλέξτε αρχείο πορτοφολιού (μέσα από κατάλογο δεδομένων)</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Επαλήθευση των μπλοκ...</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Επιλογές πορτοφολιού:</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Σύνδεση μέσω διαμεσολαβητή SOCKS5</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>Σφάλμα ανάγνωσης από τη βάση δεδομένων, γίνεται τερματισμός.</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Πληροφορία</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Επιλογές αναμετάδοσης κόμβου:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>Επιλογές διακομιστή RPC:</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Αποστολή πληροφοριών εντοπισμού σφαλμάτων στην κονσόλα αντί του αρχείου debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Προβολή όλων των επιλογών εντοπισμού σφαλμάτων (χρήση: --help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Συρρίκνωση του αρχείου debug.log κατα την εκκίνηση του πελάτη (προεπιλογή: 1 όταν δεν είναι -debug)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>Η υπογραφή συναλλαγής απέτυχε </translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>Η εφαρμογή είναι σε πειραματικό στάδιο.</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>Το ποσό της συναλλαγής είναι πολύ μικρό</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>Η συναλλαγή είναι πολύ μεγάλη</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Όνομα χρήστη για τις συνδέσεις JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Προειδοποίηση</translation>
+    </message>
+    <message>
+        <source>Zapping all transactions from wallet...</source>
+        <translation>Μεταφορά όλων των συναλλαγών από το πορτοφόλι</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Κωδικός για τις συνδέσεις JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>Εκτέλεσε την εντολή όταν το καλύτερο μπλοκ αλλάξει(%s στην εντολή αντικαθίσταται από το hash του μπλοκ)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Να επιτρέπονται οι έλεγχοι DNS για προσθήκη και σύνδεση κόμβων</translation>
+    </message>
+    <message>
+        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <translation>Πόσο εξονυχιστική να είναι η επιβεβαίωση του μπλοκ (0-4, προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation>Διατήρηση ένος πλήρους ευρετηρίου συναλλαγών (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation>Αριθμός δευτερολέπτων πριν επιτραπεί ξανά η σύνδεση των προβληματικών χρηστών (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation>Πόσα μπλοκ να ελεγχθούν κατά την εκκίνηση (προεπιλογή: %u, 0 = όλα)</translation>
+    </message>
+    <message>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation>Να συμπεριληφθεί η διεύθυνση IP στην αναφορά? (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>Μέγιστες αριθμός συνδέσεων με τους χρήστες &lt;n&gt; (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>Ορίστε αρχείο ρυθμίσεων (προεπιλογή: %s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>Ορισμός λήξης χρονικού ορίου σε χιλιοστά του δευτερολέπτου(προεπιλογή: %d)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>Ορίστε αρχείο pid (προεπιλογή: %s)</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>Όριο αποσύνδεσης προβληματικών χρηστών (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -only
