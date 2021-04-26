@@ -1986,4 +1986,36 @@
         <translation>Όριο αποσύνδεσης προβληματικών χρηστών (προεπιλογή: %u)</translation>
     </message>
     <message>
-        <source>Unknown network specified in -only
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>Έχει οριστεί άγνωστo δίκτυο στο -onlynet: '%s'</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Ανεπαρκές κεφάλαιο</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Φόρτωση ευρετηρίου μπλοκ...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Φόρτωση πορτοφολιού...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>Δεν μπορώ να υποβαθμίσω το πορτοφόλι</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Ανίχνευση...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Η φόρτωση ολοκληρώθηκε</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Σφάλμα</translation>
+    </message>
+</context>
+</TS>
