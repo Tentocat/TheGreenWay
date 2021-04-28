@@ -968,4 +968,314 @@
     <message>
         <location line="+22"/>
         <source>name</source>
+        <translation>name</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Directory already exists. Add %1 if you intend to create a new directory here.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Path already exists, and is not a directory.</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Cannot create data directory here.</source>
+        <translation>Cannot create data directory here.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <location filename="../utilitydialog.cpp" line="+40"/>
+        <source>version</source>
+        <translation type="unfinished">version</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+2"/>
+        <source>(%1-bit)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>About %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Command-line options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Usage:</source>
+        <translation type="unfinished">Usage:</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>command-line options</source>
+        <translation type="unfinished">command-line options</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>UI Options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set language, for example &quot;de_DE&quot; (default: system locale)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Start minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reset all settings changed in the GUI</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <location filename="../forms/intro.ui" line="+14"/>
+        <source>Welcome</source>
+        <translation>Welcome</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Welcome to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+157"/>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-160"/>
+        <source>Use the default data directory</source>
+        <translation>Use the default data directory</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Use a custom data directory:</source>
+        <translation>Use a custom data directory:</translation>
+    </message>
+    <message>
+        <location filename="../intro.cpp" line="+20"/>
+        <source>Bitcoin</source>
+        <translation type="unfinished">Bitcoin</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+73"/>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+9"/>
+        <source>%n GB of free space available</source>
         <translation>
+            <numerusform>%n GB of free space available</numerusform>
+            <numerusform>%n GB of free space available</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location line="+3"/>
+        <source>(of %n GB needed)</source>
+        <translation>
+            <numerusform>(of %n GB needed)</numerusform>
+            <numerusform>(of %n GB needed)</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <location filename="../forms/modaloverlay.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <location line="+119"/>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+63"/>
+        <source>Number of blocks left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+26"/>
+        <location filename="../modaloverlay.cpp" line="+140"/>
+        <source>Unknown...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-13"/>
+        <source>Last block time</source>
+        <translation type="unfinished">Last block time</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Progress increase per hour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+20"/>
+        <source>calculating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Estimated time left until synced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modaloverlay.cpp" line="-1"/>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <location filename="../forms/openuridialog.ui" line="+14"/>
+        <source>Open URI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Open payment request from URI or file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Select payment request file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../openuridialog.cpp" line="+47"/>
+        <source>Select payment request file to open</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <location filename="../forms/optionsdialog.ui" line="+14"/>
+        <source>Options</source>
+        <translation>Options</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>&amp;Main</source>
+        <translation>&amp;Main</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Start %1 on system login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Size of &amp;database cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Number of script &amp;verification threads</source>
+        <translation type="unfinished"></transl
