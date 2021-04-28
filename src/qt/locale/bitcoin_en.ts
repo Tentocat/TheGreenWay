@@ -1278,4 +1278,310 @@
     <message>
         <location line="+27"/>
         <source>Number of script &amp;verification threads</source>
-        <translation type="unfinished"></transl
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+161"/>
+        <location line="+187"/>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-118"/>
+        <location line="+23"/>
+        <location line="+23"/>
+        <source>Shows if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+108"/>
+        <source>Hide the icon from the system tray.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Hide tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+80"/>
+        <location line="+13"/>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Active command-line options that override above options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Open the %1 configuration file from the working directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Open Configuration File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Reset all client options to default.</source>
+        <translation>Reset all client options to default.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Reset Options</translation>
+    </message>
+    <message>
+        <location line="-529"/>
+        <source>&amp;Network</source>
+        <translation>&amp;Network</translation>
+    </message>
+    <message>
+        <location line="-85"/>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>W&amp;allet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Expert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Enable coin &amp;control features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Map port using &amp;UPnP</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Accept connections from outside.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Allow incomin&amp;g connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+187"/>
+        <source>Proxy &amp;IP:</source>
+        <translation>Proxy &amp;IP:</translation>
+    </message>
+    <message>
+        <location line="-155"/>
+        <location line="+187"/>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port:</translation>
+    </message>
+    <message>
+        <location line="-162"/>
+        <location line="+187"/>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Port of the proxy (e.g. 9050)</translation>
+    </message>
+    <message>
+        <location line="-163"/>
+        <source>Used for reaching peers via:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Tor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
+        <source>&amp;Window</source>
+        <translation>&amp;Window</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Show only a tray icon after minimizing the window.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimize to the tray instead of the taskbar</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimize on close</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>&amp;Display</source>
+        <translation>&amp;Display</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>User Interface &amp;language:</source>
+        <translation>User Interface &amp;language:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Unit to show amounts in:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Choose the default subdivision unit to show in the interface and when sending coins.</translation>
+    </message>
+    <message>
+        <location line="-450"/>
+        <source>Whether to show coin control features or not.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+464"/>
+        <source>&amp;Third party transaction URLs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+182"/>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Cancel</translation>
+    </message>
+    <message>
+        <location filename="../optionsdialog.cpp" line="+82"/>
+        <source>default</source>
+        <translation>default</translation>
+    </message>
+    <message>
+        <location line="+64"/>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+72"/>
+        <source>Confirm options reset</source>
+        <translation>Confirm options reset</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+55"/>
+        <source>Client restart required to activate changes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-55"/>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Configuration options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>The configuration file could not be opened.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>This change would require a client restart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>The supplied proxy address is invalid.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <location filename="../forms/overviewpage.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <location line="+386"/>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established
