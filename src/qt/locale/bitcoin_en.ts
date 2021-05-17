@@ -2952,4 +2952,305 @@
     <message>
         <location line="+101"/>
         <source>Warning: Invalid Bitcoin address</source>
-        <translation type="unfinished"></translatio
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Warning: Unknown change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirm custom change address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>(no label)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <location filename="../forms/sendcoinsentry.ui" line="+155"/>
+        <location line="+546"/>
+        <location line="+533"/>
+        <source>A&amp;mount:</source>
+        <translation>A&amp;mount:</translation>
+    </message>
+    <message>
+        <location line="-1192"/>
+        <source>Pay &amp;To:</source>
+        <translation>Pay &amp;To:</translation>
+    </message>
+    <message>
+        <location line="+93"/>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    <message>
+        <location line="-68"/>
+        <source>Choose previously used address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-46"/>
+        <source>This is a normal payment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Paste address from clipboard</source>
+        <translation>Paste address from clipboard</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+555"/>
+        <location line="+533"/>
+        <source>Remove this entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1028"/>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Use available balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Message:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+443"/>
+        <source>This is an unauthenticated payment request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+529"/>
+        <source>This is an authenticated payment request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1016"/>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+448"/>
+        <location line="+529"/>
+        <source>Pay To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-495"/>
+        <location line="+533"/>
+        <source>Memo:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sendcoinsentry.cpp" line="+36"/>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <location filename="../sendcoinsdialog.cpp" line="+83"/>
+        <location line="+5"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <location filename="../utilitydialog.cpp" line="+78"/>
+        <source>%1 is shutting down...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <location filename="../forms/signverifymessagedialog.ui" line="+14"/>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Signatures - Sign / Verify a Message</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Sign Message</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+210"/>
+        <source>Choose previously used address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-200"/>
+        <location line="+210"/>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <location line="-200"/>
+        <source>Paste address from clipboard</source>
+        <translation>Paste address from clipboard</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Enter the message you want to sign here</source>
+        <translation>Enter the message you want to sign here</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Copy the current signature to the system clipboard</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Sign the message to prove you own this Bitcoin address</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Sign &amp;Message</source>
+        <translation>Sign &amp;Message</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Reset all sign message fields</source>
+        <translation>Reset all sign message fields</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+143"/>
+        <source>Clear &amp;All</source>
+        <translation>Clear &amp;All</translation>
+    </message>
+    <message>
+        <location line="-84"/>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Verify Message</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+37"/>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Verify the message to ensure it was signed with the specified Bitcoin address</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Verify &amp;Message</source>
+        <translation>Verify &amp;Message</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Reset all verify message fields</source>
+        <translation>Reset all verify message fields</translation>
+    </message>
+    <message>
+        <location filename="../signverifymessagedialog.cpp" line="+41"/>
+        <source>Click &quot;Sign Message&quot; to generate signature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+82"/>
+        <location line="+78"/>
+        <source>The entered address is invalid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-78"/>
+        <location line="+7"/>
+        <location line="+71"/>
+        <location line="+6"/>
+        <source>Please check the address and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-77"/>
+        <location line="+77"/>
+        <source>The entered address does not refer to a key.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-69"/>
+        <source>Wallet unlock was cancelled.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Private key for the entered address is not available.</source
