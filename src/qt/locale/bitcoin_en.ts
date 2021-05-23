@@ -3253,4 +3253,359 @@
     </message>
     <message>
         <location line="+8"/>
-        <source>Private key for the entered address is not available.</source
+        <source>Private key for the entered address is not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Message signing failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Message signed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <source>The signature could not be decoded.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location line="+13"/>
+        <source>Please check the signature and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>The signature did not match the message digest.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Message verification failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Message verified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <location filename="../networkstyle.cpp" line="+19"/>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <location filename="../trafficgraphwidget.cpp" line="+80"/>
+        <source>KB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message numerus="yes">
+        <location filename="../transactiondesc.cpp" line="+30"/>
+        <source>Open for %n more block(s)</source>
+        <translation>
+            <numerusform>Open for %n more block</numerusform>
+            <numerusform>Open for %n more blocks</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Open until %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1/offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>0/unconfirmed, %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>in memory pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>not in memory pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>abandoned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1/unconfirmed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 confirmations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>, has not been successfully broadcast yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+2"/>
+        <source>, broadcast through %n node(s)</source>
+        <translation>
+            <numerusform>, broadcast through %n node</numerusform>
+            <numerusform>, broadcast through %n nodes</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Date</source>
+        <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Generated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+12"/>
+        <location line="+72"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-72"/>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+20"/>
+        <location line="+69"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-87"/>
+        <source>own address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <location line="+69"/>
+        <source>watch-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-67"/>
+        <source>label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <location line="+12"/>
+        <location line="+53"/>
+        <location line="+26"/>
+        <location line="+55"/>
+        <source>Credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="-144"/>
+        <source>matures in %n more block(s)</source>
+        <translation>
+            <numerusform>matures in %n more block</numerusform>
+            <numerusform>matures in %n more blocks</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>not accepted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+59"/>
+        <location line="+25"/>
+        <location line="+55"/>
+        <source>Debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-70"/>
+        <source>Total debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Total credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Transaction fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Net amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+11"/>
+        <source>Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Transaction ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Transaction total size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Output index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Merchant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Debug information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Amount</source>
+        <translation type="unfinished">Amount</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <location line="+1"/>
+        <source>false</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <location filename="../forms/transactiondescdialog.ui" line="+20"/>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>This pane shows a detailed description of the transaction</translation>
+    </message>
+    <message>
+        <location filename="../transactiondescdialog.cpp" line="+17"/>
+        <source>Details for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <location filename="../transactiontablemodel.cpp" line="+248"/>
+        <source>Date</source>
+        <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+58"/>
+        <source>Open for %n more block(s)</source>
+        <translation>
+            <numerusform>Open for %n more block</numerusform>
+            <numerusform>Open for %n more blocks</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Open until %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Unconfirmed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Abandoned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
