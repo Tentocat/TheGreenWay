@@ -665,4 +665,265 @@
     <message>
         <source>Copy bytes</source>
         <translation>Copy bytes</translation>
-    </mes
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copy dust</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copy change</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 locked)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>yes</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>no</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>This label turns red if any recipient receives an amount smaller than the current dust threshold.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Can vary +/- %1 satoshi(s) per input.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(no label)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>change from %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(change)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Edit Address</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Label</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>The label associated with this address list entry</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>The address associated with this address list entry. This can only be modified for sending addresses.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Address</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>New receiving address</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>New sending address</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Edit receiving address</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Edit sending address</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>The entered address "%1" is not a valid Bitcoin address.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>The entered address "%1" is already in the address book.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Could not unlock wallet.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>New key generation failed.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>A new data directory will be created.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>name</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Directory already exists. Add %1 if you intend to create a new directory here.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Path already exists, and is not a directory.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Cannot create data directory here.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>version</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>About %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Command-line options</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Usage:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>command-line options</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>UI Options:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Choose data directory on startup (default: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Set language, for example "de_DE" (default: system locale)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Start minimised</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Set SSL root certificates for payment request (default: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Show splash screen on startup (default: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Reset all settings changed in the GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Welcome</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Welcome to %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>As this is the first time the program is launched, you can choose where %1 will store its data.</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Use the default data directory</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Use a custom data directory:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>At least %1 GB of data will be stored in this directory, and it will grow over time.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Approximately %1 GB of data will be stored in this directory.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 will download and store a copy of the Bitcoin block chain.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>The wallet will also be stored in this directory.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Error: Specified data directory "%1" cannot be created.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB of free space available</numerusform><numerusform>%n GB of free space available</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(of %n GB needed)</numerusform><numerusform>(of %n GB needed)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronising with the Bitcoin network, as detailed below.</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Attempting to spend Bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</sourc
