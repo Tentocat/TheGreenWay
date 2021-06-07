@@ -1502,4 +1502,366 @@
     <message numerus="yes">
         <source>%n year(s)</source>
         <translation><numerusform>%n year</numerusform><numerusform>%n years</numerusform></translation>
-    </me
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 didn't yet exit safely...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>unknown</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Error: Specified data directory "%1" does not exist.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Error: Cannot parse configuration file: %1. Only use key=value syntax.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Error: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Save Image...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Copy Image</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Save QR Code</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>PNG Image (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Client version</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Information</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Debug window</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Using BerkeleyDB version</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Startup time</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Network</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Number of connections</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Block chain</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Current number of blocks</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Memory Pool</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Current number of transactions</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Memory usage</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Reset</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Received</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Sent</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Peers</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Banned peers</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Select a peer to view detailed information.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>Whitelisted</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Direction</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Starting Block</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Synced Headers</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Synced Blocks</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>User Agent</translation>
+    </message>
+    <message>
+        <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>Decrease font size</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>Increase font size</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Services</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Ban Score</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Connection Time</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Last Send</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Last Receive</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Ping Time</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>The duration of a currently outstanding ping.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Ping Wait</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>Min Ping</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Time Offset</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Last block time</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Open</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Console</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;Network Traffic</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Totals</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>In:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Out:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Debug log file</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Clear console</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;hour</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;day</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;week</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;year</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Disconnect</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Ban for</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;Unban</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>Welcome to the %1 RPC console.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>Use up and down arrows to navigate history, and %1 to clear screen.</translation>
+    </message>
+    <message>
+        <source>Type %1 for an overview of available commands.</source>
+        <translation>Type %1 for an overview of available commands.</translation>
+    </message>
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>For more information on using this console type %1.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>WARNING: Scammers have been active, telling users to type commands here and stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Network activity disabled</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(node id: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>via %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>never</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Inbound</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Outbound</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Unknown</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Amount:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
