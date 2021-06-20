@@ -3255,4 +3255,224 @@
     </message>
     <message>
         <source>Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)</source>
-        <translation>Set lowest fee rate (in %s/kB) for transactions to be included in block creation (default: %s).</tr
+        <translation>Set lowest fee rate (in %s/kB) for transactions to be included in block creation (default: %s).</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <translation>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation>This is the transaction fee you may discard if change is smaller than dust at this level.</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <translation>Unable to rewind the database to a pre-fork state. You will need to re-download the blockchain</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</translation>
+    </message>
+    <message>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times</source>
+        <translation>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times.</translation>
+    </message>
+    <message>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u)</source>
+        <translation>Wallet will not create transactions that violate mempool chain limits (default: %u).</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</translation>
+    </message>
+    <message>
+        <source>Whether to save the mempool on shutdown and load on restart (default: %u)</source>
+        <translation>Whether to save the mempool on shutdown and load on restart (default: %u).</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>%d of last 100 blocks have unexpected version.</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s corrupt, salvage failed</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>-maxmempool must be at least %d MB</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; can be:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Accept connections from outside (default: 1 if no -proxy or -connect)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>Append comment to the user agent string</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>Attempt to recover private keys from a corrupt wallet on startup</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Block creation options:</translation>
+    </message>
+    <message>
+        <source>Cannot resolve -%s address: '%s'</source>
+        <translation>Cannot resolve -%s address: '%s'</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>Chain selection options:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>Change index out of range</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Connection options:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>Copyright (C) %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Corrupted block database detected</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>Debugging/Testing options:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>Do not load the wallet and disable wallet RPC calls</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Do you want to rebuild the block database now?</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>Enable publish hash block in &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>Enable publish hash transaction in &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>Enable publish raw block in &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>Enable publish raw transaction in &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable transaction replacement in the memory pool (default: %u)</source>
+        <translation>Enable transaction replacement in the memory pool (default: %u)</translation>
+    </message>
+    <message>
+        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
+        <translation>Error creating %s: You can't create non-HD wallets with this version.</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Error initialising block database</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Error initialising wallet database environment %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>Error loading %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Error loading %s: Wallet corrupted</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Error loading %s: Wallet requires newer version of %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Error loading block database</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Error opening block database</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Error: Disk space is low!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Failed to listen on any port. Use -listen=0 if you want this.</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>Failed to rescan the wallet during initialisation.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Importing...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>Incorrect or no genesis block found. Wrong datadir for network?</translation>
+    </message>
+    <message>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>Initialisation sanity check failed. %s is shutting down.</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>Invalid amount for -%s=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
+        <translation>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>Loading P2P addresses...</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>Loading banlist...</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>Location of the auth cookie (
