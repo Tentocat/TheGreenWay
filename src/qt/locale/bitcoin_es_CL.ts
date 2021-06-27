@@ -825,4 +825,247 @@
         <translation>Selecciona un lenguaje, por ejemplo "es_CL" (predeterminado: lenguaje del SO)</translation>
     </message>
     <message>
-        <source>Start minimized</so
+        <source>Start minimized</source>
+        <translation>Iniciar minimizado</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Definir certificado fuente SSL para la solicitud de pagos (predeterminado: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Mostrar pantalla de carga al iniciar (predeterminado: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Restablecer toda la configuración personalizada</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>bienvenido</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Bienvenido a %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Al ser la primera vez que se ejecuta el programa, puede elegir donde %1 almacenará sus datos.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>El primer proceso de sincronización consume muchos recursos, y es posible que puedan ocurrir problemas de hardware que anteriormente no hayas notado. Cada vez que ejecutes %1 automáticamente se reiniciará el proceso de sincronización desde el punto que lo dejaste anteriormente.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>Si elegiste la opción de limitar el tamaño del blockchain (pruning), de igual manera será descargada y procesada la información histórica, pero será eliminada al finalizar este proceso para disminuir el uso del disco duro.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Usar el directorio de datos predeterminado</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>usar un directorio de datos personalizado:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>Al menos %1 GB de información será almacenado en este directorio, y seguirá creciendo a través del tiempo.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Aproximadamente %1 GB de información será almacenado en este directorio.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 descargará y almacenará una copia del blockchain de Bitcoin.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>El monedero también será almacenado en este directorio.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Error: El directorio de datos especificado "%1" no pudo ser creado.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB de espacio libre disponible</numerusform><numerusform>%n GB de espacio libre disponible</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(de %n GB requerido)</numerusform><numerusform>(de %n GB requeridos)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>Las transacciones recientes aún no pueden ser visibles, y por lo tanto el saldo de su monedero podría ser incorrecto. Esta información será correcta cuando su monedero haya terminado de sincronizarse con la red de bitcoin, como se detalla abajo.</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>La red no aceptará el intentar gastar bitcoins que están afectados por transacciones aún no mostradas.</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Número de bloques restantes</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Desconocido...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Hora del último bloque</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Progreso</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>Avance del progreso por hora</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>calculando...</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>Tiempo estimado restante hasta la sincronización</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Ocultar</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>Desconocido. Sincronizando cabeceras (%1)...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Abrir URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Abrir solicitud de pago desde URI o un archivo</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>url:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Seleccionar archivo de solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Seleccionar archivo de solicitud de pago para abrir</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opciones</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Principal</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>Iniciar automáticamente %1 al inicial el sistema.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>&amp;Iniciar %1 al iniciar el sistema</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>Tamaño del caché de la base de &amp;datos</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>Número de hilos de &amp;verificación de scripts</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Dirección IP del proxy (Ejemplo. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Shows if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation>Muestra si el proxy SOCKS5 por defecto se utiliza para conectarse a pares a través de este tipo de red.</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>Minimizar en vez de salir de la aplicación cuando la ventana está cerrada. Cuando se activa esta opción, la aplicación sólo se cerrará después de seleccionar Salir en el menú.</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>URLs de terceros (por ejemplo, un explorador de bloques) que aparecen en la pestaña de transacciones como elementos del menú contextual. El %s en la URL es reemplazado por el valor hash de la transacción. Se pueden separar múltiples URLs por una barra vertical |.</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>Opciones activas de la terminal que tienen preferencia sobre las opciones anteriores:</translation>
+    </message>
+    <message>
+        <source>Open the %1 configuration file from the working directory.</source>
+        <translation>Abrir el archivo de configuración %1 en el directorio de trabajo.</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Abrir archivo de configuración</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>Reestablece todas las opciones.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Restablecer opciones</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Red</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>Cartera</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>experto</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>Habilitar opciones de &amp;control de monedero</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>Gastar cambio sin confirmar</translation>
+    </message>
+    <message>
