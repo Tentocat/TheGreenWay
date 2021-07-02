@@ -1069,3 +1069,294 @@
         <translation>Gastar cambio sin confirmar</translation>
     </message>
     <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Abre automáticamente el puerto del cliente Bitcoin en el router. Esto funciona solo cuando tu router es compatible con UPnP y está habilitado.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Direcciona el puerto usando &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside.</source>
+        <translation>Aceptar conexiones externas.</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>Conectar a la red de Bitcoin a través de un proxy SOCKS5</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>&amp;IP Proxy:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Puerto:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Puerto del servidor proxy (ej. 9050)</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>Usado para alcanzar compañeros vía:</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Conectar a la red de Bitcoin a través de un proxy SOCKS5 diferente para los servicios anónimos de Tor.</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>y windows
+</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Muestra solo un ícono en la bandeja después de minimizar la ventana</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimiza a la bandeja en vez de la barra de tareas</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimiza a la bandeja al cerrar</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Mostrado</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>&amp;Lenguaje de la interfaz:</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Unidad en la que mostrar cantitades:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Elige la subdivisión por defecto para mostrar cantidaded en la interfaz cuando se envien monedas</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Mostrar o no funcionalidad de Coin Control</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Cancela</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>predeterminado</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>Nada</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Confirmar reestablecimiento de las opciones</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Es necesario reiniciar el cliente para activar los cambios.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>El cliente se cerrará. Desea proceder?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Opciones de configuración</translation>
+    </message>
+    <message>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation>El archivo de configuración es utilizado para especificar opciones avanzadas del usuario, que invalidan los ajustes predeterminados. Adicionalmente, cualquier opción ingresada por la línea de comandos invalidará este archivo de configuración.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>El archivo de configuración no pudo ser abierto.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Estos cambios requieren el reinicio del cliente.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>El proxy ingresado es inválido. </translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>La información entregada puede estar desactualizada. Tu billetera se sincroniza automáticamente con la red de Bitcoin después de establecer una conexión, pero este proceso aún no se ha completado.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Solo observación:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Disponible:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Tu saldo disponible para gastar</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Pendiente:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>Total de transacciones que aún no se han sido confirmadas, y que no son contabilizadas dentro del saldo disponible para gastar</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Inmaduro:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Saldo minado que no ha madurado</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Saldos</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Total:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Saldo total actual</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Utilizable:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Transacciones recientes</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Error en la solicitud de pago</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>Manejo de URI</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Lectura de URL para la solicitud de pagos es invalida: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Dirección de pago inválida %1</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>Manejo del archivo de solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Solicitud de pago rechazada</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Red de solicitud de pagos no coincide con la red del cliente.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Solicitud de pago expirada</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>La solicitud de pago no se ha iniciado.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Solicitud de pago invalida.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>El monto para la solicitud de pago de %1 es muy pequeño (considera el dust).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Reembolsar desde %1</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Fallo al comunicar con %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>La solicitud de pago no puede ser analizada!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Mala respuesta desde el servidor %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Error en petición de la red</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Pago declarado</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>User Agent</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Nodo/Servicio</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>ID del nodo</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Ping</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Enviado</translation>
+    </message>
+    <message>
+        <source>Receiv
