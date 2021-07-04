@@ -1742,4 +1742,352 @@
         <source>&amp;Amount:</source>
         <translation>Cantidad:</translation>
     </message>
-    <m
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiqueta:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;mensaje</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>Mensaje opcional adjunto a la solicitud de pago, que será mostrado cuando la solicitud sea abierta. Nota: Este mensaje no será enviado con el pago a través de la red Bitcoin.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Usa este formulario para solicitar un pago. Todos los campos son &lt;b&gt;opcionales&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Monto opcional a solicitar. Deja este campo vacío o en cero si no quieres definir un monto específico.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Limpiar todos los campos del formulario.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Limpiar</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>Historial de pagos solicitados</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>Solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Mostrar</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>Borrar de la lista las direcciones seleccionadas</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Eliminar</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>Copiar URI</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copiar etiqueta</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Copiar mensaje</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiar Cantidad</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>Código QR </translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>Copiar &amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Copia dirección</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>Guardar imagen...</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>Solicitar pago a %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Información del pago</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Dirección</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Cantidad</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiqueta</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Mensaje</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Fallo al codificar URI en código QR.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Fecha</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiqueta</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Mensaje</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(sin etiqueta)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(sin mensaje)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(no existe monto solicitado)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Solicitado</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Enviar monedas</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Características de Coin Control</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Entradas...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>Seleccionado automaticamente</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Fondos insuficientes</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Cantidad:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Cantidad:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>comisión:
+</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Después de aplicar la comisión:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Cambio:</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>Dirección de cambio personalizada</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Comisión transacción:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Seleccione</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>Advertencia: En este momento no se puede estimar la cuota.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>Colapsar ajustes de comisión.</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>por kilobyte</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Ocultar</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(leer la sugerencia)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Recomendado:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>Personalizado:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Enviar a múltiples destinatarios</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>&amp;Agrega destinatario</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Limpiar todos los campos del formulario.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Polvo:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>Objetivo de tiempo de confirmación</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;Borra todos</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balance:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Confirma el envio</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;Envía</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Copiar cantidad</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiar Cantidad</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copiar comisión</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Copiar después de la comisión</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Copiar bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copiar polvo</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copiar cambio</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 bloques)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 a %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>¿Seguro que quiere enviar?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>agregado como comisión de transacción</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>Monto total %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>o</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Confirmar el envió de monedas</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>La dirección de envío no es válida. Por favor revisala.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>La cantidad por pagar tiene que ser mayor que 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>El monto sobrepasa tu saldo.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>El total sobrepasa tu saldo cuando se incluyen %1 como comisión de envió.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>¡Fallo al crear la transacción!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+  
