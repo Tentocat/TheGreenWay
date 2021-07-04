@@ -1359,4 +1359,387 @@
         <translation>Enviado</translation>
     </message>
     <message>
-        <source>Receiv
+        <source>Received</source>
+        <translation>Recibido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Cantidad</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Ingresa una dirección de Bitcoin (Ejemplo: %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Nada</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 y %2</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 aun no se ha cerrado de forma segura...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>desconocido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Error: El directorio de datos "%1" especificado no existe.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Error: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>Guardar imagen...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Copiar imagen</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Guardar código QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>Imagen PNG (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Versión del Cliente</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Información</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Ventana Debug</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Utilizando la versión de BerkeleyDB</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Tiempo de inicio</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Red</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Número de conexiones</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Bloquea cadena</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Cantidad de bloques actual</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Memory Pool</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Numero total de transacciones</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Memoria utilizada</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Reestablecer</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Recibido</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Enviado</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Peers</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Peers baneados</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Selecciona un peer para ver la información detallada.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>En la lista blanca</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Dirección</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>version
+</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Bloque de inicio</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Cabeceras sincronizadas</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Bloques sincronizados</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>User Agent</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>Disminuir tamaño de fuente</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>Aumentar tamaño de fuente</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Servicios</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Puntuación de bloqueo</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Duración de la conexión</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Ultimo envío</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Ultima recepción</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Tiempo de Ping</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Espera de Ping</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>Ping minimo</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Desplazamiento de tiempo</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Hora del último bloque</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Abrir</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Consola</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;Tráfico de Red</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Total:</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>Entrada:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Salida:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Archivo del registro de depuración</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Limpiar Consola</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;hora</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;día</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 semana</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 año</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Desconectar</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Prohibir para</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;Desbloquear</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>Bienvenido a la consola RPC %1.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>Usa las flechas (arriba y abajo) para navegar por el historial, y %1 para limpiar la consola.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>ADVERTENCIA: No uses esta consola sin comprender las consecuencias de la ejecución de cada comando.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Actividad de red desactivada</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(identificador del nodo: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>via %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>nunca</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Entrante</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Saliente</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Si</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Desconocido</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Cantidad:</translation>
+    </message>
+    <m
