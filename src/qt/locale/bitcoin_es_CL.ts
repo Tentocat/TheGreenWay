@@ -2772,4 +2772,283 @@
     </message>
     <message>
         <source>Exporting Successful</source>
- 
+        <translation>Exportación exitosa</translation>
+    </message>
+    <message>
+        <source>The transaction history was successfully saved to %1.</source>
+        <translation>La transacción ha sido guardada en %1.</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>Rango:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>para</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>Unidad en la que se muestran las cantidades. Haga clic para seleccionar otra unidad.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    <message>
+        <source>No wallet has been loaded.</source>
+        <translation>No se ha cargado ningún monedero</translation>
+    </message>
+</context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Enviar monedas</translation>
+    </message>
+    <message>
+        <source>Fee bump error</source>
+        <translation>Error de incremento de cuota</translation>
+    </message>
+    <message>
+        <source>Increasing transaction fee failed</source>
+        <translation>Ha fallado el incremento de la cuota de transacción.</translation>
+    </message>
+    <message>
+        <source>Do you want to increase the fee?</source>
+        <translation>¿Desea incrementar la cuota?</translation>
+    </message>
+    <message>
+        <source>Current fee:</source>
+        <translation>Comisión actual:</translation>
+    </message>
+    <message>
+        <source>Increase:</source>
+        <translation>Incremento:</translation>
+    </message>
+    <message>
+        <source>New fee:</source>
+        <translation>Nueva comisión:</translation>
+    </message>
+    <message>
+        <source>Confirm fee bump</source>
+        <translation>Confirmar incremento de comisión</translation>
+    </message>
+    <message>
+        <source>Can't sign transaction.</source>
+        <translation>No se ha podido firmar la transacción.</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>No se pudo confirmar la transacción</translation>
+    </message>
+</context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Exportar los datos de la pestaña actual a un archivo</translation>
+    </message>
+    <message>
+        <source>Backup Wallet</source>
+        <translation>Respaldar monedero</translation>
+    </message>
+    <message>
+        <source>Wallet Data (*.dat)</source>
+        <translation>Archivo de respaldo (*.dat)</translation>
+    </message>
+    <message>
+        <source>Backup Failed</source>
+        <translation>Ha fallado el respaldo</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the wallet data to %1.</source>
+        <translation>Ha habido un error al intentar guardar los datos del monedero a %1.</translation>
+    </message>
+    <message>
+        <source>Backup Successful</source>
+        <translation>Respaldo exitoso</translation>
+    </message>
+    <message>
+        <source>The wallet data was successfully saved to %1.</source>
+        <translation>Los datos del monedero se han guardado con éxito en %1.</translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Opciones:
+</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Especifica directorio para los datos
+</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Conectar a un nodo para obtener direcciones de pares y desconectar</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Especifica tu propia dirección pública</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Aceptar comandos consola y JSON-RPC
+</translation>
+    </message>
+    <message>
+        <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
+        <translation>Distribuido bajo la licencia de software MIT, vea el archivo adjunto %s o %s</translation>
+    </message>
+    <message>
+        <source>If &lt;category&gt; is not supplied or if &lt;category&gt; = 1, output all debugging information.</source>
+        <translation>Si &lt;category&gt; no es proporcionado o si &lt;category&gt; = 1, muestra toda la información de depuración</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation>La Poda se ha configurado por debajo del mínimo de %d MiB. Por favor utiliza un valor mas alto.</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>No es es posible re-escanear en modo prune. Debes usar -reindex el cual descargara toda la blockchain de nuevo.</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>Error: Un error interno fatal ha ocurrido, ver debug.log para detalles</translation>
+    </message>
+    <message>
+        <source>Pruning blockstore...</source>
+        <translation>Poda blockstore...</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Correr como demonio y acepta comandos
+</translation>
+    </message>
+    <message>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>No se ha podido iniciar el servidor HTTP. Ver debug log para detalles.</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>bitcoin core</translation>
+    </message>
+    <message>
+        <source>The %s developers</source>
+        <translation>Los desarrolladores de %s</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>%d de los últimos 100 bloques tienen una versión no esperada</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s corrupto. Fracasó la recuperación</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>-maxmempool debe ser por lo menos de %d MB</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; puede ser:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Aceptar conexiones desde el exterior (por defecto: 1 si no -proxy o -connect)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>Agrega un comentario a la linea de agente de usuario</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>Intento de recuperar claves privadas de un monedero corrupto en el arranque</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Opciones de creación de bloques:</translation>
+    </message>
+    <message>
+        <source>Cannot resolve -%s address: '%s'</source>
+        <translation>No se puede resolver -%s direccion: '%s'</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>Opciones de selección en cadena:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>Cambio de indice fuera de rango</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Opciones de conexión:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>Copyright (C) %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Corrupción de base de datos de bloques detectada.</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>Opciones de depuración/pruebas:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>No cargar el monedero y desactivar las llamadas RPC del monedero</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>¿Quieres reconstruir la base de datos de bloques ahora?</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>Habilitar publicar bloque hash en &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>Habilitar publicar hash de transacción en &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>Habilita la publicación de bloques en bruto en &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>Habilitar publicar transacción en bruto en &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable transaction replacement in the memory pool (default: %u)</source>
+        <translation>Habilita el re-emplazamiento de transacciones en el pool de memoria (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Error al inicializar la base de datos de bloques</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Error al iniciar el entorno de la base de datos del monedero %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>Error cargando %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Error cargando %s: Monedero corrupto</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Error cargando %s: Monedero requiere una versión mas reciente de %s</t
