@@ -3474,4 +3474,135 @@
     </message>
     <message>
         <source>Keypool ran out, please call keypoolrefill first</source>
-        
+        <translation>Keypool se ha agotado, llame a keypoolrefill primero</translation>
+    </message>
+    <message>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>Escuchar conexiones JSON-RPC en &lt;port&gt;(predeterminado: %u o testnet: %u) </translation>
+    </message>
+    <message>
+        <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>Escuchar conexiones en &lt;port&gt;(predeterminado: %u o testnet: %u) </translation>
+    </message>
+    <message>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>Mantener como máximo &lt;n&gt;conexiones a pares (predeterminado: %u) </translation>
+    </message>
+    <message>
+        <source>Make the wallet broadcast transactions</source>
+        <translation>Realiza las operaciones de difusión del monedero</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Búfer de recepción máximo por conexión, &lt;n&gt;*1000 bytes (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Búfer de envio máximo por conexión, &lt;n&gt;1000 bytes (por defecto: %u)*</translation>
+    </message>
+    <message>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation>Anteponer marca de tiempo a la información de depuración (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation>Retransmitir y minar transacciones de transporte de datos (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation>Retransmitir non-P2SH multisig (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation>Ajusta el numero de claves en reserva a &lt;n&gt; (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Set maximum BIP141 block weight (default: %d)</source>
+        <translation>Establecer el peso máximo del bloque BIP141 (por defecto: %d)</translation>
+    </message>
+    <message>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation>Número de threads para las llamadas RPC (predeterminado %d)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>Especificar archivo de configuración (por defecto: %s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>Especificar tiempo de espera de la conexión (mínimo: 1, por defecto: %d)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>Especificar archivo pid (por defecto: %s)</translation>
+    </message>
+    <message>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation>Usar cambio aún no confirmado al enviar transacciones (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation>Iniciando procesos de red...</translation>
+    </message>
+    <message>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>La billetera no permitirá pagar menos que la fee de transmisión mínima (relay fee).</translation>
+    </message>
+    <message>
+        <source>This is the minimum transaction fee you pay on every transaction.</source>
+        <translation>Mínimo de impuesto que pagarás con cada transacción.</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you will pay if you send a transaction.</source>
+        <translation>Impuesto por transacción a pagar si envías una transacción.</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>Umbral para la des-conexión de pares con mal comportamiento (por defecto: %u)</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>El monto de la transacción no puede ser negativo</translation>
+    </message>
+    <message>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>La transacción tiene demasiado tiempo de una cadena de mempool</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>La transacción debe incluir al menos un destinatario.</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>La red especificada en -onlynet: '%s' es desconocida</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Fondos insuficientes</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Cargando el index de bloques...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Cargando cartera...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>No es posible desactualizar la billetera</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Rescaneando...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Carga completa</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+</context>
+</TS>
