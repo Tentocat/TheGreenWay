@@ -320,4 +320,323 @@
     <message>
         <source>Click to disable network activity.</source>
         <translation>Haz click para desactivar la actividad de red.</translation>
-    </messa
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>Actividad de red desactivada.</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Haz click para reactivar la actividad de red.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Sincronizando cabeceras (%1%)...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>Reindexando bloques en disco...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>Enviar bitcoins a una dirección Bitcoin</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>Copia de seguridad del monedero en otra ubicación</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Cambiar la contraseña utilizada para el cifrado del monedero</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Ventana de depuración</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Abrir la consola de depuración y diagnóstico</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Verificar mensaje...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Monedero</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Enviar</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Recibir</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Mostrar / Ocultar</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Mostrar u ocultar la ventana principal</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Cifrar las claves privadas de su monedero</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Firmar mensajes con sus direcciones Bitcoin para demostrar la propiedad</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Verificar mensajes comprobando que están firmados con direcciones Bitcoin concretas</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Archivo</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Configuración</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Ayuda</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Barra de pestañas</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Solicitar pagos (generando códigos QR e identificadores URI "bitcoin:")</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Mostrar la lista de direcciones de envío y etiquetas</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Abrir un identificador URI "bitcoin:" o una petición de pago</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>&amp;Opciones de consola de comandos</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n active connection(s) to Bitcoin network</source>
+        <translation><numerusform>%n conexión activa hacia la red Bitcoin</numerusform><numerusform>%n conexiones activas hacia la red Bitcoin</numerusform></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Indexando bloques en disco...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Procesando bloques en disco...</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>%n bloque procesado del historial de transacciones.</numerusform><numerusform>%n bloques procesados del historial de transacciones.</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 atrás</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>El último bloque recibido fue generado hace %1.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Las transacciones posteriores aún no están visibles.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Aviso</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Información</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Actualizado</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Mostrar el mensaje de ayuda %1 para obtener una lista de los posibles comandos de linea de comandos de Bitcoin</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 cliente</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>Conectando a pares...</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Actualizando...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Fecha: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Amount: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Tipo: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Etiqueta: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Dirección: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Transacción enviada</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Transacción entrante</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>La generación de claves HD está &lt;b&gt;activada&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>La generación de claves HD está &lt;b&gt;desactivada&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>El monedero está &lt;b&gt;cifrado&lt;/b&gt; y actualmente &lt;b&gt;desbloqueado&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>El monedero está &lt;b&gt;cifrado&lt;/b&gt; y actualmente &lt;b&gt;bloqueado&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Ha ocurrido un error fatal. Bitcoin no puede continuar de manera segura y se cerrará.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Selección de la moneda</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Cantidad:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Cuantía:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Tasa:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Polvo:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Después de aplicar la comisión:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Cambio:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(des)marcar todos</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Modo árbol</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Modo lista</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Cantidad</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Recibido con etiqueta</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Recibido con dirección</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Fecha</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Confirmaciones</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confirmado</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Copiar ubicación</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copiar etiqueta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiar cantidad</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Copiar ID de transacción</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
