@@ -640,3 +640,301 @@
     </message>
     <message>
         <source>Lock unspent</source>
+        <translation>Bloquear lo no gastado</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Desbloquear lo no gastado</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Copiar cantidad</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copiar cuota</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Copiar después de couta</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Copiar bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copiar polvo</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copiar cambio</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 bloqueado)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>sí</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>no</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Esta etiqueta se vuelve roja si algún destinatario recibe una cantidad inferior a la actual puerta polvorienta.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Puede variar +/- %1 satoshi(s) por entrada.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(sin etiqueta)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>cambia desde %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(cambio)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Editar Dirección</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etiqueta</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>La etiqueta asociada con esta entrada de la lista de direcciones</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>La dirección asociada con esta entrada de la lista de direcciones. Solo puede ser modificada para direcciones de envío.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Dirección</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Nueva dirección de recivimiento</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Nueva dirección de envío</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Editar dirección de recivimiento</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Editar dirección de envío</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>La dirección introducida "%1" no es una dirección Bitcoin válida.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>La dirección introducida "%1" está ya en la agenda.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Podría no desbloquear el monedero.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Falló la generación de la nueva clave.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Se creará un nuevo directorio de datos.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>nombre</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>El directorio ya existe. Añada %1 si pretende crear aquí un directorio nuevo.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>La ruta ya existe y no es un directorio.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>No se puede crear un directorio de datos aquí.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versión</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Acerda de %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Opciones de la línea de órdenes</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Uso:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>opciones de la consola de comandos</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>Opciones de interfaz de usuario:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Elegir directorio de datos al iniciar (predeterminado: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Establecer el idioma, por ejemplo, "es_ES" (predeterminado: configuración regional del sistema)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Arrancar minimizado</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Establecer los certificados raíz SSL para solicitudes de pago (predeterminado: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Mostrar pantalla de bienvenida en el inicio (predeterminado: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Reiniciar todos los ajustes modificados en el GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Bienvenido</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Bienvenido a %1</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Al ser la primera vez que se ejecuta el programa, puede elegir donde %1 almacenara sus datos</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Utilizar el directorio de datos predeterminado</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Utilizar un directorio de datos personalizado:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Error: no ha podido crearse el directorio de datos especificado "%1".</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB de espacio libre</numerusform><numerusform>%n GB de espacio disponible</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(de %n GB necesitados)</numerusform><numerusform>(de %n GB requeridos)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>Las transacciones recientes podrían no ser visibles todavía, por lo que el balance de la cartera podría ser incorrecto. Esta información será correcta una vez su cartera se haya terminado de sincronizar con la red bitcoin, como se detalla más abajo.</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Número de bloques restantes</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Desconocido...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Hora del último bloque</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Progreso</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>Incremento del progreso por hora</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>calculando...</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>Tiempo estimado restante hasta sincronización completa</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Ocultar</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>Desconocido. Sincronizando cabeceras (%1)...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Abrir URI...</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Abrir solicitud de pago a partir de un identificador URI o de un archivo</translation>
+    </message>
+    <message>
+        <source>URI:</source>
