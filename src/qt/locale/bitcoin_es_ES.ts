@@ -1203,4 +1203,340 @@
         <translation>Saldo recién minado que aún no ha madurado.</translation>
     </message>
     <message>
-        <source>Ba
+        <source>Balances</source>
+        <translation>Saldos</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Total:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Su saldo actual total</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Su saldo actual en direcciones watch-only</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Gastable:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Transacciones recientes</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Transacciones sin confirmar en direcciones watch-only</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Saldo minado en direcciones watch-only que aún no ha madurado</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Saldo total en las direcciones watch-only</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Fallo en la solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <translation>No se puede iniciar bitcoin: encargado click-para-pagar</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>Manejo de URI</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>La búsqueda de solicitud de pago URL es válida: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Dirección de pago inválida %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>URI no puede ser analizado! Esto puede ser causado por una dirección Bitcoin inválida o parametros URI mal formados.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>Manejo del archivo de solicitud de pago</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>¡El archivo de solicitud de pago no puede ser leído! Esto puede ser causado por un archivo de solicitud de pago inválido.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Solicitud de pago rechazada</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>La red de solicitud de pago no cimbina la red cliente.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Solicitud de pago caducada.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>La solicitud de pago no se ha iniciado.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Solicitudes de pago sin verificar a scripts de pago habitual no se soportan.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Solicitud de pago inválida.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Cantidad de pago solicitada de %1 es demasiado pequeña (considerado polvo).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Reembolsar desde %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Solicitud de pago de %1 es demasiado grande (%2 bytes, permitidos %3 bytes).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Fallo al comunicar con %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>¡La solicitud de pago no puede ser analizada!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Mala respuesta desde el servidor %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Fallo de solicitud de red</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Pago declarado</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>User Agent</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Nodo/Servicio</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>NodeId</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Ping</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Enviado</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Recibido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Cantidad</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Introducir una dirección Bitcoin (p. ej. %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Ninguno</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/D</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 y %2</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 aún no ha salido de manera segura...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>desconocido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Error: directorio especificado "%1" no existe.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Error: no se puede interpretar el archivo de configuración: %1. Utilize exclusivamente sintaxis clave=valor.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Error: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Guardar imagen...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Copiar imagen</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Guardar código QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>Imagen PNG (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/D</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Versión del cliente</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Información</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Ventana de depuración</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Utilizando la versión de BerkeleyDB</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Hora de inicio</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Red</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nombre</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Número de conexiones</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Cadena de bloques</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Número actual de bloques</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Piscina de Memoria</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Número actual de transacciones</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Uso de memoria</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Recibido</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Enviado</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Pares</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Peers Bloqueados</translation>
+    </m
