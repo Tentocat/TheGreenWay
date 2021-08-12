@@ -3667,4 +3667,20 @@
         <translation>Cargando monedero...</translation>
     </message>
     <message>
-        <source>Cannot downgrade
+        <source>Cannot downgrade wallet</source>
+        <translation>No se puede cambiar a una versión mas antigua el monedero</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Reexplorando...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Se terminó de cargar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+</context>
+</TS>
