@@ -318,4 +318,386 @@
     </message>
     <message>
         <source>Change:</source>
-        <tran
+        <translation>Cambio</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Monto</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Fecha</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confirmado </translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Editar dirección</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etiqueta</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Dirección</translation>
+    </message>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translation>nombre</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versión</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>opciones de la Linea de comandos</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Uso:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>Opciones de comando de lineas</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opciones</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>Activar las opciones de linea de comando que sobre escriben las siguientes opciones:</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>Cartera</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>Ninguno </translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulario</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Monto</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>desconocido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Debug window</source>
+        <translation>Depurar ventana</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Monto:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiqueta</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>Mensaje:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>Mensaje opcional para agregar a la solicitud de pago, el cual será mostrado cuando la solicitud este abierta. Nota: El mensaje no se manda con el pago a travéz de la red de Bitcoin.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Use este formulario para la solicitud de pagos. Todos los campos son &lt;b&gt;opcionales&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Monto opcional a solicitar. Dejarlo vacion o en cero no solicita un monto especifico.</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Copiar dirección</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Enviar monedas</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Cantidad</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Monto:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Cuota:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Después de los cargos por comisión. </translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Cambio</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Enviar a múltiples receptores a la vez</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Saldo:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Confirme la acción de enviar</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>M&amp;onto</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Pagar &amp;a:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiqueta</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Este es un pago normal</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Pegar dirección  del portapapeles</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>Quitar esta entrada</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Mensaje:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Pago para:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>No apague su computadora hasta que esta ventana desaparesca.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Pegar dirección  del portapapeles</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Firma</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Este panel muestras una descripción detallada de la transacción</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    </context>
+<context>
+    <name>TransactionView</name>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Enviar monedas</translation>
+    </message>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Exportar la información en la pestaña actual a un archivo</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Opciones:</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>nucleo Bitcoin</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;categoria&gt; puede ser:</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Verificando bloques...</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Opciones de cartera:</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Información </translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Aviso</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Cargando indice de bloques... </translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Cargando billetera...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Carga completa</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+</context>
+</TS>
