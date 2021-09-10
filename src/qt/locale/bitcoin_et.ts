@@ -917,4 +917,396 @@
     <name>QObject</name>
     <message>
         <source>Amount</source>
-        <transla
+        <translation>Kogus</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n tund</numerusform><numerusform>%n tundi</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n päev</numerusform><numerusform>%n päeva</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n nädal</numerusform><numerusform>%n nädalat</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 ja %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n aasta</numerusform><numerusform>%n aastat</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>tundmatu</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Salvesta QR Kood</translation>
+    </message>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Kliendi versioon</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informatsioon</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Debugimise aken</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Üldine</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Kasutab BerkeleyDB versiooni</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Käivitamise hetk</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Võrgustik</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Ühenduste arv</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Ploki jada</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Plokkide hetkearv</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Mälu kasutus</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Lähtesta</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Vastuvõetud</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Saadetud</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Suund</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versioon</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Sünkroniseeritud Päised</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Sünkroniseeritud Plokid</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Teenused</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Viimane ploki aeg</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Ava</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Konsool</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Silumise logifail</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Puhasta konsool</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Sisenev</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Väljuv</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Jah</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Ei</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Teadmata</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Summa:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Märgis</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Sõnum:</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Puhasta kõik vormi väljad.</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Näita</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopeeri märgis</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Kopeeri sõnum</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopeeri summa</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>QR Kood</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Kopeeri Aadress</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Makse Informatsioon</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Aadress</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Summa</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Silt</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Sõnum</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>URI liiga pikk, proovi vähendada märke / sõnumi pikkust.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Tõrge URI'st QR koodi loomisel</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Kuupäev</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Silt</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Sõnum</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(märge puudub)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(sõnum puudub)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Müntide saatmine</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Sisendid...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>automaatselt valitud</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Liiga suur summa</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Kogus:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Baiti:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Summa:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Tasu:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Peale tehingutasu:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Vahetusraha:</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Tehingu tasu:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Vali...</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>kilobaidi kohta</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Peida</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Soovitatud:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Saatmine mitmele korraga</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Lisa &amp;Saaja</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Puhasta kõik vormi väljad.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Puru:</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Puhasta &amp;Kõik</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Jääk:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Saatmise kinnitamine</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>S&amp;aada</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopeeri kogus</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopeeri summa</translation>
+    </message>
+    <message>
+        <source>Copy fe
