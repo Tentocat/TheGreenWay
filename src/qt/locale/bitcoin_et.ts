@@ -560,4 +560,361 @@
     </message>
     <message>
         <source>Copy fee</source>
-        <tran
+        <translation>Kopeeri tehingutasu</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopeeri baidid</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopeeri puru</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopeeri vahetusraha</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 lukustatud)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>jah</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>ei</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(märgis puudub)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(vahetusraha)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Muuda aadressi</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Märgis</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Aadress</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Uus vastu võttev aadress</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Uus saatev aadress</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Muuda vastuvõtvat aadressi</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Muuda saatvat aadressi</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>Sisestatud aadress "%1" ei ole korrektne Bitcoin aadress.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Sisestatud aadress "%1" on juba aadressi raamatus.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Rahakoti lahtilukustamine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Uue võtme genereerimine ebaõnnestus.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translation>nimi</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versioon</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Käsurea valikud</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Kasutus:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>käsurea valikud</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>Kasutajaliidese Suvandid:</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Käivitamisel kuva laadimisekraani (vaikimisi %u)</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Teretulemast</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Tõrge</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Vorm</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Viimane ploki aeg</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Peida</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Ava URI</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Vali maksepäringu fail</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Vali maksepäringu fail mida avada</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Valikud</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Peamine</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>Taasta kõik klientprogrammi seadete vaikeväärtused.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Lähtesta valikud</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Võrk</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>R&amp;ahakott</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Ekspert</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Bitcoini kliendi pordi automaatne avamine ruuteris. Toimib, kui sinu ruuter aktsepteerib UPnP ühendust.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Suuna port &amp;UPnP kaudu</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>Proxi &amp;IP:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Proxi port (nt 9050)</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Aken</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Minimeeri systray alale.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimeeri systray alale</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimeeri sulgemisel</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Kuva</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>Kasutajaliidese &amp;keel:</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>Summade kuvamise &amp;Unit:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Vali liideses ning müntide saatmisel kuvatav vaikimisi alajaotus.</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Katkesta</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>vaikeväärtus</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>puudub</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Kinnita valikute algseadistamine</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Tõrge</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Sisestatud kehtetu proxy aadress.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Vorm</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Kuvatav info ei pruugi olla ajakohane. Ühenduse loomisel süngitakse sinu rahakott automaatselt Bitconi võrgustikuga, kuid see toiming on hetkel lõpetamata.</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Ootel:</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Ebaküps:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Mitte aegunud mine'itud jääk</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Kokku:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Hiljutised tehingud</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Maksepäringu tõrge</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Maksepäring tagasi lükatud</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Maksepäring aegunud.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Kinnitamata maksepäringud kohandatud makse scriptidele ei ole toetatud.</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Sent</source>
+        <translation>Saadetud</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Vastuvõetud</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <transla
