@@ -1309,4 +1309,346 @@
         <translation>Kopeeri summa</translation>
     </message>
     <message>
-        <source>Copy fe
+        <source>Copy fee</source>
+        <translation>Kopeeri tehingutasu</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopeeri baidid</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopeeri puru</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopeeri vahetusraha</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>Oled kindel, et soovid saata?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>lisatud kui tehingutasu</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>või</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Müntide saatmise kinnitamine</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>Saaja aadress ei ole korrektne. Palun kontrolli üle.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Makstav summa peab olema suurem kui 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Summa ületab jäägi.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>Summa koos tehingu tasuga %1 ületab sinu jääki.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Maksepäring aegunud.</translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>Hoiatus: Ebakorrektne Bitcoin aadress</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(märgis puudub)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>S&amp;umma:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Maksa &amp;:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Märgis</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Vali eelnevalt kasutatud aadress</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Kleebi aadress vahemälust</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>L&amp;ahuta tehingutasu summast</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Sõnum:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Maksa :</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Aadressiraamatusse sisestamiseks märgista aadress</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Jah</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>%1 lülitub välja...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>Ära lülita arvutit välja ennem kui see aken on kadunud.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Signatuurid - Allkirjasta / Kinnita Sõnum</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Allkirjastamise teade</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>Bitcoin aadress millega sõnum allkirjastada</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Vali eelnevalt kasutatud aadress</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Kleebi aadress vahemälust</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Sisesta siia allkirjastamise sõnum</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signatuur</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Kopeeri praegune signatuur vahemällu</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Allkirjasta sõnum Bitcoini aadressi sulle kuulumise tõestamiseks</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Allkirjasta &amp;Sõnum</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>Tühjenda kõik sõnumi allkirjastamise väljad</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Puhasta &amp;Kõik</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Kinnita Sõnum</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>Bitcoin aadress millega sõnum on allkirjastatud</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Kinnita sõnum tõestamaks selle allkirjastatust määratud Bitcoini aadressiga.</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>Kinnita &amp;Sõnum</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>Tühjenda kõik sõnumi kinnitamise väljad</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>Allkirja loomiseks vajuta "Allkirjasta Sõnum"</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>Sisestatud aadress ei ole korrektne</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>Palun kontrolli aadressi ja proovi uuesti.</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>Sisestatud aadress ei viita võtmele.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>Rahakoti lahtilukustamine on katkestatud.</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>Sisestatud aadressi privaatvõti pole saadaval.</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>Sõnumi allkirjastamine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>Sõnum allkirjastatud</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>Allkirja polnud võimalik dekodeerida.</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>Palun kontrolli allkirja ja proovi uuesti.</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>Allkiri ei vastanud sõnumi krüptoräsile.</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>Sõnumi verifitseerimine ebaõnnestus.</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>Sõnum verifitseeritud.</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>Avatud kuni %1</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1/offline'is</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/kinnitamata</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 kinnitust</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Olek</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, veel esitlemata</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Kuupäev</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>Allikas</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Genereeritud</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Saatja</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>tundmatu</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Saaja</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>oma aadress</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>märgis</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Krediit</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>pole vastu võetud</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Deebet</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Tehingutasu</translation>
