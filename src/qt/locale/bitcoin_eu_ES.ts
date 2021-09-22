@@ -520,4 +520,316 @@
     </message>
 </context>
 <context>
- 
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>K&amp;opurua:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Ordaindu &amp;honi:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiketa:</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Arbeletik helbidea itsatsi</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Mezua:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Honi ordaindu:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Emaiozu helbide honi izenburu bat, zure helbide-liburuan horrela ager dadin</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Arbeletik helbidea itsatsi</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>Zabalik %1 arte</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/konfirmatu gabe</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 konfirmazio</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, ez da oraindik arrakastaz igorri</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>ezezaguna</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Mezua</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>Transakzioa</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Kopurua</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Panel honek transakzien deskribapen xehea azaltzen du</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Mota</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Izendapen</translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>Zabalik %1 arte</translation>
+    </message>
+    <message>
+        <source>Confirmed (%1 confirmations)</source>
+        <translation>Konfirmatuta (%1 konfirmazio)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>Bloke hau ez du beste inongo nodok jaso, eta seguruenik ez da onartuko!</translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>Sortua, baina ez onartua</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Honekin jasoa </translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Hona bidalia</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>Zure buruarentzat ordainketa</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Meatua</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(n/a)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(izendapenik ez)</translation>
+    </message>
+    <message>
+        <source>Transaction status. Hover over this field to show number of confirmations.</source>
+        <translation>Transakzioaren egoera. Pasatu sagua gainetik konfirmazio kopurua ikusteko.</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>Transakzioa jasotako data eta ordua.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>Transakzio mota.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>Saldoan kendu edo gehitutako kopurua.</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>Denak</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>Gaurkoak</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>Aste honetankoak</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>Hil honetakoak</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>Azken hilekoak</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>Aurtengoak</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>Muga...</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Honekin jasoa </translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Hona bidalia</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>Zeure buruari</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Meatua</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Beste</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>Kopuru minimoa</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Helbidea kopiatu</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Etiketa kopiatu</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Komaz bereizitako artxiboa (*.csv)</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Mota</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Izendapen</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Helbidea</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Esportazioak huts egin du</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Txanponak bidali</translation>
+    </message>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Esportatu</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Uneko fitxategian datuak esportatu</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Aukerak:</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Birbilatzen...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Zamaketa amaitua</translation>
+    </message>
+    </context>
+</TS>
