@@ -300,4 +300,371 @@
     <message>
         <source>&amp;Sending addresses...</source>
         <translation>درحال ارسال آدرس‌ها…</translation>
-    </
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>دریافت آدرس ها</translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation>برای غیرفعال‌کردن فعالیت شبکه کلیک کنید.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>فعالیت شبکه غیرفعال شد.</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>برای فعال‌کردن فعالیت شبکه کلیک کنید.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>درحال همگام‌سازی هدرها (%1%)…</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>فهرست‌بندی نمایه بلاک‌ها…</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>ارسال کوین به آدرس بیت کوین</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>گرفتن نسخه پیشتیبان در آدرسی دیگر</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>رمز عبور مربوط به رمزگذاریِ کیف پول  را تغییر دهید</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>پنجره دیباگ</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>تایید پیام</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>بیت کوین</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>کیف پول</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>ارسال</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>نمایش/ عدم نمایش</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>نمایش یا عدم نمایش پنجره اصلی</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>رمزنگاری کلیدهای شخصی متعلق به کیف‌پول</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>پیام‌ها را با آدرس بیت‌کوین خود امضا کنید تا مالکیت آن‌ها را اثبات کنید</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>پیام‌ها را تائید کنید تا از امضاشدن آن‌ها با آدرس بیت‌کوین مطمئن شوید</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>فایل</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>تنظیمات</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>راهنما</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>نوار ابزار</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>درخواست پرداخت (ساخت کد QR و بیت‌کوین: URIs)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>نمایش لیست آدرس‌ها و لیبل‌های ارسالی استفاده شده</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>نمایش لیست آدرس‌ها و لیبل‌های دریافتی استفاده شده</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>بازکردن بیت‌کوین: آدرس یا درخواست پرداخت</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n active connection(s) to Bitcoin network</source>
+        <translation><numerusform>%n ارتباط فعال به شبکه بیت‌کوین</numerusform><numerusform>%n ارتباط فعال به شبکه بیت‌کوین</numerusform></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>فهرست‌بندی نمایه بلاک‌ها…</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>پردازش نمایه بلاک‌ها…</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>%n بلاک از تاریخچه تراکنش، پردازش شد.</numerusform><numerusform>%n بلاک از تاریخچه تراکنش، پردازش شد.</numerusform></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطا</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>به روز</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>در حال روزآمد سازی..</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>تراکنش ارسالی</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>تراکنش دریافتی</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>wallet رمزگذاری شد و در حال حاضر از حالت قفل در آمده است</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>wallet رمزگذاری شد و در حال حاضر قفل است</translation>
+    </message>
+    </context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>انتخاب کوین</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>مقدار</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>میزان وجه:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>هزینه</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>تغییر</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(عدم)انتخاب همه</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>میزان</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>دریافت شده با برچسب</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>دریافت شده با آدرس</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>تاریخ</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>تاییدیه </translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>تایید شده</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>کپی آدرس</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>کپی برچسب</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>کپی مقدار</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>کپی شناسه تراکنش</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>کپی مقدار</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>کپی هزینه</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>بله</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>خیر</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(برچسب ندارد)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>ویرایش حساب</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>برچسب</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>آدرس</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>آدرس دریافتی جدید</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>آدرس ارسالی جدید</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>ویرایش آدرس دریافتی</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>ویرایش آدرس ارسالی</translation>
+    </message>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translation>نام</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>نسخه</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>میزان استفاده:</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>خوش آمدید</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>بیت کوین</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطا</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>فرم</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>ناشناس...</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>در حال محاسبه...</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>پنهان کردن</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>گزینه ها</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>مگابایت</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>تنظیم مجدد گزینه ها</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>شبکه</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>کیف پول</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>پورت:</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>پنجره</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>نمایش</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>تایید</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>لغو</transl
