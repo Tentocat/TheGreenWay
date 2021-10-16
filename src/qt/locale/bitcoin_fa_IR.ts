@@ -1075,4 +1075,89 @@
     <name>WalletModel</name>
     </context>
 <context>
-    <name>WalletView</n
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>انتخابها:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>دایرکتوری داده را مشخص کن</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>command line  و JSON-RPC commands را قبول کنید</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>به عنوان daemon بک گراند را اجرا کنید و دستورات را قبول نمایید</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>مبلغ تراکنش کمتر از آن است که پس از کسر هزینه  تراکنش قابل ارسال باشد</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>گزینه های سرویس دهنده RPC:</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>ارسال اطلاعات پیگیری/خطایابی به کنسول به جای ارسال به فایل debug.log</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>شناسه کاربری برای ارتباطاتِ JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>رمز برای ارتباطاتِ JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>دستور را وقتی بهترین بلاک تغییر کرد اجرا کن (%s در دستور توسط block hash جایگزین شده است)</translation>
+    </message>
+    <message>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation>تنظیم تعداد ریسمان ها برای سرویس دهی فراخوانی های RPC (پیش فرض: %d)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>فایل تنظیمات را مشخص کنید (پیش فرض: %s)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>فایل pid را مشخص کنید (پیش فرض: %s)</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>وجوه ناکافی</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>لود شدن نمایه بلاکها..</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>wallet در حال لود شدن است...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>قابلیت برگشت به نسخه قبلی برای wallet امکان پذیر نیست</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>اسکنِ دوباره...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>اتمام لود شدن</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطا</translation>
+    </message>
+</context>
+</TS>
