@@ -667,4 +667,412 @@
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>لغو</transl
+        <translation>لغو</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>پیش فرض</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>خطا</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>فرم</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>اطلاعات نمایش داده شده ممکن است روزآمد نباشد. wallet شما به صورت خودکار بعد از برقراری اتصال با شبکه bitcoin به روز می شود اما این فرایند هنوز تکمیل نشده است.</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>در دسترس:</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>در حال انتظار:</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>کل:</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>قابل مصرف:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>تراکنش های اخیر</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>میزان</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>ناشناس</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Client version</source>
+        <translation>ویرایش کنسول RPC</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>شبکه</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>تعداد اتصال</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>زنجیره مجموعه تراکنش ها</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>تعداد زنجیره های حاضر</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>میزان وجه:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>برچسب:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>پیام:</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>کپی برچسب</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>کپی مقدار</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>کپی آدرس</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>آدرس</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>برچسب</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>برچسب</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(برچسب ندارد)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>سکه های ارسالی</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>وجوه ناکافی</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>مقدار</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>میزان وجه:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>هزینه</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>تغییر</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>پنهان کردن</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>ارسال همزمان به گیرنده های متعدد</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>پاک کردن همه</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>مانده حساب:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>تایید عملیات ارسال </translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>و ارسال</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>کپی مقدار</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>کپی مقدار</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>کپی هزینه</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(برچسب ندارد)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>میزان وجه</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>پرداخت به:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>برچسب:</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>استفاده از آدرس کلیپ بورد</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>پیام:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>پرداخت به:</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>یادداشت:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>تا پیش از بسته شدن این پنجره کامپیوتر خود را خاموش نکنید.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>امضای پیام </translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>آدرس را بر کلیپ بورد کپی کنید</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>پیامی که می خواهید امضا کنید را اینجا وارد کنید</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>امضا</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>امضای پیام </translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>پاک کردن همه</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>تایید پیام</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>تایید پیام</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>آدرس وارد شده نامعتبر است.</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Status</source>
+        <translation>وضعیت</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>منبع</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>تولید شده</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>از</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>به</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>این بخش جزئیات تراکنش را نشان می دهد</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>برچسب</translation>
+    </message>
+    <message>
+        <source>Unconfirmed</source>
+        <translation>تایید نشده</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>دریافت شده از</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>ارسال شده به</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>استخراج شده</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(برچسب ندارد)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Sent to</source>
+        <translation>ارسال شده به</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>استخراج شده</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>کپی آدرس</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>کپی برچسب</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>کپی مقدار</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>کپی شناسه تراکنش</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>فایل سی اس وی (*.csv)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>برچسب</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>آدرس</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>گرفتن خروجی به مشکل خورد</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</n
