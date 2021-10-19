@@ -520,4 +520,331 @@
 </translation>
     </message>
     <message>
-        <source>Sent tran
+        <source>Sent transaction</source>
+        <translation>Lähetetyt rahansiirrot</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Saapuva rahansiirto</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>HD avaimen generointi on &lt;b&gt;päällä&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>HD avaimen generointi on &lt;/b&gt;pois päältä&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Lompakko on &lt;b&gt;salattu&lt;/b&gt; ja tällä hetkellä &lt;b&gt;avoinna&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Lompakko on &lt;b&gt;salattu&lt;/b&gt; ja tällä hetkellä &lt;b&gt;lukittuna&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Peruuttamaton virhe on tapahtunut. Bitcoin ei voi enää jatkaa turvallisesti ja sammutetaan.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Kolikoiden valinta</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Määrä:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Tavuja:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Määrä:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Palkkio:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Tomu:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Palkkion jälkeen:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Vaihtoraha:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(epä)valitse kaikki</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Puurakenne</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Listarakenne</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Määrä</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Vastaanotettu nimikkeellä</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Vastaanotettu osoitteella</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Vahvistuksia</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Vahvistettu</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopioi osoite</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopioi nimike</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopioi määrä</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopioi transaktion ID</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Lukitse käyttämättömät</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Avaa käyttämättömien lukitus</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopioi lukumäärä</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopioi rahansiirtokulu</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopioi rahansiirtokulun jälkeen</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopioi tavut</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopioi tomu</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopioi vaihtorahat</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 lukittu)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>kyllä</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>ei</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Tämä nimike muuttuu punaiseksi, jos jokin vastaanottajista on saamassa tämänhetkistä tomun rajaa pienemmän summan.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Saattaa vaihdella +/- %1 satoshia per syöte.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ei nimikettä)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>Vaihda %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(vaihtoraha)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Muokkaa osoitetta</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Nimi</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>Tähän osoitteeseen liitetty nimi</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Osoite liitettynä tähän osoitekirjan alkioon. Tämä voidaan muokata vain lähetysosoitteissa.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Osoite</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Uusi vastaanotto-osoite</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Uusi lähetysosoite</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Muokkaa vastaanottavaa osoitetta</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Muokkaa lähettävää osoitetta</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>Antamasi osoite "%1" ei ole kelvollinen Bitcoin-osoite.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Antamasi osoite "%1" on jo osoitekirjassa</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Lompakkoa ei voitu avata.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Uuden avaimen luonti epäonnistui.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Luodaan uusi kansio.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Hakemisto on jo olemassa. Lisää %1 jos tarkoitus on luoda hakemisto tänne.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Polku on jo olemassa, eikä se ole kansio.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Ei voida luoda data-hakemistoa tänne.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versio</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Tietoja %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Komentorivi parametrit</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Käyttö:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>komentorivi parametrit</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>Käyttöliittymän asetukset:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Valitse datahakemisto käynnistyksen yhteydessä (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Aseta kieli, esimerkiksi "de_DE" (oletus: järjestelmän kieli)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Käynnistä pienennettynä</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Aseta maksupyynnöille SSL-juurivarmenteet (oletus: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Näytä aloitusruutu käynnistyksen yhteydessä (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Nollaa kaikki graafisen käyttöliittymän kautta tehdyt muutokset</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Tervetuloa</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Tervetuloa %1 pariin.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Tämä on ensimmäinen kerta, kun %1 on käynnistetty, joten voit valita data-hakemiston paikan.</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process
