@@ -2049,4 +2049,300 @@
         <translation>per kilotavu</translation>
     </message>
     <message>
-        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 sato
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>Jos määritelty palkkio on asetettu 1000 satoshiin ja siirto on vain 250 tavua, niin "kilotavua kohti" maksaa vain 250 satoshin palkkion, kun "vähintään" maksaa 1000 satoshia. Kilotavua suuremmilla siirroilla molemmat maksavat jokaista kilotavua kohti.</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Piilota</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(lue työkaluvinkki)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Suositeltu:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>Muokattu:</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(Älykästä rahansiirtokulua ei ole vielä alustettu. Tähän kuluu yleensä aikaa muutaman lohkon verran...)</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Lähetä usealla vastaanottajalle samanaikaisesti</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Lisää &amp;Vastaanottaja</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Tyhjennä lomakkeen kaikki kentät.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Tomu:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>Vahvistusajan tavoite:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>Käytä Replace-By-Fee:tä</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;Tyhjennnä Kaikki</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balanssi:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Vahvista lähetys</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;Lähetä</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopioi lukumäärä</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopioi määrä</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopioi rahansiirtokulu</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopioi rahansiirtokulun jälkeen</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopioi tavut</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopioi tomu</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopioi vaihtorahat</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 lohkoa)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 to %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>Oletko varma, että haluat lähettää?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>lisätty rahansiirtomaksuna</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>Kokonaismäärä %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>tai</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Vahvista kolikoiden lähetys</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>Vastaanottajan osoite ei ole kelvollinen. Tarkista osoite.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Maksettavan määrän täytyy olla suurempi kuin 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Määrä ylittää tilisi saldon.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>Kokonaismäärä ylittää saldosi kun %1 siirtomaksu lisätään summaan.</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>Osoite esiintyy useaan kertaan: osoitteita tulisi käyttää vain kerran kutakin.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>Rahansiirron luonti epäonnistui!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Siirto hylättiin seuraavasta syystä: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>%1:tä ja korkeampaa siirtokulua pidetään mielettömän korkeana.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Maksupyyntö vanhentui.</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>Maksa vain vaadittu kulu %1 </translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>Varoitus: Virheellinen Bitcoin-osoite </translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>Varoitus: Tuntematon vaihtorahan osoite</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>Vahvista kustomoitu vaihtorahan osoite</translation>
+    </message>
+    <message>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation>Valitsemasi vaihtorahan osoite ei kuulu tähän lompakkoon. Osa tai kaikki varoista lompakossasi voidaan lähettää tähän osoitteeseen. Oletko varma?</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ei nimikettä)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>M&amp;äärä:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Maksun saaja:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Nimi:</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Valitse aikaisemmin käytetty osoite</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Tämä on normaali maksu.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation>Bitcoin-osoite johon maksu lähetetään</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Liitä osoite leikepöydältä</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>Poista tämä alkio</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Kulu vähennetään lähetettävästä määrästä. Saaja vastaanottaa vähemmän bitcoineja kuin merkitset Määrä-kenttään. Jos saajia on monia, kulu jaetaan tasan.</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>V&amp;ähennä maksukulu määrästä</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>Käytä saatavilla oleva saldo</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Viesti:</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</source>
+        <translation>Tämä on todentamaton maksupyyntö.</translation>
+    </message>
+    <message>
+        <source>This is an authenticated payment request.</source>
+        <translation>Tämä on todennettu maksupyyntö.</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation>Aseta nimi tälle osoitteelle lisätäksesi sen käytettyjen osoitteiden listalle.</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>Viesti joka liitettiin bitcoin: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä Bitcoin-verkkoon.</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Saaja:</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>Muistio:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Syötä tälle osoitteelle nimi lisätäksesi sen osoitekirjaan</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Kyllä</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>%1 sulkeutuu...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>Älä sammuta tietokonetta ennenkuin tämä ikkuna katoaa.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Allekirjoitukset - Allekirjoita / Varmista viesti</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Allekirjoita viesti</translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can re
