@@ -1731,4 +1731,322 @@
     <message>
         <source>1 &amp;day</source>
         <translation>1 &amp;päivä</translation>
-  
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;viikko</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;vuosi</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Katkaise yhteys</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Estä </translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;Poista esto</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>Tervetuloa %1 RPC-konsoliin.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>Käytä nuolia ylös ja alas selataksesi historiaa, sekä %1 tyhjentääkseksi ruudun.</translation>
+    </message>
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>Lisätietoja konsolin käytöstä saat kirjoittamalla %1.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>VAROITUS: aktiiviset huijarit neuvovat kirjoittamaan komentoja tähän komentoriviin, varastaen lompakkosi sisällön. Älä käytä komentoriviä ilman täyttä ymmärrystä kirjoittamasi komennon toiminnasta.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Verkkoliikenne pysäytetty</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(solmukohdan id: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>%1 kautta</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>ei koskaan</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Sisääntuleva</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Ulosmenevä</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Kyllä</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Ei</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Tuntematon</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Määrä</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Nimi:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Viesti:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>Valinnainen viesti liitetään maksupyyntöön ja näytetään avattaessa. Viestiä ei lähetetä Bitcoin-verkkoon.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>Valinnainen nimi liitetään vastaanottavaan osoitteeseen.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Käytä lomaketta maksupyyntöihin. Kaikki kentät ovat &lt;b&gt;valinnaisia&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Valinnainen pyyntömäärä. Jätä tyhjäksi tai nollaksi jos et pyydä tiettyä määrää.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Tyhjennä lomakkeen kaikki kentät.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Tyhjennä</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>Pyydettyjen maksujen historia</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;Vastaanota maksu</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>Näytä valittu pyyntö (sama toiminta kuin alkion tuplaklikkaus)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Näytä</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>Poista valitut alkiot listasta</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>Kopioi URI</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopioi nimike</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Kopioi viesti</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopioi määrä</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>QR-koodi</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>Kopioi &amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>Kopioi &amp;Osoite</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Tallenna kuva</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>Pyydä maksua osoitteeseen %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Maksutiedot</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Osoite</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Määrä</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Nimike</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Viesti</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>Tuloksen URI on liian pitkä, yritä lyhentää otsikon tai viestin tekstiä.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Virhe käännettäessä URI:a QR-koodiksi.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Nimike</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Viesti</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ei nimikettä)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(ei viestiä)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(ei pyydettyä määrää)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Pyydetty</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Lähetä kolikoita</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Kolikkokontrolli ominaisuudet</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Sisääntulot...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>automaattisesti valitut</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Lompakon saldo ei riitä!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Määrä:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Tavuja:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Määrä:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Palkkio:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Palkkion jälkeen:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Vaihtoraha:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>Jos tämä aktivoidaan mutta vaihtorahan osoite on tyhjä tai virheellinen, vaihtoraha tullaan lähettämään uuteen luotuun osoitteeseen.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>Kustomoitu vaihtorahan osoite</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Rahansiirtokulu:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Valitse...</translation>
+    </message>
+    <message>
+        <source>Using the fallbackfee can result in sending a transaction that will take several hours or days (or never) to confirm. Consider choosing your fee manually or wait until you have validated the complete chain.</source>
+        <translation>Fallbackfeen käyttö voi johtaa useita tunteja, päiviä (tai loputtomiin) kestävän siirron lähettämiseen. Harkitse palkkion valitsemista itse tai odota kunnes koko ketju on vahvistettu.</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>Varoitus: Kulujen arviointi ei ole juuri nyt mahdollista.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>pudota kulujen asetukset</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>per kilotavu</translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 sato
