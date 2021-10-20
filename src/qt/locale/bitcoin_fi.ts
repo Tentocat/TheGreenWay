@@ -1359,4 +1359,376 @@
     </message>
     <message>
         <source>Requested payment amount of %1 is too small (considered dust).</source>
-        <translation>Maksupyyntö %1 on liian pieni (
+        <translation>Maksupyyntö %1 on liian pieni (kohdellaan tomuna).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Maksupalautus %1:sta</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Maksupyyntö %1 on liian suuri (%2 tavua, sallittu %3 tavua).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Virhe kommunikoidessa %1n kanssa: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Maksupyyntöä ei voida jäsentää!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Virheellinen vastaus palvelimelta %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Tietoverkon pyyntövirhe</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Rahansiirto tunnistettu</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>Käyttöliittymä</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Noodi/Palvelu</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>NodeId</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Vasteaika</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Lähetetyt</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Vastaanotetut</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Määrä</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Syötä Bitcoin-osoite (esim. %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Ei yhtään</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>Ei saatavilla</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 ja %2</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 ei vielä sulkeutunut turvallisesti...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>tuntematon</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Virhe: Annettua data-hakemistoa "%1" ei ole olemassa.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Virhe: asetustiedostoa %1 ei voida jäsentää. Käytä vain avain=arvo merkintätapaa.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Virhe: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Tallenna kuva</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Kopioi kuva</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Tallenna QR-koodi</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>PNG kuva (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>Ei saatavilla</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Pääteohjelman versio</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>T&amp;ietoa</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>&amp;Debug-ikkuna</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Yleinen</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Käyttää BerkeleyDB-versiota</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Data-hakemisto</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Käynnistysaika</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Verkko</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Yhteyksien lukumäärä</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Lohkoketju</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Nykyinen Lohkojen määrä</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Muistiallas</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Tämänhetkinen rahansiirtojen määrä</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Muistin käyttö</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Nollaa</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Vastaanotetut</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Lähetetyt</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Vertaiset</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Estetyt vertaiset</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Valitse vertainen eriteltyjä tietoja varten.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>Sallittu</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Suunta</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versio</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Alkaen lohkosta</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Synkronoidut ylätunnisteet</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Synkronoidut lohkot</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Käyttöliittymä</translation>
+    </message>
+    <message>
+        <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Avaa %1 -debug-loki tämänhetkisestä data-hakemistosta. Tämä voi viedä muutaman sekunnin suurille lokitiedostoille.</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>Pienennä fontin kokoa</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>Suurenna fontin kokoa</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Palvelut</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Panna-pisteytys</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Yhteysaika</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Viimeisin lähetetty</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Viimeisin vastaanotettu</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Vasteaika</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>Tämänhetkisen merkittävän yhteyskokeilun kesto.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Yhteyskokeilun odotus</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>Pienin vasteaika</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Ajan poikkeama</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Viimeisimmän lohkon aika</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Avaa</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Konsoli</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;Verkkoliikenne</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Yhteensä</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>Sisään:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Ulos:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Debug lokitiedosto</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Tyhjennä konsoli</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;tunti</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;päivä</translation>
+  
