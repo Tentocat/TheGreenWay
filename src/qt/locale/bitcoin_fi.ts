@@ -2627,4 +2627,355 @@
     </message>
     <message>
         <source>Transaction</source>
-       
+        <translation>Maksutapahtuma</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>Sisääntulot</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Määrä</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>tosi</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>epätosi</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Tämä ruutu näyttää yksityiskohtaisen tiedon rahansiirrosta</translation>
+    </message>
+    <message>
+        <source>Details for %1</source>
+        <translation>%1:n yksityiskohdat</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tyyppi</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Nimike</translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>Avoinna %1 asti</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Ei yhteydessä</translation>
+    </message>
+    <message>
+        <source>Unconfirmed</source>
+        <translation>Varmistamaton</translation>
+    </message>
+    <message>
+        <source>Abandoned</source>
+        <translation>Hylätty</translation>
+    </message>
+    <message>
+        <source>Confirming (%1 of %2 recommended confirmations)</source>
+        <translation>Varmistetaan (%1 suositellusta %2 varmistuksesta)</translation>
+    </message>
+    <message>
+        <source>Confirmed (%1 confirmations)</source>
+        <translation>Varmistettu (%1 varmistusta)</translation>
+    </message>
+    <message>
+        <source>Conflicted</source>
+        <translation>Ristiriitainen</translation>
+    </message>
+    <message>
+        <source>Immature (%1 confirmations, will be available after %2)</source>
+        <translation>Epäkypsä (%1 varmistusta, saatavilla %2 jälkeen)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>Tätä lohkoa ei vastaanotettu mistään muusta solmusta ja sitä ei mahdollisesti hyväksytä!</translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>Luotu, mutta ei hyäksytty</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Vastaanotettu osoitteella</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>Vastaanotettu</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Lähetetty vastaanottajalle</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>Maksu itsellesi</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Louhittu</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>vain katseltava</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(ei saatavilla)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ei nimikettä)</translation>
+    </message>
+    <message>
+        <source>Transaction status. Hover over this field to show number of confirmations.</source>
+        <translation>Rahansiirron tila. Siirrä osoitin kentän päälle nähdäksesi vahvistusten lukumäärä.</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>Rahansiirron vastaanottamisen päivämäärä ja aika.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>Maksutapahtuman tyyppi.</translation>
+    </message>
+    <message>
+        <source>Whether or not a watch-only address is involved in this transaction.</source>
+        <translation>Onko rahansiirrossa mukana ainoastaan katseltava osoite vai ei.</translation>
+    </message>
+    <message>
+        <source>User-defined intent/purpose of the transaction.</source>
+        <translation>Käyttäjän määrittämä käyttötarkoitus rahansiirrolle.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>Saldoon lisätty tai siitä vähennetty määrä.</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>Kaikki</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>Tänään</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>Tällä viikolla</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>Tässä kuussa</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>Viime kuussa</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>Tänä vuonna</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>Alue...</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Vastaanotettu osoitteella</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Lähetetty vastaanottajalle</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>Itsellesi</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Louhittu</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Muu</translation>
+    </message>
+    <message>
+        <source>Enter address, transaction id, or label to search</source>
+        <translation>Kirjoita osoite, siirron tunniste tai nimiö etsiäksesi</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>Minimimäärä</translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation>Hylkää siirto</translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation>Kasvata siirtokulun määrää</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopioi osoite</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopioi nimike</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopioi määrä</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopioi transaktion ID</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>Kopioi rahansiirron raakavedos</translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation>Kopioi rahansiirron täydet yksityiskohdat</translation>
+    </message>
+    <message>
+        <source>Edit label</source>
+        <translation>Muokkaa nimeä</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>Näytä rahansiirron yksityiskohdat</translation>
+    </message>
+    <message>
+        <source>Export Transaction History</source>
+        <translation>Vie rahansiirtohistoria</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Pilkuilla erotettu tiedosto (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Vahvistettu</translation>
+    </message>
+    <message>
+        <source>Watch-only</source>
+        <translation>Vain katseltava</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Tyyppi</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Nimike</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Osoite</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Vienti epäonnistui</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the transaction history to %1.</source>
+        <translation>Rahansiirron historian tallentamisessa tapahtui virhe paikkaan %1.</translation>
+    </message>
+    <message>
+        <source>Exporting Successful</source>
+        <translation>Vienti onnistui</translation>
+    </message>
+    <message>
+        <source>The transaction history was successfully saved to %1.</source>
+        <translation>Rahansiirron historia tallennettiin onnistuneesti kohteeseen %1.</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>Alue:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>vastaanottaja</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>Yksikkö jossa määrät näytetään. Klikkaa valitaksesi toisen yksikön.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    <message>
+        <source>No wallet has been loaded.</source>
+        <translation>Lomakkoa ei ole ladattu.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Lähetä kolikoita</translation>
+    </message>
+    <message>
+        <source>Increasing transaction fee failed</source>
+        <translation>Siirtokulun nosto epäonnistui</translation>
+    </message>
+    <message>
+        <source>Do you want to increase the fee?</source>
+        <translation>Haluatko nostaa siirtomaksua?</translation>
+    </message>
+    <message>
+        <source>Current fee:</source>
+        <translation>Nykyinen palkkio:</translation>
+    </message>
+    <message>
+        <source>Increase:</source>
+        <translation>Korota:</translation>
+    </message>
+    <message>
+        <source>New fee:</source>
+        <translation>Uusi palkkio:</translation>
+    </message>
+    <message>
+        <source>Confirm fee bump</source>
+        <translation>Vahvista palkkion korotus</translation>
+    </message>
+    <message>
+        <source>Can't sign transaction.</source>
+        <translation>Siirtoa ei voida allekirjoittaa.</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>Siirtoa ei voitu tehdä</translation>
+    </mes
