@@ -2345,4 +2345,286 @@
         <translation>&amp;Allekirjoita viesti</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can re
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Voit allekirjoittaa viestit / sopimukset omalla osoitteellasi todistaaksesi että voit vastaanottaa siihen lähetetyt bitcoinit. Varo allekirjoittamasta mitään epämääräistä, sillä phishing-hyökkääjät voivat huijata sinua luovuttamaan henkilöllisyytesi allekirjoituksella. Allekirjoita ainoastaan täysin yksityiskohtainen selvitys siitä, mihin olet sitoutumassa.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>Bitcoin-osoite jolla viesti allekirjoitetaan</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Valitse aikaisemmin käytetty osoite</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Liitä osoite leikepöydältä</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Kirjoita tähän viesti minkä haluat allekirjoittaa</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Allekirjoitus</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Kopioi tämänhetkinen allekirjoitus leikepöydälle</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Allekirjoita viesti todistaaksesi, että omistat tämän Bitcoin-osoitteen</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Allekirjoita &amp;viesti</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>Tyhjennä kaikki allekirjoita-viesti-kentät</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;Tyhjennnä Kaikki</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Varmista viesti</translation>
+    </message>
+    <message>
+        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation>Syötä vastaanottajan osoite, viesti ja allekirjoitus (varmista että kopioit rivinvaihdot, välilyönnit, sarkaimet yms. täsmälleen) alle vahvistaaksesi viestin. Varo lukemasta allekirjoitukseen enempää kuin mitä viestissä itsessään on välttääksesi man-in-the-middle -hyökkäyksiltä. Huomaa, että tämä todentaa ainoastaan allekirjoittavan vastaanottajan osoitteen, tämä ei voi todentaa minkään tapahtuman lähettäjää!</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>Bitcoin-osoite jolla viesti on allekirjoitettu</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Tarkista viestin allekirjoitus varmistaaksesi, että se allekirjoitettiin tietyllä Bitcoin-osoitteella</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>Varmista &amp;viesti...</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>Tyhjennä kaikki varmista-viesti-kentät</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>Valitse "Allekirjoita Viesti" luodaksesi allekirjoituksen.</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>Syötetty osoite on virheellinen.</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>Tarkista osoite ja yritä uudelleen.</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>Syötetty osoite ei viittaa tunnettuun avaimeen.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>Lompakon avaaminen peruttiin.</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>Yksityistä avainta syötetylle osoitteelle ei ole saatavilla.</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>Viestin allekirjoitus epäonnistui.</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>Viesti allekirjoitettu.</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>Allekirjoitusta ei pystytty tulkitsemaan.</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>Tarkista allekirjoitus ja yritä uudelleen.</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>Allekirjoitus ei täsmää viestin tiivisteeseen.</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>Viestin varmistus epäonnistui.</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>Viesti varmistettu.</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>Avoinna %1 asti</translation>
+    </message>
+    <message>
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation>ristiriidassa maksutapahtumalle, jolla on %1 varmistusta</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1/ei linjalla</translation>
+    </message>
+    <message>
+        <source>0/unconfirmed, %1</source>
+        <translation>0/varmistamaton, %1</translation>
+    </message>
+    <message>
+        <source>in memory pool</source>
+        <translation>muistialtaassa</translation>
+    </message>
+    <message>
+        <source>not in memory pool</source>
+        <translation>ei muistialtaassa</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>hylätty</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/vahvistamaton</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 vahvistusta</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Tila</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, ei ole vielä onnistuneesti kuulutettu</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Aika</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>Lähde</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Generoitu</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Lähettäjä</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>tuntematon</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Saaja</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>oma osoite</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>vain katseltava</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>nimi</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Krediitti</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>ei hyväksytty</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Debiitti</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>Debiitti yhteensä</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>Krediitti yhteensä</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Siirtokulu</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Nettomäärä</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Viesti</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Kommentti</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>Maksutapahtuman tunnus</translation>
+    </message>
+    <message>
+        <source>Transaction total size</source>
+        <translation>Maksutapahtuman kokonaiskoko</translation>
+    </message>
+    <message>
+        <source>Merchant</source>
+        <translation>Kauppias</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation>Luotujen kolikoiden täytyy kypsyä vielä %1 lohkoa ennenkuin niitä voidaan käyttää. Luotuasi tämän lohkon, se kuulutettiin verkolle lohkoketjuun lisättäväksi. Mikäli lohko ei kuitenkaan pääse ketjuun, sen tilaksi vaihdetaan "ei hyväksytty" ja sitä ei voida käyttää. Toisinaan näin tapahtuu, jos jokin verkon toinen solmu luo lohkon lähes samanaikaisesti sinun lohkosi kanssa.</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>Debug tiedot</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+       
