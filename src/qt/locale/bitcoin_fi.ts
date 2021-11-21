@@ -3419,4 +3419,215 @@
     </message>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
-        <translation>Salli JSON-RPC-yhteydet määritetystä lähteestä. Kelvolliset arvot &lt;ip&gt; ovat yksittäinen IP (esim. 1.2.3.4), verkko/verkkomaski (
+        <translation>Salli JSON-RPC-yhteydet määritetystä lähteestä. Kelvolliset arvot &lt;ip&gt; ovat yksittäinen IP (esim. 1.2.3.4), verkko/verkkomaski (esim. 1.2.3.4/255.255.255.0) tai verkko/luokaton reititys (esim. 1.2.3.4/24). Tätä valintatapaa voidaan käyttää useita kertoja</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Kytkeydy osoitteeseen ja valkolistaa siihen yhdistävät vertaiset. Käytä [isäntä]:portti -merkintätapaa IPv6:lle</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>Luo uudet tiedostot järjestelmän oletusoikeuksilla, älä umask 077:llä (toimii vain, jos lompakkotoiminto on poissa käytöstä)</translation>
+    </message>
+    <message>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+        <translation>Paljasta omat IP-osoitteet (oletus: 1 kun kuunnellaan ja -externalip tai -proxy ei ole käytössä)</translation>
+    </message>
+    <message>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation>Virhe: Saapuvien yhteyksien kuuntelu epäonnistui (kuuntelu palautti virheen %s)</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>Aja komento kun olennainen hälytys vastaanotetaan tai nähdään todella pitkä haara (%s komennossa korvataan viestillä)</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation>Tätä pienempiä palkkioita (%s/kt) kohdellaan väittäessä, louhittaessa ja siirtoja luodessa nollana (oletus: %s)</translation>
+    </message>
+    <message>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>Mikäli paytxfee -valitsinta ei ole asetettu, sisällytä riittävä maksu, jotta siirron vahvistus alkaa keskimäärin n lohkon sisällä (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>Suurin tietoa kantavien rahasiirtojen tietomäärä, joita välitetään ja louhitaan (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>Satunnaista tunnisteet jokaiselle välityspalvelinyhteydelle. Tämä mahdollistaa Tor -virran eristämisen (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>Siirtomäärä on liian pieni lähetettäväksi kulun vähentämisen jälkeen.</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>Valkolistattuja vertaisia eivät voi DoS -estää, joten niiden siirrot välitetään aina, myös silloin, kun ne ovat jo muistivarannossa. Hyödyllinen esim. yhdyskäytävälle</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>Palataksesi karsimattomaan tilaan joudut uudelleenrakentamaan tietokannan -reindex -valinnalla. Tämä lataa koko lohkoketjun uudestaan.</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>Hyväksy julkisia REST-pyyntöjä (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>Luo Tor-salattu palvelu automaattisesti (oletus: %d)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Yhdistä SOCKS5 proxin kautta</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
+        <translation>Virhe ladattaessa %s: Et voi poistaa HD-ominaisuutta jo olemassa olevasta HD-lompakosta.</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>Virheitä tietokantaa luettaessa, ohjelma pysäytetään.</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <translation>Tuo lohkot ulkoisesta blk000??.dat -tiedostosta käynnistettäessä</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Tietoa</translation>
+    </message>
+    <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>Virheellinen -onion osoite tai isäntänimi: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid -proxy address or hostname: '%s'</source>
+        <translation>Virheellinen -proxy osoite tai isäntänimi: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>Kelvoton määrä argumentille -paytxfee=&lt;amount&gt;: '%s' (pitää olla vähintään %s)</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>Kelvoton verkkopeite määritelty argumentissa -whitelist: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation>Pidä enimmillään &lt;n&gt; yhdistämiskelvotonta rahansiirtoa muistissa (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>Pitää määritellä portti argumentilla -whitebind: '%s'</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Välityssolmukohdan asetukset:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>RPC-palvelimen valinnat:</translation>
+    </message>
+    <message>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation>Vähennetään -maxconnections arvoa %d:stä %d:hen järjestelmän rajoitusten vuoksi.</translation>
+    </message>
+    <message>
+        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <translation>Uudelleenskannaa lohkoketju käynnistyksen yhteydessä puuttuvien lompakon rahansiirtojen vuoksi</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Lähetä jäljitys/debug-tieto konsoliin, debug.log-tiedoston sijaan</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Näytä kaikki debuggaus valinnat: (käyttö: --help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Pienennä debug.log tiedosto käynnistyksen yhteydessä (vakioasetus: 1 kun ei -debug)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>Siirron vahvistus epäonnistui</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>Rahansiirron määrä on liian pieni kattaakseen maksukulun</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>Tämä on ohjelmistoa kokeelliseen käyttöön.</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Tor-hallintaportin salasana (oletus: tyhjä)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>Tor-hallintaportti jota käytetään jos onion-kuuntelu on käytössä (oletus: %s)</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>Siirtosumma liian pieni</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>Rahansiirto on liian suuri maksukulukäytännölle</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>Siirtosumma liian iso</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>Kytkeytyminen kohteeseen %s ei onnistunut tällä tietokonella (kytkeytyminen palautti virheen %s)</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>Päivitä lompakko viimeisimpään formaattiin käynnistyksen yhteydessä</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Käyttäjätunnus JSON-RPC-yhteyksille</translation>
+    </message>
+    <message>
+        <source>Verifying wallet(s)...</source>
+        <translation>Varmistetaan lompakko(ja)...</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Varoitus</translation>
+    </message>
+    <message>
+        <source>Warning: unknown new rules activated (versionbit %i)</source>
+        <translation>Varoitus: tuntemattomia uusia sääntöjä aktivoitu (versiobitti %i)</translation>
+    </message>
+    <message>
+        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <translation>Toimitaanko tilassa jossa ainoastaan lohkot sallitaan (oletus: %u)</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to change -txindex</source>
+        <translation>Sinun tulee uudelleenrakentaa tietokanta -reindex -valitsimella vaihtaaksesi -txindex -arvoa</translation>
+    </message>
+    <message>
+        <source>Zapping all transactions from wallet...</source>
+        <translation>Tyhjennetään kaikki rahansiirrot lompakosta....</translation>
+    </message>
+    <message>
+        <source>ZeroMQ notification options:</source>
+        <translation>ZeroMQ-ilmoitusasetukset:</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Salasana JSON-RPC-yhteyksille</translation>
+    </message>
+    <message>
+        <source>Execute com
