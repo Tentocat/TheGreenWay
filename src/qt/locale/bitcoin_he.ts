@@ -742,4 +742,279 @@
         <translation>עריכת כתובת השליחה</translation>
     </message>
     <message>
-       
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>הכתובת שהוקלדה „%1” היא אינה כתובת ביטקוין תקנית.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>הכתובת שהוקלדה „%1” כבר נמצאת בספר הכתובות.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>לא ניתן לשחרר את הארנק.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>יצירת המפתח החדש נכשלה.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>תיקיית נתונים חדשה תיווצר.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>שם</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>התיקייה כבר קיימת. ניתן להוסיף %1 אם יש ליצור תיקייה חדשה כאן.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>הנתיב כבר קיים ואינו מצביע על תיקייה.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>לא ניתן ליצור כאן תיקיית נתונים.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>גרסה</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-סיביות)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>על אודות %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>אפשרויות שורת פקודה</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>שימוש:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>אפשרויות שורת פקודה</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>אפשרויות ממשק</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>נא לבחור תיקיית נתונים עם הפתיחה (בררת מחדל: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>הגדרת השפה, לדוגמה „he_IL” (בררת מחדל: שפת העמרכת)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>התחלה במצב ממוזער</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>הגדרת אישורי בסיס SSL לבקשות תשלומים (בררת מחדל: -מערכת-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>הצגת מסך פתיחה בעת הפעלה (בררת מחדל: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>איפוס כל שינויי הגדרות התצוגה</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>ברוך בואך</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>ברוך בואך אל %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>כיוון שזו ההפעלה הראשונה של התכנית, ניתן לבחור היכן יאוחסן המידע של %1.</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>בעת לחיצה על אישור, %1 יחל בהורדה ועיבוד מלאים של שרשרת המקטעים %4 (%2 ג״ב) החל מההעברות הראשונות ב־%3 עם ההשקה הראשונית של %4.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>הסינכרון הראשוני הוא תובעני ועלול לחשוף בעיות חומרה במחשב שהיו חבויות עד כה. כל פעם שתריץ %1 התהליך ימשיך בהורדה מהנקודה שבה הוא עצר לאחרונה.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>אם בחרת להגביל את שטח האחרון לשרשרת, עדיין נדרש מידע היסטורי להורדה ועיבוד אך המידע ההיסטורי יימחק לאחר מכן כדי לשמור על צריכת שטח האחסון בדיסק נמוכה.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>שימוש בבררת המחדל של תיקיית הנתונים.</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>שימוש בתיקיית נתונים מותאמת אישית:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>ביטקוין</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>מידע בנפח של לפחות %1 ג׳יגה-בייט יאוחסן בתיקייה זו, והוא יגדל עם הזמן.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>מידע בנפח של כ-%1 ג׳יגה-בייט יאוחסן בתיקייה זו.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 תוריד ותאחסן עותק של שרשרת הבלוקים של ביטקוין.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>הארנק גם מאוחסן בתיקייה הזו.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>שגיאה: לא ניתן ליצור את תיקיית הנתונים שצוינה „%1“.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>שגיאה</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>ג״ב של מקום פנוי זמין</numerusform><numerusform>%n ג״ב של מקום פנוי זמינים</numerusform><numerusform>%n ג״ב של מקום פנוי זמינים</numerusform><numerusform>%n ג״ב של מקום פנוי זמינים</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(מתוך %n ג״ב נדרשים)</numerusform><numerusform>(מתוך %n ג״ב נדרשים)</numerusform><numerusform>(מתוך %n ג״ב נדרשים)</numerusform><numerusform>(מתוך %n ג״ב נדרשים)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>טופס</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>ייתכן שהעברות שבוצעו לאחרונה לא יופיעו עדיין, ולכן המאזן בארנק שלך יהיה שגוי. המידע הנכון יוצג במלואו כאשר הארנק שלך יסיים להסתנכרן עם רשת הביטקוין, כמפורט למטה.</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>הרשת תסרב לקבל הוצאת ביטקוינים במידה והם כבר נמצאים בהעברות אשר לא מוצגות עדיין.</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>מספר מקטעים שנותרו</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>לא ידוע...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>זמן המקטע האחרון</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>התקדמות</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>התקדמות לפי שעה</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>נערך חישוב…</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>הזמן המוערך שנותר עד הסנכרון</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>הסתר</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>לא ידוע. הכותרות מתעדכנות (%1)…</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>פתיחת כתובת משאב</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>פתיחת בקשת תשלום מכתובת משאב או מקובץ</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>כתובת משאב:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>בחירת קובץ בקשת תשלום</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>בחירת קובץ בקשת תשלום לפתיחה</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>אפשרויות</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;ראשי</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>להפעיל את %1 אוטומטית לאחר הכניסה למערכת.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>ה&amp;פעלת %1 עם הכניסה למערכת</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>גודל מ&amp;טמון מסד הנתונים</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>מ״ב</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>מספר תהליכי ה&amp;אימות של הסקריפט</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>כתובת ה־IP של המתווך (לדוגמה IPv4: 127.0.0.1‏ / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+    
