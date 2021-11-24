@@ -1642,4 +1642,364 @@
     </message>
     <message>
         <source>Decrease font size</source>
-        <translation>הקטן גודל גופן</translati
+        <translation>הקטן גודל גופן</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>הגדל גודל גופן</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>שירותים</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>דירוג חסימה</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>זמן החיבור</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>שליחה אחרונה</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>קבלה אחרונה</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>זמן המענה</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>פינג</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>פינג מינימלי</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>הפרש זמן</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>זמן המקטע האחרון</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;פתיחה</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>מ&amp;סוף בקרה</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;תעבורת רשת</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>סכומים</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>נכנס:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>יוצא:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>קובץ יומן ניפוי</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>ניקוי מסוף הבקרה</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>&amp;שעה אחת</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>&amp;יום אחד</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>ש&amp;בוע אחד</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>ש&amp;נה אחת</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;ניתוק</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>חסימה למשך</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;שחרור חסימה</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>ברוך בואך למסוף ה־RPC של %1.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>יש להשתמש בחצים למעלה ומלטה כדי לנווט בהסיטוריה וב־%1 כדי לנקות את המסך.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>אזהרה! ישנם רמאים הנוהגים לשכנע משתמשים להקליד פקודות כאן ועל ידי כך לגנוב את תכולת הארנק שלהם. אל תשתמש במסוף הבקרה מבלי שאתה מבין באופן מלא את המשמעות של הפקודה!</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>פעילות הרשת נוטרלה</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>דרך %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>לעולם לא</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>תעבורה נכנסת</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>תעבורה יוצאת</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>כן</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>לא</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>לא ידוע</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;סכום:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>ת&amp;ווית:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>הו&amp;דעה:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>הודעת רשות לצירוף לבקשת התשלום שתוצג בעת פתיחת הבקשה. לתשומת לבך: ההודעה לא תישלח עם התשלום ברשת ביטקוין.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>תווית רשות לשיוך עם כתובת הקבלה החדשה.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>יש להשתמש בטופס זה כדי לבקש תשלומים. כל השדות הם בגדר &lt;b&gt;רשות&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>סכום כרשות לבקשה. ניתן להשאיר זאת ריק כדי לא לבקש סכום מסוים.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>ניקוי של כל השדות בטופס.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>ניקוי</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>היסטוריית בקשות תשלום</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;בקשת תשלום</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>הצגת בקשות נבחרות (דומה ללחיצה כפולה על רשומה)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>הצגה</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>הסרת הרשומות הנבחרות מהרשימה</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>הסרה</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>העתקת כתובת</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>העתקת התווית</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>העתקת הודעה</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>העתקת הסכום</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>קוד QR</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>העתקת &amp;כתובת משאב</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>העתקת &amp;כתובת</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;שמירת תמונה…</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>בקשת תשלום אל %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>פרטי תשלום</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>כתובת</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>כתובת</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>סכום</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>תוית</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>הודעה</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>הכתובת שנוצרה ארוכה מדי, כדאי לנסות לקצר את הטקסט של התווית / הודעה.</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>תאריך</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>תוית</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>הודעה</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ללא תוית)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(אין הודעה)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(לא התבקש סכום)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>בקשה</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>שליחת מטבעות</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>תכונות בקרת מטבעות</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>קלטים…</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>בבחירה אוטומטית</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>אין מספיק כספים!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>כמות:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>בתים:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>סכום:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>עמלה:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>לאחר עמלה:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>עודף:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>אם אפשרות זו מופעלת אך כתובת העודף ריקה או שגויה, העודף יישלח לכתובת חדשה שתיו
