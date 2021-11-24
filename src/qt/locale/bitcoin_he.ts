@@ -2002,4 +2002,308 @@
     </message>
     <message>
         <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
-        <translation>אם אפשרות זו מופעלת אך כתובת העודף ריקה או שגויה, העודף יישלח לכתובת חדשה שתיו
+        <translation>אם אפשרות זו מופעלת אך כתובת העודף ריקה או שגויה, העודף יישלח לכתובת חדשה שתיווצר.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>כתובת לעודף מותאמת אישית</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>עמלת העברה:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>בחר...</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>אזהרה</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>צמצום הגדרות עמלה</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>עבור קילו-בית</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>הסתר</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>זה בסדר לשלם את העמלה המינימלית כל עוד נפח הטרנזקציות קטן מנפח הבלוקים. אבל יש להיזהר כיוון שבמידה והעומס ברשת גדל, העיסקה עלולה לא להיות מאושרת לעולם.</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>מומלץ:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>מותאם אישית:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>שליחה למספר מוטבים בו־זמנית</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>הוספת &amp;מוטב</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>ניקוי של כל השדות בטופס.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>אבק:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>זמן לקבלת אישור:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>אפשר ״החלפה-על ידי עמלה״</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;ניקוי הכול</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>מאזן:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>אישור פעולת השליחה</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;שליחה</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>העתקת הכמות</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>העתקת הסכום</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>העתקת העמלה</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>העתקה אחרי העמלה</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>העתקת בתים</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>העתקת אבק</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>העתקת השינוי</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>לשלוח?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>נוספה עמלת העברה</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>סכום כולל %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>או</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>אימות שליחת מטבעות</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>כתובת הנמען שגויה. נא לבדוק שוב.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>הסכום לתשלום צריך להיות גדול מ־0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>הסכום חורג מהמאזן שלך.</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>נמצאה כתובת כפולה: יש להשתמש בכל כתובת פעם אחת בלבד.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>יצירת ההעברה נכשלה!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>ההעברה נדחתה מהסיבות הבאות: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>עמלה מעל לסכום של %1 נחשבת לעמלה גבוהה באופן מוגזם.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>בקשת התשלום פגה.</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>תשלום של העמלה הנדרשת בלבד על סך %1</translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>אזהרה: כתובת ביטקיון שגויה</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>אזהרה: כתובת החלפה בלתי ידועה</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>אימות כתובת החלפה בהתאמה אישית</translation>
+    </message>
+    <message>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation>הכתובת שבחרת עבור ההחלפה אינה חלק מארנק זה. כל ההסכום שבארנק שלך עשוי להישלח לכתובת זו. מקובל עליך?</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ללא תווית)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>&amp;כמות:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>לשלם ל&amp;טובת:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>ת&amp;ווית:</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>בחירת כתובת שהייתה בשימוש</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>זהו תשלום רגיל.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation>כתובת הביטקוין של המוטב</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>הדבקת כתובת מלוח הגזירים</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>הסרת רשומה זו</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>העמלה תנוכה מהסכום שנשלח. הנמען יקבל פחות ביטקוינים ממה שהזנת בשדה הסכום. אם נבחרו מספר נמענים, העמלה תחולק באופן שווה.</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>ה&amp;חסרת העמלה מהסכום</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>השתמש בכלל היתרה</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>הודעה:</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</source>
+        <translation>זוהי בקשת תשלום לא מאומתת.</translation>
+    </message>
+    <message>
+        <source>This is an authenticated payment request.</source>
+        <translation>זוהי בקשה מאומתת לתשלום.</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation>יש להזין תווית עבור כתובת זו כדי להוסיף אותה לרשימת הכתובות בשימוש</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>הודעה שצורפה לביטקוין: כתובת שתאוחסן בהעברה לצורך מעקב מצדך. לתשומת לבך: הודעה זו לא תישלח ברשת הביטקוין.</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>תשלום לטובת:</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>תזכורת:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>נא להזין תווית לכתובת זו כדי להוסיף אותה לספר הכתובות שלך</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>כן</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>%1 בתהליך כיבוי...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>אין לכבות את המחשב עד שחלון זה נעלם.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>חתימות - חתימה או אימות של הודעה</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>חתימה על הו&amp;דעה</translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <
