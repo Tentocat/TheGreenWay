@@ -1303,4 +1303,343 @@
     </message>
     <message>
         <source>Invalid payment address %1</source>
-        <transl
+        <translation>כתובת תשלום שגויה %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>לא ניתן לנתח את כתובת המשאב! מצב זה יכול לקרות עקב כתובת ביטקוין שגויה או פרמטרים שגויים בכתובת המשאב.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>טיפול בקבצי בקשות תשלום</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>לא ניתן לקרוא את קובץ בקשת התשלום! מצב כזה יכול לקרות בעקבות קובץ בקשת תשלום פגום.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>בקשת התשלום נדחתה</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>רשת בקשת התשלום אינה תואמת לרשת הלקוח.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>בקשת התשלום פגה.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>בקשת התשלום לא הופעלה.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>בקשות תשלום לתסריטי תשלום מותאמים אישית שלא עברו וידוא אינן נתמכות.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>בקשת תשלום שגויה.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>הסכום על סך %1 הנדרש לתשלום קטן מדי (נחשב לאבק)</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>זיכוי מאת %1</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>שגיאה בעת יצירת קשר עם %1:‏ %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>לא ניתן לפענח את בקשת התשלום!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>תגובה שגויה מהשרת %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>שגיאת בקשת רשת</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>התשלום אושר</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>סוכן משתמש</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>צומת/שירות</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>מזהה צומת</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>פינג</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>נשלחו</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>התקבלו</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>כמות</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>נא להזין כתובת ביטקוין (למשל: %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 ימים</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 שעות</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 דקות</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 שניות</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>ללא</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>לא זמין</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 מילישניות</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>שנייה אחת</numerusform><numerusform>%n שניות</numerusform><numerusform>%n שניות</numerusform><numerusform>%n שניות</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>דקה אחת</numerusform><numerusform>%n דקות</numerusform><numerusform>%n דקות</numerusform><numerusform>%n דקות</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>שעה אחת</numerusform><numerusform>%n שעות</numerusform><numerusform>%n שעות</numerusform><numerusform>%n שעות</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>יום אחד</numerusform><numerusform>%n ימים</numerusform><numerusform>%n ימים</numerusform><numerusform>%n ימים</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>שבוע אחד</numerusform><numerusform>%n שבועות</numerusform><numerusform>%n שבועות</numerusform><numerusform>%n שבועות</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 ו%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>שנה אחת</numerusform><numerusform>%n שנים</numerusform><numerusform>%n שנים</numerusform><numerusform>%n שנים</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 ב׳</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 ק״ב</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 מ״ב</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 ג״ב</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>הסגירה של %1 לא הושלמה בהצלחה עדיין…</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>לא ידוע</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>שגיאה: תיקיית הנתונים שצוינה „%1” אינה קיימת.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>שגיאה: לא ניתן לפענח את התצורה: %1. יש להשתמש אך ורק בתחביר מפתח=ערך.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>שגיאה: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;שמירת תמונה…</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>העתקת ת&amp;מונה</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>שמירת קוד QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>תמונת PNG (‏‎*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>לא זמין</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>גרסת מנשק</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>מי&amp;דע</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>חלון ניפוי</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>כללי</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>שימוש ב־BerkeleyDB גרסה</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>זמן עלייה</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>רשת</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>שם</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>מספר חיבורים</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>שרשרת מקטעים</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>מספר המקטעים הנוכחי</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>מאגר זכרון</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>מספר הפעולה הנוכחי</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>שימוש בזכרון</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;איפוס</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>התקבלו</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>נשלחו</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;עמיתים</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>משתמשים חסומים</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>נא לבחור בעמית כדי להציג מידע מפורט.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>ברשימה הלבנה</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>כיוון</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>גרסה</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>בלוק התחלה</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>כותרות עדכניות</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>בלוקים מסונכרנים</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>סוכן משתמש</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>הקטן גודל גופן</translati
