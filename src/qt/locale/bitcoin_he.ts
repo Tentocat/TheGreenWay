@@ -2306,4 +2306,352 @@
     </message>
     <message>
         <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <
+        <translation>באפשרותך לחתום על הודעות/הסכמים באמצעות הכתובות שלך, כדי להוכיח שאתה יכול לקבל את הביטקוינים הנשלחים אליהן. היזהר לא לחתום על תוכן עמום או אקראי, מכיוון שתקיפות פישינג עשויות לנסות לגנוב את הזהות שלך. חתום רק על הצהרות מפורטות שאתה מסכים להן.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>כתובת הביטקוין אתה לחתום אתה את ההודעה</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>בחירת כתובת שהייתה בשימוש</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>הדבקת כתובת מלוח הגזירים</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>יש להוסיף כאן את ההודעה עליה לחתום</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>חתימה</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>העתקת החתימה הנוכחית ללוח הגזירים</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>ניתן לחתום על ההודעה כדי להוכיח שכתובת הביטקוין הזו בבעלותך.</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>&amp;חתימה על הודעה</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>איפוס כל שדות החתימה על הודעה</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>&amp;ניקוי הכול</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;אימות הודעה</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>כתובת הביטקוין שאתה נחתמה ההודעה</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>ניתן לאמת את ההודעה כדי להבטיח שהיא נחתמה עם כתובת הביטקוין הנתונה</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>&amp;אימות הודעה</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>איפוס כל שדות אימות ההודעה</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>יש ללחוץ על „חתימת ההודעה“ כדי לייצר חתימה</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>הכתובת שהוזנה שגויה.</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>נא לבדוק את הכתובת ולנסות שוב.</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>הכתובת שהוזנה לא מתייחסת למפתח.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>שחרור הארנק בוטל.</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>המפתח הפרטי לכתובת שהוכנסה אינו זמין.</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>חתימת ההודעה נכשלה.</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>ההודעה נחתמה.</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>לא ניתן לפענח את החתימה.</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>נא לבדוק את החתימה ולנסות שוב.</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>החתימה לא תואמת את תקציר ההודעה.</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>וידוא ההודעה נכשל.</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>ההודעה עברה וידוא.</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[רשת-בדיקה]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>ק״ב/ש׳</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>פתוחה עד %1</translation>
+    </message>
+    <message>
+        <source>in memory pool</source>
+        <translation>במאגר הזיכרון</translation>
+    </message>
+    <message>
+        <source>not in memory pool</source>
+        <translation>לא במאגר הזיכרון</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>ננטש</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>מצב</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>תאריך</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>מקור</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>נוצר</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>מאת</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>לא ידוע</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>אל</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>כתובת עצמית</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>צפייה בלבד</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>תווית</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>אשראי</translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>לא התקבל</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>חיוב</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>חיוב כולל</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>אשראי כול</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>עמלת העברה</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>סכום נטו</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>הודעה</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>הערה</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>מזהה העברה</translation>
+    </message>
+    <message>
+        <source>Transaction total size</source>
+        <translation>גודל ההעברה הכללי</translation>
+    </message>
+    <message>
+        <source>Output index</source>
+        <translation>מפתח פלט</translation>
+    </message>
+    <message>
+        <source>Merchant</source>
+        <translation>סוחר</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>פרטי ניפוי שגיאות</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>העברה</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>אמצעי קלט</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>סכום</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>אמת</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>שקר</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>חלונית זו מציגה תיאור מפורט של ההעברה</translation>
+    </message>
+    <message>
+        <source>Details for %1</source>
+        <translation>פרטים עבור %1</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>תאריך</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>סוג</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>תוית</translation>
+    </message>
+    <message numerus="yes">
+        <source>Open for %n more block(s)</source>
+        <translation><numerusform>פתוחה למשך בלוק אחד נוסף</numerusform><numerusform>פתוחה למשך %n בלוקים נוספים</numerusform><numerusform>פתוחה למשך %n בלוקים נוספים</numerusform><numerusform>פתוחה למשך %n בלוקים נוספים</numerusform></translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>פתוחה עד %1</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>לא מקוונת</translation>
+    </message>
+    <message>
+        <source>Unconfirmed</source>
+        <translation>לא מאושרת</translation>
+    </message>
+    <message>
+        <source>Abandoned</source>
+        <translation>ננטש</translation>
+    </message>
+    <message>
+        <source>Confirming (%1 of %2 recommended confirmations)</source>
+        <translation>באישור (%1 מתוך %2 אישורים מומלצים)</translation>
+    </message>
+    <message>
+        <source>Confirmed (%1 confirmations)</source>
+        <translation>מאושרת (%1 אישורים)</translation>
+    </message>
+    <message>
+        <source>Conflicted</source>
+        <translation>מתנגשת</translation>
+    </message>
+    <message>
+        <source>Immature (%1 confirmations, will be available after %2)</source>
+        <translation>צעירה (%1 אישורים, תהיה זמינה לאחר %2)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>בלוק זה לא התקבל על ידי אף צומת אחר וככל הנראה לא יאושר!</translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>הבלוק יוצר אך לא אושר</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>התקבל עם</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>התקבל מאת</translation>
+    </message
