@@ -2995,4 +2995,276 @@
     </message>
     <message>
         <source>-maxmempool must be at least %d MB</source>
-        <translation>‎-maxmempool חייב ל
+        <translation>‎-maxmempool חייב להיות לפחות %d מ״ב</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;קטגוריה&gt; יכולה להיות:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>קבלת חיבורים מבחוץ (בררת מחדל: 1 ללא ‎-proxy או ‎-connect)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>הוספת הערה למחרוזת סוכן המשתמש</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>אפשרויות יצירת מקטע:</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>אפשרויות בחירת שרשרת:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>אינדקס העודף מחוץ לתחום</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>הגדרות חיבור:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>כל הזכויות שמורות (C) %i-‏%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>התגלה מסד נתוני מקטעים לא תקין</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>אפשרויות ניפוי/בדיקה:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>לא לטעון את הארנק ולנטרל קריאות RPC</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>האם לבנות מחדש את מסד נתוני המקטעים?</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>שגיאה באתחול מסד נתוני המקטעים</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>שגיאה באתחול סביבת מסד נתוני הארנקים %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>שגיאה בטעינת %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>שגיאה בטעינת מסד נתוני המקטעים</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>שגיאה בטעינת מסד נתוני המקטעים</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>שגיאה: מעט מקום פנוי בכונן!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>האזנה נכשלה בכל פורט. השתמש ב- -listen=0 אם ברצונך בכך.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>מתבצע יבוא…</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>מקטע הפתיח הוא שגוי או לא נמצא. תיקיית נתונים שגויה עבור הרשת?</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>סכום שגוי עבור ‎-%s=&lt;amount&gt;:‏ '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>סכום שגוי עבור ‎-fallbackfee=&lt;amount&gt;:‏ '%s'</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>טוען רשימת חסומים...</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>אין מספיק מידע על הקובץ</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>תמיד להתחבר למפרקים ברשת &lt;net&gt;‏ (ipv4,‏ ipv6 או onion)</translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>להדפיס הודעת עזרה זו ולצאת</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>הדפס גירסא וצא</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>הגדרת גודל מטמון מסדי הנתונים במגה בתים (%d עד %d, בררת מחדל: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>ציון קובץ ארנק (בתוך תיקיית הנתונים)</translation>
+    </message>
+    <message>
+        <source>Transaction fee and change calculation failed</source>
+        <translation>החישוב עבור עמלת העיסקה והעודף נכשל</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>השתמש ברשת הבדיקה</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>המקטעים מאומתים…</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>אפשרות דיבוג/בדיקת ארנק:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>יש לכתוב את הארנק מחדש: יש להפעיל את %s כדי להמשיך</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>אפשרויות הארנק:</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>הרץ פקודה כאשר ההתראה הרלוונטית מתקבלת או כשאנחנו עדים לפיצול ארוך מאוד (%s בשורת הפקודה יוחלף ע"י ההודעה)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>סכום העברה נמוך מדי לשליחה אחרי גביית העמלה</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(בררת מחדל: %u)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>התחברות דרך מתווך SOCKS5</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>מידע</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>כמות לא תקינה עבור ‎-paytxfee=&lt;amount&gt;‎:‏ '%s' (חייבת להיות לפחות %s)</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>מסכת הרשת שצוינה עם ‎-whitelist שגויה: '%s'</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>עליך לציין פתחה עם ‎-whitebind:‏ '%s'</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>אפשרויות ממסר מפרק:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>הגדרות שרת RPC</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>שלח מידע דיבאג ועקבה לקונסולה במקום לקובץ debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>הצגת כל אפשרויות הניפוי (שימוש: ‎--help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>כיווץ הקובץ debug.log בהפעלת הלקוח (בררת מחדל: 1 ללא ‎-debug)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>החתימה על ההעברה נכשלה</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>סכום ההעברה נמוך מכדי לשלם את העמלה</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>זוהי תכנית נסיונית.</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>סכום ההעברה קטן מדי</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>ההעברה גבוהה מדי עבור מדיניות העמלות</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>סכום ההעברה גדול מדי</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>לא ניתן להתאגד עם הפתחה %s במחשב זה (פעולת האיגוד החזירה את השגיאה %s)</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>עדכן ארק לפורמט העדכני בהפעלה</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>שם משתמש לחיבורי JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>אזהרה</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>ססמה לחיבורי JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>יש לבצע פקודה זו כשהמקטע הטוב ביותר משתנה (%s בפקודה יוחלף בגיבוב המקטע)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>הפעלת בדיקת DNS עבור ‎-addnode,‏ ‎-seednode ו־‎-connect</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
+        <translation>המשתנה ‎-socks נמצא אך אין בו תמיכה עוד. הגדרת גרסת SOCKS אינה אפשרית עוד, קיימת תמיכה רק ב־SOCKS5.</translation>
+    </message>
+    <message>
+        <source>(default: %s)</source>
+        <translation>(ברירת מחדל: %s)</translation>
+    </message>
+    <message>
+        <source>Always query for peer addresses via DNS lookup (default: %u)</source>
+        <translation>תמיד לתשאל את כתובת העמיתים באמצעות חיפוש DNS (בררת מחדל: %u)</translation>
+    </message>
+    <message>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation>כמה מקטעים לבדוק עם ההפעלה (בררת מחדל: %u,‏ 0 = הכול)</translation>
+    </message>
+    <message>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation>לכלול את כתובת ה־IP בפלט ניפוי השגיאות (בררת מחדל: %u)</translation>
+    </message>
+    <message>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <tra
