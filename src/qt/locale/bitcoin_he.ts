@@ -2654,4 +2654,345 @@
     <message>
         <source>Received from</source>
         <translation>התקבל מאת</translation>
-    </message
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>נשלח אל</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>תשלום לעצמך</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>נכרו</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>צפייה בלבד</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(לא זמין)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ללא תוית)</translation>
+    </message>
+    <message>
+        <source>Transaction status. Hover over this field to show number of confirmations.</source>
+        <translation>מצב ההעברה. יש להמתין עם הסמן מעל שדה זה כדי לראות את מספר האישורים.</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>התאריך והשעה בהם העברה זו התקבלה.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>סוג ההעברה.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>סכום ירד או התווסף למאזן</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>הכול</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>היום</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>השבוע</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>החודש</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>חודש שעבר</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>השנה הזאת</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>טווח…</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>התקבל עם</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>נשלח אל</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>לעצמך</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>נכרו</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>אחר</translation>
+    </message>
+    <message>
+        <source>Enter address, transaction id, or label to search</source>
+        <translation>הכנס כתובת, מזהה העברה, או תווית לחיפוש</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>סכום מזערי</translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation>נטישת העברה</translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation>הגדל עמלת העברה</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>העתקת הכתובת</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>העתקת התווית</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>העתקת הסכום</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>העתקת מזהה ההעברה</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>העתקת העברה גולמית</translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation>העתקת פרטי ההעברה המלאים</translation>
+    </message>
+    <message>
+        <source>Edit label</source>
+        <translation>עריכת תווית</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>הצגת פרטי העברה</translation>
+    </message>
+    <message>
+        <source>Export Transaction History</source>
+        <translation>יצוא היסטוריית העברה</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>קובץ מופרד בפסיקים (‎*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>מאושרת</translation>
+    </message>
+    <message>
+        <source>Watch-only</source>
+        <translation>צפייה בלבד</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>תאריך</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>סוג</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>תוית</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>כתובת</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>מזהה</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>יצוא נכשל</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the transaction history to %1.</source>
+        <translation>אירעה שגיאה בעת ניסיון שמירת היסטוריית ההעברות אל %1.</translation>
+    </message>
+    <message>
+        <source>Exporting Successful</source>
+        <translation>הייצוא נכשל</translation>
+    </message>
+    <message>
+        <source>The transaction history was successfully saved to %1.</source>
+        <translation>היסטוריית ההעברות נשמרה בהצלחה אל %1.</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>טווח:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>עד</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>יחידת המידה להצגת הסכומים. יש ללחוץ כדי לבחור ביחידת מידה אחרת.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    <message>
+        <source>No wallet has been loaded.</source>
+        <translation>לא נטען ארנק.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>שליחת מטבעות</translation>
+    </message>
+    <message>
+        <source>Do you want to increase the fee?</source>
+        <translation>להגדיל את העמלה?</translation>
+    </message>
+    <message>
+        <source>Current fee:</source>
+        <translation>העמלה הנוכחית:</translation>
+    </message>
+    <message>
+        <source>Increase:</source>
+        <translation>הגדלה:</translation>
+    </message>
+    <message>
+        <source>New fee:</source>
+        <translation>עמלה חדשה:</translation>
+    </message>
+    <message>
+        <source>Confirm fee bump</source>
+        <translation>אישור הקפצת עמלה</translation>
+    </message>
+    <message>
+        <source>Can't sign transaction.</source>
+        <translation>אי אפשר לחתום על ההעברה.</translation>
+    </message>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;יצוא</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>יצוא הנתונים בלשונית הנוכחית לקובץ</translation>
+    </message>
+    <message>
+        <source>Backup Wallet</source>
+        <translation>גיבוי הארנק</translation>
+    </message>
+    <message>
+        <source>Wallet Data (*.dat)</source>
+        <translation>נתוני ארנק (‎*.dat)</translation>
+    </message>
+    <message>
+        <source>Backup Failed</source>
+        <translation>הגיבוי נכשל</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the wallet data to %1.</source>
+        <translation>אירעה שגיאה בעת הניסיון לשמור את נתוני הארנק אל %1.</translation>
+    </message>
+    <message>
+        <source>Backup Successful</source>
+        <translation>הגיבוי הצליח</translation>
+    </message>
+    <message>
+        <source>The wallet data was successfully saved to %1.</source>
+        <translation>נתוני הארנק נשמרו בהצלחה אל %1.</translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>אפשרויות:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>ציון תיקיית נתונים</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>יש להתחבר למפרק כדי לדלות כתובות עמיתים ואז להתנתק</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>נא לציין את הכתובת הפומבית שלך</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>קבלת פקודות משורת הפקודה ומ־JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>שגיאה: סניה קלמה קריטית פנימית קרטה, פנה ל debug.log לפרטים</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>ריצה כסוכן ברקע וקבלת פקודות</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>ליבת ביטקוין</translation>
+    </message>
+    <message>
+        <source>The %s developers</source>
+        <translation>ה %s מפתחים</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>להתאגד לכתובת נתונה להאזין לה תמיד. יש להשתמש בצורה ‎[host]:port עבור IPv6.</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>מחיקת כל העברות הארנק ולשחזר רק את החלקים המסוימים בשרשרת המקטעים באמצעות ‎-rescan עם ההפעלה</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>ביצוע פקודה כאשר העברה בארנק משתנה (%s ב־cmd יוחלף ב־TxID)</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>שימוש ב־UPnP כדי למפות את הפתחה להאזנה (בררת מחדל: 1 בעת האזנה ובלי ‎-proxy)</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>אזהרה: נראה כי הרשת אינה מסכימה באופן מלא! חלק מהכורים חווים תקלות.</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>‎-maxmempool חייב ל
