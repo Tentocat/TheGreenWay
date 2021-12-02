@@ -436,4 +436,83 @@
     <name>TransactionDesc</name>
     </context>
 <context>
-    <name>TransactionD
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation> ये खिड़की आपको लेन-देन का विस्तृत विवरण देगी !</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    </context>
+<context>
+    <name>TransactionView</name>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;निर्यात</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>डेटा को मौजूदा टैब से एक फ़ाइल में निर्यात करें</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>विकल्प:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>डेटा डायरेक्टरी बताएं </translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>बैकग्राउंड में डेमॉन बन कर रन करे तथा कमांड्स स्वीकार करें </translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>ब्लॉक्स जाँचे जा रहा है...</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>जानकारी</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>चेतावनी</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>ब्लॉक इंडेक्स आ रहा है...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>वॉलेट आ रहा है...</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>रि-स्केनी-इंग...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>लोड हो गया|</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>भूल</translation>
+    </message>
+</context>
+</TS>
