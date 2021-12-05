@@ -235,4 +235,332 @@
     <name>BitcoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
-        <translation>Undirrita &amp;ski
+        <translation>Undirrita &amp;skilaboð</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>Samstilli við netið...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>&amp;Yfirlit</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>Hnútur</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>Sýna almennt yfirlit af veski</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>&amp;Færslur</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>Skoða færslusögu</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>&amp;Hætta</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>Hætta í forriti</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation>&amp;Um %1</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>Sýna upplýsingar um %1</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>Um &amp;Qt</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>Sýna upplýsingar um Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>&amp;Valkostir...</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>Breyta samstillingum fyrir %1</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Dulkóða veski...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Öryggisafrit á veski...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Breyta lykilsetningu</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>&amp;Sendi færslugildi...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>&amp;Tek við færslugildum...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>Opna &amp;URL...</translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation>Smelltu til að loka fyrir netumferð.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>Slökkt á netumferð.</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Smelltu til að hefja aftur netumferð.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Samstilli hausa (%1%)...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>Endurraða blokkum á drifi...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>Senda mynt í Bitcoin færslugildi</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>Öryggisafrita veski á annan stað</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Breyta lykilsetningunni sem gildir um dulkóðun veskis</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Kembunargluggi</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Opna kembunar- og greiningarstjórnborð</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Yfirfara skilaboð...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Veski</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Senda</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Taka við</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Sýna / Fela</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Sýna eða fela megin glugga</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Dulkóða einkalyklana sem tilheyra veskinu þínu</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Kvitta undir skilaboð með Bitcoin færslugildunum þínum til að sanna að þú eigir þau</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Yfirfara skilaboð til að tryggja að kvittað hafi verið fyrir þau með tilteknum Bitcoin færslugildum</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Skrá</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Stillingar</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Hjálp</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Tólaborð flipa</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Óska eftir greiðslum (býr til QR kóða og bitcoin: URI)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Sýna lista yfir færslugildi sem notuð hafa verið til sendingar og merkingar þeirra</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Sýna færslugildi sem notuð hafa verið til að taka við mynt og merkingar þeirra</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Opna bitcoin: URI eða greiðslubeiðni</translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Raða blokkum á drifi</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Vinn úr blokkum á drifi...</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 á eftir</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Síðasta viðtekna blokk var búin til fyrir %1 síðan.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Færslur á eftir þessari munu ekki sjást.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Villa</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Viðvörun</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Upplýsingar</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Uppfært</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Sýna %1 hjálparskilaboðin til að fá lista yfir valkosti Bitcoin aðgerðir í skipanalínu</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 biðlarar</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>Tengist jafningjum...</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Færist nær...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Dagsetning: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Upphæð: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Tegund: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Merki: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Færslugildi: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Send færsla</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Móttökufærsla</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>HD lyklagerð er &lt;b&gt;virkjuð&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>HD lyklagerð er &lt;b&gt;óvirk&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Veskið er &lt;b&gt;dulkóðað&lt;/b&gt; og núna &lt;b&gt;ólæst&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Veskið er &lt;b&gt;dulkóðað&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Alvarleg villa átti sér stað. Bitcoin getur ekki haldið áfram með öruggum hætti og stoppar hér.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Myntval</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Magn:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bæti:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Upphæð:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Gjald:</translation>
+    </message>
+    <message>
+        <source>Dust:</
