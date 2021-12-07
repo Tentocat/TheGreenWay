@@ -563,4 +563,331 @@
         <translation>Gjald:</translation>
     </message>
     <message>
-        <source>Dust:</
+        <source>Dust:</source>
+        <translation>Ryk:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Eftirgjald:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Skiptimynt:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(af)velja allt</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Hrísluhamur</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Listahamur</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Upphæð</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Móttekið með merkingu</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Móttekið með færslugildi</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Afrita færslugildi</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Afrita merki</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Þetta merki verður rautt ef einhver viðtakandi tekur við upphæð sem er lægri en núgildandi þröskuldur.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ekkert merki)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Breyta færslugildi</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Merki</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>Merking tengd þessu færslugildi</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Færslugildið sem tengt er þessari færslu. Þessu má einungis breyta þegar sent er.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>Nýtt móttökufærslugildi</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Nýtt móttökufærslugildi</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Nýtt sendingarfærslugildi</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Breyta móttökufærslugildi</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Breyta sendingarfærslugildi</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>Færslugildið sem slegið var inn "%1" er ekki leyfilegt Bitcoin færslugildi.</translation>
+    </message>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Villa</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Fjöldi blokka sem eftir eru</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Tími síðustu blokkar</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>IP tala staðgengils (t.d. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>URL frá þriðja aðila (t.d. blokkarskoðari) sem birtast í færsluflipanum sem samhengisatriði. %s í URL-inu skipt út fyrir færslutvíkross. Mörg URL eru aðskilin með lóðréttu striki |.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Villa</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Uppgefið færslugildi staðgengils er ógilt.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Námuunnin innistæða sem hefur enn ekki komið fram</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Innistæða færslugilda sem eru einungis til skoðunar</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Óstaðfestar færslur til færslugilda sem eru einungis til skoðunar</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Námuunnin innistæða á færslugildum sem eru einungis til skoðunar og hafa ekki komið fram</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Innistæða á færslugildum sem eru einungis til skoðunar</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Ógilt færslugildi til greiðslu %1</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Upphæð</translation>
+    </message>
+    </context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Block chain</source>
+        <translation>Blokkarkeðja</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Núverandi fjöldi blokka</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Upphafsblokk</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Samhæfðar blokkir</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Tími síðustu blokkar</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Merki:</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>Valfrjálst merki sem tengist nýju móttökufærslutölunni.</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Afrita merki</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Address</source>
+        <translation>Vistfang</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Upphæð</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Merki</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>URI varð of langt, reyndu að minnka texta í merki / skilaboðum.</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Merki</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ekkert merki)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Quantity:</source>
+        <translation>Magn:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bæti:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Upphæð:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Gjald:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Eftirgjald:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Skiptimynt:</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>Það er í lagi að greiða einungis lágmarksupphæðina svo framarlega sem færslurúmtakið er minna en plássið í blokkunum. En gætið þess að þegar það er meiri eftirspurn eftir bitcoin færslum en netið getur unnið úr þá gæti svo farið að færslurnar verða aldrei samþykktar.</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(Smart gjald er ekki gangsett ennþá. Þetta tekur venjulega nokkrar blokkir...)</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Ryk:</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ekkert merki)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Merki:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the
