@@ -890,4 +890,120 @@
 <context>
     <name>TransactionDesc</name>
     <message>
-        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation>Fullgerð mynt verður að nýta %1 blokkir. Þegar þú bjóst til þessa blokk, þá var jafnóðum tilkynnt á netinu að hún eigi að bætast við blokkakeðjuna. Ef hún kemst ekki í keðjuna þá mun staða hennar breytast í "ósamþykkt" og ekki verður hægt að nota hana. Þetta gerist annað slagið ef annar hnútpunktur klárar blokk nokkrum sekúndum á undan þinni.</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Upphæð</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Merki</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>Þessi blokk barst ekki í neinn annan hnútpunkt og verður sennilega ekki samþykkt!</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Námuunnið</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ekkert merki)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Mined</source>
+        <translation>Námuunnið</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Afrita færslugildi</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Afrita merki</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Gildi aðskilin með kommu (*.csv)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Merki</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Vistfang</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Útflutningur tókst ekki</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Flytja út</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Flytja gögn í flipanum í skrá</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation>Villa við lestur %s! Allir lyklar fóru inn á réttan hátt, en færslugögn eða færslugildi gætu verið röng eða horfin.</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Viðvörun: Netið er ekki í fullu samræmi! Einhver námuvinnsla virðist í ólagi.</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>Hámarks gagnastærð í burðarfærslum sem við tökum við til námavinnslu (sjálfgefið: %u)</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Upplýsingar</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Viðvörun</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
+        <translation>Viðvörun: Óþekkt blokkarútgáfa í námavinnslu! Það er mögulegt að óþekktum reglum sé fylgt</translation>
+    </message>
+    <message>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation>Hleypa í gegn og námuvinna gagnaburðarfærslur (sjálfgefið: %u)</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Villa</translation>
+    </message>
+</context>
+</TS>
