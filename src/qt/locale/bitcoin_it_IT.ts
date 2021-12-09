@@ -346,4 +346,345 @@
         <translation>Backup del portafoglio in un'altra posizione</translation>
     </message>
     <message>
-        <source>Change the p
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Cambia la password usata per criptare il portafoglio</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Finestra di debug</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Apri console di debug e diagnosi</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>Verifica messaggio...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Portafoglio</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>Invia</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>Ricevi</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>Mostra / Nascondi</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Mostra o nascondi la finestra principale</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Cripta le chiavi private che appartengono al tuo portafoglio</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Firma messaggi con i tuoi indirizzi Bitcoin per provare che li possiedi</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Verifica messaggi per accertarti che siano firmati dagli indirizzi Bitcoin specificati</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>File</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>Impostazioni</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>Aiuto</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Barra degli strumenti</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Richiedi pagamenti (genera codici QR e bitcoin: URI)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Mostra la lista degli indirizzi di invio usati e le relative etichette</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Mostra la lista degli indirizzi di ricezione usati e le relative etichette</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Apri un bitcoin: URI o una richiesta di pagamento</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>Opzioni linea di comando</translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Indicizzazione blocchi su disco...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Elaborazione blocchi su disco...</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 indietro</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Ultimo blocco ricevuto generato %1 fa.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Le transazioni dopo di questa non saranno più visibili</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Attenzione</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informazione</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Aggiornato</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Mostra il %1 messaggio d'aiuto per ottenere una lista con le possibili opzioni per la riga di comando di Bitcoin</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Data: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Importo: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Tipo: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Etichetta: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Indirizzo: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Transazione inviata</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Transazione in arrivo</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Si è verificato un errore fatale. Bitcoin non può continuare in maniera sicura e sarà chiuso.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Selezione delle monete</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Quantità:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Importo:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Tassa:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Minimo:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Cambio:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(de)seleziona tutto</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Modalità albero</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Modalità lista</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Importo</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Ricevuto con etichetta</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Ricevuto con indirizzo</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Conferme</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confermato</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Copia indirizzo</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copia etichetta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copia importo</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Copia ID transazione</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Blocca non spese</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Sblocca non spese</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Copia quantità</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copia tassa</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Copia bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copia minimo</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copia cambio</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 bloccato)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>si</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>no</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Questa etichetta diventa rossa se qualsiasi destinatario riceve un importo inferiore al limite minimo corrente.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(nessuna etichetta)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(cambio)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Modifica Indirizzo</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etichetta</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>L'etichetta associata con questa voce dell'elenco indirizzi</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>L'indirizzo associato con questa voce dell'elenco indirizzi. Può essere modificato per inviare indirizzi.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Indirizzo</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Nuovo indirizzo di ricezione</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Nuovo indirizzo di invio</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Modifica l'indirizzo di ricezione</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Modifica l'indirizzo di invio</translation>
