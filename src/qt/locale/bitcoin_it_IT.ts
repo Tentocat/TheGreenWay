@@ -688,3 +688,386 @@
     <message>
         <source>Edit sending address</source>
         <translation>Modifica l'indirizzo di invio</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>L'indirizzo inserito "%1" non è un indirizzo Bitcoin valido.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>L'indirizzo inserito "%1" è già nella rubrica.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Non posso sbloccare il portafoglio.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Generazione della nuova chiave fallita.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Una nuova cartella dei dati verrà creata.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>nome</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>La cartella esiste già. Aggiungi %1 se vuoi creare una nuova cartella qui.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Il percorso esiste già, e non è una cartella.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Non posso creare la cartella dei dati qui.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versione</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Circa %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Opzioni linea di comando</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Utilizzo:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>opzioni linea di comando</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>Opzioni UI</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Benvenuto</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>Il portafoglio sara' </translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Numero di blocchi rimanente</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opzioni</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Opzioni di configurazione</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Questa modifica richiede un riavvio del client</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Available:</source>
+        <translation>Disponibile:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Saldo disponibile</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Transazioni recenti</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Richiesta di pagamento rifiutata</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Rimborso da %1</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Sent</source>
+        <translation>Inviato</translation>
+    </message>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Importo</translation>
+    </message>
+    </context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Sent</source>
+        <translation>Inviato</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>Copy label</source>
+        <translation>Copia etichetta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copia importo</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Address</source>
+        <translation>Indirizzo</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Importo</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etichetta</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etichetta</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(nessuna etichetta)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Quantity:</source>
+        <translation>Quantità:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Importo:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Tassa:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Cambio:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Minimo:</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Copia quantità</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copia importo</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copia tassa</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Copia bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copia minimo</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copia cambio</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(nessuna etichetta)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Importo</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etichetta</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(nessuna etichetta)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Copy address</source>
+        <translation>Copia indirizzo</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copia etichetta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copia importo</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Copia ID transazione</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Comma separated file (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confermato</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etichetta</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Indirizzo</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Esportazione Fallita</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Information</source>
+        <translation>Informazione</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Attenzione</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Errore</translation>
+    </message>
+</context>
+</TS>
