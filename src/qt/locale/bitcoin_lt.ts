@@ -373,4 +373,393 @@
     </message>
     <message>
         <source>command-line options</source>
-        <translation>koma
+        <translation>komandinės eilutės parametrai</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Sveiki</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Klaida</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Paskutinio bloko laikas</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Parinktys</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Pagrindinės</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Proxy IP adresas (Pvz. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Atstatyti Parinktis</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Tinklas</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>Piniginė</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatiškai atidaryti Bitcoin kliento prievadą maršrutizatoriuje. Tai veikia tik tada, kai jūsų maršrutizatorius palaiko UPnP ir ji įjungta.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Persiųsti prievadą naudojant &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>Tarpinio serverio &amp;IP:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Prievadas:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Tarpinio serverio preivadas (pvz, 9050)</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Langas</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Po programos lango sumažinimo rodyti tik programos ikoną.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;M sumažinti langą bet ne užduočių juostą</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>&amp;Sumažinti uždarant</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Rodymas</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>Naudotojo sąsajos &amp;kalba:</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Vienetai, kuriais rodyti sumas:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Rodomų ir siunčiamų monetų kiekio matavimo vienetai</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;Gerai</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Atšaukti</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>numatyta</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>niekas</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Patvirtinti nustatymų atstatymą</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Kliento perkrovimas reikalingas nustatymų aktyvavimui</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Klaida</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Šis pakeitimas reikalautų kliento perkrovimo</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Nurodytas tarpinio serverio adresas negalioja.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Forma</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Galimi:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Jūsų dabartinis išleidžiamas balansas</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Laukiantys:</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Nepribrendę:</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Viso:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Jūsų balansas</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Received</source>
+        <translation>Gauta</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Suma</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>nėra</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>nežinomas</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>nėra</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Kliento versija</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informacija</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Derinimo langas</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Paleidimo laikas</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Tinklas</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Pavadinimas</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Prisijungimų kiekis</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Blokų grandinė</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Dabartinis blokų skaičius</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Gauta</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Kryptis</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versija</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Paskutinio bloko laikas</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Atverti</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Konsolė</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Viso:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Derinimo žurnalo failas</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Išvalyti konsolę</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>Niekada</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Taip</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Ne</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Suma:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>Ž&amp;ymė:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>Žinutė:</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Išvalyti</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>QR kodas</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Kopijuoti adresą</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresas</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Siųsti monetas</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Nepakanka lėšų</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+ 
