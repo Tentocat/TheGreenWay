@@ -189,4 +189,306 @@
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>V
+        <translation>VIKTIG: Tidligere sikkerhetskopier av din lommebokfil bør erstattes med den nylig genererte og krypterte filen, da de blir ugyldiggjort av sikkerhetshensyn så snart du begynner å bruke den nye krypterte lommeboken.</translation>
+    </message>
+    <message>
+        <source>Wallet encryption failed</source>
+        <translation>Kryptering av lommebok feilet</translation>
+    </message>
+    <message>
+        <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
+        <translation>Kryptering av lommebok feilet på grunn av en intern feil. Din lommebok ble ikke kryptert.</translation>
+    </message>
+    <message>
+        <source>The supplied passphrases do not match.</source>
+        <translation>De angitte adgangsfrasene er ulike.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock failed</source>
+        <translation>Opplåsing av lommebok feilet</translation>
+    </message>
+    <message>
+        <source>The passphrase entered for the wallet decryption was incorrect.</source>
+        <translation>Adgangsfrasen angitt for dekryptering av lommeboken var feil.</translation>
+    </message>
+    <message>
+        <source>Wallet decryption failed</source>
+        <translation>Dekryptering av lommebok feilet</translation>
+    </message>
+    <message>
+        <source>Wallet passphrase was successfully changed.</source>
+        <translation>Adgangsfrase for lommebok er endret.</translation>
+    </message>
+    <message>
+        <source>Warning: The Caps Lock key is on!</source>
+        <translation>Advarsel: Caps Lock er på!</translation>
+    </message>
+</context>
+<context>
+    <name>BanTableModel</name>
+    <message>
+        <source>IP/Netmask</source>
+        <translation>IP/Nettmaske</translation>
+    </message>
+    <message>
+        <source>Banned Until</source>
+        <translation>Utestengt til</translation>
+    </message>
+</context>
+<context>
+    <name>BitcoinGUI</name>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>Signer &amp;melding...</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>Synkroniserer med nettverk...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>&amp;Oversikt</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>Node</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>Vis generell oversikt over lommeboken</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>&amp;Transaksjoner</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>Vis transaksjonshistorikk</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>&amp;Avslutt</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>Avslutt applikasjonen</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation> &amp;Om %1</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>Vis informasjon om %1</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>Om &amp;Qt</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>Vis informasjon om Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>&amp;Innstillinger...</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>Endre innstilinger for %1</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Krypter Lommebok...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>Lag &amp;Sikkerhetskopi av Lommebok...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Endre Adgangsfrase...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>&amp;Utsendingsadresser...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>&amp;Mottaksadresser...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>Åpne &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation>Klikk for å deaktivere nettverksaktivitet.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>Nettverksaktivitet deaktivert.</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Klikk for å aktivere nettverksaktivitet igjen.</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Synkroniserer blokkhoder (%1%)...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>Reindekserer blokker på harddisk...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>Send til en Bitcoin-adresse</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>Sikkerhetskopier lommebok til annet sted</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Endre adgangsfrasen brukt for kryptering av lommebok</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Feilsøkingsvindu</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Åpne konsoll for feilsøk og diagnostikk</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Verifiser melding...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Lommebok</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Send</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Motta</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Vis / Skjul</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Vis eller skjul hovedvinduet</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Krypter de private nøklene som tilhører lommeboken din</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Signer en melding med Bitcoin-adressene dine for å bevise at du eier dem</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Bekreft meldinger for å være sikker på at de ble signert av en angitt Bitcoin-adresse</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Fil</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Innstillinger</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Hjelp</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Verktøylinje for faner</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Forespør betalinger (genererer QR-koder og bitcoin: URIer)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Vis listen av brukte utsendingsadresser og merkelapper</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Vis listen over bruke mottaksadresser og merkelapper</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Åpne en Bitcoin: URI eller betalingsetterspørring</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>&amp;Kommandolinjevalg</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n active connection(s) to Bitcoin network</source>
+        <translation><numerusform>%n aktiv forbindelse til Bitcoin-nettverket</numerusform><numerusform>%n aktive forbindelser til Bitcoin-nettverket</numerusform></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Indekserer blokker på disk...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Prosesserer blokker på disk...</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>Lastet %n blokk med transaksjonshistorikk.</numerusform><numerusform>Lastet %n blokker med transaksjonshistorikk.</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 bak</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Siste mottatte blokk ble generert for %1 siden.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Transaksjoner etter dette vil ikke være synlige enda.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Feil</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Advarsel</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informasjon</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Oppdatert</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Vis %1 hjelpemeldingen for å få en liste med mulige Bitcoin kommandolinjevalg.</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 klient</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <transla
