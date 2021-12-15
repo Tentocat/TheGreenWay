@@ -762,4 +762,272 @@
     </message>
     <message>
         <source>Quantity:</source>
- 
+        <translation>Kiekis:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Baitai:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Suma:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Mokestis:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Po mokesčio:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Graža:</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Sandorio mokestis:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Siųsti keliems gavėjams vienu metu</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>&amp;A Pridėti gavėją</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Išvalyti &amp;viską</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balansas:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Patvirtinti siuntimo veiksmą</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;Siųsti</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>Su&amp;ma:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Mokėti &amp;gavėjui:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>Ž&amp;ymė:</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Įvesti adresą iš mainų atminties</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Žinutė:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Mokėti gavėjui:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Pasirašyti žinutę</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Įvesti adresą iš mainų atminties</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Įveskite pranešimą, kurį norite pasirašyti čia</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Registruotis žinute įrodymuii, kad turite šį adresą</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Registruoti praneši&amp;mą</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Išvalyti &amp;viską</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Patikrinti žinutę</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Patikrinkite žinutę, jog įsitikintumėte, kad ją pasirašė nurodytas Bitcoin adresas</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>&amp;Patikrinti žinutę</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testavimotinklas]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Šis langas sandorio detalų aprašymą</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Address</source>
+        <translation>Adresas</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Parinktys:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Nustatyti duomenų aplanką</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Nurodykite savo nuosavą viešą adresą</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Priimti komandinę eilutę ir JSON-RPC komandas</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Dirbti fone kaip šešėlyje ir priimti komandas</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin branduolys</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Klaida atveriant blokų duombazę</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Tikrinami blokai...</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informacija</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Siųsti atsekimo/derinimo info į konsolę vietoj debug.log failo</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Vartotojo vardas JSON-RPC jungimuisi</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Įspėjimas</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Slaptažodis JSON-RPC sujungimams</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Leisti DNS paiešką sujungimui ir mazgo pridėjimui</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Nepakanka lėšų</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Įkeliamas blokų indeksas...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Užkraunama piniginė...</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Peržiūra</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Įkėlimas baigtas</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Klaida</translation>
+    </message>
+</context>
+</TS>
