@@ -1351,4 +1351,354 @@
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
-        <translation>Betalingsforespørselsfila kan ikke leses! Dette kan ha sitt opphav i at den er ugyldig.</translatio
+        <translation>Betalingsforespørselsfila kan ikke leses! Dette kan ha sitt opphav i at den er ugyldig.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalingsforespørsel avslått</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Betalingsforespørselsnettverket samsvarer ikke med klientnettverket.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Tidsavbrudd for betalingsforespørsel</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalingsforespørselen er ikke igangsatt.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Uverifiserte betalingsforespørsler til egentilpassede betalingsskript støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ugyldig betalingsforespørsel.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Forespurt betalingsbeløp på %1 er for lite (betraktet som støv).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Tilbakebetaling fra %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalingsforespørsel %1 er for stor (%2 byte, %3 byte tillatt).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Feil under kommunikasjon med %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalingsforespørselen kan ikke tolkes!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Feilaktig svar fra tjeneren %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Nettverksforespørselsfeil</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betaling anerkjent</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>Brukeragent</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Node/Tjeneste</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>NodeId</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Nettverkssvarkall</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Sendt</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Mottatt</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Beløp</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Oppgi en Bitcoin-adresse (f.eks. %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 t</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Ingen</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>-</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>%n sekund</numerusform><numerusform>%n sekunder</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n minutt</numerusform><numerusform>%n minutter</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n time</numerusform><numerusform>%n timer</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n dag</numerusform><numerusform>%n dager</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n uke</numerusform><numerusform>%n uker</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 og %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n år</numerusform><numerusform>%n år</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 har ikke avsluttet trygt enda…</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>ukjent</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Feil: Den spesifiserte datamappen "%1" finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Feil: Kan ikke lese oppsettsfil: %1. Bruk kun syntaksen nøkkel=verdi.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Feil: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Lagre bilde...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Kopier bilde</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Lagre QR-kode</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>PNG-bilde (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>-</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Klientversjon</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informasjon</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Feilsøkingsvindu</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Generelt</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Bruker BerkeleyDB versjon</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datamappe</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Oppstartstidspunkt</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Nettverk</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Antall tilkoblinger</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Blokkjeden</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Nåværende antall blokker</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Hukommelsespulje</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Nåværende antall transaksjoner</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Minnebruk</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Tilbakestill</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Mottatt</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Sendt</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Noder</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Utestengte noder</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Velg en node for å vise detaljert informasjon.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>Hvitelistet</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Retning</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versjon</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Startblokk</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Synkroniserte Blokkhoder</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Synkroniserte Blokker</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Brukeragent</translation>
+    </message>
+    <message>
+        <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Åpne %1-feilrettingsloggfila fra gjeldende datamappe. Dette kan ta et par sekunder for store loggfiler.</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>Forminsk font størrelsen</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>Forstørr font størrelse</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Tjenester</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Ban Poengsum</translation>
+    </message>
+    <message>
+        <sourc
