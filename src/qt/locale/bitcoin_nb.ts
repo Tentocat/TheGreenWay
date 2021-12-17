@@ -1701,4 +1701,339 @@
         <translation>Ban Poengsum</translation>
     </message>
     <message>
-        <sourc
+        <source>Connection Time</source>
+        <translation>Tilkoblingstid</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Siste Sendte</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Siste Mottatte</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Ping-tid</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>Tidsforløp for utestående ping.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Ping Tid</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>Minimalt nettverkssvarkall</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Tidsforskyvning</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Tidspunkt for siste blokk</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Åpne</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Konsoll</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;Nettverkstrafikk</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Totalt</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>Inn:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Ut:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Loggfil for feilsøk</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Tøm konsoll</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;time</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;dag</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;uke</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;år</translation>
+    </message>
+    <message>
+        <source>&amp;Disconnect</source>
+        <translation>&amp;Koble fra</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Bannlys i</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;Opphev bannlysning</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>Velkommen til %1 RPC-konsoll.</translation>
+    </message>
+    <message>
+        <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
+        <translation>Bruk ↑ og ↓ til å navigere historikk, og %1 for å tømme skjermen.</translation>
+    </message>
+    <message>
+        <source>Type %1 for an overview of available commands.</source>
+        <translation>Skriv %1 for en oversikt over tilgjengelige kommandoer.</translation>
+    </message>
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>For mer informasjon om hvordan konsollet brukes skriv %1.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>Advarsel: Svindlere har vært på ferde, i oppfordringen om å skrive kommandoer her, for å stjele lommebokinnhold. Ikke bruk konsollen uten at du forstår alle ringvirkningene av en kommando.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Nettverksaktivitet avskrudd</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(node id: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>via %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>aldri</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Innkommende</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Utgående</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nei</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Ukjent</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Beløp:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Merkelapp:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Melding:</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>En valgfri melding å tilknytte betalingsetterspørringen, som vil bli vist når forespørselen er åpnet. Meldingen vil ikke bli sendt med betalingen over Bitcoin-nettverket.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>En valgfri merkelapp å tilknytte den nye mottakeradressen.</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Bruk dette skjemaet til betalingsforespørsler. Alle felt er &lt;b&gt;valgfrie&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Et valgfritt beløp å etterspørre. La stå tomt eller null for ikke å etterspørre et spesifikt beløp.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Fjern alle felter fra skjemaet.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Fjern</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>Etterspurt betalingshistorikk</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;Etterspør betaling</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>Vis den valgte etterspørringen (gjør det samme som å dobbelklikke på en oppføring)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Vis</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>Fjern de valgte oppføringene fra listen</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Fjern</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>Kopier URI</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopiér merkelapp</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Kopier melding</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopier beløp</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>QR-kode</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>Kopier &amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>Kopier &amp;Adresse</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Lagre Bilde...</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>Forespør betaling til %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Betalingsinformasjon</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresse</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Beløp</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Merkelapp</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Melding</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>Resulterende URI er for lang, prøv å redusere teksten for merkelapp / melding.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Feil ved koding av URI til QR-kode.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Dato</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Merkelapp</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Melding</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ingen merkelapp)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(ingen melding)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(inget beløp forespurt)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Forespurt</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Send Bitcoins</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Myntkontroll Funksjoner</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Inndata...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>automatisk valgte</translation>
+    </message>
+    <me
