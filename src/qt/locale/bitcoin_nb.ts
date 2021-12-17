@@ -1081,3 +1081,274 @@
     </message>
     <message>
         <source>Enable coin &amp;control features</source>
+        <translation>Aktiver &amp;myntkontroll funksjoner</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation>Hvis du sperrer for bruk av ubekreftet veksel, kan ikke vekselen fra transaksjonen bli brukt før transaksjonen har minimum en bekreftelse. Dette påvirker også hvordan balansen din blir beregnet.</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>&amp;Bruk ubekreftet veksel</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Åpne automatisk Bitcoin klientporten på ruteren. Dette virker kun om din ruter støtter UPnP og dette er påslått.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Sett opp port ved hjelp av &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside.</source>
+        <translation>Tillat tilkoblinger fra utsiden</translation>
+    </message>
+    <message>
+        <source>Allow incomin&amp;g connections</source>
+        <translation>Tillatt innkommend&amp;e tilkoblinger</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>Koble til Bitcoin-nettverket gjennom en SOCKS5 proxy.</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>&amp;Koble til gjennom SOCKS5 proxy (standardvalg proxy):</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>Proxy &amp;IP:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Proxyens port (f.eks. 9050)</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>Brukt for å nå noder via:</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Koble til Bitcoin-nettverket gjennom en separat SOCKS5 mellomtjener for Tor skjulte tjenester.</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Vindu</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Vis kun ikon i systemkurv etter minimering av vinduet.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimer til systemkurv istedenfor oppgavelinjen</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimer ved lukking</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Visning</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>&amp;Språk for brukergrensesnitt</translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation>Brukergrensesnittspråket kan endres her. Denne innstillingen trer i kraft etter omstart av %1.</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Enhet for visning av beløper:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Velg standard delt enhet for visning i grensesnittet og for sending av bitcoins.</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Skal myntkontroll funksjoner vises eller ikke.</translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs</source>
+        <translation>Tredjepart transaksjon URLer</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>standardverdi</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>ingen</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Bekreft tilbakestilling av innstillinger</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Omstart av klienten er nødvendig for å aktivere endringene.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Klienten vil bli lukket. Ønsker du å gå videre?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Oppsettsvalg</translation>
+    </message>
+    <message>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation>Oppsettsfil brukt for å angi avanserte brukervalg som overstyrer innstillinger gjort i grafisk brukergrensesnitt. I tillegg vil enhver handling utført på kommandolinjen overstyre denne oppsettsfila.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Feil</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>Kunne ikke åpne oppsettsfila.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Denne endringen krever omstart av klienten.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Angitt proxyadresse er ugyldig.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Skjema</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Informasjonen som vises kan være foreldet. Din lommebok synkroniseres automatisk med Bitcoin-nettverket etter at tilkobling er opprettet, men denne prosessen er ikke ferdig enda.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Kun observerbar:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Tilgjengelig:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Din nåværende saldo</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Under behandling:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>Totalt antall ubekreftede transaksjoner som ikke teller med i saldo</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Umoden:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Minet saldo har ikke modnet enda</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Saldoer</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Totalt:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Din nåværende saldo</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Din nåværende balanse i kun observerbare adresser</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Kan brukes:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Nylige transaksjoner</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Ubekreftede transaksjoner til kun observerbare adresser</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Utvunnet balanse i kun observerbare adresser som ennå ikke har modnet</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Nåværende totale balanse i kun observerbare adresser</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Feil ved betalingsforespørsel</translation>
+    </message>
+    <message>
+        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <translation>Kan ikke starte bitcoin: Klikk-og-betal håndterer</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>URI-håndtering</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Nettadressen for betalingsforespørselshenting er ugyldig: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Ugyldig betalingsadresse %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>URI kan ikke fortolkes! Dette kan være forårsaket av en ugyldig bitcoin-adresse eller feilformede URI-parametre.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>Håndtering av betalingsforespørselsfil</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Betalingsforespørselsfila kan ikke leses! Dette kan ha sitt opphav i at den er ugyldig.</translatio
