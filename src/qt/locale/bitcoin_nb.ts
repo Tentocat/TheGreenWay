@@ -2036,4 +2036,271 @@
         <source>automatically selected</source>
         <translation>automatisk valgte</translation>
     </message>
-    <me
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Utilstrekkelige midler!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Mengde:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Beløp:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Gebyr:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Etter Gebyr:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Veksel:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>Hvis dette er aktivert, men adressen for veksel er tom eller ugyldig, vil veksel bli sendt til en nylig generert adresse.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>Egendefinert adresse for veksel</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Transaksjonsgebyr:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Velg...</translation>
+    </message>
+    <message>
+        <source>Using the fallbackfee can result in sending a transaction that will take several hours or days (or never) to confirm. Consider choosing your fee manually or wait until you have validated the complete chain.</source>
+        <translation>Bruk av tilbakefallsgebyr kan medføre at en transaksjon tar flere timer eller dager, å fullføre, eller aldri gjør det. Overvei å velge et gebyr manuelt, eller vent til du har bekreftet hele kjeden.</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>Advarsel: Gebyroverslag er ikke tilgjengelig for tiden.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>Legg ned gebyrinnstillinger</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>per kilobyte</translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>Hvis den egendefinerte avgiften er satt til 1000 satoshis og transaksjonen bare er 250 bytes, da vil "per kilobyte" bare betale 250 satoshis i gebyr, mens "minstebeløp" betaler 1000 satoshis. For transaksjoner større enn en kilobyte vil begge betale for antall kilobyte.</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Skjul</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>Betaling av bare minimumsavgiften går helt fint så lenge det er mindre transaksjonsvolum enn plass i blokkene. Men vær klar over at dette kan ende opp i en transaksjon som aldri blir bekreftet når det er mer etterspørsel etter Bitcoin-transaksjoner enn nettverket kan behandle.</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(les verktøytipset)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Anbefalt:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>Egendefinert:</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(Smartgebyr ikke innført ennå. Dette tar vanligvis noen blokker...)</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Send til flere enn en mottaker</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Legg til &amp;Mottaker</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Fjern alle felter fra skjemaet.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Støv:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>Bekreftelsestidsmål:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>Aktiver Replace-By-Fee</translation>
+    </message>
+    <message>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <translation>Med Replace-By-Fee (BIP-125) kan du øke transaksjonens gebyr etter at den er sendt. Uten dette aktivert anbefales et høyere gebyr for å kompensere for risikoen for at transaksjonen blir forsinket. </translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Fjern &amp;Alt</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Saldo:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Bekreft sending</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>S&amp;end</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopier mengde</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopier beløp</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopier gebyr</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopiér totalt</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopiér bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopiér støv</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopier veksel</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 blokker)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 til %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>Er du sikker på at du vil sende?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>lagt til som transaksjonsgebyr</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>Totalt beløp %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>eller</translation>
+    </message>
+    <message>
+        <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
+        <translation>Du kan øke gebyret senere (signaliserer Replace-By-Fee, BIP-125).</translation>
+    </message>
+    <message>
+        <source>Not signalling Replace-By-Fee, BIP-125.</source>
+        <translation>Signaliserer ikke Replace-By-Fee, BIP-125</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Bekreft forsendelse av mynter</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>Mottakeradressen er ikke gyldig. Sjekk den igjen.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Betalingsbeløpet må være høyere enn 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Beløper overstiger saldo.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>Totalbeløpet overstiger saldo etter at %1-transaksjonsgebyret er lagt til.</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>Gjenbruk av adresse funnet: Adresser skal kun brukes én gang hver.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>Opprettelse av transaksjon mislyktes!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transaksjonen ble avslått av følgende grunn: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>Et gebyr høyere enn %1 anses som absurd høyt.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Tidsavbrudd for betalingsforespørsel</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>Kun betal påkrevd gebyr på %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>Estimated to begin confirmation within %n block(s).</source>
+        <translation><numerusform>Antatt bekreftelsesbegynnelse innen %n blokk.</numerusform><numerusform>Antatt bekreftelsesbegynnelse innen %n blokker.</numerusform></translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>Advarsel Ugyldig bitcoin-adresse</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>Advarsel: Ukjent vekslingsadresse</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>Bekreft egendefinert vekslingsadresse</translation>
+    </message>
+    <message>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation>Adressen du valgte for veksling er ikke en del av denne lommeboka. Alle verdiene i din lommebok vil bli sendt til denne adressen. Er du sikker?</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ingen merkelapp)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>&amp;Beløp:</translation>
+    </message>
+    <message
