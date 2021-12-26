@@ -2566,4 +2566,345 @@
         <translation>Åpen til %1</translation>
     </message>
     <message>
-        <source>conflicted with a transaction with 
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation>gikk ikke overens med en transaksjon med %1 bekreftelser</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1/frakoblet</translation>
+    </message>
+    <message>
+        <source>0/unconfirmed, %1</source>
+        <translation>0/ubekreftet, %1</translation>
+    </message>
+    <message>
+        <source>in memory pool</source>
+        <translation>i hukommelsespulje</translation>
+    </message>
+    <message>
+        <source>not in memory pool</source>
+        <translation>ikke i hukommelsespulje</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>forlatt</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/ubekreftet</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 bekreftelser</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, har ikke blitt kringkastet enda</translation>
+    </message>
+    <message numerus="yes">
+        <source>, broadcast through %n node(s)</source>
+        <translation><numerusform>, kringkast gjennom %n node</numerusform><numerusform>, kringkast gjennom %n noder</numerusform></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Dato</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>Kilde</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>Generert</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Fra</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>ukjent</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Til</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>egen adresse</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>kun oppsyn</translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>merkelapp</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>Kreditt</translation>
+    </message>
+    <message numerus="yes">
+        <source>matures in %n more block(s)</source>
+        <translation><numerusform>modner om %n blokk</numerusform><numerusform>modner om %n blokker</numerusform></translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>ikke akseptert</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>Debet</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>Total debet</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>Total kreditt</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>Transaksjonsgebyr</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>Nettobeløp</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Melding</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>Kommentar</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <translation>Transaksjons-ID</translation>
+    </message>
+    <message>
+        <source>Transaction total size</source>
+        <translation>Total transaksjonsstørrelse</translation>
+    </message>
+    <message>
+        <source>Output index</source>
+        <translation>Utdatainndeks</translation>
+    </message>
+    <message>
+        <source>Merchant</source>
+        <translation>Forretningsdrivende</translation>
+    </message>
+    <message>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation>Genererte bitcoins må modne %1 blokker før de kan brukes. Da du genererte denne blokken ble den kringkastet på nettverket for å bli lagt til i kjeden av blokker. Hvis den ikke kommer med i kjeden vil den endre seg til "ikke akseptert", og vil ikke kunne brukes. Dette vil noen ganger skje hvis en annen node genererer en blokk innen noen sekunder av din.</translation>
+    </message>
+    <message>
+        <source>Debug information</source>
+        <translation>Feilrettingsinformasjon</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>Transaksjon</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation>Inndata</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Beløp</translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation>sant</translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation>usant</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Her vises en detaljert beskrivelse av transaksjonen</translation>
+    </message>
+    <message>
+        <source>Details for %1</source>
+        <translation>Detaljer for %1</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Dato</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Merkelapp</translation>
+    </message>
+    <message numerus="yes">
+        <source>Open for %n more block(s)</source>
+        <translation><numerusform>Åpen for én blokk til</numerusform><numerusform>Åpen for %n blokker til</numerusform></translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>Åpen til %1</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Frakoblet</translation>
+    </message>
+    <message>
+        <source>Unconfirmed</source>
+        <translation>Ubekreftet</translation>
+    </message>
+    <message>
+        <source>Abandoned</source>
+        <translation>Forlatt</translation>
+    </message>
+    <message>
+        <source>Confirming (%1 of %2 recommended confirmations)</source>
+        <translation>Bekrefter (%1 av %2 anbefalte bekreftelser)</translation>
+    </message>
+    <message>
+        <source>Confirmed (%1 confirmations)</source>
+        <translation>Bekreftet (%1 bekreftelser)</translation>
+    </message>
+    <message>
+        <source>Conflicted</source>
+        <translation>Gikk ikke overens</translation>
+    </message>
+    <message>
+        <source>Immature (%1 confirmations, will be available after %2)</source>
+        <translation>Umoden (%1 bekreftelser, vil være tilgjengelig etter %2)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>Denne blokken har ikke blitt mottatt av noen andre noder og vil sannsynligvis ikke bli akseptert!</translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>Generert, men ikke akseptert</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Mottatt med</translation>
+    </message>
+    <message>
+        <source>Received from</source>
+        <translation>Mottatt fra</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Sendt til</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>Betaling til deg selv</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Utvunnet</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>kun oppsyn</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(i/t)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ingen merkelapp)</translation>
+    </message>
+    <message>
+        <source>Transaction status. Hover over this field to show number of confirmations.</source>
+        <translation>Transaksjonsstatus. Hold pekeren over dette feltet for å se antall bekreftelser.</translation>
+    </message>
+    <message>
+        <source>Date and time that the transaction was received.</source>
+        <translation>Dato og tid for mottak av transaksjonen.</translation>
+    </message>
+    <message>
+        <source>Type of transaction.</source>
+        <translation>Transaksjonstype.</translation>
+    </message>
+    <message>
+        <source>Whether or not a watch-only address is involved in this transaction.</source>
+        <translation>Hvorvidt en oppsynsadresse er involvert i denne transaksjonen.</translation>
+    </message>
+    <message>
+        <source>User-defined intent/purpose of the transaction.</source>
+        <translation>Brukerdefinert intensjon/hensikt med transaksjonen.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>Beløp fjernet eller lagt til saldo.</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>Alt</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>I dag</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>Denne uka</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>Denne måneden</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>Forrige måned</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>Dette året</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>Rekkevidde…</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Mottatt med</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Sendt til</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>Til deg selv</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Utvunnet</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Andre</translation>
+    </message>
+    <message>
+        <source>Enter addre
