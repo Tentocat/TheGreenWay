@@ -3342,4 +3342,252 @@
         <translation>Kjedeutvelgelsesinnstillinger:</translation>
     </message>
     <message>
-        <source
+        <source>Change index out of range</source>
+        <translation>Kjedeindeks utenfor rekkevidde</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Innstillinger for tilkobling:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>Kopirett © %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Oppdaget korrupt blokkdatabase</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>Valg for feilsøking/testing:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>Ikke last inn lommeboken og deaktiver RPC-kall</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Ønsker du å gjenopprette blokkdatabasen nå?</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>Slå på publish hash block i &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>Slå på publish hash transaction i &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>Slå på publisering av råblokk i &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>Slå på publisering av råtransaksjon i &lt;address&gt;</translation>
+    </message>
+    <message>
+        <source>Enable transaction replacement in the memory pool (default: %u)</source>
+        <translation>Aktiver transaksjonserstatning i hukommelsespuljen (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
+        <translation>Feil under oppretting av %s: Du kan ikke lage en lommebok uten HD med denne versjonen.</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Feil under initialisering av blokkdatabase</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Feil under oppstart av lommeboken sitt databasemiljø %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>Feil ved lasting av %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Feil under innlasting av %s: Skadet lommebok</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Feil under innlasting av %s: Lommeboka krever nyere versjon av %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Feil ved lasting av blokkdatabase</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Feil under åpning av blokkdatabase</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Feil: Lite ledig lagringsplass!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Kunne ikke lytte på noen port. Bruk -listen=0 hvis det er dette du vil.</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>Klarte ikke gå igjennom lommeboken under oppstart</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Importerer...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>Ugyldig eller ingen skaperblokk funnet. Feil datamappe for nettverk?</translation>
+    </message>
+    <message>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>Sunnhetssjekk ved oppstart mislyktes. %s skrus av.</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>Ugyldig beløp for -%s=&lt;amount&gt;: "%s"</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ugyldig beløp for -discardfee=&lt;amount&gt;: "%s"</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ugyldig beløp for -fallbackfee=&lt;amount&gt;: "%s"</translation>
+    </message>
+    <message>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>Hold transaksjonspuljen under &lt;n&gt; megabyte (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>Laster maskin-til-maskin -adresser…</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>Laster inn bannlysningsliste…</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>Plassering for autentiseringskake (forvalg: datamappe)</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>For få fildeskriptorer tilgjengelig.</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Bare koble til noder i nettverket &lt;net&gt; (IPv4, IPv6 eller onion)</translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>Skriv ut denne hjelpemeldingen og avslutt</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>Skriv ut denne versjonen og avslutt</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>Beskjæringsmodus kan ikke konfigureres med en negativ verdi.</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>Beskjæringsmodus er ikke kompatibel med -txindex.</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation>Bygg opp igjen kjedetilstand og blokkindeks fra blk*.dat-filer på disk</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation>Bygg opp igjen kjedetilstand fra blokker som er indeksert nå</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation>Spiller av blokker igjen…</translation>
+    </message>
+    <message>
+        <source>Rewinding blocks...</source>
+        <translation>Spoler tilbake blokker…</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>Sett databasen sin størrelse på hurtigbufferen i megabytes (%d til %d, standardverdi: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Angi lommebokfil (inne i datamappe)</translation>
+    </message>
+    <message>
+        <source>The source code is available from %s.</source>
+        <translation>Kildekoden er tilgjengelig fra %s.</translation>
+    </message>
+    <message>
+        <source>Transaction fee and change calculation failed</source>
+        <translation>Transaksjonsgebyr og vekslingsutregning mislyktes</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer. %s is probably already running.</source>
+        <translation>Kan ikke binde til %s på denne datamaskinen. Sannsynligvis kjører %s allerede.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation>Ustøttet argument -benchmark ble ignorert, bruk -debug=bench.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation>Advarsel: Argumentet -debugnet er ikke støttet og ble ignorert, bruk -debug=net.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -tor found, use -onion.</source>
+        <translation>Feil: Argumentet -tor er ikke støttet, bruk -onion.</translation>
+    </message>
+    <message>
+        <source>Unsupported logging category %s=%s.</source>
+        <translation>Ustøttet loggingskategori %s=%s.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>Oppgraderer UTXO-database</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>Bruk UPnP for å sette opp lytteport (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>Bruk testkjede</translation>
+    </message>
+    <message>
+        <source>User Agent comment (%s) contains unsafe characters.</source>
+        <translation>User Agent kommentar (%s) inneholder utrygge tegn.</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Verifiserer blokker...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Lommebok-feilretting/-testinnstillinger</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Lommeboka må skrives om: Start %s på nytt for å fullføre</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Valg for lommebok:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Tillat JSON-RPC-tilkoblinger fra angitt kilde. Gyldig for &lt;ip&gt; er en enkelt IP (f. eks. 1.2.3.4), et nettverk/nettmaske (f. eks. 1.2.3.4/255.255.255.0) eller et nettverk/CIDR (f. eks. 1.2.3.4/24). Dette alternativet kan angis flere ganger</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Bind til gitt adresse og hvitlist peers som kobler seg til den. Bruk [host]:port notasjon for IPv6</translation>
+    </message>
+    <message>
+        <source>Cre
