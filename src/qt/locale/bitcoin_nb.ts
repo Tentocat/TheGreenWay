@@ -3195,4 +3195,151 @@
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
-        <translation>Kan ikke låse datamappen %s. %s kjører antagelig allerede.</translatio
+        <translation>Kan ikke låse datamappen %s. %s kjører antagelig allerede.</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation>Kan ikke angi spesifikke tilkoblinger og ha addrman til å finne utgående tilkoblinger samtidig. </translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>Slett alle transaksjoner i lommeboken og gjenopprett kun de delene av blokkjeden gjennom -rescan ved oppstart</translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation>Feil under lesing av %s! Alle nøkler har blitt lest rett, men transaksjonsdata eller adressebokoppføringer kan mangle eller være uriktige.</translation>
+    </message>
+    <message>
+        <source>Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.</source>
+        <translation>Ekskluder feilrettingsinformasjon for en kategori. Kan brukes i sammenheng med -debug=1 til utdatafeilrettingslogger for alle kategorier, unntatt én eller flere angitte kategorier.</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Kjør kommando når en lommeboktransaksjon endres (%s i kommando er erstattet med TxID)</translation>
+    </message>
+    <message>
+        <source>Extra transactions to keep in memory for compact block reconstructions (default: %u)</source>
+        <translation>Ekstra transaksjoner å beholde i minne for rekonstruksjoner av kompakte blokker (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)</source>
+        <translation>Hvis denne blokken er i kjeden, anta at den og dens opphav er gyldig, og alternativt hopp over deres skriptbekreftelse (0 for å bekrefte alle, forvalg: %s, testnett: %s)</translation>
+    </message>
+    <message>
+        <source>Maximum allowed median peer time offset adjustment. Local perspective of time may be influenced by peers forward or backward by this amount. (default: %u seconds)</source>
+        <translation>Maksimalt tillatt justering av mediantid av likemenn. Lokalt tidsperspektiv kan påvirkes av likemenn fremover og bakover med denne mengden. (forvalg: %u sekunder)</translation>
+    </message>
+    <message>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation>Maksimalt totalgebyr (i %s) å bruke i én lommebokstransaksjon eller råtransaksjon; en for lav verdi kan avbryte store transaksjoner (forvalg: %s)</translation>
+    </message>
+    <message>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <translation>Sjekk at din datamaskins dato og klokke er stilt rett! Hvis klokka er feil, vil ikke %s fungere ordentlig.</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation>Bidra hvis du finner %s nyttig. Besøk %s for mer informasjon om programvaren.</translation>
+    </message>
+    <message>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect used)</source>
+        <translation>Spørring om likemannsadresser via DNS-oppslag, hvis adressemengden er lav (forvalg: 1 om ikke -connect brukes)</translation>
+    </message>
+    <message>
+        <source>Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, &gt;%u = automatically prune block files to stay under the specified target size in MiB)</source>
+        <translation>Reduser lagringskrav ved å skru på beskjæring (sletting) av gamle blokker. Dette tillater pruneblockchain RPC å bli påkalt for sletting av spesifikke blokker, og skrur på automatisk beskjæring av gamle blokker hvis målstørrelsen i MiB oppgis. Dette moduset er inkompatibelt med -txindex og -rescan. Advarsel: Tilbakestilling av dette krever ny nedlasting av hele blokkjeden. (forvalg: 0 = skru av beskjæring av blokker, 1 = tillat manuell beskjæring via RPC, &gt;%u = automatisk beskjæring av blokkfiler for å ikke overstige angitt målstørrelse, i MiB)</translation>
+    </message>
+    <message>
+        <source>Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)</source>
+        <translation>Sett laveste gebyrtakst (i %s/kB) for transaksjoner som skal inkluderes i blokkopprettelse. (forvalg: %s)</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>Angi antall tråder for skriptverifisering (%u til %d, 0 = auto, &lt;0 = la det antallet kjerner være ledig, standard: %d)</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <translation>Blokkdatabasen inneholder en blokk som ser ut til å være fra fremtiden. Dette kan være fordi dato og tid på din datamaskin er satt feil. Gjenopprett kun blokkdatabasen når du er sikker på at dato og tid er satt riktig.</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>Dette er en testversjon i påvente av utgivelse - bruk på egen risiko - ikke for bruk til blokkutvinning eller i forretningsøyemed</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation>Dette er transaksjonsgebyret du kan se bort fra hvis vekslepengene utgjør mindre enn støv på dette nivået</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>Kan ikke spille av blokker igjen. Du må bygge opp igjen databasen ved bruk av -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <translation>Kan ikke spole tilbake databasen til en tilstand før forgreiningen. Du må laste ned blokkjeden igjen</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>Bruk UPnP for lytteport (standardverdi: 1 ved lytting og uten -proxy)</translation>
+    </message>
+    <message>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times</source>
+        <translation>Brukernavn og sjekksummert JSON-RPC-tilkoblinger. Dette feltet &lt;userpw&gt; kommer i formatet: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. Et kanonisk Python-skript er inkludert i share/rpcuser. Klienten kobler så til bed bruk av rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; argumentpar. Dette valget kan angis flere ganger</translation>
+    </message>
+    <message>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u)</source>
+        <translation>Lommeboka vil ikke opprette transaksjoner som forgriper seg på grenser for hukommelsespuljekjeder (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Advarsel: Nettverket ser ikke ut til å være i overenstemmelse! Noen utvinnere ser ut til å ha problemer.</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>Advarsel: Vi ser ikke ut til å være i full overenstemmelse med våre likemenn! Du kan trenge å oppgradere, eller andre noder kan trenge å oppgradere.</translation>
+    </message>
+    <message>
+        <source>Whether to save the mempool on shutdown and load on restart (default: %u)</source>
+        <translation>Hvorvidt hukommelsespuljen skal lagres ved avstengning og lastes inn ved omstart (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>%d av minst 100 blokker har uventet versjon</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s skadet, berging mislyktes</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>-maxmempool må være minst %d MB</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; kan være:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Ta imot tilkoblinger fra utsiden (standardverdi: 1 hvis uten -proxy eller -connect)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>Legg til kommentarer i brukeragent-strengen</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>Forsøk å gjenopprette private nøkler fra ei skadet lommebok ved oppstart</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Valg for opprettelse av blokker:</translation>
+    </message>
+    <message>
+        <source>Cannot resolve -%s address: '%s'</source>
+        <translation>Kunne ikke slå opp -%s-adresse: "%s"</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>Kjedeutvelgelsesinnstillinger:</translation>
+    </message>
+    <message>
+        <source
