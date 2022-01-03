@@ -3807,4 +3807,164 @@
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation>Du må bygge opp igjen databasen ved bruk av -reindex for å en
+        <translation>Du må bygge opp igjen databasen ved bruk av -reindex for å endre -txindex</translation>
+    </message>
+    <message>
+        <source>Zapping all transactions from wallet...</source>
+        <translation>Zapper alle transaksjoner fra lommeboken...</translation>
+    </message>
+    <message>
+        <source>ZeroMQ notification options:</source>
+        <translation>Valg for ZeroMQ-meldinger:</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Passord for JSON-RPC forbindelser</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>Utfør kommando når beste blokk endrer seg (%s i kommandoen erstattes med blokkens hash)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Tillat oppslag i DNS for -addnode, -seednode og -connect</translation>
+    </message>
+    <message>
+        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
+        <translation>(1 = behold metadata for transaksjon som f. eks. kontoeier og informasjon om betalingsanmodning, 2 = dropp metadata for transaksjon)</translation>
+    </message>
+    <message>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation>-maxtxfee er satt veldig høyt! Så stort gebyr kan bli betalt ved en enkelt transaksjon.</translation>
+    </message>
+    <message>
+        <source>Bind to given address to listen for JSON-RPC connections. This option is ignored unless -rpcallowip is also passed. Port is optional and overrides -rpcport. Use [host]:port notation for IPv6. This option can be specified multiple times (default: 127.0.0.1 and ::1 i.e., localhost, or if -rpcallowip has been specified, 0.0.0.0 and :: i.e., all addresses)</source>
+        <translation>Bind til angitt adresse for lytting til JSON-RPC-tilkoblinger. Dette valget ses bort fra om ikke -rcpallowip også sendes. Port er valgfritt og overstyrer -rpcport. Bruk notasjon i formatet [host]:port for IPv6. Dette valget kan angis flere ganger (forvalg: 127.0.0.1 og ::1 ,altså, lokalvert, eller hvis -rpcallowip har blitt angitt, 0.0.0.0 og :: ,altså, alle adresser)</translation>
+    </message>
+    <message>
+        <source>Do not keep transactions in the mempool longer than &lt;n&gt; hours (default: %u)</source>
+        <translation>Ikke hold transaksjoner i minnet lenger enn &lt;n&gt; timer (standard: %u)</translation>
+    </message>
+    <message>
+        <source>Equivalent bytes per sigop in transactions for relay and mining (default: %u)</source>
+        <translation>Overenstemmende byte per sigop i transaksjoner for stafett og utvinning (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
+        <translation>Feil ved innlasting av %s: Du kan ikke skru på HD på ei ikke-HD-lommebok som allerede finnes</translation>
+    </message>
+    <message>
+        <source>Error loading wallet %s. -wallet parameter must only specify a filename (not a path).</source>
+        <translation>Feil under innlasting av lommeboka %s. -wallet parameter må kun angi et filnavn (ikke en sti).</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Gebyrer (i %s/Kb) mindre enn dette anses som null gebyr for laging av transaksjoner (standardverdi: %s)</translation>
+    </message>
+    <message>
+        <source>Force relay of transactions from whitelisted peers even if they violate local relay policy (default: %d)</source>
+        <translation>Tving igjennom stafettransaksjoner av hvitlistede likemenn, selv når de ikke overholder lokal stafettpraksis (forvalg: %d)</translation>
+    </message>
+    <message>
+        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <translation>Hvor grundig blokkverifiseringen til -checkblocks er (0-4, standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation>Oppretthold en full transaksjonsindeks, brukt av getrawtransaction RPC-kall (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation>Antall sekunder noder med dårlig oppførsel hindres fra å koble til på nytt (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Output debugging information (default: %u, supplying &lt;category&gt; is optional)</source>
+        <translation>Ta ut feilsøkingsinformasjon (standardverdi: %u, bruk av &lt;category&gt; er valgfritt)</translation>
+    </message>
+    <message>
+        <source>Sets the serialization of raw transaction or block hex returned in non-verbose mode, non-segwit(0) or segwit(1) (default: %d)</source>
+        <translation>Setter serialisering av råtransaksjon eller heksadesimal verdi for blokk returnert i ikke-ordrikt modus, non-segwit(0) eller segwit(1) (forvalg: %d)</translation>
+    </message>
+    <message>
+        <source>Specify directory to hold wallets (default: &lt;datadir&gt;/wallets if it exists, otherwise &lt;datadir&gt;)</source>
+        <translation>Oppgi katalog som inneholder lommebøker (standard: &lt;datadir&gt;/wallets hvis den eksisterer, ellers &lt;datadir&gt;)</translation>
+    </message>
+    <message>
+        <source>Specify location of debug log file: this can be an absolute path or a path relative to the data directory (default: %s)</source>
+        <translation>Oppgi sted for feilsøkingsloggfil: Dette kan være en absolutt sti eler en sti relativt til datakatalogen (standard: %s)</translation>
+    </message>
+    <message>
+        <source>Support filtering of blocks and transaction with bloom filters (default: %u)</source>
+        <translation>Støtte filtrering av blokker og transaksjoner med bloomfiltre (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>The fee rate (in %s/kB) that indicates your tolerance for discarding change by adding it to the fee (default: %s). Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target</source>
+        <translation>Gebyrtakst (i %s(kB) som indikerer din toleranse for å avslå veksel ved å legge det til gebyret (forvalg: %s). Merk: Otdata avslås hvis det er støv på dette nivået, men det vil alltid bli avslått opptil hva støv-nivået er for stafettoppsettet, og gebyravslag uver det begrenses av gebyroverslaget for det lengste målet</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
+        <translation>Dette er transaksjonsgebyret du kan betale når gebyranslag ikke er tilgjengelige.</translation>
+    </message>
+    <message>
+        <source>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit %s and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.</source>
+        <translation>Dette produktet inneholder programmet utviklet av OpenSSL-prosjektet for bruk i OpenSSL-verktøyssettet %s og kryptografisk programvare skrevet av Eric Young og UPnP-programvare skrevet av Thomas Bernard.</translation>
+    </message>
+    <message>
+        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
+        <translation>Total lengde av nettverks-versionstreng (%i) er over maks lengde (%i). Reduser tallet eller størrelsen av uacomments.</translation>
+    </message>
+    <message>
+        <source>Tries to keep outbound traffic under the given target (in MiB per 24h), 0 = no limit (default: %d)</source>
+        <translation>Prøv å holde utgående trafikk under angitt mål (i MB per 24t), 0 = ingen grense (standard: %d)</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
+        <translation>Argumentet -socks er ikke støttet. Det er ikke lenger mulig å sette SOCKS-versjon; bare SOCKS5-proxyer er støttet.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -whitelistalwaysrelay ignored, use -whitelistrelay and/or -whitelistforcerelay.</source>
+        <translation>Argumentet -whitelistalwaysrelay støttes ikke, og blir ignorert, bruk -whitelistrelay og/eller -whitelistforcerelay.</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
+        <translation>Bruk separate SOCKS5 proxyer for å nå noder via Tor skjulte tjenester (standardverdi: %s)</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown block versions being mined! It's possible unknown rules are in effect</source>
+        <translation>Advarsel: Ukjente blokkversjoner blir utvunnet! Det er mulig ukjente regler er i spill</translation>
+    </message>
+    <message>
+        <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
+        <translation>Advarsel: Lommeboksfil skadet, data berget! Original %s lagret som %s i %s; hvis din saldo eller transaksjoner er uriktige, bør du gjenopprette fra sikkerhetskopi.</translation>
+    </message>
+    <message>
+        <source>Whitelist peers connecting from the given IP address (e.g. 1.2.3.4) or CIDR notated network (e.g. 1.2.3.0/24). Can be specified multiple times.</source>
+        <translation>Hvitlist brukere som kobler til fra en gitt IP-adresse (e.g. 1.2.3.4) eller nettverk med CIDR-notasjon (f.eks. 1.2.3.0/24). Kan angis mange ganger.</translation>
+    </message>
+    <message>
+        <source>%s is set very high!</source>
+        <translation>%s er satt veldig høyt!</translation>
+    </message>
+    <message>
+        <source>(default: %s)</source>
+        <translation>(standardverdi: %s)</translation>
+    </message>
+    <message>
+        <source>Always query for peer addresses via DNS lookup (default: %u)</source>
+        <translation>Alltid søk etter nodeadresser via DNS-oppslag (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Error loading wallet %s. -wallet filename must be a regular file.</source>
+        <translation>Feil under innlasting av lommeboka %s. -lommebokfilnavn må være ei vanlig fil.</translation>
+    </message>
+    <message>
+        <source>Error loading wallet %s. Duplicate -wallet filename specified.</source>
+        <translation>Feil ved innlasting av lommeboka %s. Duplisert -wallet -filnavn angitt.</translation>
+    </message>
+    <message>
+        <source>Error loading wallet %s. Invalid characters in -wallet filename.</source>
+        <translation>Feil ved innlasting av lommeboka %s. Ugyldige tegn i -wallet filename.</translation>
+    </message>
+    <message>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation>Hvor mange blokker skal sjekkes ved oppstart (standardverdi: %u, 0 = 
