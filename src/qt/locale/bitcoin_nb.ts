@@ -3967,4 +3967,143 @@
     </message>
     <message>
         <source>How many blocks to check at startup (default: %u, 0 = all)</source>
-        <translation>Hvor mange blokker skal sjekkes ved oppstart (standardverdi: %u, 0 = 
+        <translation>Hvor mange blokker skal sjekkes ved oppstart (standardverdi: %u, 0 = alle)</translation>
+    </message>
+    <message>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation>Inkludere IP-adresser i feilsøkingslogg (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Keypool ran out, please call keypoolrefill first</source>
+        <translation>Nøkkelpuljen gikk tom, kall keypoolrefill først</translation>
+    </message>
+    <message>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>Lytt etter JSON-RPC tilkoblinger på &lt;port&gt; (standardverdi: %u eller testnett: %u)</translation>
+    </message>
+    <message>
+        <source>Listen for connections on &lt;port&gt; (default: %u or testnet: %u)</source>
+        <translation>Lytt etter tilkoblinger på &lt;port&gt; (standardverdi: %u eller testnett: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>Hold maks &lt;n&gt; koblinger åpne til andre noder (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Make the wallet broadcast transactions</source>
+        <translation>Få lommeboken til å kringkaste transaksjoner</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Maks mottaksbuffer per forbindelse, &lt;n&gt;*1000 bytes (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
+        <translation>Maks sendebuffer per forbindelse, &lt;n&gt;*1000 bytes (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Prepend debug output with timestamp (default: %u)</source>
+        <translation>Sett inn tidsstempel i front av feilsøkingsdata (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Relay and mine data carrier transactions (default: %u)</source>
+        <translation>Videresend og ufør graving av databærende transaksjoner (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Relay non-P2SH multisig (default: %u)</source>
+        <translation>Videresend ikke-P2SH multisig (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Set key pool size to &lt;n&gt; (default: %u)</source>
+        <translation>Angi størrelse på nøkkel-lager til &lt;n&gt; (forvalg: %u)</translation>
+    </message>
+    <message>
+        <source>Set maximum BIP141 block weight (default: %d)</source>
+        <translation>Sett maksimal BIP141-blokkvekt (forvalg: %d)</translation>
+    </message>
+    <message>
+        <source>Set the number of threads to service RPC calls (default: %d)</source>
+        <translation>Sett antall tråder til betjening av RPC-kall (standardverdi: %d)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>Angi konfigurasjonsfil (standardverdi: %s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>Angi tidsavbrudd for forbindelse i millisekunder (minimum: 1, standardverdi: %d)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>Angi pid-fil (standardverdi: %s)</translation>
+    </message>
+    <message>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation>Bruk ubekreftet veksel ved sending av transaksjoner (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation>Starter nettverkstråder…</translation>
+    </message>
+    <message>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>Lommeboka vil unngå å betale mindre enn minimumsstafettgebyret.</translation>
+    </message>
+    <message>
+        <source>This is the minimum transaction fee you pay on every transaction.</source>
+        <translation>Dette er minimumsgebyret du betaler for hver transaksjon.</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you will pay if you send a transaction.</source>
+        <translation>Dette er transaksjonsgebyret du betaler som forsender av transaksjon.</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>Grenseverdi for å koble fra noder med dårlig oppførsel (standardverdi: %u)</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>Transaksjonsbeløpet kan ikke være negativt</translation>
+    </message>
+    <message>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>Transaksjonen har for lang hukommelsespuljekjede</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>Transaksjonen må ha minst én mottaker</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>Ukjent nettverk angitt i -onlynet '%s'</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Utilstrekkelige midler</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Laster blokkindeks...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Laster lommebok...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>Kan ikke nedgradere lommebok</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Leser gjennom...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Ferdig med lasting</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Feil</translation>
+    </message>
+</context>
+</TS>
