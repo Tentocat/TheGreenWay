@@ -626,4 +626,284 @@
         <source>Confirmed</source>
         <translation>Bevestigd</translation>
     </message>
-    <messa
+    <message>
+        <source>Copy address</source>
+        <translation>Kopieer adres</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopieer label</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopieer transactie-ID</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Blokeer ongebruikte</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Deblokkeer ongebruikte</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopieer aantal</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopieer vergoeding</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopieer na vergoeding</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopieer bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopieër stof</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopieer wijziging</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 geblokkeerd)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>ja</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>nee</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Dit label wordt rood, als een ontvanger een bedrag van minder dan de huidige dust-drempel gekregen heeft.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Kan per input +/- %1 satoshi(s)  variëren.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen label)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>wijzig van %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(wijzig)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Bewerk adres</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Label</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>Het label dat bij dit adres item hoort</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Het adres dat bij dit adresitem hoort. Dit kan alleen bewerkt worden voor verstuuradressen.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Adres</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Nieuw ontvangstadres</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Nieuw verzendadres</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Bewerk ontvangstadres</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Bewerk verzendadres</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>Het opgegeven adres "%1" is een ongeldig Bitcoinadres.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Het opgegeven adres "%1" bestaat al in uw adresboek.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Kon de portemonnee niet openen.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Genereren nieuwe sleutel mislukt.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Een nieuwe gegevensmap wordt aangemaakt.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>naam</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Map bestaat al. Voeg %1 toe als u van plan bent hier een nieuwe map aan te maken.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Pad bestaat al en is geen map.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Kan hier geen gegevensmap aanmaken.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versie</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Over %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Opdrachtregelopties</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Gebruik:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>opdrachtregelopties</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>UI-opties:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Kies gegevensmap bij opstarten (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Stel taal in, bijvoorbeeld "nl_NL" (standaard: systeemlocale)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Geminimaliseerd starten</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Zet SSL-rootcertificaat voor betalingsverzoeken (standaard: -systeem-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Toon opstartscherm bij opstarten (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Reset alle wijzigingen aan instellingen gedaan in de GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Welkom</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Welkom bij %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Omdat dit de eerste keer is dat het programma gestart is, kunt u nu kiezen waar %1 de data moet opslaan.</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>Als u op OK klikt, dan zal %1 beginnen met downloaden en verwerken van de volledige %4 blokketen (%2GB) startend met de eerste transacties in %3 toen %4 initeel werd gestart.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>Deze initiële synchronisatie is heel veeleisend, en kan hardware problemen met uw computer blootleggen die voorheen onopgemerkt bleven. Elke keer dat %1 gebruikt word, zal verdergegaan worden waar gebleven is.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>Als u gekozen heeft om de blokketenopslag te beperken (pruning), dan moet de historische data nog steeds gedownload en verwerkt worden, maar zal verwijderd worden naderhand om schijf gebruik zo laag mogelijk te houden.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Gebruik de standaard gegevensmap</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Gebruik een aangepaste gegevensmap:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>Tenminste %1 GB aan data zal worden opgeslagen in deze map, en dit zal naarmate de tijd voortschrijdt groeien.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Gemiddeld %1 GB aan data zal worden opgeslagen in deze map.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 zal een kopie van de blokketen van Bitcoin downloaden en opslaan.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>De portemonnee wordt ook in deze map opgeslagen.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Fout: De gespecificeerde map "%1" kan niet worden gecreëerd.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fout</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB aan vrije opslagruimte beschikbaar</numerusform><numerusform>%n GB aan vrije opslagruimte beschikbaar</numerusform></translation>
+    </message>
+    <mes
