@@ -1808,4 +1808,301 @@
         <source>Type %1 for an overview of available commands.</source>
         <translation>Typ %1  voor een overzicht van de beschikbare commando's.</translation>
     </message>
-    
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>Typ %1 voor meer informatie over het gebruik van deze console.</translation>
+    </message>
+    <message>
+        <source>WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.</source>
+        <translation>WAARSCHUWING: Er zijn Scammers actief geweest, die gebruikers vragen om hier commando's te typen, waardoor de inhoud van hun portemonnee werd gestolen. Gebruik deze console niet zonder de gevolgen van een commando volledig te begrijpen.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Netwerkactiviteit uitgeschakeld</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(node id: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>via %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>nooit</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Inkomend</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Uitgaand</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nee</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Onbekend</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Bedrag</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Bericht</translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <translation>Een optioneel bericht om bij te voegen aan het betalingsverzoek, welke zal getoond worden wanneer het verzoek is geopend. Opmerking: Het bericht zal niet worden verzonden met de betaling over het Bitcoinnetwerk.</translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address.</source>
+        <translation>Een optioneel label om te associëren met het nieuwe ontvangstadres</translation>
+    </message>
+    <message>
+        <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
+        <translation>Gebruik dit formulier om te verzoeken tot betaling. Alle velden zijn &lt;b&gt;optioneel&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
+        <translation>Een optioneel te verzoeken bedrag. Laat dit leeg, of nul, om geen specifiek bedrag aan te vragen.</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Wis alle velden op het formulier.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Wissen</translation>
+    </message>
+    <message>
+        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don't support them. When unchecked, an address compatible with older wallets will be created instead.</source>
+        <translation>Native segwit-adressen (Bech32 of BIP-173) reduceren later je transactiekosten en bieden een betere bescherming tegen typefouten, maar oude portemonnees ondersteunen deze niet. Een adres dat is compatibel met oudere portemonnees zal worden gecreëerd indien dit niet is aangevinkt.</translation>
+    </message>
+    <message>
+        <source>Generate native segwit (Bech32) address</source>
+        <translation>Genereer native segwit-adres (Bech32)</translation>
+    </message>
+    <message>
+        <source>Requested payments history</source>
+        <translation>Geschiedenis van de betalingsverzoeken</translation>
+    </message>
+    <message>
+        <source>&amp;Request payment</source>
+        <translation>&amp;Betalingsverzoek</translation>
+    </message>
+    <message>
+        <source>Show the selected request (does the same as double clicking an entry)</source>
+        <translation>Toon het geselecteerde verzoek (doet hetzelfde als dubbelklikken)</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Toon</translation>
+    </message>
+    <message>
+        <source>Remove the selected entries from the list</source>
+        <translation>Verwijder de geselecteerde items van de lijst</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Verwijder</translation>
+    </message>
+    <message>
+        <source>Copy URI</source>
+        <translation>Kopieer URI</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopieer label</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Kopieer bericht</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>QR-code</translation>
+    </message>
+    <message>
+        <source>Copy &amp;URI</source>
+        <translation>Kopieer &amp;URI</translation>
+    </message>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>Kopieer &amp;adres</translation>
+    </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Sla afbeelding op...</translation>
+    </message>
+    <message>
+        <source>Request payment to %1</source>
+        <translation>Betalingsverzoek tot %1</translation>
+    </message>
+    <message>
+        <source>Payment information</source>
+        <translation>Betalingsinformatie</translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adres</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Bedrag</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Label</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Bericht</translation>
+    </message>
+    <message>
+        <source>Resulting URI too long, try to reduce the text for label / message.</source>
+        <translation>Resulterende URI te lang, probeer de tekst korter te maken voor het label/bericht.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Fout tijdens encoderen URI in QR-code</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Label</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Bericht</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen label)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(geen bericht)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(geen bedrag aangevraagd)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Verzoek ingediend</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Verstuurde munten</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Coin controle opties</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Invoer...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>automatisch geselecteerd</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Onvoldoende fonds!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Kwantiteit</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Bedrag:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Vergoeding:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Naheffing:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Wisselgeld:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>Als dit is geactiveerd, maar het wisselgeldadres is leeg of ongeldig, dan wordt het wisselgeld verstuurd naar een nieuw gegenereerd adres.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>Aangepast wisselgeldadres</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Transactievergoeding:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Kies...</translation>
+    </message>
+    <message>
+        <source>Using the fallbackfee can result in sending a transaction that will take several hours or days (or never) to confirm. Consider choosing your fee manually or wait until you have validated the complete chain.</source>
+        <translation>Gebruik van de terugvalkosten kan resulteren in het verzenden van een transactie die meerdere uren of dagen (of nooit) zal duren om bevestigd te worden. Overweeg om handmatig de vergoeding in te geven of wacht totdat je de volledige keten hebt gevalideerd.</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>Waarschuwing: Schatting van de vergoeding is momenteel niet mogelijk.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>verberg vergoeding-instellingen</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>per kilobyte</translation>
+    </message>
+    <message>
+      
