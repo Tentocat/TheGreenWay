@@ -1161,4 +1161,288 @@
     </message>
     <message>
         <source>M&amp;inimize on close</source>
-        <translation>M&amp;inimaliseer bij sluite
+        <translation>M&amp;inimaliseer bij sluiten van het venster</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Interface</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>Taal &amp;gebruikersinterface:</translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation>De taal van de gebruikersinterface kan hier ingesteld worden. Deze instelling zal pas van kracht worden nadat %1 herstart wordt.</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Eenheid om bedrag in te tonen:</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Kies de standaardonderverdelingseenheid om weer te geven in uw programma, en voor het versturen van munten</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Munt controle functies weergeven of niet.</translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs</source>
+        <translation>Transactie-URL's van &amp;derden</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;Oké</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Annuleren</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>standaard</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>geen</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Bevestig reset opties</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Herstart van de client is vereist om veranderingen door te voeren.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Applicatie zal worden afgesloten. Wilt u doorgaan?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Configuratieopties</translation>
+    </message>
+    <message>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation>Het configuratiebestand wordt gebruikt om geavanceerde gebruikersopties te specificeren welke de GUI instellingen overschrijd. Daarnaast, zullen alle command-line opties dit configuratiebestand overschrijven.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fout</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>Het configuratiebestand kon niet worden geopend.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Om dit aan te passen moet de client opnieuw gestart worden.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Het opgegeven proxyadres is ongeldig.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Vorm</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>De weergegeven informatie kan verouderd zijn. Uw portemonnee synchroniseert automatisch met het Bitcoinnetwerk nadat een verbinding is gelegd, maar dit proces is nog niet voltooid.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Alleen-bekijkbaar:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Beschikbaar:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Uw beschikbare saldo</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Afwachtend:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>De som van de transacties die nog bevestigd moeten worden, en nog niet meetellen in uw beschikbare saldo</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Immatuur:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Gedolven saldo dat nog niet tot wasdom is gekomen</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Saldi</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Totaal:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Uw totale saldo</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Uw huidige balans in alleen-bekijkbare adressen</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Besteedbaar:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Recente transacties</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Onbevestigde transacties naar alleen-bekijkbare adressen</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Ontgonnen saldo dat nog niet tot wasdom is gekomen</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Huidige balans in alleen-bekijkbare adressen.</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Fout bij betalingsverzoek</translation>
+    </message>
+    <message>
+        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <translation>Kan bitcoin niet starten: click-to-pay handler</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>URI-behandeling</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>URL om betalingsverzoek te verkrijgen is ongeldig: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Ongeldig betalingsadres %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>URI kan niet verwerkt worden! Dit kan het gevolg zijn van een ongeldig Bitcoin adres of misvormde URI parameters.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>Betalingsverzoek bestandsafhandeling</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Betalingsverzoekbestand kan niet gelezen of verwerkt worden! Dit kan veroorzaakt worden door een ongeldig betalingsverzoekbestand.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalingsverzoek geweigerd</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Betalingsaanvraagnetwerk komt niet overeen met klantennetwerk.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalingsverzoek verlopen.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalingsaanvraag is niet geïnitialiseerd.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Niet-geverifieerde betalingsverzoeken naar aangepaste betalingsscripts worden niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ongeldig betalingsverzoek.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Het gevraagde betalingsbedrag van %1 is te weinig (beschouwd als stof).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Restitutie van %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalingsverzoek %1 is te groot (%2 bytes, toegestaan ​​%3 bytes).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Fout bij communiceren met %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalingsverzoek kan niet worden verwerkt!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Ongeldige respons van server %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Fout bij netwerkverzoek</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betaling bevestigd</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>User Agent</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Node/Dienst</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>Node ID</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Ping</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Verstuurd</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Ontvangen</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Bedrag</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Voer een Bitcoinadres in (b
