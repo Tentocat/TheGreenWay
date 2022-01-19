@@ -2105,4 +2105,263 @@
         <translation>per kilobyte</translation>
     </message>
     <message>
-      
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>Als de aangepaste toeslag is ingesteld op 1000 satoshis en de transactie is maar 250 bytes, dan wordt bij "per kilobyte" 250 satoshis aan toeslag berekend, terwijl er bij "totaal tenminste" 1000 satoshis worden berekend. Voor transacties die groter zijn dan een kilobyte, wordt in beide gevallen per kilobyte de toeslag berekend.</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Verbergen</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>De minimale toeslag betalen is prima mits het transactievolume kleiner is dan de ruimte in de blokken. Let wel op dat dit tot gevolg kan hebben dat een transactie nooit wordt bevestigd als er meer vraag is naar bitcointransacties dan het netwerk kan verwerken.</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(lees de tooltip)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Aanbevolen:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>Aangepast:</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(Slimme transactiekosten is nog niet geïnitialiseerd. Dit duurt meestal een paar blokken...)</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Verstuur in een keer aan verschillende ontvangers</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Voeg &amp;ontvanger toe</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Wis alle velden van het formulier.</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Stof:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>Bevestigingstijddoel:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>Activeer Replace-By-Fee</translation>
+    </message>
+    <message>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <translation>Met Replace-By-Fee (BIP-125) kun je de vergoeding voor een transactie verhogen na dat deze verstuurd is. Zonder dit kan een hogere vergoeding aangeraden worden om te compenseren voor de hogere kans op transactie vertragingen.</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Verwijder &amp;alles</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Saldo:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Bevestig de verstuuractie</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>V&amp;erstuur</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopieer aantal</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopieer bedrag</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopieer vergoeding</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopieer na vergoeding</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopieer bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopieër stof</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopieer wijziging</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 blokken)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 tot %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>Weet u zeker dat u wilt verzenden?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>toegevoegd als transactie vergoeding</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>Totaalbedrag %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>of</translation>
+    </message>
+    <message>
+        <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
+        <translation>Je kunt de vergoeding later verhogen (signaleert Replace-By-Fee, BIP-125).</translation>
+    </message>
+    <message>
+        <source>Not signalling Replace-By-Fee, BIP-125.</source>
+        <translation>Signaleert geen Replace-By-Fee, BIP-125.</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Bevestig versturen munten</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>Het adres van de ontvanger is niet geldig. Gelieve opnieuw te controleren.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Het ingevoerde bedrag moet groter zijn dan 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Het bedrag is hoger dan uw huidige saldo.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>Het totaal overschrijdt uw huidige saldo wanneer de %1 transactie vergoeding wordt meegerekend.</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>Dubbel adres gevonden: adressen mogen maar één keer worden gebruikt worden.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>Transactiecreatie mislukt</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>De transactie werd afgewezen om de volgende reden: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>Een vergoeding van meer dan %1 wordt beschouwd als een absurd hoge vergoeding.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalingsverzoek verlopen.</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>Betaal alleen de verplichte transactie vergoeding van %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>Estimated to begin confirmation within %n block(s).</source>
+        <translation><numerusform>Schatting is dat bevestiging begint over %n blok.</numerusform><numerusform>Schatting is dat bevestiging begint over %n blokken.</numerusform></translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>Waarschuwing: Ongeldig Bitcoinadres</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>Waarschuwing: Onbekend wisselgeldadres</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>Bevestig aangepast wisselgeldadres</translation>
+    </message>
+    <message>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation>Het wisselgeldadres dat u heeft geselecteerd maakt geen deel uit van deze portemonnee. Een deel of zelfs alle geld in uw portemonnee kan mogelijk naar dit adres worden verzonden. Weet je het zeker?</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(geen label)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>B&amp;edrag:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Betaal &amp;aan:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Kies een eerder gebruikt adres</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Dit is een normale betaling.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation>Het Bitcoinadres om betaling aan te versturen</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Plak adres vanuit klembord</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>Verwijder deze toevoeging</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>De transactiekosten zal worden afgetrokken van het bedrag dat verstuurd wordt. De ontvangers zullen minder bitcoins ontvangen dan ingevoerd is in het hoeveelheidsveld. Als er meerdere ontvangers geselecteerd zijn, dan worden de transactiekosten gelijk verdeeld.</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>Trek de transactiekosten a&amp;f van het bedrag.</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>Gebruik beschikbaar saldo</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Bericht:</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</s
