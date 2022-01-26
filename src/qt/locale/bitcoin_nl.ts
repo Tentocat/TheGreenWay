@@ -3215,4 +3215,153 @@
     </message>
     <message>
         <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation>Waarschuwing: Fout bij het lezen van %s! Alle sleutels zijn in goede orde uitgelezen, maar transactiedata of adresboeklemma's zouden k
+        <translation>Waarschuwing: Fout bij het lezen van %s! Alle sleutels zijn in goede orde uitgelezen, maar transactiedata of adresboeklemma's zouden kunnen ontbreken of fouten bevatten.</translation>
+    </message>
+    <message>
+        <source>Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.</source>
+        <translation>Sluit debugging informatie uit van een categorie. Dit kan samen gebruikt worden met -debug=1 om uitvoer debug logboeken te creëren voor alle categorieën, behalve één of meerdere categorieën.</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Voer opdracht uit zodra een portemonneetransactie verandert (%s in cmd wordt vervangen door TxID)</translation>
+    </message>
+    <message>
+        <source>Extra transactions to keep in memory for compact block reconstructions (default: %u)</source>
+        <translation>Extra transacties wordt bijgehouden voor compacte blokreconstructie (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)</source>
+        <translation>Als dit blok in de keten staat, gaat het ervan uit dat dit blok en zijn voorouders geldig zijn en mogelijk hun script verificatie overslaan (0 om alles te verifiëren, standaard:%s, testnet:%s)</translation>
+    </message>
+    <message>
+        <source>Maximum allowed median peer time offset adjustment. Local perspective of time may be influenced by peers forward or backward by this amount. (default: %u seconds)</source>
+        <translation>Maximum toegestane peer tijd compensatie. Lokaal perspectief van tijd mag worden beinvloed door peers die met deze hoeveelheid voor of achter lopen. (standaard: %u seconden)</translation>
+    </message>
+    <message>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation>Maximum totale transactiekosten (in %s) om te gebruiken in een enkele portemonneetransactie; als dit te laag is ingesteld kunnen grote transacties worden verhinderd (standaard: %s)</translation>
+    </message>
+    <message>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <translation>Waarschuwing: Controleer dat de datum en tijd van uw computer correct zijn ingesteld! Bij een onjuist ingestelde klok zal %s niet goed werken.</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation>Gelieve bij te dragen als je %s nuttig vindt. Bezoek %s voor meer informatie over de software.</translation>
+    </message>
+    <message>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect used)</source>
+        <translation>Query voor peer adressen via DNS-lookup, als er weinig adressen zijn (standaard: 1 tenzij -connect gebruikt word)</translation>
+    </message>
+    <message>
+        <source>Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, &gt;%u = automatically prune block files to stay under the specified target size in MiB)</source>
+        <translation>Beperk benodigde opslag door het prunen (verwijderen) van oude blokken in te schakelen. Dit maakt het mogelijk om het pruneblockchain RPC commando aan te roepen om specifieke bloks te verwijderen, en maakt het automatische prunen van oude bloks mogelijk wanneer een doelgrootte in MiB is ingesteld. Deze modus is niet compatibel met -txindex en -rescan. Waarschuwing: ongedaan maken van deze instellingen vereist het opnieuw downloaden van gehele de blokketen. (standaard:0 = uitschakelen prunen, 1 = handmatig prunen via RPC toestaan, &gt;%u = automatisch blokketen bestanden prunen om beneden de gespecificeerde doelgrootte in MiB te blijven)</translation>
+    </message>
+    <message>
+        <source>Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)</source>
+        <translation>Specificeer het laagste tarief (in %s/kB) voor transacties die bij het maken van een blok moeten worden in rekening worden gebracht (standaard: %s)</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>Kies het aantal scriptverificatie processen (%u tot %d, 0 = auto, &lt;0 = laat dit aantal kernen vrij, standaard: %d)</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <translation>De blokdatabase bevat een blok dat lijkt uit de toekomst te komen. Dit kan gebeuren omdat de datum en tijd van uw computer niet goed staat. Herbouw de blokdatabase pas nadat u de datum en tijd van uw computer correct heeft ingesteld.</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>Dit is een pre-release testversie - gebruik op eigen risico! Gebruik deze niet voor het delven van munten of handelsdoeleinden</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation>Dit is de transactievergoeding die u mag afleggen als het wisselgeld kleiner is dan stof op dit niveau</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>Onmogelijk om blokken opnieuw af te spelen. U dient de database opnieuw op te bouwen met behulp van -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <translation>Niet mogelijk om de databank terug te draaien naar een staat voor de vork. Je zal je blokketen opnieuw moeten downloaden</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>Gebruik UPnP om de luisterende poort te mappen (standaard: 1 als er geluisterd worden en geen -proxy is meegegeven)</translation>
+    </message>
+    <message>
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times</source>
+        <translation>Gebruikersnaam en gehasht wachtwoord voor JSON-RPC-verbindingen. Het veld &lt;userpw&gt; is in het formaat: &lt;GEBRUIKERSNAAM&gt;:&lt;SALT&gt;$&lt;HASH&gt;. Een kanoniek Pythonscript is inbegrepen in share/rpcuser. De client verbindt dan normaal via de rpcuser=&lt;GEBRUIKERSNAAM&gt;/rpcpassword=&lt;PASWOORD&gt; argumenten. Deze optie kan meerdere keren worden meegegeven</translation>
+    </message>
+    <message>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u)</source>
+        <translation>Portemonnee creëert geen transacties die mempool-ketenlimieten schenden (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>Waarschuwing: Het lijkt erop dat het netwerk geen consensus kan vinden! Sommige delvers lijken problemen te ondervinden.</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>Waarschuwing: Het lijkt erop dat we geen consensus kunnen vinden met onze peers! Mogelijk dient u te upgraden, of andere nodes moeten wellicht upgraden.</translation>
+    </message>
+    <message>
+        <source>Whether to save the mempool on shutdown and load on restart (default: %u)</source>
+        <translation>Of de mempool opgeslagen moet worden bij afsluiten en ingeladen moet worden tijdens herstarten (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>%d van de laatste 100 blokken hebben een onverwachte versie</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s corrupt, veiligstellen mislukt</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>-maxmempool moet minstens %d MB zijn</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;categorie&gt; kan zijn:</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Accepteer verbindingen van buitenaf (standaard: 1 als geen -proxy of -connect is opgegeven)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>Voeg commentaar toe aan de user agent string</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>Probeer privésleutels te herstellen van een corrupte wallet bij opstarten</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Blokcreatie-opties:</translation>
+    </message>
+    <message>
+        <source>Cannot resolve -%s address: '%s'</source>
+        <translation>Kan -%s adres niet herleiden: '%s'</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>Keten selectie opties:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>Wijzigingsindex buiten bereik</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Verbindingsopties:</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>Auteursrecht (C) %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Corrupte blokkendatabase gedetecteerd</translation>
+ 
