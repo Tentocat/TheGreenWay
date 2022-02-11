@@ -3364,4 +3364,239 @@
     <message>
         <source>Corrupted block database detected</source>
         <translation>Corrupte blokkendatabase gedetecteerd</translation>
- 
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>Foutopsporing/Testopties:</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>Laad de wallet niet en schakel wallet RPC oproepen uit</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Wilt u de blokkendatabase nu herbouwen?</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>Sta toe om hashblok te publiceren in &lt;adres&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>Sta toe om hashtransactie te publiceren in &lt;adres&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>Sta toe rauw blok te publiceren in &lt;adres&gt;</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>Sta toe ruwe transacties te publiceren in &lt;adres&gt;</translation>
+    </message>
+    <message>
+        <source>Enable transaction replacement in the memory pool (default: %u)</source>
+        <translation>Transactie vervanging inschakelen in het geheugen (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
+        <translation>Fout bij het maken van %s: Je kunt geen niet-HD portemonnees maken met deze versie.</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Fout bij intialisatie blokkendatabase</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Probleem met initializeren van de database-omgeving %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>Fout bij het laden van %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Fout bij het laden van %s: Portomonnee corrupt</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Fout bij laden %s: Portemonnee vereist een nieuwere versie van %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Fout bij het laden van blokkendatabase</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Fout bij openen blokkendatabase</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Fout: Weinig vrije diskruimte!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Mislukt om op welke poort dan ook te luisteren. Gebruik -listen=0 as u dit wilt.</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>Portemonnee herscannen tijdens initialisatie mislukt</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Importeren...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>Incorrect of geen genesisblok gevonden. Verkeerde gegevensmap voor het netwerk?</translation>
+    </message>
+    <message>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>Initialisatie sanity check mislukt. %s is aan het afsluiten.</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>Ongeldig bedrag voor -%s=&lt;bedrag&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ongeldig bedrag for -discardfee=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ongeldig bedrag voor -fallbackfee=&lt;bedrag&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>De transactiegeheugenpool moet onder de &lt;n&gt; megabytes blijven (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>P2P-adressen aan het laden...</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>Verbanningslijst aan het laden...</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>Locatie van de auth cookie (standaard: data dir)</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>Niet genoeg file descriptors beschikbaar.</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Verbind alleen met nodes in netwerk &lt;net&gt; (ipv4, ipv6 of onion)</translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>Print dit helpbericht en sluit af</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>Laat versie zien en sluit af</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>Prune kan niet worden geconfigureerd met een negatieve waarde.</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>Prune-modus is niet compatible met -txindex</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation>Herbouw ketenstaat en blokindex met behulp van de blk*.dat bestanden op de harde schijf</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation>Herbouw ketenstaat vanuit de huidige geindexeerde blokken</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation>Blokken opnieuw aan het afspelen...</translation>
+    </message>
+    <message>
+        <source>Rewinding blocks...</source>
+        <translation>Blokken aan het terugdraaien...</translation>
+    </message>
+    <message>
+        <source>Send transactions with full-RBF opt-in enabled (RPC only, default: %u)</source>
+        <translation>Verstuur transacties met full-RBF opt-in ingeschakeld (enkel RPC, standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>Zet database cache grootte in megabytes (%d tot %d, standaard: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Specificeer het portemonnee bestand (vanuit de gegevensmap)</translation>
+    </message>
+    <message>
+        <source>The source code is available from %s.</source>
+        <translation>De broncode is beschikbaar van %s.</translation>
+    </message>
+    <message>
+        <source>Transaction fee and change calculation failed</source>
+        <translation>Transactievergoeding en wisselgeldberekening mislukt</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer. %s is probably already running.</source>
+        <translation>Niet in staat om %s te verbinden op deze computer. %s draait waarschijnlijk al.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation>Niet-ondersteund argument -benchmark genegeerd, gebruik -debug=bench.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation>Niet-ondersteund argument -debugnet genegeerd, gebruik -debug=net</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -tor found, use -onion.</source>
+        <translation>Niet-ondersteund argument -tor gevonden, gebruik -onion.</translation>
+    </message>
+    <message>
+        <source>Unsupported logging category %s=%s.</source>
+        <translation>Niet-ondersteunde logcategorie %s=%s.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>Upgraden UTXO-database</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>Gebruik UPnP om de luisterende poort te mappen (standaard: %u)</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>Gebruik de test keten</translation>
+    </message>
+    <message>
+        <source>User Agent comment (%s) contains unsafe characters.</source>
+        <translation>User Agentcommentaar (%s) bevat onveilige karakters.</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Blokken aan het controleren...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Portemonee debugging/testing opties:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Portemonnee moest herschreven worden: Herstart %s om te voltooien</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Portemonnee instellingen:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Sta JSON-RPC verbindingen toe vanuit een gespecificeerde bron. Geldig voor &lt;ip&gt; zijn een enkel IP (bijv. 1.2.3.4), een netwerk/netmask (bijv. 1.2.3.4/255.255.255.0) of een netwerk/CIDR (bijv. 1.2.3.4/24). Deze optie kan meerdere keren gespecificeerd worden.</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Bind aan opgegeven adres en keur peers die ermee verbinden goed. Gebruik [
