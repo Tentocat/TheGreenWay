@@ -782,4 +782,78 @@
     <message>
         <source>Error opening block database</source>
         <translation>Kamalian king pamag buklat king block database</translation>
-    </mes
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Kamalian: Mababa ne ing espasyu king disk!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Memali ya ing pamakiramdam kareng gang nanung port. Gamita me ini -listen=0 nung buri me ini.</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>&amp;Impormasion</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Magpadalang trace/debug info okeng console kesa keng debug.log file</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>Maragul yang masiadu ing transaksion</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Username para king JSON-RPC koneksion</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Kapabaluan</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Password para king JSON-RPC koneksion</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>I-execute ing command istung mialilan ya ing best block (%s in cmd is replaced by block hash)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Payagan ing pamaglawe DNS para king -addnode, -seednode and -connect</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>E kilalang network ing mepili king -onlynet: '%s'</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Kulang a pondo</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Lo-load dane ing block index...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Lo-load dane ing wallet...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>Ali ya magsilbing i-downgrade ing wallet</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>I-scan deng pasibayu...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Yari ne ing pamag-load</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Mali</translation>
+    </message>
+</context>
+</TS>
