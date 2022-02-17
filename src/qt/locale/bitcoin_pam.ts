@@ -421,4 +421,365 @@
         <translation>Immature:</translation>
     </message>
     <message>
-        <source>Mined balance that has not yet matured</source
+        <source>Mined balance that has not yet matured</source>
+        <translation>Reng me-minang balanse a epa meg-matured</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Kabuuan:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Ing kekang kasalungsungan kabuuang balanse</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Alaga</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>e miya balu</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Bersion ning Cliente</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Impormasion</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>I-Debug ing awang</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Oras ning umpisa</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Network</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Bilang dareng koneksion</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Block chain</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Kasalungsungan bilang dareng blocks</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Tatauling oras na ning block</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Ibuklat</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Console</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Kabuuan:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Debug log file</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>I-Clear ing console</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Kopyan ing address</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Magpadalang Barya</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Kulang a pondo</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Alaga:</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Bayad king Transaksion:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Misanang magpadala kareng alialiuang tumanggap</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Maglage &amp;Tumanggap</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>I-Clear &amp;Eganagana</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balanse:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Kumpirman ing aksion king pamagpadala</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>Ipadala</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>A&amp;laga:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Ibayad &amp;kang:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Label:</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Idikit ing address menibat king clipboard</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Mensayi:</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Ibayad kang:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Pirma - Pirman / I-beripika ing mensayi</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Pirman ing Mensayi</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Idikit ing address menibat king clipboard</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Ipalub ing mensayi a buri mung pirman keni</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Pirma</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Kopyan ing kasalungsungan pirma king system clipboard</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Pirman ing mensayi ban patune na keka ya ining Bitcoin address</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Pirman ing &amp;Mensayi</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>Ibalik keng dati reng ngan fields keng pamamirmang mensayi</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>I-Clear &amp;Eganagana</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Beripikan ing Mensayi</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Beripikan ing mensayi ban asiguradu a me pirma ya ini gamit ing mepiling Bitcoin address</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>Beripikan ing &amp;Mensayi</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>Ibalik king dati reng ngan fields na ning pamag beripikang mensayi</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Ining pane a ini magpakit yang detalyadung description ning transaksion</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    </context>
+<context>
+    <name>TransactionView</name>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Pipamilian:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Pilinan ing data directory</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Kumunekta king note ban ayakua mula reng peer address, at mako king panga konekta</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Sabyan me ing kekang pampublikong address</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Tumanggap command line at JSON-RPC commands</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Gumana king gulut bilang daemon at tumanggap commands</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Kapilubluban ning Bitcoin</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Tumanggap koneksion menibat king kilwal (default: 1 if no -proxy or -connect)</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Pipamilian king pamag-gawang block:</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>Mekapansin lang me-corrupt a block database</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>Buri meng buuan pasibayu ing block database ngene?</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>Kamalian king pamag-initialize king block na ning database</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Kamalian king pamag buklat king block database</translation>
+    </mes
