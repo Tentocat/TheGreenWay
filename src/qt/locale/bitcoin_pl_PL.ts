@@ -699,3 +699,377 @@
         <source>Number of blocks left</source>
         <translation>Pozostały numer bloków</translation>
     </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Nieznany...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Czas ostatniego bloku...</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Postęp</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>Wzrost postępu na godzinę</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>obliczanie...</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>Szacowany pozostały czas do skończenia synchronizacji</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Ukryj</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>Nieznany. Synchronizowanie nagłówków (%1)...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Otwórz URl</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Otwórz żądanie płatności z URl lub pliku</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URl:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Otwórz plik z żądaniem płatności</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Wybierz plik do otwarcia z żądaniem płatności </translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opcje</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Główny</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>Automatycznie zacznij %1 po zalogowaniu do systemu.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>&amp;Zacznij %1 podczas logowania do systemu</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>Numer skryptów &amp; wątków weryfikacji</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Potwierdź opcje resetu.</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Program wymaga ponownego uruchomienia by zapisać zmiany.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Program zostanie zamknięty. Czy chcesz kontynuować?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Opcje konfiguracji.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Błąd</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>Plik konfiguracji nie mógł zostać otwarty poprawnie.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Aby zapisać zmianę należy ponownie uruchomić program.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Wprowadzony adres proxy jest nieprawidłowy.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formularz</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Tylko do odczytu:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Dostępne:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Twoje obecne środki do wydania</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>W trakcie:</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Niedojrzały</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Saldo</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>W sumie:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Twoje obecne saldo:</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Dostępne:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Ostatnie transakcje</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Błąd żądania płatności</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>Obsługa URI</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>adres URL żądania zapłaty jest nieprawidłowy: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Nieprawidłowy adres płatności %1</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Żądanie płatności odrzucone.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Żądanie płatności wygasło.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Żądanie płatności nie zostało rozpoczęte.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Nieprawidłowe żądanie płatności.</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>Agent użytkownika</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Wysłane</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Otrzymane</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Ilość</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>nieznany</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Zapisz obraz...</translation>
+    </message>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Wersja klienta</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informacje</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Debuguj okno</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Ogólny</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Używasz BerkeleyDB wersji</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Czas rozpoczęcia</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Sieć</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Liczba połączeń</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Łańcuch bloku</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Obecna liczba bloków</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Pula pamięci</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Obecna liczba transakcji</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Użycie pamięci</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Reset</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Otrzymane</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Wysłane</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;członkowie</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Zablokowani członkowie</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Wybierz użytkownika by zobaczyć wiecej informacji</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>Dopuszczeni</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Kierunek</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Wersja</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Start bloku</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Nagłówki</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Synchronizowane bloki</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Agent użytkownika</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>zmniejsz rozmiar fonta</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>zwiększ rozmiar fonta</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Usługi</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Liczba blokad</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Cza
