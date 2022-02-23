@@ -552,4 +552,332 @@
         <translation>A carteira está &lt;b&gt;encriptada&lt;/b&gt; e atualmente &lt;b&gt;bloqueada&lt;/b&gt;</translation>
     </message>
     <message>
-  
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Ocorreu um erro fatal. O Bitcoin não pode continuar com segurança e irá fechar.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Seleção de Moeda</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Quantidade:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Bytes:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Valor:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Taxa:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Lixo:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Depois da taxa:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Troco:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(des)selecionar todos</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Modo de árvore</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Modo de lista</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Valor</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Recebido com etiqueta</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Recebido com endereço</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Confirmações</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confirmada</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Copiar endereço</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copiar etiqueta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiar valor</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Copiar Id. da transação</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Bloquear não gasto</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Desbloquear não gasto</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Copiar quantidade</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copiar taxa</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Copiar depois da taxa</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Copiar bytes</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Copiar poeira</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Copiar troco</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 bloqueado)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>sim</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>não</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Esta etiqueta fica vermelha se qualquer destinatário recebe um valor menor que o limite de dinheiro.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Pode variar +/- %1 satoshi(s) por input.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(sem etiqueta)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>troco de %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(troco)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Editar Endereço</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etiqueta</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>A etiqueta associada com esta entrada da lista de endereços</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>O endereço associado com o esta entrada da lista de endereços. Isto só pode ser modificado para os endereços de envio.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>E&amp;ndereço</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Novo endereço de depósito</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Novo endereço de envio</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Editar o endereço de depósito</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Editar o endereço de envio</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>O endereço introduzido "%1" não é um endereço bitcoin válido.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>O endereço introduzido "%1" já se encontra no livro de endereços.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Não foi possível desbloquear a carteira.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>A criação da nova chave falhou.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Será criada uma nova diretoria de dados.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>nome</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>A pasta já existe. Adicione %1 se pretender criar aqui uma nova pasta.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>O caminho já existe, e este não é uma pasta.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Não é possível criar aqui uma diretoria de dados.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versão</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Sobre o %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Opções da linha de comando</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Utilização:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>opções da linha de comando</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>Opções da IU:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Escolher a pasta de dados no arranque (predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Definir idioma, por exemplo "pt_PT" (predefinição: idioma do sistema)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Iniciar minimizado</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Definir certificados de raiz SSL para pedidos de pagamento (predefinição: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Mostrar o ecrã de abertura no arranque (predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Redefinir todas as definições alteradas na GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Bem-vindo</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Bem-vindo ao %1.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Utilizar a pasta de dados predefinida</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Utilizar uma pasta de dados personalizada:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Aproximadamente %1 GB de dados irão ser guardados nesta directoria. </translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>A carteira também será guardada nesta directoria.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Erro: não pode ser criada a pasta de dados especificada como "%1.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Erro</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB de espaço livre disponível</numerusform><numerusform>%n GB de espaço livre disponível</nu
