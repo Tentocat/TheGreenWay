@@ -3261,4 +3261,208 @@
     </message>
     <message>
         <source>Unsupported argument -tor found, use -onion.</source>
-        <translation>Arg
+        <translation>Argumento não suportado -tor encontrado, use -onion.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>A atualizar a base de dados UTXO</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>Utilizar UPnP para mapear a porta de escuta (predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>Utilize a cadeia de testes</translation>
+    </message>
+    <message>
+        <source>User Agent comment (%s) contains unsafe characters.</source>
+        <translation>Comentário no User Agent (%s) contém caracteres inseguros.</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>A verificar blocos...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Opções de depuração/testes da carteira:</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Opções da carteira:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Permitir conexções JSON-RPC de fontes especificas. Valido para &lt;ip&gt; um unico IP (ex. 1.2.3.4), uma rede/netmask (ex. 1.2.3.4/255.255.255.0) ou uma rede/CIDR (ex. 1.2.3.4/24). Esta opção pode ser especificada varias vezes</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Associar ao endereço indicado e pontos da lista branca ligando-se a ele. Utilize a notação [anfitrião]:porta para IPv6</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>Crie ficheiros novos com as permisões predefinidas do sistema, em vez de umask 077 (apenas eficaz caso a funcionalidade carteira esteja desactivada)</translation>
+    </message>
+    <message>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+        <translation>Descobrir o próprio endereço IP (padrão: 1 ao escutar e sem -externalip ou -proxy)</translation>
+    </message>
+    <message>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation>Erro: A escuta de ligações de entrada falhou (escuta devolveu erro %s)</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>Executar comando quando um alerta relevante for recebido ou em caso de uma divisão longa da cadeia de blocos (no comando, %s é substituído pela mensagem)</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation>Taxas (em %s/kB) inferiores a este valor são consideradas nulas para propagação, mineração e criação de transações (predefinição: %s)</translation>
+    </message>
+    <message>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>Caso o paytxfee não seja definido, inclua uma taxa suficiente para que as transacções comecem a ser confirmadas, em média, dentro de n blocos (padrão: %u)</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation>Montante inválido para -maxtxfee=&lt;amount&gt;: '%s' (deverá ser, no mínimo , a taxa mínima de propagação de %s, de modo a evitar transações bloqueadas)</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>Tamanho máximo dos dados em transacções que incluem dados que propagamos e mineramos (padrão: %u)</translation>
+    </message>
+    <message>
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>Usar credenciais aleatórias por cada ligação proxy. Permite que o Tor use stream isolation (padrão: %u)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>O montante da transacção é demasiado baixo após a dedução da taxa</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>Os pontos enviados para a lista branca não podem ser DoS banidos e as suas transações são sempre retransmitidas, mesmo que já estejam no banco de memória, útil, por exemplo, para um acesso</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>É necessário reconstruir a base de dados, utilizando -reindex para voltar ao modo de suprimir. Isto irá transferir novamente a cadeia de blocos completa</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>Aceitar pedidos REST públicos (predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>Criar automaticamente o serviço Tor oculto (predefinição: %d)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Ligar através de um proxy SOCKS5</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>Erro ao ler da base de dados, encerrando.</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <translation>Importar blocos de um ficheiro blk000??.dat externo ao iniciar</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informação</translation>
+    </message>
+    <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>Endereço -onion ou hostname inválido: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>Montante inválido para -paytxfee=&lt;amount&gt;: '%s' (deverá ser no mínimo %s)</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>Máscara de rede inválida especificada em -whitelist: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation>Manter no máximo &lt;n&gt; transacções órfãs em memória (padrão: %u)</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>Necessário especificar uma porta com -whitebind: '%s'</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Opções da transmissão de nós:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>Opções do servidor RPC:</translation>
+    </message>
+    <message>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation>Reduzindo -maxconnections de %d para %d, devido a limitações no sistema.</translation>
+    </message>
+    <message>
+        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <translation>Procurar transacções em falta na cadeia de blocos ao iniciar</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Enviar informação de rastreio/depuração para a consola e não para o ficheiro debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Mostrar todas as opções de depuração (utilização: --help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Encolher ficheiro debug.log ao iniciar o cliente (por defeito: 1 sem -debug definido)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>Falhou assinatura da transação</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>O montante da transacção é demasiado baixo para pagar a taxa</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>Isto é software experimental.</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Palavra-passe da porta de controlo Tor (predefinição: vazio)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>Porta de controlo Tor a utilizar se a escuta cebola estiver ativada (predefinição: %s)</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>Quantia da transação é muito baixa</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>Transacção demasiado grande para a política de taxas</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>Transação grande demais</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>Incapaz de vincular à porta %s neste computador (vínculo retornou erro %s)</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>Actualizar carteira para o formato mais recente ao iniciar</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Nome de utilizador para ligações JSON-RPC</trans
