@@ -3661,4 +3661,51 @@
     </message>
     <message>
         <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
-        <translation>Tolerância para desligar pontos com mau comportament
+        <translation>Tolerância para desligar pontos com mau comportamento (predefinição: %u)</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>Os valores da transação não devem ser negativos</translation>
+    </message>
+    <message>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>A transação é muito grande de uma cadeia do banco de memória</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>A transação dever pelo menos um destinatário</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>Rede desconhecida especificada em -onlynet: '%s'</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Fundos insuficientes</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>A carregar o índice de blocos...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>A carregar a carteira...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>Impossível mudar a carteira para uma versão anterior</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Reexaminando...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Carregamento concluído</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Erro</translation>
+    </message>
+</context>
+</TS>
