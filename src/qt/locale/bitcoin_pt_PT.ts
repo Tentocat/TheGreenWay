@@ -1442,4 +1442,369 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n segundo</numerusform><numerus
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n dia</numerusform><numerusform>%n dias</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n semana</numerusform><numerusform>%n semanas</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 e %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n anos</numerusform><numerusform>%n anos</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 ainda não foi fechado em segurança...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>desconhecido</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Erro: Pasta de dados especificada "%1" não existe.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Erro: não é possível analisar o ficheiro de configuração: %1. Utilize apenas a sintaxe key=value.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Erro: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Guardar Imagem...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Copiar Imagem</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Guardar o código QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>Imagem PNG (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/D</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Versão do Cliente</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informação</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Janela de depuração</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Geral</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Versão BerkeleyDB em uso</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datadir</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Hora de Arranque</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Rede</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Número de ligações</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Cadeia de blocos</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Número actual de blocos</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Banco de Memória</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Número actual de transacções</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Utilização de memória</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Reiniciar</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Recebido</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Enviado</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translation>&amp;Pontos</translation>
+    </message>
+    <message>
+        <source>Banned peers</source>
+        <translation>Pontos banidos</translation>
+    </message>
+    <message>
+        <source>Select a peer to view detailed information.</source>
+        <translation>Selecione um ponto para ver informação detalhada.</translation>
+    </message>
+    <message>
+        <source>Whitelisted</source>
+        <translation>Permitido por si</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Direcção</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versão</translation>
+    </message>
+    <message>
+        <source>Starting Block</source>
+        <translation>Bloco Inicial</translation>
+    </message>
+    <message>
+        <source>Synced Headers</source>
+        <translation>Cabeçalhos Sincronizados</translation>
+    </message>
+    <message>
+        <source>Synced Blocks</source>
+        <translation>Blocos Sincronizados</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <translation>Agente Usuário</translation>
+    </message>
+    <message>
+        <source>Open the %1 debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Abrir o ficheiro de registo de depuração %1 da pasta de dados actual. Isto pode demorar alguns segundos para ficheiros de registo maiores.</translation>
+    </message>
+    <message>
+        <source>Decrease font size</source>
+        <translation>Diminuir tamanho da letra</translation>
+    </message>
+    <message>
+        <source>Increase font size</source>
+        <translation>Aumentar tamanho da letra</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Serviços</translation>
+    </message>
+    <message>
+        <source>Ban Score</source>
+        <translation>Resultado da Suspensão</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Tempo de Ligação</translation>
+    </message>
+    <message>
+        <source>Last Send</source>
+        <translation>Ultimo Envio</translation>
+    </message>
+    <message>
+        <source>Last Receive</source>
+        <translation>Ultimo Recebimento</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Tempo de Latência</translation>
+    </message>
+    <message>
+        <source>The duration of a currently outstanding ping.</source>
+        <translation>A duração de um ping atualmente pendente.</translation>
+    </message>
+    <message>
+        <source>Ping Wait</source>
+        <translation>Espera do Ping</translation>
+    </message>
+    <message>
+        <source>Min Ping</source>
+        <translation>Latência mínima</translation>
+    </message>
+    <message>
+        <source>Time Offset</source>
+        <translation>Fuso Horário</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Data do último bloco</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Abrir</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Consola</translation>
+    </message>
+    <message>
+        <source>&amp;Network Traffic</source>
+        <translation>&amp;Tráfego de Rede</translation>
+    </message>
+    <message>
+        <source>Totals</source>
+        <translation>Totais</translation>
+    </message>
+    <message>
+        <source>In:</source>
+        <translation>Entrada:</translation>
+    </message>
+    <message>
+        <source>Out:</source>
+        <translation>Saída:</translation>
+    </message>
+    <message>
+        <source>Debug log file</source>
+        <translation>Ficheiro de registo de depuração</translation>
+    </message>
+    <message>
+        <source>Clear console</source>
+        <translation>Limpar consola</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;hora</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;dia</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;semana</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;ano</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Banir para</translation>
+    </message>
+    <message>
+        <source>&amp;Unban</source>
+        <translation>&amp;Desbanir</translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.</source>
+        <translation>Bem-vindo à consola RPC da %1.</translation>
+    </message>
+    <message>
+        <source>For more information on using this console type %1.</source>
+        <translation>Para mais informação em como utilizar esta consola, digite %1.</translation>
+    </message>
+    <message>
+        <source>Network activity disabled</source>
+        <translation>Atividade de rede desativada</translation>
+    </message>
+    <message>
+        <source>(node id: %1)</source>
+        <translation>(id nó: %1)</translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation>via %1</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>nunca</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation>Entrada</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation>Saída</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Sim</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Não</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Desconhecido</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>&amp;Quantia:</translation>
+    </messag
