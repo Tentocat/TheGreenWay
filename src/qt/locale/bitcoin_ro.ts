@@ -608,4 +608,370 @@
         <source>Use the default data directory</source>
         <translation>Folosește directoriul pentru date din modul implicit.</translation>
     </message>
-    <
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Alege un folder/director personalizat</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>Cel puțin %1 GB va fi stocat în acest folder și va crește în timp.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>Portofelul va fi, de asemenea, stocat în acest folder/director.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Eroare: Folderul specificat "%1" nu poate fi creat.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Eroare</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB de spațiu liber disponibil</numerusform><numerusform>%n GB de spațiu liber disponibil</numerusform><numerusform>%n GB de spațiu liber disponibil</numerusform></translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>formular</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>Posibil ca tranzacțiile recente să nu fie vizibile, încă, astfel bilanțul portofelului tău poate fi incorect. Aceste informații vor fi corecte o dată ce portofelul tău a încheiat sincronizarea cu rețeaua bitcoin, conform descrierii de mai jos.</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Necunoscut...</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>Se calculează...</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Ascunde</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Deschide URI</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URI:</translation>
+    </message>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opțiuni</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Adresa IP a proxy-ului (ex. IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Deschide fișierul de Configurare</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Resetează opțiunile</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Rețea</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Expert</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>Proxy &amp;IP:</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port:</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Portul pentru proxy (ex.: 9050)</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Fereastra</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Anulează</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>inițial</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>fără</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Confirmă resetarea opțiunilor</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Repornirea clientului este necesară pentru ca schimbările să fie activate</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Clientul va fi oprit. Dorești sa continui?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Optiuni de configuratie</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Eroare</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Această schimbare necesită repornirea clientului.</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>formular</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Disponibil:</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Total:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Tranzacții recente</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Cererea de plată a expirat.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Cererea de plată nu este inițializată.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Cerere de plată invalidă.</translation>
+    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Sent</source>
+        <translation>Trimis</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Primit</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Cantitate</translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 și %2</translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    </context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Salvează codul QR</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>Imagine PNG (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Client version</source>
+        <translation>Versiunea clientului</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Informații</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Fereastra pentru depanare</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Rețea</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nume</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Numărul de conexiuni</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Primit</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Trimis</translation>
+    </message>
+    <message>
+        <source>Direction</source>
+        <translation>Direcția</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Versiune</translation>
+    </message>
+    <message>
+        <source>Connection Time</source>
+        <translation>Durata conexiunii</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Deschide</translation>
+    </message>
+    <message>
+        <source>&amp;Console</source>
+        <translation>&amp;Consolă</translation>
+    </message>
+    <message>
+        <source>1 &amp;hour</source>
+        <translation>1 &amp;ore</translation>
+    </message>
+    <message>
+        <source>1 &amp;day</source>
+        <translation>1 &amp;zi</translation>
+    </message>
+    <message>
+        <source>1 &amp;week</source>
+        <translation>1 &amp;săptămână</translation>
+    </message>
+    <message>
+        <source>1 &amp;year</source>
+        <translation>1 &amp;an</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nu</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Necunoscut</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>&amp;Mesaj:</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Arată</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Elimină</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copiază eticheta</translation>
+    </message>
+    <message>
+        <source>Copy message</source>
+        <translation>Copiază mesajul</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiază cantitatea</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>QR Code</source>
+        <translation>Salvează codul QR</translation>
