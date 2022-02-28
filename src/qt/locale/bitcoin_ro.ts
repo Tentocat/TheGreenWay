@@ -258,4 +258,354 @@
         <translation>&amp;Opțiuni...</translation>
     </message>
     <message>
-        <source>&amp;Encrypt Wallet...</source
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Criptează portofelul...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>&amp;Backup portofel</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Schimbă parola...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>&amp;Trimite adresele...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>&amp;Primește adresele...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>Deschide &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Click pentru a permite, din nou, activitate rețelei.</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>Trimite monedele către o adresă Bitcoin</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>Fă o copie de rezervă a portofelului într-o altă locație</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Schimbă parola folosită pentru criptarea portofelului</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>&amp;Fereastra pentru depanare</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>Pornește consola pentru depanare si diagnoză</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Verifică mesajul...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Portofel</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Trimite</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Primește</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Arată/Ascunde</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>Arată sau ascunde fereastra principală</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Criptează cheile private care aparțin portofelului tău.</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Semnează mesajele cu adresa ta de Bitcoin pentru a face dovada că îți aparțin.</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de Bitcoin specificată.</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Fișier</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Setări</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Ajutor</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Cerere plată (generează coduri QR și bitcoin: URIs)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Afișează lista adreselor de livrare utilizate și etichetele.</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Afișează lista adreselor de primire utilizate și etichetele.</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Deschide un bitcoin: URI sau cerere de plată</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>&amp;Linie de comandă Setări</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 în urmă</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Ultimul bloc primit a fost generat acum %1</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Eroare</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Atenționare</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informație</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Actual</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Data: %1</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Cantitate: %1</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Tip: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Etichetă: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Adresa: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Trimite tranzacția</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Portofelul este &lt;b&gt;criptat&lt;/b&gt; și în prezent &lt;b&gt;deblocat&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Portofelul este &lt;b&gt;criptat&lt;/b&gt; și în prezent &lt;b&gt;blocat&lt;/b&gt;</translation>
+    </message>
+    </context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Selecția monedelor</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Cantitatea:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Biți:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Cantitate:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Taxa:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>După taxă:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Schimbă:</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Mod arbore</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Mod listă</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Cantitate</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Primit cu adresa</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Confirmări</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Confirmat</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Copiază adresa</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Copiază eticheta</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Copiază cantitatea</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Copiază ID-ul tranzacției</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Copiază taxa</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>da</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>nu</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(fără etichetă)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Modifică adresa</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Adresa</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Adresă de primire nouă</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Adresă nouă de livrare</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Modifică adresa de primire</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Modifică adresa de livrare</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Portofelul nu a putut fi deblocat.</translation>
+    </message>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translation>Nume</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Directoriul există deja. Adaugă %1 dacă ai intenționat să creezi aici un directoriu nou.</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versiune</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Utilizare:</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Pornește minimalizat</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Resetează toate setările modificate în Interfața Grafică.</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Bine ai venit!</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Folosește directoriul pentru date din modul implicit.</translation>
+    </message>
+    <
