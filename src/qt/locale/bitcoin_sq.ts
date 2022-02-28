@@ -576,4 +576,256 @@
     </message>
 </context>
 <context>
-    <name>SendC
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>Sh&amp;uma:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Paguaj &amp;drejt:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiketë:</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Ngjit nga memorja e sistemit</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Paguaj drejt:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Krijoni një etiketë për këtë adresë që t'ja shtoni librit të adresave</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Ngjit nga memorja e sistemit</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testo rrjetin]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>Hapur deri më %1</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/I pakonfirmuar</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 konfirmimet</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>, nuk është transmetuar me sukses deri tani</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>i/e panjohur</translation>
+    </message>
+    <message>
+        <source>Transaction</source>
+        <translation>transaksionit</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Sasia</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Ky panel tregon një përshkrim të detajuar të transaksionit</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Lloji</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiketë</translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>Hapur deri më %1</translation>
+    </message>
+    <message>
+        <source>Confirmed (%1 confirmations)</source>
+        <translation>I/E konfirmuar(%1 konfirmime)</translation>
+    </message>
+    <message>
+        <source>This block was not received by any other nodes and will probably not be accepted!</source>
+        <translation>Ky bllok është marrë nga ndonjë nyje dhe ka shumë mundësi të mos pranohet! </translation>
+    </message>
+    <message>
+        <source>Generated but not accepted</source>
+        <translation>I krijuar por i papranuar</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Marrë me</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Dërguar drejt</translation>
+    </message>
+    <message>
+        <source>Payment to yourself</source>
+        <translation>Pagesë ndaj vetvetes</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Minuar</translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation>(p/a)</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(pa etiketë)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Received with</source>
+        <translation>Marrë me</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Dërguar drejt</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Minuar</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopjo adresën</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Skedar i ndarë me pikëpresje(*.csv)</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Lloji</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiketë</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresë</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Eksportimi dështoj</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Dërgo Monedha</translation>
+    </message>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Eksporto të dhënat e skedës korrente në një skedar</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Opsionet:</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Berthama Bitcoin</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informacion</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Fonde te pamjaftueshme</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Rikerkim</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Problem</translation>
+    </message>
+</context>
+</TS>
