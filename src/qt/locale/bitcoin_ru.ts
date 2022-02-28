@@ -326,4 +326,98 @@
     <name>SendConfirmationDialog</name>
     </context>
 <context>
-    <name>ShutdownWi
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Метка</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(нет метки)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Текст, разделённый запятыми (*.csv)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Метка</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Адрес</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Экспорт не удался</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Экспорт</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Экспортировать данные текущей вкладки в файл</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>Кошелёк постарается не платить меньше, чем минимальная комиссия передачи.</translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>Сумма транзакции не должна быть отрицательной</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Недостаточно средств</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Загрузка электронного кошелька...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>Не удаётся понизить версию электронного кошелька</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Загрузка завершена</translation>
+    </message>
+    </context>
+</TS>
