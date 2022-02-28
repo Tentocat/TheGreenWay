@@ -177,4 +177,403 @@
     </message>
     <message>
         <source>Wallet unlock failed</source>
-        <translation
+        <translation>ç'kyçja e portofolit dështoi</translation>
+    </message>
+    <message>
+        <source>The passphrase entered for the wallet decryption was incorrect.</source>
+        <translation>Frazkalimi i futur për dekriptimin e portofolit nuk ishte i saktë.</translation>
+    </message>
+    <message>
+        <source>Wallet decryption failed</source>
+        <translation>Dekriptimi i portofolit dështoi</translation>
+    </message>
+    </context>
+<context>
+    <name>BanTableModel</name>
+    </context>
+<context>
+    <name>BitcoinGUI</name>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>Duke u sinkronizuar me rrjetin...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>&amp;Përmbledhje</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>Trego një përmbledhje te përgjithshme të portofolit</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>&amp;Transaksionet</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>Shfleto historinë e transaksioneve</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>Mbyllni aplikacionin</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>&amp;Opsione</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>Duke marr adresen</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Ndrysho frazkalimin e përdorur per enkriptimin e portofolit</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Portofol</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Dergo</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>&amp;Merr</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;Shfaq / Fsheh</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Skedar</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Konfigurimet</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Ndihmë</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Shiriti i mjeteve</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 Pas</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Problem</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Informacion</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>I azhornuar</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Duke u azhornuar...</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Dërgo transaksionin</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Transaksion në ardhje</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Portofoli po &lt;b&gt; enkriptohet&lt;/b&gt; dhe është &lt;b&gt; i ç'kyçur&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Portofoli po &lt;b&gt; enkriptohet&lt;/b&gt; dhe është &lt;b&gt; i kyçur&lt;/b&gt;</translation>
+    </message>
+    </context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Zgjedhja e monedhes</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Shuma:</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Sasia</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopjo adresën</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>po</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>jo</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(pa etiketë)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Ndrysho Adresën</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etiketë</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Adresa</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Adresë e re pritëse</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Adresë e re dërgimi</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Ndrysho adresën pritëse</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>ndrysho adresën dërguese</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Adresa e dhënë "%1" është e zënë në librin e adresave. </translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Nuk mund të ç'kyçet portofoli.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Krijimi i çelësit të ri dështoi.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>name</source>
+        <translation>emri</translation>
+    </message>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>versioni</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Miresevini</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Problem</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Formilarë</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Opsionet</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>Portofol</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Problem</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formilarë</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Sasia</translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 dhe %2</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>i/e panjohur</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>&amp;Information</source>
+        <translation>Informacion</translation>
+    </message>
+    <message>
+        <source>&amp;Open</source>
+        <translation>&amp;Hap</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>asnjehere</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>i/e panjohur</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Shuma:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etiketë:</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Pastro</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>&amp;Kopjo adresen</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresë</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Sasia</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiketë</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etiketë</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(pa etiketë)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Dërgo Monedha</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Fonde te pamjaftueshme</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Shuma:</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Dërgo marrësve të ndryshëm njëkohësisht</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Balanca:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Konfirmo veprimin e dërgimit</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>konfirmo dërgimin e monedhave</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Shuma e paguar duhet të jetë më e madhe se 0.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(pa etiketë)</translation>
+    </message>
+</context>
+<context>
+    <name>SendC
