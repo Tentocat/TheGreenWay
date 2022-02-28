@@ -282,4 +282,38 @@
     <name>TransactionView</name>
     <message>
         <source>Date</source>
-        <translation
+        <translation>දිනය</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>ලේබලය</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>ලිපිනය</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Information</source>
+        <translation>තොරතුර</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>අවවාදය</translation>
+    </message>
+    </context>
+</TS>
