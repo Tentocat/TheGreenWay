@@ -1102,4 +1102,191 @@
         <translation>Iznos:</translation>
     </message>
     <message>
-        <source>&amp;
+        <source>&amp;Label:</source>
+        <translation>&amp;Етикета</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+П</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Poruka:</translation>
+    </message>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+П</translation>
+    </message>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[testnet]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Amount</source>
+        <translation>Износ</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    <message>
+        <source>This pane shows a detailed description of the transaction</source>
+        <translation>Ovaj odeljak pokazuje detaljan opis transakcije</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Налепница</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без налепнице)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Copy address</source>
+        <translation>Копирај адресу</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Копирај налепницу
+</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>к</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Копирај идентификациони број трансакције</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Фајл раздојен тачком (*.csv)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Налепница</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresa</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Извоз Неуспешан</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Izvedi</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Извези податке из одабране картице у фајлj</translation>
+    </message>
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Opcije</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Gde je konkretni data direktorijum </translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Prihvati komandnu liniju i JSON-RPC komande</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Radi u pozadini kao daemon servis i prihvati komande</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Информације</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Korisničko ime za JSON-RPC konekcije</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Упозорење</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Lozinka za JSON-RPC konekcije</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>Nedovoljno sredstava</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>Učitavam blok indeksa...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>Новчаник се учитава...</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>Ponovo skeniram...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>Završeno učitavanje</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Greška</translation>
+    </message>
+</context>
+</TS>
