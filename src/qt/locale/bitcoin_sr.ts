@@ -731,4 +731,375 @@
     <name>FreespaceChecker</name>
     <message>
         <source>A new data directory will be created.</source>
-        <translation>Нови директорију
+        <translation>Нови директоријум података ће бити креиран.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>име</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Директоријум већ постоји. Додајте %1 ако намеравате да креирате нови директоријум овде.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Путања већ постоји и није директоријум.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Не можете креирати директоријум података овде.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>верзија</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Приближно %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Опције командне линије</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Korišćenje:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>опције командне линије</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Изаберите директоријум података при покретању (подразумевано: %u)</translation>
+    </message>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Добродошли</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Добродошли на  %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Пошто је ово први пут да је програм покренут, можете изабрати где ће %1 чувати своје податке.</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>Када кликнете на ОК, %1 ће почети с преузимањем и процесирањем целокупног ланца блокова %4 (%2GB), почевши од најранијих трансакција у %3 када је %4 покренут.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>Ова иницијална синхронизација је веома захтевна и може изложити ваш рачунар хардверским проблемима који раније нису били примећени. Сваки пут када покренете %1, преузимање ће се наставити тамо где је било прекинуто.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>Ако сте одлучили да ограничите складиштење ланаца блокова (тримовање), историјски подаци се ипак морају преузети и обрадити, али ће након тога бити избрисани како би се ограничила употреба диска.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Користите подразумевани директоријум података</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Користите прилагођени директоријум података:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Биткоин</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Greška</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Остала количина блокова</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Непознато...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Време последњег блока</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Напредак</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>Рачунање</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Сакриј</translation>
+    </message>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Поставке</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Отвори Конфигурациону Датотеку</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>новчаник</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Експерт</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Тор</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Јединица за приказивање износа:</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;Уреду</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Откажи</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Greška</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Доступно:</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>На чекању:</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Укупно:</translation>
+    </message>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>iznos</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>nepoznato</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    </context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>Last block time</source>
+        <translation>Време последњег блока</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Ne</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    <message>
+        <source>&amp;Amount:</source>
+        <translation>Iznos:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Етикета</translation>
+    </message>
+    <message>
+        <source>&amp;Message:</source>
+        <translation>Poruka:</translation>
+    </message>
+    <message>
+        <source>Show</source>
+        <translation>Prikaži</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Копирај налепницу
+</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>к</translation>
+    </message>
+</context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Copy &amp;Address</source>
+        <translation>Kopirajte adresu</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adresa</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Износ</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Налепница</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>Налепница</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без налепнице)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Слање новца</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Количина:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Бајта:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Iznos:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Накнада:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Након накнаде:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Промени:</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Сакриј</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Прашина:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Потврди акцију слања</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;Пошаљи</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Копирај количину</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>к</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Копирај провизију</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Копирај бајтове</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Копирај прашину</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Копирај промену</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без налепнице)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>Iznos:</translation>
+    </message>
+    <message>
+        <source>&amp;
