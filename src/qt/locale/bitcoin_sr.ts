@@ -390,4 +390,345 @@
         <translation>Прикажи или сакрији главни прозор</translation>
     </message>
     <message>
-        <source>Encrypt the pr
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>Шифрирај приватни клуљ који припада новчанику.</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>Потписуј поруку са своје Биткоин адресе као доказ да си њихов власник</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>Верификуј поруке и утврди да ли су потписане од стране спецификованих Биткоин адреса</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>&amp;Фајл</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>&amp;Подешавања</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Помоћ</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>Трака са картицама</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>Затражи плаћање (генерише QR кодове и биткоин: URI-е)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>Прегледајте листу коришћених адреса и етикета за слање уплата</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Прегледајте листу коришћених адреса и етикета за пријем уплата</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Отворите биткоин: URI или захтев за плаћање</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>&amp;Опције командне линије</translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Идексирање блокова на диску...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Обрада блокова на диску...</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>Обрађенo %n блокова историјата трансакција.</numerusform><numerusform>Обрађенo %n блокова историјата трансакција.</numerusform><numerusform>Обрађенo је %n блокова историјата трансакција.</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 уназад</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Последњи примљени блок је направљен пре %1.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Трансакције након овога још неће бити видљиве.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Greška</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Упозорење</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Информације</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Ажурно</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 клијент</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Ажурирање у току...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Датум: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Износ: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Тип: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Етикета: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Адреса: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Послана трансакција</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Придошла трансакција</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>Генерисање ХД кључа је &lt;b&gt;омогућено&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>Генерисање ХД кључа је &lt;b&gt;онеомогућено&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Новчаник јс &lt;b&gt;шифрован&lt;/b&gt; и тренутно &lt;b&gt;откључан&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Новчаник јс &lt;b&gt;шифрован&lt;/b&gt; и тренутно &lt;b&gt;закључан&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Дошло је до критичне грешке. Биткоин не може безбедно да настави са радом и искључиће се.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Избор новчића</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Количина:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Бајта:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Износ:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Накнада:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Прашина:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Након накнаде:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Промени:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>изаберите / поништите све
+</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Износ</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Примљено са етикетом</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Примљено са адресом</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>datum</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Потврде</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Potvrdjen</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Копирај адресу</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Копирај налепницу</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Копирај износ</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Копирај идентификациони број трансакције</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Закључај непотрошено</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Откључај непотрошено</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Копирај количину</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Копирај провизију</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Копирај након провизије</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Копирај бајтове</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Копирај прашину</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Копирај промену</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 закључан)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>да</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>не</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(без налепнице)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(промени)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Измени адресу</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Етикета</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>Етикета повезана са овом ставком из листе адреса</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Адреса повезана са овом ставком из листе адреса. Ово можете променити једини у случају адреса за плаћање.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Адреса</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Нова адреса за пријем</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Нова адреса за слање</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Измени адресу за примање</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Измени адресу за слање</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Унета адреса "%1" се већ налази у адресару.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Новчаник није могуће откључати.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>Генерисање новог кључа није успело.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>Нови директорију
