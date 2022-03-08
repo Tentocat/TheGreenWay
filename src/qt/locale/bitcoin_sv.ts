@@ -424,4 +424,340 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
-        <translation>Visa listan med använda avsändaradresser oc
+        <translation>Visa listan med använda avsändaradresser och etiketter</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>Visa listan med använda mottagningsadresser och etiketter</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>Öppna en bitcoin: URI eller betalningsbegäran</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>&amp;Kommandoradsalternativ</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n active connection(s) to Bitcoin network</source>
+        <translation><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Indexerar block på disken...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Bearbetar block på disken...</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>Bearbetade %n block av transaktionshistoriken.</numerusform><numerusform>Bearbetade %n block av transaktionshistoriken.</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>%1 efter</translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>Senast mottagna block skapades för %1 sedan.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>Transaktioner efter denna kommer inte ännu vara synliga.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fel</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Varning</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>Uppdaterad</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga Bitcoin kommandoradsalternativ.</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1-klient</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>Ansluter till noder...</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Hämtar senaste...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>Datum: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>Belopp: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>Typ: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>Etikett: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>Adress: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>Transaktion skickad</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>Inkommande transaktion</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>HD-nyckelgenerering är &lt;b&gt;aktiverad&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>HD-nyckelgenerering är &lt;b&gt;inaktiverad&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>Denna plånbok är &lt;b&gt;krypterad&lt;/b&gt; och för närvarande &lt;b&gt;olåst&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>Denna plånbok är &lt;b&gt;krypterad&lt;/b&gt; och för närvarande &lt;b&gt;låst&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>Ett kritiskt fel uppstod. Bitcoin kan inte fortsätta att köra säkert och kommer att avslutas.</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>Myntval</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Kvantitet:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Antal byte:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Belopp:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Avgift:</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Damm:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Efter avgift:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Växel:</translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(av)markera allt</translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation>Trädvy</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Listvy</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Mängd</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>Mottagen med etikett</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>Mottagen med adress</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>Bekräftelser</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Bekräftad</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopiera adress</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopiera etikett</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopiera belopp</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopiera transaktions-ID</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>Lås ospenderat</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Lås upp ospenderat</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopiera kvantitet</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopiera avgift</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopiera efter avgift</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopiera byte</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopiera damm</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopiera växel</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(%1 låst)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>ja</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>nej</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>Denna etikett blir röd om någon mottagare får en betalning som är mindre än aktuell dammtröskel.</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Kan variera +/- %1 satoshi per inmatning.</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(Ingen etikett)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>växel från %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(växel)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>Redigera adress</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>&amp;Etikett</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>Etiketten associerad med denna post i adresslistan</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Adressen associerad med denna post i adresslistan. Den kan bara ändras för sändningsadresser.</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>&amp;Adress</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>Ny mottagaradress</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>Ny avsändaradress</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>Redigera mottagaradress</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>Redigera avsändaradress</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>Den angivna adressen "%1" är inte en giltig Bitcoin-adress.</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>Den angivna adressen "%1" finns redan i adressboken.</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>Kunde inte låsa upp plånboken.</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>M
