@@ -760,4 +760,278 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>New key generation failed.</source>
-        <translation>M
+        <translation>Misslyckades med generering av ny nyckel.</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>En ny datakatalog kommer att skapas.</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>namn</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Katalogen finns redan. Lägg till %1 om du vill skapa en ny katalog här.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Sökvägen finns redan, och är inte en katalog.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Kan inte skapa datakatalog här.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>version</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>Om %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Kommandoradsalternativ</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>Användning:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>kommandoradsalternativ</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>UI-inställningar:</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>Välj datakatalog vid uppstart (standard: %u)</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>Ange språk, till exempel "de_DE" (standard: systemspråk)</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>Starta minimerad</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Ange SSL-rotcertifikat för betalningsbegäran (standard: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>Visa startbild vid uppstart (standard: %u)</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>Återställ alla inställningar som gjorts i GUI</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>Välkommen</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>Välkommen till %1.</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>Eftersom detta är första gången programmet startas får du välja var %1 skall lagra sitt data.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>Denna första synkronisering är väldigt krävande, och kan påvisa hårdvaruproblem med din dator som tidigare inte visats sig. Varje gång du kör %1, kommer nerladdningen att fortsätta där den avslutades.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Använd den förvalda datakatalogen</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Använd en anpassad datakatalog:</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>Minst %1 GB data kommer att lagras i den här katalogen, och den växer över tiden.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>Ungefär %1 GB data kommer att lagras i den här katalogen.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 kommer att ladda ner och lagra en kopia av Bitcoin-blockkedjan.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>Plånboken lagras också i den här katalogen.</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Fel: Angiven datakatalog "%1" kan inte skapas.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fel</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>%n GB fritt utrymme kvar</numerusform><numerusform>%n GB fritt utrymme kvar</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(av %n GB behövs)</numerusform><numerusform>(av %n GB behövs)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulär</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>Nyligen gjorda transaktioner visas inte korrekt och därför kan din plånboks saldo visas felaktigt. Denna information kommer att visas korrekt så snart din plånbok har synkroniserat klart med Bitcoin-nätverket enligt detaljer nedan.</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Att försöka spendera bitcoin som påverkas av transaktioner som ännu inte visas kommer inte accepteras av nätverket. </translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>Antal block kvar</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>Okänt...</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>Sista blocktid</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation>Förlopp</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>Framstegssökning per timme</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>beräknar...</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>Beräknad tid kvar tills synkroniserad</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Göm</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>Okänd. Synkar huvuden (%1)...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>Öppna URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>Öppna betalningsbegäran från URI eller fil</translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URI:</translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Välj betalningsbegäransfil</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Välj betalningsbegäransfil som ska öppnas</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>Alternativ</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>&amp;Allmänt</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>Starta %1 automatiskt efter inloggningen.</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>&amp;Starta %1 vid systemlogin</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>Storleken på &amp;databascache</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>Antalet skript&amp;verifikationstrådar</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>Proxyns IP-adress (t.ex.  IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Shows if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation>Visas, om den angivna standard-SOCKS5-proxyn används för att nå noder via den här nätverkstypen.</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation>Använd separata SOCKS&amp;5-proxy för att nå noder via Tors dolda tjänster:</translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation>Göm ikonen från aktivitetsfältet.</translation>
+    </message>
+    <message>
+        <source>&amp;Hide tray icon</source>
+        <translation>&amp;Göm ikonen</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>Minimera istället för att stänga programmet när fönstret stängs. När detta alternativ är aktiverat stängs programmet endast genom att välja Stäng i menyn.</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>Tredjeparts URL:er (t.ex. en blockutfor
