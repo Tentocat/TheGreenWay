@@ -1034,4 +1034,271 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
-        <translation>Tredjeparts URL:er (t.ex. en blockutfor
+        <translation>Tredjeparts URL:er (t.ex. en blockutforskare) som finns i transaktionstabben som ett menyval i sammanhanget. %s i URL:en ersätts med tansaktionshashen. Flera URL:er är separerade med vertikala streck |.</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>Aktiva kommandoradsalternativ som ersätter alternativen ovan:</translation>
+    </message>
+    <message>
+        <source>Open the %1 configuration file from the working directory.</source>
+        <translation>Öppna konfigurationsfilen %1 från arbetskatalogen.</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>Öppna Konfigurationsfil</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>Återställ alla klientinställningar till förvalen.</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Återställ alternativ</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>&amp;Nätverk</translation>
+    </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation>(0 = auto, &lt;0 = lämna så många kärnor lediga)</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>&amp;Plånbok</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Expert</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>Aktivera mynt&amp;kontrollfunktioner</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation>Om du avaktiverar spendering av obekräftad växel, kan inte växeln från en transaktion användas förrän transaktionen har minst en bekräftelse. Detta påverkar också hur ditt saldo beräknas.</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>&amp;Spendera obekräftad växel</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Öppna automatiskt Bitcoin-klientens port på routern. Detta fungerar endast om din router stödjer UPnP och det är är aktiverat.</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>Tilldela port med hjälp av &amp;UPnP</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside.</source>
+        <translation>Acceptera anslutningar utifrån.</translation>
+    </message>
+    <message>
+        <source>Allow incomin&amp;g connections</source>
+        <translation>Tillåt ankommande anslutningar</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>Anslut till Bitcoin-nätverket genom en SOCKS5-proxy.</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>&amp;Anslut genom SOCKS5-proxy (förvald proxy):</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>Proxy-&amp;IP: </translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>&amp;Port: </translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>Proxyns port (t.ex. 9050)</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>Används för att nå noder via:</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Anslut till Bitcoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>&amp;Fönster</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>Visa endast en systemfältsikon vid minimering.</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>&amp;Minimera till systemfältet istället för aktivitetsfältet</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>M&amp;inimera vid stängning</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>&amp;Visa</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>Användargränssnittets &amp;språk: </translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation>Användargränssnittets språk kan ställas in här. Denna inställning träder i kraft efter en omstart av %1.</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>&amp;Måttenhet att visa belopp i: </translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>Välj en måttenhet att visa i gränssnittet och när du skickar mynt.</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>Om myntkontrollfunktioner skall visas eller inte</translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs</source>
+        <translation>&amp;URL:er för tredjepartstransaktioner</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>standard</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>ingen</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>Bekräfta att alternativen ska återställs</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>Klientomstart är nödvändig för att aktivera ändringarna.</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>Programmet kommer att stängas. Vill du fortsätta?</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>Konfigurationsalternativ</translation>
+    </message>
+    <message>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation>Konfigurationsfilen används för att ange avancerade användaralternativ som överskrider GUI-inställningarna. Dessutom kommer alla kommandoradsalternativ att överskrida denna konfigurationsfil.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Fel</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>Konfigurationsfilen kunde inte öppnas.</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>Denna ändring kräver en klientomstart.</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>Den angivna proxy-adressen är ogiltig.</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>Formulär</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Bitcoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
+    </message>
+    <message>
+        <source>Watch-only:</source>
+        <translation>Granska-bara:</translation>
+    </message>
+    <message>
+        <source>Available:</source>
+        <translation>Tillgängligt:</translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation>Ditt tillgängliga saldo</translation>
+    </message>
+    <message>
+        <source>Pending:</source>
+        <translation>Pågående:</translation>
+    </message>
+    <message>
+        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
+        <translation>Totalt antal transaktioner som ännu inte bekräftats, och som ännu inte räknas med i aktuellt saldo</translation>
+    </message>
+    <message>
+        <source>Immature:</source>
+        <translation>Omogen:</translation>
+    </message>
+    <message>
+        <source>Mined balance that has not yet matured</source>
+        <translation>Genererat saldo som ännu inte har mognat</translation>
+    </message>
+    <message>
+        <source>Balances</source>
+        <translation>Saldon</translation>
+    </message>
+    <message>
+        <source>Total:</source>
+        <translation>Totalt:</translation>
+    </message>
+    <message>
+        <source>Your current total balance</source>
+        <translation>Ditt aktuella totala saldo</translation>
+    </message>
+    <message>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>Ditt aktuella saldo i granska-bara adresser</translation>
+    </message>
+    <message>
+        <source>Spendable:</source>
+        <translation>Spenderbar:</translation>
+    </message>
+    <message>
+        <source>Recent transactions</source>
+        <translation>Nyligen genomförda transaktioner</translation>
+    </message>
+    <message>
+        <source>Unconfirmed transactions to watch-only addresses</source>
+        <translation>Ob
