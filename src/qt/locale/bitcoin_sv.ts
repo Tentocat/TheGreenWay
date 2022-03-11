@@ -1301,4 +1301,338 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Unconfirmed transactions to watch-only addresses</source>
-        <translation>Ob
+        <translation>Obekräftade transaktioner till granska-bara adresser</translation>
+    </message>
+    <message>
+        <source>Mined balance in watch-only addresses that has not yet matured</source>
+        <translation>Genererat saldo i granska-bara adresser som ännu inte har mognat</translation>
+    </message>
+    <message>
+        <source>Current total balance in watch-only addresses</source>
+        <translation>Aktuellt totalt saldo i granska-bara adresser</translation>
+    </message>
+</context>
+<context>
+    <name>PaymentServer</name>
+    <message>
+        <source>Payment request error</source>
+        <translation>Fel vid betalningsbegäran</translation>
+    </message>
+    <message>
+        <source>Cannot start bitcoin: click-to-pay handler</source>
+        <translation>Kan inte starta bitcoin: klicka-och-betala hanteraren</translation>
+    </message>
+    <message>
+        <source>URI handling</source>
+        <translation>URI-hantering</translation>
+    </message>
+    <message>
+        <source>Payment request fetch URL is invalid: %1</source>
+        <translation>Hämtningsadressen för betalningsbegäran är ogiltig: %1</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Ogiltig betalningsadress %1</translation>
+    </message>
+    <message>
+        <source>URI cannot be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
+        <translation>URI kan inte parsas! Detta kan orsakas av en ogiltig Bitcoin-adress eller felaktiga URI-parametrar.</translation>
+    </message>
+    <message>
+        <source>Payment request file handling</source>
+        <translation>Hantering av betalningsbegäransfil</translation>
+    </message>
+    <message>
+        <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
+        <translation>Betalningsbegäransfilen kan inte läsas! Detta kan orsakas av en ogiltig betalningsbegäransfil.</translation>
+    </message>
+    <message>
+        <source>Payment request rejected</source>
+        <translation>Betalningsbegäran avslogs</translation>
+    </message>
+    <message>
+        <source>Payment request network doesn't match client network.</source>
+        <translation>Betalningsbegärans nätverk matchar inte klientens nätverk.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalningsbegäran löpte ut.</translation>
+    </message>
+    <message>
+        <source>Payment request is not initialized.</source>
+        <translation>Betalningsbegäran är inte initierad.</translation>
+    </message>
+    <message>
+        <source>Unverified payment requests to custom payment scripts are unsupported.</source>
+        <translation>Overifierade betalningsbegäranden till anpassade betalningsskript stöds inte.</translation>
+    </message>
+    <message>
+        <source>Invalid payment request.</source>
+        <translation>Ogiltig betalningsbegäran.</translation>
+    </message>
+    <message>
+        <source>Requested payment amount of %1 is too small (considered dust).</source>
+        <translation>Begärd betalning av %1 är för liten (betraktas som damm).</translation>
+    </message>
+    <message>
+        <source>Refund from %1</source>
+        <translation>Återbetalning från %1</translation>
+    </message>
+    <message>
+        <source>Payment request %1 is too large (%2 bytes, allowed %3 bytes).</source>
+        <translation>Betalningsbegäran %1 är för stor (%2 bytes, tillåten %3 bytes).</translation>
+    </message>
+    <message>
+        <source>Error communicating with %1: %2</source>
+        <translation>Kommunikationsfel med %1: %2</translation>
+    </message>
+    <message>
+        <source>Payment request cannot be parsed!</source>
+        <translation>Betalningsbegäran kan inte parsas!</translation>
+    </message>
+    <message>
+        <source>Bad response from server %1</source>
+        <translation>Felaktigt svar från server %1</translation>
+    </message>
+    <message>
+        <source>Network request error</source>
+        <translation>Fel vid nätverksbegäran</translation>
+    </message>
+    <message>
+        <source>Payment acknowledged</source>
+        <translation>Betalningen bekräftad</translation>
+    </message>
+</context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>User Agent</source>
+        <translation>Användaragent</translation>
+    </message>
+    <message>
+        <source>Node/Service</source>
+        <translation>Nod/Tjänst</translation>
+    </message>
+    <message>
+        <source>NodeId</source>
+        <translation>Nod-ID</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <translation>Ping</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Skickad</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Mottagen</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Mängd</translation>
+    </message>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>Ange en Bitcoin-adress (t.ex. %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 d</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Ingen</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>ej tillgänglig</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 ms</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>%n sekund</numerusform><numerusform>%n sekunder</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n minut</numerusform><numerusform>%n minuter</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n timme</numerusform><numerusform>%n timmar</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n dag</numerusform><numerusform>%n dagar</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n vecka</numerusform><numerusform>%n veckor</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 och %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n år</numerusform><numerusform>%n år</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation>%1 B</translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 didn't yet exit safely...</source>
+        <translation>%1 avslutades inte ännu säkert...</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>okänd</translation>
+    </message>
+</context>
+<context>
+    <name>QObject::QObject</name>
+    <message>
+        <source>Error: Specified data directory "%1" does not exist.</source>
+        <translation>Fel: Angiven datakatalog "%1" finns inte.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1. Only use key=value syntax.</source>
+        <translation>Fel: Kan inte läsa konfigurationsfilen: %1. Använd bara nyckel=värde formatet.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation>Fel: %1</translation>
+    </message>
+</context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Spara Bild...</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Image</source>
+        <translation>&amp;Kopiera Bild</translation>
+    </message>
+    <message>
+        <source>Save QR Code</source>
+        <translation>Spara QR-kod</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>PNG-bild (*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>ej tillgänglig</translation>
+    </message>
+    <message>
+        <source>Client version</source>
+        <translation>Klient-version</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>&amp;Information</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>Debug fönster</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Generell</translation>
+    </message>
+    <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>Använder BerkeleyDB versionen</translation>
+    </message>
+    <message>
+        <source>Datadir</source>
+        <translation>Datakatalog</translation>
+    </message>
+    <message>
+        <source>Startup time</source>
+        <translation>Uppstartstid</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation>Nätverk</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Namn</translation>
+    </message>
+    <message>
+        <source>Number of connections</source>
+        <translation>Antalet anslutningar</translation>
+    </message>
+    <message>
+        <source>Block chain</source>
+        <translation>Blockkedja</translation>
+    </message>
+    <message>
+        <source>Current number of blocks</source>
+        <translation>Aktuellt antal block</translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation>Minnespool</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>Aktuellt antal transaktioner</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>Minnesåtgång</translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation>&amp;Återställ</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>Mottagen</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Skickad</translation>
+    </message>
+    <message>
+        <source>&amp;Peers</source>
+        <translatio
