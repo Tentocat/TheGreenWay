@@ -2260,4 +2260,247 @@ Var vänlig och försök igen.</translation>
     <message>
         <source>Payment request expired.</source>
         <translation>Betalningsbegäran löpte ut.</translation>
-   
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>Betala endast den nödvändiga avgiften på %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>Estimated to begin confirmation within %n block(s).</source>
+        <translation><numerusform>Uppskattas till att påbörja bekräftelse inom %n block.</numerusform><numerusform>Uppskattas till att påbörja bekräftelse inom %n block.</numerusform></translation>
+    </message>
+    <message>
+        <source>Warning: Invalid Bitcoin address</source>
+        <translation>Varning: Ogiltig Bitcoin-adress</translation>
+    </message>
+    <message>
+        <source>Warning: Unknown change address</source>
+        <translation>Varning: Okänd växeladress</translation>
+    </message>
+    <message>
+        <source>Confirm custom change address</source>
+        <translation>Bekräfta anpassad växeladress</translation>
+    </message>
+    <message>
+        <source>The address you selected for change is not part of this wallet. Any or all funds in your wallet may be sent to this address. Are you sure?</source>
+        <translation>Den adress du valt för växel ingår inte i denna plånbok. Eventuella eller alla pengar i din plånbok kan komma att skickas till den här adressen. Är du säker?</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(ingen etikett)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    <message>
+        <source>A&amp;mount:</source>
+        <translation>&amp;Belopp:</translation>
+    </message>
+    <message>
+        <source>Pay &amp;To:</source>
+        <translation>Betala &amp;Till:</translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation>&amp;Etikett:</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Välj tidigare använda adresser</translation>
+    </message>
+    <message>
+        <source>This is a normal payment.</source>
+        <translation>Detta är en normal betalning.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to send the payment to</source>
+        <translation>Bitcoin-adress att sända betalning till</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Klistra in adress från Urklipp</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Remove this entry</source>
+        <translation>Radera denna post</translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Avgiften dras från beloppet som skickas. Mottagaren kommer att ta emot mindre bitcoin än du angivit i beloppsfältet. Om flera mottagare valts kommer avgiften att fördelas jämt.</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>S&amp;ubtrahera avgiften från beloppet</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>Använd tillgängligt saldo</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>Meddelande:</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</source>
+        <translation>Detta är en oautentiserad betalningsbegäran.</translation>
+    </message>
+    <message>
+        <source>This is an authenticated payment request.</source>
+        <translation>Detta är en autentiserad betalningsbegäran.</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation>Ange en etikett för denna adress för att lägga till den i listan med använda adresser</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>Ett meddelande som bifogades bitcoin: -URIn och som lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över Bitcoin-nätverket.</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>Betala Till:</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>PM:</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>Ange en etikett för denna adress för att lägga till den i din adressbok</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>Ja</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>%1 stängs av...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>Stäng inte av datorn förrän denna ruta försvinner.</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>Signaturer - Signera / Verifiera ett Meddelande</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>&amp;Signera Meddelande</translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Du kan signera meddelanden/avtal med dina adresser för att bevisa att du kan ta emot bitcoin som skickats till dem. Var försiktig så du inte signerar något oklart eller konstigt, eftersom phishing-angrepp kan försöka få dig att signera över din identitet till dem. Signera endast väldetaljerade meddelanden som du godkänner.</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>Bitcoin-adress att signera meddelandet med</translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>Välj tidigare använda adresser</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>Klistra in adress från Urklipp</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>Skriv in meddelandet du vill signera här</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signatur</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>Kopiera signaturen till systemets Urklipp</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>Signera meddelandet för att bevisa att du äger denna Bitcoin-adress</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>Signera &amp;Meddelande</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>Rensa alla fält</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Rensa &amp;alla</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>&amp;Verifiera Meddelande</translation>
+    </message>
+    <message>
+        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation>Ange mottagarens adress, meddelande (kopiera radbrytningar, mellanslag, TAB-tecken, osv. exakt) och signatur nedan, för att verifiera meddelandet. Undvik att läsa in mera information i signaturen än vad som stod i själva det signerade meddelandet, för att undvika ett man-in-the-middle-angrepp. Notera att detta endast bevisar att den signerande parten tar emot med adressen, det bevisar inte vem som skickat transaktionen!</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>Bitcoin-adress som meddelandet signerades med</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>Verifiera meddelandet för att vara säker på att det signerades med angiven Bitcoin-adress</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>Verifiera &amp;Meddelande</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>Rensa alla fält</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>Klicka "Signera Meddelande" för att skapa en signatur</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>Den angivna adressen är ogiltig.</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>Vad god kontrollera adressen och försök igen.</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>Den angivna adressen refererar inte till en nyckel.</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>Upplåsningen av plånboken avbröts.</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>Den privata nyckeln för den angivna adressen är inte tillgänglig.</tra
