@@ -1973,4 +1973,291 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Resulting URI too long, try to reduce the text for label / message.</source>
- 
+        <translation>URI:n är för lång, försöka minska texten för etikett / meddelande.</translation>
+    </message>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Fel vid skapande av QR-kod från URI.</translation>
+    </message>
+</context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etikett</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>Meddelande</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(Ingen etikett)</translation>
+    </message>
+    <message>
+        <source>(no message)</source>
+        <translation>(inget meddelande)</translation>
+    </message>
+    <message>
+        <source>(no amount requested)</source>
+        <translation>(inget belopp begärt)</translation>
+    </message>
+    <message>
+        <source>Requested</source>
+        <translation>Begärt</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Skicka pengar</translation>
+    </message>
+    <message>
+        <source>Coin Control Features</source>
+        <translation>Myntkontrollfunktioner</translation>
+    </message>
+    <message>
+        <source>Inputs...</source>
+        <translation>Inmatningar...</translation>
+    </message>
+    <message>
+        <source>automatically selected</source>
+        <translation>automatiskt vald</translation>
+    </message>
+    <message>
+        <source>Insufficient funds!</source>
+        <translation>Otillräckliga medel!</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>Kvantitet:</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>Antal Byte:</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>Belopp:</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>Avgift:</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>Efter avgift:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>Växel:</translation>
+    </message>
+    <message>
+        <source>If this is activated, but the change address is empty or invalid, change will be sent to a newly generated address.</source>
+        <translation>Om denna är aktiverad men växeladressen är tom eller ogiltig kommer växeln att sändas till en nyss skapad adress.</translation>
+    </message>
+    <message>
+        <source>Custom change address</source>
+        <translation>Anpassad växeladress</translation>
+    </message>
+    <message>
+        <source>Transaction Fee:</source>
+        <translation>Transaktionsavgift:</translation>
+    </message>
+    <message>
+        <source>Choose...</source>
+        <translation>Välj...</translation>
+    </message>
+    <message>
+        <source>Using the fallbackfee can result in sending a transaction that will take several hours or days (or never) to confirm. Consider choosing your fee manually or wait until you have validated the complete chain.</source>
+        <translation>Med standardavgiften riskerar en transaktion ta timmar eller dagar för att bekräftas, om den ens gör det. Överväg att själv välja avgift alternativt vänta tills du har validerat hela kedjan.</translation>
+    </message>
+    <message>
+        <source>Warning: Fee estimation is currently not possible.</source>
+        <translation>Varning: Avgiftsberäkning är för närvarande inte möjlig.</translation>
+    </message>
+    <message>
+        <source>collapse fee-settings</source>
+        <translation>Fäll ihop avgiftsinställningarna</translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation>per kilobyte</translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then "per kilobyte" only pays 250 satoshis in fee, while "total at least" pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation>Om den anpassade avgiften är satt till 1000 satoshi och transaktionen bara är 250 byte, betalar "per kilobyte" bara 250 satoshi i avgift, medan "totalt minst" betalar 1000 satoshi. För transaktioner större än en kilobyte betalar båda per kilobyte.</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>Göm</translation>
+    </message>
+    <message>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <translation>Att bara betala den minsta avgiften är helt ok så länge transaktionsvolymen är mindre än ledigt utrymme i blocken. Men tänk på att det kan bli en en transaktion som aldrig bekräftas om efterfrågan på bitcoin-transaktioner är större än vad nätverket kan hantera.</translation>
+    </message>
+    <message>
+        <source>(read the tooltip)</source>
+        <translation>(läs verktygstips)</translation>
+    </message>
+    <message>
+        <source>Recommended:</source>
+        <translation>Rekommenderad:</translation>
+    </message>
+    <message>
+        <source>Custom:</source>
+        <translation>Anpassad:</translation>
+    </message>
+    <message>
+        <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
+        <translation>(Smartavgiften är inte initierad än. Detta tar vanligen några block...)</translation>
+    </message>
+    <message>
+        <source>Send to multiple recipients at once</source>
+        <translation>Skicka till flera mottagare samtidigt</translation>
+    </message>
+    <message>
+        <source>Add &amp;Recipient</source>
+        <translation>Lägg till &amp;mottagare</translation>
+    </message>
+    <message>
+        <source>Clear all fields of the form.</source>
+        <translation>Rensa alla formulärfälten</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>Damm:</translation>
+    </message>
+    <message>
+        <source>Confirmation time target:</source>
+        <translation>Bekräftelsestidsmål:</translation>
+    </message>
+    <message>
+        <source>Enable Replace-By-Fee</source>
+        <translation>Möjliggör ersättande avgift</translation>
+    </message>
+    <message>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <translation>Med ersättande avgift (BIP-125) kan du höja transaktionsavgiften efter att transaktionen redan skickats. Om du väljer bort det kan en högre avgift rekommenderas för att kompensera för ökad risk för förhöjd transaktionstid.</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>Rensa &amp;alla</translation>
+    </message>
+    <message>
+        <source>Balance:</source>
+        <translation>Saldo:</translation>
+    </message>
+    <message>
+        <source>Confirm the send action</source>
+        <translation>Bekräfta sändåtgärden</translation>
+    </message>
+    <message>
+        <source>S&amp;end</source>
+        <translation>&amp;Skicka</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>Kopiera kvantitet</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopiera belopp</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>Kopiera avgift</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>Kopiera efter avgift</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>Kopiera byte</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopiera damm</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopiera växel</translation>
+    </message>
+    <message>
+        <source>%1 (%2 blocks)</source>
+        <translation>%1 (%2 block)</translation>
+    </message>
+    <message>
+        <source>%1 to %2</source>
+        <translation>%1 till %2</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send?</source>
+        <translation>Är du säker på att du vill skicka?</translation>
+    </message>
+    <message>
+        <source>added as transaction fee</source>
+        <translation>adderad som transaktionsavgift</translation>
+    </message>
+    <message>
+        <source>Total Amount %1</source>
+        <translation>Totalt belopp %1</translation>
+    </message>
+    <message>
+        <source>or</source>
+        <translation>eller</translation>
+    </message>
+    <message>
+        <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
+        <translation>Du kan välja att höja avgiften senare (med ersättande avgift, BIP-125).</translation>
+    </message>
+    <message>
+        <source>Not signalling Replace-By-Fee, BIP-125.</source>
+        <translation>Använder inte ersättande avgift, BIP-125.</translation>
+    </message>
+    <message>
+        <source>Confirm send coins</source>
+        <translation>Bekräfta att mynt ska skickas</translation>
+    </message>
+    <message>
+        <source>The recipient address is not valid. Please recheck.</source>
+        <translation>Mottagarens adress är ogiltig. Kontrollera igen.</translation>
+    </message>
+    <message>
+        <source>The amount to pay must be larger than 0.</source>
+        <translation>Det betalade beloppet måste vara större än 0.</translation>
+    </message>
+    <message>
+        <source>The amount exceeds your balance.</source>
+        <translation>Beloppet överstiger ditt saldo.</translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation>Totalbeloppet överstiger ditt saldo när transaktionsavgiften %1 är pålagd.</translation>
+    </message>
+    <message>
+        <source>Duplicate address found: addresses should only be used once each.</source>
+        <translation>Dubblettadress hittades: adresser skall endast användas en gång var.</translation>
+    </message>
+    <message>
+        <source>Transaction creation failed!</source>
+        <translation>Transaktionen gick inte att skapa!</translation>
+    </message>
+    <message>
+        <source>The transaction was rejected with the following reason: %1</source>
+        <translation>Transaktionen avvisades med följande orsak: %1</translation>
+    </message>
+    <message>
+        <source>A fee higher than %1 is considered an absurdly high fee.</source>
+        <translation>En avgift högre än %1 anses vara en absurd hög avgift.</translation>
+    </message>
+    <message>
+        <source>Payment request expired.</source>
+        <translation>Betalningsbegäran löpte ut.</translation>
+   
