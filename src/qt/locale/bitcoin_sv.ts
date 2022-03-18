@@ -2838,4 +2838,322 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Whether or not a watch-only address is involved in this transaction.</source>
-        <translation>Anger om en granska-bara--adress är involverad i denna transaktion.
+        <translation>Anger om en granska-bara--adress är involverad i denna transaktion.</translation>
+    </message>
+    <message>
+        <source>User-defined intent/purpose of the transaction.</source>
+        <translation>Användardefinierat syfte/ändamål för transaktionen.</translation>
+    </message>
+    <message>
+        <source>Amount removed from or added to balance.</source>
+        <translation>Belopp draget eller tillagt till saldo.</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>All</source>
+        <translation>Alla</translation>
+    </message>
+    <message>
+        <source>Today</source>
+        <translation>Idag</translation>
+    </message>
+    <message>
+        <source>This week</source>
+        <translation>Denna vecka</translation>
+    </message>
+    <message>
+        <source>This month</source>
+        <translation>Denna månad</translation>
+    </message>
+    <message>
+        <source>Last month</source>
+        <translation>Föregående månad</translation>
+    </message>
+    <message>
+        <source>This year</source>
+        <translation>Det här året</translation>
+    </message>
+    <message>
+        <source>Range...</source>
+        <translation>Period...</translation>
+    </message>
+    <message>
+        <source>Received with</source>
+        <translation>Mottagen med</translation>
+    </message>
+    <message>
+        <source>Sent to</source>
+        <translation>Skickad till</translation>
+    </message>
+    <message>
+        <source>To yourself</source>
+        <translation>Till dig själv</translation>
+    </message>
+    <message>
+        <source>Mined</source>
+        <translation>Genererade</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Övriga</translation>
+    </message>
+    <message>
+        <source>Enter address, transaction id, or label to search</source>
+        <translation>Ange adress, transaktions-id eller etikett för att söka</translation>
+    </message>
+    <message>
+        <source>Min amount</source>
+        <translation>Minsta belopp</translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation>Avbryt transaktionen</translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation>Öka transaktionsavgift</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>Kopiera adress</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>Kopiera etikett</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>Kopiera belopp</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>Kopiera transaktions-ID</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>Kopiera rå transaktion</translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation>Kopiera alla transaktionsdetaljerna</translation>
+    </message>
+    <message>
+        <source>Edit label</source>
+        <translation>Redigera etikett</translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation>Visa transaktionsdetaljer</translation>
+    </message>
+    <message>
+        <source>Export Transaction History</source>
+        <translation>Exportera Transaktionshistoriken</translation>
+    </message>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>Kommaseparerad fil (*.csv)</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>Bekräftad</translation>
+    </message>
+    <message>
+        <source>Watch-only</source>
+        <translation>Enbart granskning</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>Datum</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>Etikett</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>Adress</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation>ID</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>Export misslyckades</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the transaction history to %1.</source>
+        <translation>Ett fel inträffade när transaktionshistoriken skulle sparas till %1.</translation>
+    </message>
+    <message>
+        <source>Exporting Successful</source>
+        <translation>Exporteringen lyckades</translation>
+    </message>
+    <message>
+        <source>The transaction history was successfully saved to %1.</source>
+        <translation>Transaktionshistoriken sparades till %1.</translation>
+    </message>
+    <message>
+        <source>Range:</source>
+        <translation>Räckvidd:</translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation>till</translation>
+    </message>
+</context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>&amp;Enhet att visa belopp i. Klicka för att välja annan enhet.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletFrame</name>
+    <message>
+        <source>No wallet has been loaded.</source>
+        <translation>Ingen plånbok har lästs in.</translation>
+    </message>
+</context>
+<context>
+    <name>WalletModel</name>
+    <message>
+        <source>Send Coins</source>
+        <translation>Skicka Bitcoins</translation>
+    </message>
+    <message>
+        <source>Increasing transaction fee failed</source>
+        <translation>Ökning av avgiften lyckades inte</translation>
+    </message>
+    <message>
+        <source>Do you want to increase the fee?</source>
+        <translation>Vill du öka avgiften?</translation>
+    </message>
+    <message>
+        <source>Current fee:</source>
+        <translation>Aktuell avgift:</translation>
+    </message>
+    <message>
+        <source>Increase:</source>
+        <translation>Öka:</translation>
+    </message>
+    <message>
+        <source>New fee:</source>
+        <translation>Ny avgift:</translation>
+    </message>
+    <message>
+        <source>Confirm fee bump</source>
+        <translation>Bekräfta avgiftshöjning</translation>
+    </message>
+    <message>
+        <source>Can't sign transaction.</source>
+        <translation>Kan ej signera transaktion.</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>Kunde inte skicka transaktion</translation>
+    </message>
+</context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>&amp;Exportera</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>Exportera informationen i aktuell flik till en fil</translation>
+    </message>
+    <message>
+        <source>Backup Wallet</source>
+        <translation>Säkerhetskopiera Plånbok</translation>
+    </message>
+    <message>
+        <source>Wallet Data (*.dat)</source>
+        <translation>Plånboks-data (*.dat)</translation>
+    </message>
+    <message>
+        <source>Backup Failed</source>
+        <translation>Säkerhetskopiering misslyckades</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the wallet data to %1.</source>
+        <translation>Ett fel inträffade när plånbokens data skulle sparas till %1.</translation>
+    </message>
+    <message>
+        <source>Backup Successful</source>
+        <translation>Säkerhetskopiering lyckades</translation>
+    </message>
+    <message>
+        <source>The wallet data was successfully saved to %1.</source>
+        <translation>Plånbokens data sparades till %1.</translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>Inställningar:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Ange katalog för data</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Anslut till en nod för att hämta peer-adresser, och koppla från</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Ange din egen publika adress</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Tillåt kommandon från kommandotolken och JSON-RPC-kommandon</translation>
+    </message>
+    <message>
+        <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
+        <translation>Distribuerad under MIT mjukvarulicens, se den bifogade filen %s eller %s</translation>
+    </message>
+    <message>
+        <source>If &lt;category&gt; is not supplied or if &lt;category&gt; = 1, output all debugging information.</source>
+        <translation>Om &lt;kategori&gt; inte anges eller om &lt;category&gt; = 1, visa all avlusningsinformation.</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation>Beskärning konfigurerad under miniminivån %d MiB. Vänligen använd ett högre värde.</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation>Beskärning: sista plånbokssynkroniseringen ligger utanför beskuren data. Du måste använda -reindex (ladda ner hela blockkedjan igen eftersom noden beskurits)</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>Omskanningar kan inte göras i beskuret läge. Du måste använda -reindex vilket kommer ladda ner hela blockkedjan igen.</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>Fel: Ett kritiskt internt fel uppstod, se debug.log för detaljer</translation>
+    </message>
+    <message>
+        <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
+        <translation>Avgift (i %s/kB) att lägga till på transaktioner du skickar (förvalt: %s)</translation>
+    </message>
+    <message>
+        <source>Pruning blockstore...</source>
+        <translation>Rensar blockstore...</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Kör i bakgrunden som tjänst och acceptera kommandon</translation>
+    </message>
+    <message>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>Kunde inte starta HTTP-server. Se avlusningsloggen för detaljer.</transla
