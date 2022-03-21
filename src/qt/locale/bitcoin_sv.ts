@@ -3344,4 +3344,227 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Error initializing block database</source>
-        <translation>Fel vid init
+        <translation>Fel vid initiering av blockdatabasen</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>Fel vid initiering av plånbokens databasmiljö %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>Fel vid inläsning av %s</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>Fel vid inläsning av %s: Plånboken är korrupt</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>Fel vid inläsning av %s: Plånboken kräver en senare version av %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>Fel vid inläsning av blockdatabasen</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>Fel vid öppning av blockdatabasen</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>Fel: Hårddiskutrymme är lågt!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>Misslyckades att lyssna på någon port. Använd -listen=0 om du vill detta.</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>Misslyckades med att skanna om plånboken under initiering.</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>Importerar...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>Felaktig eller inget genesisblock hittades. Fel datadir för nätverket?</translation>
+    </message>
+    <message>
+        <source>Initialization sanity check failed. %s is shutting down.</source>
+        <translation>Initieringschecken fallerade. %s stängs av.</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>Ogiltigt belopp för -%s=&lt;amount&gt;:'%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ogiltigt belopp för -discardfee=&lt;amount&gt;:'%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>Ogiltigt belopp för -fallbackfee=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>Håll minnespoolen över transaktioner under &lt;n&gt; megabyte (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>Läser in P2P-adresser...</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>Läser in svarta listan...</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>Plats för authcookie (förvalt: datamapp)</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>Inte tillräckligt med filbeskrivningar tillgängliga.</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Anslut enbart till noder i nätverket &lt;net&gt; (IPv4, IPv6 eller onion)</translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>Visa denna hjälptext och avsluta</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>Visa version och avsluta</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>Beskärning kan inte konfigureras med ett negativt värde.</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>Beskärningsläge är inkompatibel med -txindex.</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation>Återskapa blockkedjans status och index från blk*.dat filer på disken</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation>Återskapa blockkedjans status från aktuella indexerade block</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation>Spelar om block...</translation>
+    </message>
+    <message>
+        <source>Rewinding blocks...</source>
+        <translation>Spolar tillbaka blocken...</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>Sätt databasens cachestorlek i megabyte (%d till %d, förvalt: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Ange plånboksfil (inom datakatalogen)</translation>
+    </message>
+    <message>
+        <source>The source code is available from %s.</source>
+        <translation>Källkoden är tillgänglig från %s.</translation>
+    </message>
+    <message>
+        <source>Transaction fee and change calculation failed</source>
+        <translation>Beräkning av transaktionsavgift och växel mislyckades</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer. %s is probably already running.</source>
+        <translation>Det går inte att binda till %s på den här datorn. %s är förmodligen redan igång.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation>Argumentet -benchmark stöds inte och ignoreras, använd -debug=bench.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation>Argumentet -debugnet stöds inte och ignoreras, använd -debug=net.</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -tor found, use -onion.</source>
+        <translation>Argumentet -tor hittades men stöds inte, använd -onion.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>Uppgraderar UTXO-databasen</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>Använd UPnP för att mappa den lyssnande porten (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>Använd testkedjan</translation>
+    </message>
+    <message>
+        <source>User Agent comment (%s) contains unsafe characters.</source>
+        <translation>Kommentaren i användaragent (%s) innehåller osäkra tecken.</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation>Verifierar block...</translation>
+    </message>
+    <message>
+        <source>Wallet debugging/testing options:</source>
+        <translation>Plånbokens Avlusnings/Testnings optioner:</translation>
+    </message>
+    <message>
+        <source>Wallet needed to be rewritten: restart %s to complete</source>
+        <translation>Plånboken behöver sparas om: Starta om %s för att fullfölja</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Plånboksinställningar:</translation>
+    </message>
+    <message>
+        <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
+        <translation>Tillåt JSON-RPC-anslutningar från angiven källa. Tillåtna &lt;ip&gt; är en IP (t.ex 1.2.3.4), ett nätverk/nätmask (t.ex. 1.2.3.4/255.255.255.0) eller ett nätverk/CIDR (t.ex. 1.2.3.4/24). Detta alternativ kan anges flera gånger</translation>
+    </message>
+    <message>
+        <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
+        <translation>Bind till given adress och vitlista klienter som ansluter till den. Använd [värd]:port notation för IPv6</translation>
+    </message>
+    <message>
+        <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
+        <translation>Skapa nya filer med systemets förvalda rättigheter, istället för umask 077 (bara effektivt med avaktiverad plånboks funktionalitet)</translation>
+    </message>
+    <message>
+        <source>Discover own IP addresses (default: 1 when listening and no -externalip or -proxy)</source>
+        <translation>Upptäck egna IP adresser (standard: 1 vid lyssning och ingen -externalip eller -proxy)</translation>
+    </message>
+    <message>
+        <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
+        <translation>Fel: Avlyssning av inkommande anslutningar misslyckades (Avlyssningen returnerade felkod %s)</translation>
+    </message>
+    <message>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>Exekvera kommando när ett relevant meddelande är mottagen eller när vi ser en väldigt lång förgrening (%s i cmd är utbytt med ett meddelande)</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
+        <translation>Avgifter (i %s/kB) mindre än detta betraktas som nollavgift för vidarebefordran, brytning och transaktionsskapande (förvalt: %s)</translation>
+    </message>
+    <message>
+        <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
+        <translation>Om paytxfee inte har angivits, inkludera tillräcklig avgift så att transaktioner börjar bekräftas inom n blocks(förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation>Ogiltigt belopp för -maxtxfee=&lt;amount&gt;: '%s' (måste vara åtminstone minrelay avgift %s för att förhindra stoppade transaktioner)</translation>
+    </message>
+    <message>
+        <source>Maximum size of data in data carrier transactions we relay and mine (default: %u)</source>
+        <translation>Maximal storlek på data i databärartransaktioner som vi reläar och bryter (förvalt: %u) </translation>
+    </message>
+    <message>
+        <source>Randomize credentials for 
