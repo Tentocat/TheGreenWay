@@ -3567,4 +3567,229 @@ Var vänlig och försök igen.</translation>
         <translation>Maximal storlek på data i databärartransaktioner som vi reläar och bryter (förvalt: %u) </translation>
     </message>
     <message>
-        <source>Randomize credentials for 
+        <source>Randomize credentials for every proxy connection. This enables Tor stream isolation (default: %u)</source>
+        <translation>Slumpa autentiseringen för varje proxyanslutning. Detta möjliggör Tor ström-isolering (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation>Transaktionen är för liten att skicka efter det att avgiften har dragits</translation>
+    </message>
+    <message>
+        <source>Whitelisted peers cannot be DoS banned and their transactions are always relayed, even if they are already in the mempool, useful e.g. for a gateway</source>
+        <translation>Vitlistade klienter kan inte bli DoS-bannade och deras transaktioner reläas alltid, även om dom redan är i mempoolen, användbart för t.ex en gateway  </translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
+        <translation>Du måste bygga om databasen genom att använda -reindex för att återgå till obeskärt läge. Detta kommer att ladda ner hela blockkedjan på nytt.</translation>
+    </message>
+    <message>
+        <source>(default: %u)</source>
+        <translation>(förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Accept public REST requests (default: %u)</source>
+        <translation>Acceptera publika REST förfrågningar (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Automatically create Tor hidden service (default: %d)</source>
+        <translation>Skapa automatiskt dold tjänst i Tor (förval: %d)</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Anslut genom SOCKS5 proxy</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't disable HD on an already existing HD wallet</source>
+        <translation>Fel vid inläsning av %s: Du kan inte avaktivera HD på en redan existerande HD-plånbok</translation>
+    </message>
+    <message>
+        <source>Error reading from database, shutting down.</source>
+        <translation>Fel vid läsning från databas, avslutar.</translation>
+    </message>
+    <message>
+        <source>Imports blocks from external blk000??.dat file on startup</source>
+        <translation>Importera block från extern blk000??.dat-fil vid uppstart</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <source>Invalid -onion address or hostname: '%s'</source>
+        <translation>Ogiltig -onion adress eller värdnamn: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid -proxy address or hostname: '%s'</source>
+        <translation>Ogiltig -proxy adress eller värdnamn: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
+        <translation>Ogiltigt belopp för -paytxfee=&lt;amount&gt;:'%s' (måste vara minst %s)</translation>
+    </message>
+    <message>
+        <source>Invalid netmask specified in -whitelist: '%s'</source>
+        <translation>Ogiltig nätmask angiven i -whitelist: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
+        <translation>Håll som mest &lt;n&gt; oanslutningsbara transaktioner i minnet (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: '%s'</source>
+        <translation>Port måste anges med -whitelist: '%s'</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Nodreläalternativ:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>RPC-serveralternativ:</translation>
+    </message>
+    <message>
+        <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
+        <translation>Minskar -maxconnections från %d till %d, på grund av systembegränsningar.</translation>
+    </message>
+    <message>
+        <source>Rescan the block chain for missing wallet transactions on startup</source>
+        <translation>Sök i blockkedjan efter saknade plånbokstransaktioner vid uppstart</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Skicka trace-/debuginformation till terminalen istället för till debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Visa alla avlusningsalternativ (använd: --help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Krymp debug.log filen vid klient start (förvalt: 1 vid ingen -debug)</translation>
+    </message>
+    <message>
+        <source>Signing transaction failed</source>
+        <translation>Signering av transaktion misslyckades</translation>
+    </message>
+    <message>
+        <source>Specified -walletdir "%s" does not exist</source>
+        <translation>Angiven -walletdir "%s" finns inte</translation>
+    </message>
+    <message>
+        <source>Specified -walletdir "%s" is a relative path</source>
+        <translation>Angiven -walletdir "%s" är en relativ sökväg</translation>
+    </message>
+    <message>
+        <source>Specified -walletdir "%s" is not a directory</source>
+        <translation>Angiven -walletdir "%s" är inte en katalog</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to pay the fee</source>
+        <translation>Transaktionen är för liten för att betala avgiften</translation>
+    </message>
+    <message>
+        <source>This is experimental software.</source>
+        <translation>Detta är experimentmjukvara.</translation>
+    </message>
+    <message>
+        <source>Tor control port password (default: empty)</source>
+        <translation>Lösenord för Tor-kontrollport (förval: inget)</translation>
+    </message>
+    <message>
+        <source>Tor control port to use if onion listening enabled (default: %s)</source>
+        <translation>Tor-kontrollport att använda om onion är aktiverat (förval: %s)</translation>
+    </message>
+    <message>
+        <source>Transaction amount too small</source>
+        <translation>Transaktions belopp för liten</translation>
+    </message>
+    <message>
+        <source>Transaction too large for fee policy</source>
+        <translation>Transaktionen är för stor för avgiftspolicyn</translation>
+    </message>
+    <message>
+        <source>Transaction too large</source>
+        <translation>Transaktionen är för stor</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer (bind returned error %s)</source>
+        <translation>Det går inte att binda till %s på den här datorn (bind returnerade felmeddelande %s)</translation>
+    </message>
+    <message>
+        <source>Unable to generate initial keys</source>
+        <translation>Det gick inte att skapa ursprungliga nycklar</translation>
+    </message>
+    <message>
+        <source>Upgrade wallet to latest format on startup</source>
+        <translation>Uppgradera plånbok till senaste formatet vid uppstart</translation>
+    </message>
+    <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Användarnamn för JSON-RPC-anslutningar</translation>
+    </message>
+    <message>
+        <source>Verifying wallet(s)...</source>
+        <translation>Verifierar plånbok(er)...</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Varning</translation>
+    </message>
+    <message>
+        <source>Warning: unknown new rules activated (versionbit %i)</source>
+        <translation>Varning: okända nya regler aktiverade (versionsbit %i)</translation>
+    </message>
+    <message>
+        <source>Whether to operate in a blocks only mode (default: %u)</source>
+        <translation>Ska allt göras i endast block-läge (förval: %u)</translation>
+    </message>
+    <message>
+        <source>You need to rebuild the database using -reindex to change -txindex</source>
+        <translation>Du måste återskapa databasen med -reindex för att ändra -txindex</translation>
+    </message>
+    <message>
+        <source>Zapping all transactions from wallet...</source>
+        <translation>Töm plånboken på alla transaktioner...</translation>
+    </message>
+    <message>
+        <source>ZeroMQ notification options:</source>
+        <translation>ZeroMQ-alternativ för notiser:</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Lösenord för JSON-RPC-anslutningar</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>Exekvera kommando när det bästa blocket ändras (%s i cmd är utbytt av blockhash)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Tillåt DNS-sökningar för -addnode, -seednode och -connect</translation>
+    </message>
+    <message>
+        <source>(1 = keep tx meta data e.g. account owner and payment request information, 2 = drop tx meta data)</source>
+        <translation>(1 = spara tx metadata t.ex. kontoägare och betalningsbegäransinformation, 2 = släng tx metadata)</translation>
+    </message>
+    <message>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation>-maxtxfee är väldigt högt satt! Så höga avgifter kan komma att betalas för en enstaka transaktion.</translation>
+    </message>
+    <message>
+        <source>Do not keep transactions in the mempool longer than &lt;n&gt; hours (default: %u)</source>
+        <translation>Håll inte transaktioner i minnespoolen längre än &lt;n&gt; timmar (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Equivalent bytes per sigop in transactions for relay and mining (default: %u)</source>
+        <translation>Samma antal byte per sigop i transaktioner som vi reläar och bryter (förvalt: %u)</translation>
+    </message>
+    <message>
+        <source>Error loading %s: You can't enable HD on an already existing non-HD wallet</source>
+        <translation>Fel vid inläsning av %s: Du kan inte aktivera HD på en existerande icke-HD plånbok</translation>
+    </message>
+    <message>
+        <source>Error loading wallet %s. -wallet parameter must only specify a filename (not a path).</source>
+        <translation>Fel vid inläsningen av plånbok %s. -wallet parametern kan bara innehålla ett filnamn (inte en sökväg).</translation>
+    </message>
+    <message>
+        <source>Fees (in %s/kB) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>
