@@ -228,4 +228,371 @@
     <name>BanTableModel</name>
     <message>
         <source>IP/Netmask</source>
-        <tr
+        <translation>IP/网络掩码</translation>
+    </message>
+    <message>
+        <source>Banned Until</source>
+        <translation>在此之前禁止：</translation>
+    </message>
+</context>
+<context>
+    <name>BitcoinGUI</name>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation>消息签名(&amp;M)...</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>正在与网络同步...</translation>
+    </message>
+    <message>
+        <source>&amp;Overview</source>
+        <translation>概况(&amp;O)</translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation>节点</translation>
+    </message>
+    <message>
+        <source>Show general overview of wallet</source>
+        <translation>显示钱包概况</translation>
+    </message>
+    <message>
+        <source>&amp;Transactions</source>
+        <translation>交易记录(&amp;T)</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>查看交易历史</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>退出(&amp;X)</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>退出程序</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation>关于 %1</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>显示 %1 相关信息</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>关于Qt(&amp;Q)</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>显示 Qt 相关信息</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>选项(&amp;O)...</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>修改%1配置选项</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>加密钱包(&amp;E)...</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>备份钱包(&amp;B)...</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>更改密码(&amp;C)...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>正在发送地址(&amp;S)...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>正在接收地址(&amp;R)...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>打开 &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation>点击禁用网络活动。</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>网络活动已禁用。</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>点击重新开启网络活动。</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>同步区块头 (%1%)...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>正在为数据块重建索引...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>向一个比特币地址发送比特币</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>备份钱包到其他文件夹</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>更改钱包加密口令</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>调试窗口(&amp;D)</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>打开调试和诊断控制台</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>验证消息(&amp;V)...</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>比特币</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>钱包</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>发送(&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>接收(&amp;R)</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>显示 / 隐藏(&amp;S)</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>显示或隐藏主窗口</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>对钱包中的私钥加密</translation>
+    </message>
+    <message>
+        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <translation>用比特币地址关联的私钥为消息签名，以证明您拥有这个比特币地址</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <translation>校验消息，确保该消息是由指定的比特币地址所有者签名的</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>文件(&amp;F)</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>设置(&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>帮助(&amp;H)</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation>分页工具栏</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>请求支付 (生成二维码和 bitcoin: URI)</translation>
+    </message>
+    <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation>显示用过的发送地址和标签的列表</translation>
+    </message>
+    <message>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation>显示用过的接收地址和标签的列表</translation>
+    </message>
+    <message>
+        <source>Open a bitcoin: URI or payment request</source>
+        <translation>打开一个 bitcoin: URI 或支付请求</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation>命令行选项(&amp;C)</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n active connection(s) to Bitcoin network</source>
+        <translation><numerusform>%n 个到比特币网络的活动连接</numerusform></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>正在为数据块建立索引...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>正在处理数据块...</translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation><numerusform>已处理 %n 个交易历史区块。</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation>落后 %1 </translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation>最新收到的区块产生于 %1。</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation>在此之后的交易尚未可见</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>警告</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>信息</translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation>已是最新</translation>
+    </message>
+    <message>
+        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <translation>显示 %1 帮助信息，获取可用命令行选项列表</translation>
+    </message>
+    <message>
+        <source>%1 client</source>
+        <translation>%1 客戶</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>正在连接到节点……</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>更新中...</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>日期: %1
+</translation>
+    </message>
+    <message>
+        <source>Amount: %1
+</source>
+        <translation>金额: %1
+</translation>
+    </message>
+    <message>
+        <source>Type: %1
+</source>
+        <translation>类型: %1
+</translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation>标签: %1
+</translation>
+    </message>
+    <message>
+        <source>Address: %1
+</source>
+        <translation>地址: %1
+</translation>
+    </message>
+    <message>
+        <source>Sent transaction</source>
+        <translation>发送交易</translation>
+    </message>
+    <message>
+        <source>Incoming transaction</source>
+        <translation>流入交易</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
+        <translation>HD密钥生成&lt;b&gt;启用&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>HD key generation is &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation>HD密钥生成&lt;b&gt;禁用&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
+        <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;，当前为&lt;b&gt;解锁&lt;/b&gt;状态</translation>
+    </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
+        <translation>钱包已被&lt;b&gt;加密&lt;/b&gt;，当前为&lt;b&gt;锁定&lt;/b&gt;状态</translation>
+    </message>
+    <message>
+        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
+        <translation>发生严重错误。客户端无法安全地继续运行，即将退出。</translation>
+    </message>
+</context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>Coin Selection</source>
+        <translation>选择钱币</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation>总量：</translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation>字节：</translation>
+    </message>
+    <message>
+        <source>Amount:</source>
+        <translation>金额：</translation>
+    </message>
+    <message>
+        <source>Fee:</source>
+        <translation>费用：</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>小额：</translation>
+    </message>
+    <message>
+        <source>After Fee:</source>
+        <translation>加上交易费用后:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>变更 : </translation>
+    </message>
+    <message>
+        <source>(un)select all</source>
+        <translation>(不)全选</translation>
+    </message>
+    <message>
+ 
