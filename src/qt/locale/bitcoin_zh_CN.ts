@@ -595,4 +595,344 @@
         <translation>(不)全选</translation>
     </message>
     <message>
- 
+        <source>Tree mode</source>
+        <translation>树状模式</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>列表模式</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>金额</translation>
+    </message>
+    <message>
+        <source>Received with label</source>
+        <translation>按标签收款</translation>
+    </message>
+    <message>
+        <source>Received with address</source>
+        <translation>按地址收款</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>日期</translation>
+    </message>
+    <message>
+        <source>Confirmations</source>
+        <translation>确认</translation>
+    </message>
+    <message>
+        <source>Confirmed</source>
+        <translation>已确认</translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation>复制地址</translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation>复制标签</translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation>复制金额</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation>复制交易识别码</translation>
+    </message>
+    <message>
+        <source>Lock unspent</source>
+        <translation>锁定未花费</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>解锁未花费</translation>
+    </message>
+    <message>
+        <source>Copy quantity</source>
+        <translation>复制数目</translation>
+    </message>
+    <message>
+        <source>Copy fee</source>
+        <translation>复制手续费</translation>
+    </message>
+    <message>
+        <source>Copy after fee</source>
+        <translation>复制计费后金额</translation>
+    </message>
+    <message>
+        <source>Copy bytes</source>
+        <translation>复制字节数</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>复制零散金额</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>复制找零金额</translation>
+    </message>
+    <message>
+        <source>(%1 locked)</source>
+        <translation>(锁定 %1 枚)</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation>是</translation>
+    </message>
+    <message>
+        <source>no</source>
+        <translation>否</translation>
+    </message>
+    <message>
+        <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
+        <translation>当任何一个收款金额小于目前的零散金额上限时，文字会变红色。</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>每组输入可能有 +/- %1 个 satoshi 的误差。</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(无标签)</translation>
+    </message>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>找零前是 %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(找零)</translation>
+    </message>
+</context>
+<context>
+    <name>EditAddressDialog</name>
+    <message>
+        <source>Edit Address</source>
+        <translation>编辑地址</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation>标签(&amp;L)</translation>
+    </message>
+    <message>
+        <source>The label associated with this address list entry</source>
+        <translation>与此地址相关的标签项</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>该地址已与地址列表中的条目关联，只能被发送地址修改。</translation>
+    </message>
+    <message>
+        <source>&amp;Address</source>
+        <translation>地址(&amp;A)</translation>
+    </message>
+    <message>
+        <source>New receiving address</source>
+        <translation>新建收款地址</translation>
+    </message>
+    <message>
+        <source>New sending address</source>
+        <translation>新建付款地址</translation>
+    </message>
+    <message>
+        <source>Edit receiving address</source>
+        <translation>编辑收款地址</translation>
+    </message>
+    <message>
+        <source>Edit sending address</source>
+        <translation>编辑付款地址</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is not a valid Bitcoin address.</source>
+        <translation>输入的地址 %1 并不是有效的比特币地址。</translation>
+    </message>
+    <message>
+        <source>The entered address "%1" is already in the address book.</source>
+        <translation>输入的地址 %1 已经存在地址簿。</translation>
+    </message>
+    <message>
+        <source>Could not unlock wallet.</source>
+        <translation>无法将钱包解锁。</translation>
+    </message>
+    <message>
+        <source>New key generation failed.</source>
+        <translation>产生新的密钥失败了。</translation>
+    </message>
+</context>
+<context>
+    <name>FreespaceChecker</name>
+    <message>
+        <source>A new data directory will be created.</source>
+        <translation>一个新的数据目录将被创建。</translation>
+    </message>
+    <message>
+        <source>name</source>
+        <translation>名称</translation>
+    </message>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>目录已存在。如果您打算在这里创建一个新目录，添加 %1。</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>路径已存在，并且不是一个目录。</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>无法在此创建数据目录。</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation>版本</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1 位)</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation>關於 %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>命令行选项</translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation>使用：</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>命令行选项</translation>
+    </message>
+    <message>
+        <source>UI Options:</source>
+        <translation>界面选项：</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: %u)</source>
+        <translation>在启动时选择目录（默认%u）</translation>
+    </message>
+    <message>
+        <source>Set language, for example "de_DE" (default: system locale)</source>
+        <translation>设置语言, 例如“zh-CN”（默认：系统语言）</translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation>启动时最小化</translation>
+    </message>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>设置付款请求的SSL根证书（默认：-系统-）</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: %u)</source>
+        <translation>显示启动画面（默认：%u）</translation>
+    </message>
+    <message>
+        <source>Reset all settings changed in the GUI</source>
+        <translation>重置图形界面所有的变更设置</translation>
+    </message>
+</context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Welcome</source>
+        <translation>欢迎</translation>
+    </message>
+    <message>
+        <source>Welcome to %1.</source>
+        <translation>欢迎使用 %1</translation>
+    </message>
+    <message>
+        <source>As this is the first time the program is launched, you can choose where %1 will store its data.</source>
+        <translation>由于这是第一次启动此程序，您可以选择%1的数据所存储的位置</translation>
+    </message>
+    <message>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>当你点击确认后，%1 将会在 %4 启动时从  %3 中最早的交易开始，下载并处理完整的 %4 区块链 (%2GB)。</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>如果你选择限制区块链存储大小（区块链裁剪模式），程序依然会下载并处理全部历史数据，此后才会删除不必须的部分，占用最少的存储空间。</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>使用默认的数据目录</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>使用自定义的数据目录：</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>比特币</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>此目录中至少会保存 %1 GB 的数据，并且尺寸还会随着时间增长。</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>会在此目录中存储约 %1 GB 的数据。</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <translation>%1 将会下载并存储比特币区块链。</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>钱包也会被保存在这个目录中。</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>错误：无法创建 指定的数据目录 "%1" </translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n GB of free space available</source>
+        <translation><numerusform>有 %n GB 空闲空间</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>(of %n GB needed)</source>
+        <translation><numerusform>(需要%n GB空间)</numerusform></translation>
+    </message>
+</context>
+<context>
+    <name>ModalOverlay</name>
+    <message>
+        <source>Form</source>
+        <translation>表单</translation>
+    </message>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the bitcoin network, as detailed below.</source>
+        <translation>近期交易可能尚未显示，因此当前余额可能不准确。以上信息将在与比特币网络完全同步后更正。详情如下</translation>
+    </message>
+    <message>
+        <source>Attempting to spend bitcoins that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>尝试使用受未可见交易影响的余额将不被网络接受。</translation>
+    </message>
+    <message>
+        <source>Number of blocks left</source>
+        <translation>剩余区块数量</translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation>未知</translation>
+    </message>
+    <message>
+        <source>Last block time</source>
+        <translation>上一数据块时间</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+     
