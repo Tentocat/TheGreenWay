@@ -935,4 +935,319 @@
     </message>
     <message>
         <source>Progress</source>
-     
+        <translation>进度</translation>
+    </message>
+    <message>
+        <source>Progress increase per hour</source>
+        <translation>每小时进度增加</translation>
+    </message>
+    <message>
+        <source>calculating...</source>
+        <translation>正在计算</translation>
+    </message>
+    <message>
+        <source>Estimated time left until synced</source>
+        <translation>预计剩余同步时间</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>隐藏</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1)...</source>
+        <translation>未知状态。同步区块头(%1)...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenURIDialog</name>
+    <message>
+        <source>Open URI</source>
+        <translation>打开 URI</translation>
+    </message>
+    <message>
+        <source>Open payment request from URI or file</source>
+        <translation>打开来自URI或文件的付款请求 </translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation>URI: </translation>
+    </message>
+    <message>
+        <source>Select payment request file</source>
+        <translation>选择付款请求文件 </translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>选择要打开的付款请求文件</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation>选项</translation>
+    </message>
+    <message>
+        <source>&amp;Main</source>
+        <translation>主要(&amp;M)</translation>
+    </message>
+    <message>
+        <source>Automatically start %1 after logging in to the system.</source>
+        <translation>在登入系统后自动启动 %1</translation>
+    </message>
+    <message>
+        <source>&amp;Start %1 on system login</source>
+        <translation>系统登入时启动 %1</translation>
+    </message>
+    <message>
+        <source>Size of &amp;database cache</source>
+        <translation>数据库缓存大小(&amp;D)</translation>
+    </message>
+    <message>
+        <source>MB</source>
+        <translation>MB</translation>
+    </message>
+    <message>
+        <source>Number of script &amp;verification threads</source>
+        <translation>脚本验证线程数(&amp;V)</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>代理的 IP 地址 (例如 IPv4: 127.0.0.1 / IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>Shows if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation>显示默认的SOCKS5代理是否被用于在该类型的网络下连接同伴</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation>通过Tor隐藏服务连接节点时使用不同的SOCKS&amp;5代理：</translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation>隐藏系统通知区图标</translation>
+    </message>
+    <message>
+        <source>&amp;Hide tray icon</source>
+        <translation>隐藏通知区图标(&amp;H)</translation>
+    </message>
+    <message>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
+        <translation>窗口被关闭时最小化而不是退出应用程序。当此选项启用时，应用程序只会在菜单中选择退出时退出。</translation>
+    </message>
+    <message>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <translation>出现在交易的选项卡的上下文菜单项的第三方网址 (例如：区块链接查询) 。 %s的URL被替换为交易哈希。多个的URL需要竖线 | 分隔。</translation>
+    </message>
+    <message>
+        <source>Active command-line options that override above options:</source>
+        <translation>有效的命令行参数覆盖上述选项:</translation>
+    </message>
+    <message>
+        <source>Open the %1 configuration file from the working directory.</source>
+        <translation>从工作目录下打开配置文件 %1。</translation>
+    </message>
+    <message>
+        <source>Open Configuration File</source>
+        <translation>打开配置文件</translation>
+    </message>
+    <message>
+        <source>Reset all client options to default.</source>
+        <translation>恢复客户端的缺省设置</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>恢复缺省设置(&amp;R)</translation>
+    </message>
+    <message>
+        <source>&amp;Network</source>
+        <translation>网络(&amp;N)</translation>
+    </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation>(0 = 自动, &lt;0 = 保持指定数量的CPU核心空闲)</translation>
+    </message>
+    <message>
+        <source>W&amp;allet</source>
+        <translation>钱包(&amp;A)</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>专家</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>启动货币控制功能(&amp;C)</translation>
+    </message>
+    <message>
+        <source>If you disable the spending of unconfirmed change, the change from a transaction cannot be used until that transaction has at least one confirmation. This also affects how your balance is computed.</source>
+        <translation>如果禁用未确认的零钱，则零钱至少需要1个确认才能使用。同时账户余额计算会受到影响。</translation>
+    </message>
+    <message>
+        <source>&amp;Spend unconfirmed change</source>
+        <translation>使用未经确认的零钱(&amp;S)</translation>
+    </message>
+    <message>
+        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>自动在路由器中打开比特币端口。只有当您的路由器开启了 UPnP 选项时此功能才有效。</translation>
+    </message>
+    <message>
+        <source>Map port using &amp;UPnP</source>
+        <translation>使用 &amp;UPnP 映射端口</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside.</source>
+        <translation>接收外部连接。</translation>
+    </message>
+    <message>
+        <source>Allow incomin&amp;g connections</source>
+        <translation>允许流入连接(&amp;G)</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <translation>通过 SOCKS5 代理连接比特币网络。</translation>
+    </message>
+    <message>
+        <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
+        <translation>通过 SO&amp;CKS5 代理连接(默认代理)：</translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation>代理服务器 &amp;IP：</translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation>端口(&amp;P)：</translation>
+    </message>
+    <message>
+        <source>Port of the proxy (e.g. 9050)</source>
+        <translation>代理端口（例如 9050）</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>连接到同伴的方式：</translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation>IPv4</translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation>IPv6</translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation>Tor</translation>
+    </message>
+    <message>
+        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>在 Tor 匿名网络下通过不同的 SOCKS5 代理连接比特币网络</translation>
+    </message>
+    <message>
+        <source>&amp;Window</source>
+        <translation>窗口(&amp;W)</translation>
+    </message>
+    <message>
+        <source>Show only a tray icon after minimizing the window.</source>
+        <translation>最小化窗口后仅显示托盘图标</translation>
+    </message>
+    <message>
+        <source>&amp;Minimize to the tray instead of the taskbar</source>
+        <translation>最小化到托盘(&amp;M)</translation>
+    </message>
+    <message>
+        <source>M&amp;inimize on close</source>
+        <translation>单击关闭按钮最小化(&amp;I)</translation>
+    </message>
+    <message>
+        <source>&amp;Display</source>
+        <translation>显示(&amp;D)</translation>
+    </message>
+    <message>
+        <source>User Interface &amp;language:</source>
+        <translation>用户界面语言(&amp;L)：</translation>
+    </message>
+    <message>
+        <source>The user interface language can be set here. This setting will take effect after restarting %1.</source>
+        <translation>可以在这里设定用户界面的语言。这个设定在重启 %1 后才会生效。</translation>
+    </message>
+    <message>
+        <source>&amp;Unit to show amounts in:</source>
+        <translation>比特币金额单位(&amp;U)：</translation>
+    </message>
+    <message>
+        <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
+        <translation>选择比特币单位。</translation>
+    </message>
+    <message>
+        <source>Whether to show coin control features or not.</source>
+        <translation>是否需要交易源地址控制功能。</translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs</source>
+        <translation>第三方交易网址(&amp;T)</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation>确定(&amp;O)</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>取消(&amp;C)</translation>
+    </message>
+    <message>
+        <source>default</source>
+        <translation>默认</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>无</translation>
+    </message>
+    <message>
+        <source>Confirm options reset</source>
+        <translation>确认恢复缺省设置</translation>
+    </message>
+    <message>
+        <source>Client restart required to activate changes.</source>
+        <translation>更改生效需要重启客户端。</translation>
+    </message>
+    <message>
+        <source>Client will be shut down. Do you want to proceed?</source>
+        <translation>客户端即将关闭，您想继续吗？</translation>
+    </message>
+    <message>
+        <source>Configuration options</source>
+        <translation>配置选项</translation>
+    </message>
+    <message>
+        <source>The configuration file is used to specify advanced user options which override GUI settings. Additionally, any command-line options will override this configuration file.</source>
+        <translation>配置文件可以用来设置高级选项。配置文件会覆盖设置界面窗口中的选项。此外，命令行会覆盖配置文件指定的选项。</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
+    <message>
+        <source>The configuration file could not be opened.</source>
+        <translation>配置文件无法打开。</translation>
+    </message>
+    <message>
+        <source>This change would require a client restart.</source>
+        <translation>此更改需要重启客户端。</translation>
+    </message>
+    <message>
+        <source>The supplied proxy address is invalid.</source>
+        <translation>提供的代理服务器地址无效。</translation>
+    </message>
+</context>
+<context>
+    <name>OverviewPage</name>
+    <message>
+        <source>Form</source>
+        <translation>表单</translation>
+    </message>
+    <message>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>现在显示的消息可能是过期的。在连接上比特币网络节点后，您的钱包将自动与网络同步，但是这个过程还没有完成。</translation>
+    </message>
+   
