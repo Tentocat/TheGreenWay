@@ -3053,4 +3053,231 @@
         <translation>确认手续费提升</translation>
     </message>
     <message>
-        <source>C
+        <source>Can't sign transaction.</source>
+        <translation>无法签署交易。</translation>
+    </message>
+    <message>
+        <source>Could not commit transaction</source>
+        <translation>无法提交交易</translation>
+    </message>
+</context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>导出(&amp;E)</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>将当前标签页数据导出到文件</translation>
+    </message>
+    <message>
+        <source>Backup Wallet</source>
+        <translation>备份钱包</translation>
+    </message>
+    <message>
+        <source>Wallet Data (*.dat)</source>
+        <translation>钱包文件(*.dat)</translation>
+    </message>
+    <message>
+        <source>Backup Failed</source>
+        <translation>备份失败</translation>
+    </message>
+    <message>
+        <source>There was an error trying to save the wallet data to %1.</source>
+        <translation>尝试保存钱包数据至 %1 时发生了错误。</translation>
+    </message>
+    <message>
+        <source>Backup Successful</source>
+        <translation>备份成功</translation>
+    </message>
+    <message>
+        <source>The wallet data was successfully saved to %1.</source>
+        <translation>钱包数据成功保存至 %1。</translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Options:</source>
+        <translation>选项：
+</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>指定数据目录
+</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>连接一个节点并获取对端地址，然后断开连接</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>指定您的公共地址</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>接受命令行和 JSON-RPC 命令
+</translation>
+    </message>
+    <message>
+        <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
+        <translation>在MIT协议下分发，参见附带的 %s 文件或 %s</translation>
+    </message>
+    <message>
+        <source>If &lt;category&gt; is not supplied or if &lt;category&gt; = 1, output all debugging information.</source>
+        <translation>如果&lt;category&gt;未提供或&lt;category&gt; = 1，输出所有调试信息。</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation>修剪值被设置为低于最小值%d MiB，请使用更大的数值。</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation>修剪：最后的钱包同步超过了修剪的数据。你需要通过 -reindex (重新下载整个区块链以防修剪节点)</translation>
+    </message>
+    <message>
+        <source>Rescans are not possible in pruned mode. You will need to use -reindex which will download the whole blockchain again.</source>
+        <translation>无法在开启修剪的状态下重扫描，请使用 -reindex重新下载完整的区块链。</translation>
+    </message>
+    <message>
+        <source>Error: A fatal internal error occurred, see debug.log for details</source>
+        <translation>错误：发生了致命的内部错误，详情见 debug.log 文件</translation>
+    </message>
+    <message>
+        <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
+        <translation>为付款交易添加交易费 (%s/kB) (默认: %s) </translation>
+    </message>
+    <message>
+        <source>Pruning blockstore...</source>
+        <translation>正在修剪区块存储...</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>在后台运行并接受命令
+
+</translation>
+    </message>
+    <message>
+        <source>Unable to start HTTP server. See debug log for details.</source>
+        <translation>无法启动HTTP服务，查看日志获取更多信息</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin Core</translation>
+    </message>
+    <message>
+        <source>The %s developers</source>
+        <translation>%s 开发人员</translation>
+    </message>
+    <message>
+        <source>A fee rate (in %s/kB) that will be used when fee estimation has insufficient data (default: %s)</source>
+        <translation>当费用估计数据(default: %s)不足时将会启用的费率 (in %s/kB) </translation>
+    </message>
+    <message>
+        <source>Accept relayed transactions received from whitelisted peers even when not relaying transactions (default: %d)</source>
+        <translation>即使在无关联交易(默认: %d)时也接受来自白名单同行的关联交易</translation>
+    </message>
+    <message>
+        <source>Add a node to connect to and attempt to keep the connection open (see the `addnode` RPC command help for more info)</source>
+        <translation>添加节点并与其保持连接（详情请见RPC命令addnode的说明）</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>绑定指定的IP地址开始监听。IPv6地址请使用[host]:port 格式</translation>
+    </message>
+    <message>
+        <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
+        <translation>无法锁定数据目录 %s。%s 可能已经在运行。</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation>无法同时指定特定连接地址以及自动寻找连接。</translation>
+    </message>
+    <message>
+        <source>Connect only to the specified node(s); -connect=0 disables automatic connections (the rules for this peer are the same as for -addnode)</source>
+        <translation>只连接到指定的节点。用-connect=0可以关闭自动连接。（应用于这个节点的规则与-addnode相同）</translation>
+    </message>
+    <message>
+        <source>Delete all wallet transactions and only recover those parts of the blockchain through -rescan on startup</source>
+        <translation>删除钱包的所有交易记录，且只有用 -rescan参数启动客户端才能重新取回交易记录 </translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation>读取 %s 时发生错误！所有的密钥都可以正确读取，但是交易记录或地址簿数据可能已经丢失或出错。</translation>
+    </message>
+    <message>
+        <source>Exclude debugging information for a category. Can be used in conjunction with -debug=1 to output debug logs for all categories except one or more specified categories.</source>
+        <translation>排除某一类Debug信息。可以与 -debug=1 一起使用，以输出除了指定类别以外的Debug日志。</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>当最佳区块变化时执行命令 (命令行中的 %s 会被替换成区块哈希值)</translation>
+    </message>
+    <message>
+        <source>Extra transactions to keep in memory for compact block reconstructions (default: %u)</source>
+        <translation>为了将摘要区块完整重组而额外保留在內存中的交易数量（默认：%u）</translation>
+    </message>
+    <message>
+        <source>If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)</source>
+        <translation>假设已经在区块链中的区块以及其先前的区块都合法，因此对它们略过脚本验证（0表示一律要验证，默认：%s，测试网络：%s）</translation>
+    </message>
+    <message>
+        <source>Maximum allowed median peer time offset adjustment. Local perspective of time may be influenced by peers forward or backward by this amount. (default: %u seconds)</source>
+        <translation>跟其他节点的时间差最高可接受的中位数值。本机所认为的时间可能会被其他节点影响，往前或往后在这个值之内。（默认：%u秒）</translation>
+    </message>
+    <message>
+        <source>Maximum total fees (in %s) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions (default: %s)</source>
+        <translation>最大的单次钱包或原始转账费用(%s)，设置太低可能导致大尺寸交易失败(默认：%s)</translation>
+    </message>
+    <message>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <translation>请检查电脑的日期时间设置是否正确！时间错误可能会导致 %s 运行异常。</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation>如果你认为%s对你比较有用的话，请对我们进行一些捐赠支持。请访问%s网站来获取有关这个软件的更多信息。</translation>
+    </message>
+    <message>
+        <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect used)</source>
+        <translation>是否允许在节点地址数量不足时，使用DNS查询来搜寻节点（默认：当没用-connect时为1）</translation>
+    </message>
+    <message>
+        <source>Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. Warning: Reverting this setting requires re-downloading the entire blockchain. (default: 0 = disable pruning blocks, 1 = allow manual pruning via RPC, &gt;%u = automatically prune block files to stay under the specified target size in MiB)</source>
+        <translation>修剪（删除）掉老旧区块以降低需要的储存空间。这样会增加一个RPC指令pruneblockchain，可以使用它来删除指定的区块；也可以指定目标储存空间大小，以启用对老旧内存块的自动修剪功能。这个模式跟-txindex和-rescan参数不兼容。警告：还原回不修剪模式会需要重新下载整个区块链。（默认：0表示不修剪内存块，1表示允许使用RPC指令做修剪，&gt;%u的值表示为区块数据的目标大小，单位是百万字节，MiB）</translation>
+    </message>
+    <message>
+        <source>Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)</source>
+        <translation>设定生成区块时，所要包含交易每千字节的最低手续费（单位是%s）。（默认：%s）</translation>
+    </message>
+    <message>
+        <source>Set the number of script verification threads (%u to %d, 0 = auto, &lt;0 = leave that many cores free, default: %d)</source>
+        <translation>设置脚本验证的程序 (%u 到 %d, 0 = 自动, &lt;0 = 保留自由的核心, 默认值: %d)</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
+        <translation>区块数据库包含未来的交易，这可能是由本机错误的日期时间引起。若确认本机日期时间正确，请重新建立区块数据库。</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation>这是测试用的预发布版本 - 请谨慎使用 - 不要用来挖矿，或者在正式商用环境下使用</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation>如果对你的交易量来说，消耗的手续费微乎其微，那么这笔手续费你或许可以忽略它。</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation>没办法重算区块。你需要先用-reindex-chainstate参数来重建数据库。</translation>
+    </message>
+    <message>
+        <source>Unable to rewind the database to a pre-fork state. You will need to redownload the blockchain</source>
+        <translation>没办法将数据库倒转回分叉前的状态。必须要重新下载区块链。</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: 1 when listening and no -proxy)</source>
+        <translation>使用UPnP暴露本机监听端口（默认：1 当正在监听且不使用代理）</translation>
+    </message>
+    <message>
+        <source>Username and hashed password
