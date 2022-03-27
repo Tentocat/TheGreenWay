@@ -2332,4 +2332,348 @@
         <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>交易费将从发送总额中扣除。接收人将收到比您在金额框中输入的更少的比特币。如果选中了多个收件人，交易费平分。</translation>
     </message>
- 
+    <message>
+        <source>S&amp;ubtract fee from amount</source>
+        <translation>从金额中减去交易费(&amp;U)</translation>
+    </message>
+    <message>
+        <source>Use available balance</source>
+        <translation>使用全部可用余额</translation>
+    </message>
+    <message>
+        <source>Message:</source>
+        <translation>消息：</translation>
+    </message>
+    <message>
+        <source>This is an unauthenticated payment request.</source>
+        <translation>这是一个未经验证的支付请求。</translation>
+    </message>
+    <message>
+        <source>This is an authenticated payment request.</source>
+        <translation>这是一个已经验证的支付请求。</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to the list of used addresses</source>
+        <translation>请为此地址输入一个标签以将它加入用过的地址列表</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>bitcoin:URI 附带的备注信息，将会和交易一起存储，备查。 注意：该消息不会通过比特币网络传输。</translation>
+    </message>
+    <message>
+        <source>Pay To:</source>
+        <translation>支付给:</translation>
+    </message>
+    <message>
+        <source>Memo:</source>
+        <translation>便条：</translation>
+    </message>
+    <message>
+        <source>Enter a label for this address to add it to your address book</source>
+        <translation>为这个地址输入一个标签，以便将它添加到您的地址簿</translation>
+    </message>
+</context>
+<context>
+    <name>SendConfirmationDialog</name>
+    <message>
+        <source>Yes</source>
+        <translation>是</translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation>正在关闭 %1 ...</translation>
+    </message>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation>在此窗口消失前不要关闭计算机。</translation>
+    </message>
+</context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    <message>
+        <source>Signatures - Sign / Verify a Message</source>
+        <translation>签名 - 为消息签名/验证签名消息</translation>
+    </message>
+    <message>
+        <source>&amp;Sign Message</source>
+        <translation>签名消息(&amp;S)</translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>您可以用你的地址对消息/协议进行签名，以证明您可以接收发送到该地址的比特币。注意不要对任何模棱两可或者随机的消息进行签名，以免遭受钓鱼式攻击。请确保消息内容准确的表达了您的真实意愿。</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address to sign the message with</source>
+        <translation>用来对消息签名的地址 </translation>
+    </message>
+    <message>
+        <source>Choose previously used address</source>
+        <translation>选择以前用过的地址</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation>Alt+A</translation>
+    </message>
+    <message>
+        <source>Paste address from clipboard</source>
+        <translation>从剪贴板粘贴地址</translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation>Alt+P</translation>
+    </message>
+    <message>
+        <source>Enter the message you want to sign here</source>
+        <translation>请输入您要发送的签名消息</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>签名</translation>
+    </message>
+    <message>
+        <source>Copy the current signature to the system clipboard</source>
+        <translation>复制当前签名至剪切板</translation>
+    </message>
+    <message>
+        <source>Sign the message to prove you own this Bitcoin address</source>
+        <translation>签名消息，证明这个地址属于您。</translation>
+    </message>
+    <message>
+        <source>Sign &amp;Message</source>
+        <translation>消息签名(&amp;M)</translation>
+    </message>
+    <message>
+        <source>Reset all sign message fields</source>
+        <translation>清空所有签名消息栏</translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation>清除所有(&amp;A)</translation>
+    </message>
+    <message>
+        <source>&amp;Verify Message</source>
+        <translation>验证消息(&amp;V)</translation>
+    </message>
+    <message>
+        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation>请在下面输入接收者地址、消息（确保换行符、空格符、制表符等完全相同）和签名以验证消息。请仔细核对签名信息，以提防中间人攻击。请注意，这只是证明接收方签名的地址，它不能证明任何交易！</translation>
+    </message>
+    <message>
+        <source>The Bitcoin address the message was signed with</source>
+        <translation>消息使用的签名地址</translation>
+    </message>
+    <message>
+        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
+        <translation>验证消息，确保消息是由指定的比特币地址签名过的。</translation>
+    </message>
+    <message>
+        <source>Verify &amp;Message</source>
+        <translation>验证消息签名(&amp;M)</translation>
+    </message>
+    <message>
+        <source>Reset all verify message fields</source>
+        <translation>清空所有验证消息栏</translation>
+    </message>
+    <message>
+        <source>Click "Sign Message" to generate signature</source>
+        <translation>单击“签名消息“产生签名。</translation>
+    </message>
+    <message>
+        <source>The entered address is invalid.</source>
+        <translation>输入的地址无效。</translation>
+    </message>
+    <message>
+        <source>Please check the address and try again.</source>
+        <translation>请检查地址后重试。</translation>
+    </message>
+    <message>
+        <source>The entered address does not refer to a key.</source>
+        <translation>输入的地址没有关联的公私钥对。</translation>
+    </message>
+    <message>
+        <source>Wallet unlock was cancelled.</source>
+        <translation>钱包解锁动作取消。</translation>
+    </message>
+    <message>
+        <source>Private key for the entered address is not available.</source>
+        <translation>找不到输入地址关联的私钥。</translation>
+    </message>
+    <message>
+        <source>Message signing failed.</source>
+        <translation>消息签名失败。</translation>
+    </message>
+    <message>
+        <source>Message signed.</source>
+        <translation>消息已签名。</translation>
+    </message>
+    <message>
+        <source>The signature could not be decoded.</source>
+        <translation>签名无法解码。</translation>
+    </message>
+    <message>
+        <source>Please check the signature and try again.</source>
+        <translation>请检查签名后重试。</translation>
+    </message>
+    <message>
+        <source>The signature did not match the message digest.</source>
+        <translation>签名与消息摘要不匹配。</translation>
+    </message>
+    <message>
+        <source>Message verification failed.</source>
+        <translation>消息验证失败。</translation>
+    </message>
+    <message>
+        <source>Message verified.</source>
+        <translation>消息验证成功。</translation>
+    </message>
+</context>
+<context>
+    <name>SplashScreen</name>
+    <message>
+        <source>[testnet]</source>
+        <translation>[测试网络]</translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>KB/s</source>
+        <translation>KB/s</translation>
+    </message>
+</context>
+<context>
+    <name>TransactionDesc</name>
+    <message numerus="yes">
+        <source>Open for %n more block(s)</source>
+        <translation><numerusform>到下%n个区块产生出来前可修改</numerusform></translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>至 %1 个数据块时开启</translation>
+    </message>
+    <message>
+        <source>conflicted with a transaction with %1 confirmations</source>
+        <translation>与一个有 %1 个确认的交易冲突</translation>
+    </message>
+    <message>
+        <source>%1/offline</source>
+        <translation>%1 / 离线</translation>
+    </message>
+    <message>
+        <source>0/unconfirmed, %1</source>
+        <translation>0/未确认，%1</translation>
+    </message>
+    <message>
+        <source>in memory pool</source>
+        <translation>在内存池中</translation>
+    </message>
+    <message>
+        <source>not in memory pool</source>
+        <translation>不在内存池中</translation>
+    </message>
+    <message>
+        <source>abandoned</source>
+        <translation>已抛弃</translation>
+    </message>
+    <message>
+        <source>%1/unconfirmed</source>
+        <translation>%1/未确认</translation>
+    </message>
+    <message>
+        <source>%1 confirmations</source>
+        <translation>%1 个确认</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>状态</translation>
+    </message>
+    <message>
+        <source>, has not been successfully broadcast yet</source>
+        <translation>，未被成功广播</translation>
+    </message>
+    <message numerus="yes">
+        <source>, broadcast through %n node(s)</source>
+        <translation><numerusform>，通过 %n 个节点广播</numerusform></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation>日期</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation>源</translation>
+    </message>
+    <message>
+        <source>Generated</source>
+        <translation>生成</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>来自</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation>未知</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>到</translation>
+    </message>
+    <message>
+        <source>own address</source>
+        <translation>自己的地址</translation>
+    </message>
+    <message>
+        <source>watch-only</source>
+        <translation>观察地址(watch-only) </translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation>标签</translation>
+    </message>
+    <message>
+        <source>Credit</source>
+        <translation>收入</translation>
+    </message>
+    <message numerus="yes">
+        <source>matures in %n more block(s)</source>
+        <translation><numerusform>再等%n个区块产生出来后成熟</numerusform></translation>
+    </message>
+    <message>
+        <source>not accepted</source>
+        <translation>未被接受</translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation>支出</translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation>总收入</translation>
+    </message>
+    <message>
+        <source>Total credit</source>
+        <translation>总支出</translation>
+    </message>
+    <message>
+        <source>Transaction fee</source>
+        <translation>交易费用</translation>
+    </message>
+    <message>
+        <source>Net amount</source>
+        <translation>净额</translation>
+    </message>
+    <message>
+        <source>Message</source>
+        <translation>消息</translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation>备注</translation>
+    </message>
+    <message>
+        <source>Transaction ID</source>
+        <transla
