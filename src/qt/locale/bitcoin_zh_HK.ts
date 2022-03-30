@@ -686,4 +686,20 @@
         <source>Export the data in the current tab to a file</source>
         <translation>把目前分頁的資料匯出至檔案</translation>
     </message>
-    </co
+    </context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Information</source>
+        <translation>資訊</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>警告</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>錯誤</translation>
+    </message>
+</context>
+</TS>
