@@ -51,4 +51,27 @@ bool MacNotificationHandler::hasUserNotificationCenterSupport(void)
 {
     Class possibleClass = NSClassFromString(@"NSUserNotificationCenter");
 
-    // check if users OS has sup
+    // check if users OS has support for NSUserNotification
+    if(possibleClass!=nil) {
+        return true;
+    }
+    return false;
+}
+
+
+MacNotificationHandler *MacNotificationHandler::instance()
+{
+    static MacNotificationHandler *s_instance = nullptr;
+    if (!s_instance) {
+        s_instance = new MacNotificationHandler();
+        
+        Class aPossibleClass = objc_getClass("NSBundle");
+        if (aPossibleClass) {
+            // change NSBundle -bundleIdentifier method to return a correct bundle identifier
+            // a bundle identifier is required to use OSXs User Notification Center
+            method_exchangeImplementations(class_getInstanceMethod(aPossibleClass, @selector(bundleIdentifier)),
+                                           class_getInstanceMethod(aPossibleClass, @selector(__bundleIdentifier)));
+        }
+    }
+    return s_instance;
+}
