@@ -3280,4 +3280,286 @@
         <translation>使用UPnP暴露本机监听端口（默认：1 当正在监听且不使用代理）</translation>
     </message>
     <message>
-        <source>Username and hashed password
+        <source>Username and hashed password for JSON-RPC connections. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcuser. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. This option can be specified multiple times</source>
+        <translation>JSON-RPC 连接要使用的用户名和散列密码。&lt;userpw&gt; 的格式是：&lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;。在 share/rpcuser 目录下有一个示范的 python 脚本。之后客户端程序就可以用这对参数正常连接：rpcuser=&lt;USERNAME&gt;和rpcpassword=&lt;PASSWORD&gt;。这个选项可以被多次指定。</translation>
+    </message>
+    <message>
+        <source>Wallet will not create transactions that violate mempool chain limits (default: %u)</source>
+        <translation>钱包软件不会产生违反内存池交易链限制的交易（默认：%u）</translation>
+    </message>
+    <message>
+        <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
+        <translation>警告：网络似乎并不完全同意！有些矿工似乎遇到了问题。</translation>
+    </message>
+    <message>
+        <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
+        <translation>警告：我们的同行似乎不完全同意！您可能需要升级，或者其他节点可能需要升级。</translation>
+    </message>
+    <message>
+        <source>Whether to save the mempool on shutdown and load on restart (default: %u)</source>
+        <translation>是否在退出时保存内存池，并在启动时重新载入(默认值: %u)</translation>
+    </message>
+    <message>
+        <source>%d of last 100 blocks have unexpected version</source>
+        <translation>最后100个区块中的%d个包含未知的版本号</translation>
+    </message>
+    <message>
+        <source>%s corrupt, salvage failed</source>
+        <translation>%s 已损坏，抢救备份失败</translation>
+    </message>
+    <message>
+        <source>-maxmempool must be at least %d MB</source>
+        <translation>-maxmempool 最小为%d MB</translation>
+    </message>
+    <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;category&gt; 可能是：</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>接受来自外部的连接 (缺省: 如果不带 -proxy or -connect 参数设置为1)</translation>
+    </message>
+    <message>
+        <source>Append comment to the user agent string</source>
+        <translation>为用户代理字符串附加说明</translation>
+    </message>
+    <message>
+        <source>Attempt to recover private keys from a corrupt wallet on startup</source>
+        <translation>启动时尝试从已损坏的钱包文件中恢复私钥</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>数据块创建选项：</translation>
+    </message>
+    <message>
+        <source>Cannot resolve -%s address: '%s'</source>
+        <translation>无法解析 - %s 地址： '%s'</translation>
+    </message>
+    <message>
+        <source>Chain selection options:</source>
+        <translation>区块链选择选项:</translation>
+    </message>
+    <message>
+        <source>Change index out of range</source>
+        <translation>修改索引超过范围</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>连接选项：</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation>版权所有 (C) %i-%i</translation>
+    </message>
+    <message>
+        <source>Corrupted block database detected</source>
+        <translation>检测发现数据块数据库损坏。请使用 -reindex参数重启客户端。</translation>
+    </message>
+    <message>
+        <source>Debugging/Testing options:</source>
+        <translation>调试/测试选项：</translation>
+    </message>
+    <message>
+        <source>Do not load the wallet and disable wallet RPC calls</source>
+        <translation>不要加载钱包和禁用钱包的 RPC 调用</translation>
+    </message>
+    <message>
+        <source>Do you want to rebuild the block database now?</source>
+        <translation>你想现在就重建块数据库吗？</translation>
+    </message>
+    <message>
+        <source>Enable publish hash block in &lt;address&gt;</source>
+        <translation>允许在&lt;address&gt;广播哈希区块</translation>
+    </message>
+    <message>
+        <source>Enable publish hash transaction in &lt;address&gt;</source>
+        <translation>允许在&lt;address&gt;广播哈希交易</translation>
+    </message>
+    <message>
+        <source>Enable publish raw block in &lt;address&gt;</source>
+        <translation>允许在&lt;address&gt;广播原始区块</translation>
+    </message>
+    <message>
+        <source>Enable publish raw transaction in &lt;address&gt;</source>
+        <translation>允许在&lt;address&gt;广播原始交易</translation>
+    </message>
+    <message>
+        <source>Enable transaction replacement in the memory pool (default: %u)</source>
+        <translation>保证内存池中的交易更换(默认：%u)</translation>
+    </message>
+    <message>
+        <source>Error creating %s: You can't create non-HD wallets with this version.</source>
+        <translation>生成%s发生错误：这个版本不能用来产生非HD钱包。</translation>
+    </message>
+    <message>
+        <source>Error initializing block database</source>
+        <translation>初始化数据块数据库出错</translation>
+    </message>
+    <message>
+        <source>Error initializing wallet database environment %s!</source>
+        <translation>初始化钱包数据库环境错误 %s!</translation>
+    </message>
+    <message>
+        <source>Error loading %s</source>
+        <translation>载入 %s 时发生错误</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet corrupted</source>
+        <translation>%s 加载出错：钱包损坏</translation>
+    </message>
+    <message>
+        <source>Error loading %s: Wallet requires newer version of %s</source>
+        <translation>%s 加载错误：请升级到最新版 %s</translation>
+    </message>
+    <message>
+        <source>Error loading block database</source>
+        <translation>导入数据块数据库出错</translation>
+    </message>
+    <message>
+        <source>Error opening block database</source>
+        <translation>导入数据块数据库出错</translation>
+    </message>
+    <message>
+        <source>Error: Disk space is low!</source>
+        <translation>错误：磁盘剩余空间低!</translation>
+    </message>
+    <message>
+        <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
+        <translation>监听端口失败。请使用 -listen=0 参数。</translation>
+    </message>
+    <message>
+        <source>Failed to rescan the wallet during initialization</source>
+        <translation>初始化时重新扫描钱包失败了</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation>导入中...</translation>
+    </message>
+    <message>
+        <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
+        <translation>不正确或没有找到起源区块。网络错误？</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
+        <translation>无效的金额 -%s=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
+        <translation>无效的金额 -discardfee=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
+        <translation>-fallbackfee 的无效数额=&lt;amount&gt;: '%s'</translation>
+    </message>
+    <message>
+        <source>Keep the transaction memory pool below &lt;n&gt; megabytes (default: %u)</source>
+        <translation>保持交易内存池大小低于&lt;n&gt;MB（默认：%u）</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>正在加载P2P地址...</translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation>正在加载黑名单...</translation>
+    </message>
+    <message>
+        <source>Location of the auth cookie (default: data dir)</source>
+        <translation>认证Cookie的位置 (默认: data目录)</translation>
+    </message>
+    <message>
+        <source>Not enough file descriptors available.</source>
+        <translation>没有足够的文件描述符可用。</translation>
+    </message>
+    <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>只连接 &lt;net&gt;网络中的节点 (ipv4, ipv6 或 onion) </translation>
+    </message>
+    <message>
+        <source>Print this help message and exit</source>
+        <translation>打印出这段帮助信息并退出</translation>
+    </message>
+    <message>
+        <source>Print version and exit</source>
+        <translation>打印版本信息并退出</translation>
+    </message>
+    <message>
+        <source>Prune cannot be configured with a negative value.</source>
+        <translation>修剪不能配置一个负数。</translation>
+    </message>
+    <message>
+        <source>Prune mode is incompatible with -txindex.</source>
+        <translation>修剪模式与 -txindex 不兼容。</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state and block index from the blk*.dat files on disk</source>
+        <translation>从硬盘里的区块文件blk*.dat重建区块链状态和区块索引</translation>
+    </message>
+    <message>
+        <source>Rebuild chain state from the currently indexed blocks</source>
+        <translation>从当前索引的区块中重建链状态</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation>正在对区块进行重算…</translation>
+    </message>
+    <message>
+        <source>Rewinding blocks...</source>
+        <translation>回退区块</translation>
+    </message>
+    <message>
+        <source>Send transactions with full-RBF opt-in enabled (RPC only, default: %u)</source>
+        <translation>送出允许提高手续费（full-RBF）的交易（仅适用于RPC指令，默认：%u）</translation>
+    </message>
+    <message>
+        <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
+        <translation>设置以MB为单位的数据库缓存大小(%d 到 %d, 默认值: %d)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>指定钱包文件（数据目录内）</translation>
+    </message>
+    <message>
+        <source>The source code is available from %s.</source>
+        <translation>源代码可以在 %s 获得。</translation>
+    </message>
+    <message>
+        <source>Transaction fee and change calculation failed</source>
+        <translation>计算交易手续费和找零失败了</translation>
+    </message>
+    <message>
+        <source>Unable to bind to %s on this computer. %s is probably already running.</source>
+        <translation>无法在本机绑定 %s 端口。%s 可能已经在运行。</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -benchmark ignored, use -debug=bench.</source>
+        <translation>忽略不支持的选项 -benchmark，使用 -debug=bench</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -debugnet ignored, use -debug=net.</source>
+        <translation>忽略不支持的选项 -debugnet，使用 -debug=net。</translation>
+    </message>
+    <message>
+        <source>Unsupported argument -tor found, use -onion.</source>
+        <translation>忽略不支持的选项 -tor，使用 -oinon</translation>
+    </message>
+    <message>
+        <source>Unsupported logging category %s=%s.</source>
+        <translation>不支持的日志分类 %s=%s.</translation>
+    </message>
+    <message>
+        <source>Upgrading UTXO database</source>
+        <translation>升级UTXO数据库</translation>
+    </message>
+    <message>
+        <source>Use UPnP to map the listening port (default: %u)</source>
+        <translation>使用UPnp映射监听端口 (默认: %u) </translation>
+    </message>
+    <message>
+        <source>Use the test chain</source>
+        <translation>使用测试链</translation>
+    </message>
+    <message>
+        <source>User Agent comment (%s) contains unsafe characters.</source>
+        <translation>用户代理评论(%s)包含不安全的字符。</translation>
+   
