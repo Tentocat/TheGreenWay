@@ -4032,4 +4032,77 @@
         <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
         <translation>指定连接超时毫秒数 (最小: 1, 默认: %d) </translation>
     </message>
-  
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>指定 pid 文件 (默认: %s) </translation>
+    </message>
+    <message>
+        <source>Spend unconfirmed change when sending transactions (default: %u)</source>
+        <translation>付款时允许使用未确认的零钱 (默认: %u) </translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation>正在启动网络线程...</translation>
+    </message>
+    <message>
+        <source>The wallet will avoid paying less than the minimum relay fee.</source>
+        <translation>钱包避免低于最小交易费的支付</translation>
+    </message>
+    <message>
+        <source>This is the minimum transaction fee you pay on every transaction.</source>
+        <translation>这是你每次交易付款时最少要付的手续费。</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you will pay if you send a transaction.</source>
+        <translation>如果发送交易，这将是你要支付的交易费。</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>断开 非礼节点的阀值 (默认: %u) </translation>
+    </message>
+    <message>
+        <source>Transaction amounts must not be negative</source>
+        <translation>交易金额不不可为负数</translation>
+    </message>
+    <message>
+        <source>Transaction has too long of a mempool chain</source>
+        <translation>交易造成内存池中的交易链太长</translation>
+    </message>
+    <message>
+        <source>Transaction must have at least one recipient</source>
+        <translation>交易必须包含至少一个接收人</translation>
+    </message>
+    <message>
+        <source>Unknown network specified in -onlynet: '%s'</source>
+        <translation>-onlynet 指定的是未知网络：%s</translation>
+    </message>
+    <message>
+        <source>Insufficient funds</source>
+        <translation>金额不足</translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation>正在加载区块索引...</translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation>正在加载钱包...</translation>
+    </message>
+    <message>
+        <source>Cannot downgrade wallet</source>
+        <translation>无法降级钱包</translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation>正在重新扫描...</translation>
+    </message>
+    <message>
+        <source>Done loading</source>
+        <translation>加载完成</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>错误</translation>
+    </message>
+</context>
+</TS>
