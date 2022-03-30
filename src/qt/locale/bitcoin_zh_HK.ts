@@ -255,4 +255,435 @@
     </message>
     <message>
         <source>&amp;Transactions</source>
-        <translation>交易 &amp;T</translat
+        <translation>交易 &amp;T</translation>
+    </message>
+    <message>
+        <source>Browse transaction history</source>
+        <translation>瀏覽交易紀錄</translation>
+    </message>
+    <message>
+        <source>E&amp;xit</source>
+        <translation>結束 &amp;x</translation>
+    </message>
+    <message>
+        <source>Quit application</source>
+        <translation>結束應用程式</translation>
+    </message>
+    <message>
+        <source>&amp;About %1</source>
+        <translation>關於 %1 &amp;A</translation>
+    </message>
+    <message>
+        <source>Show information about %1</source>
+        <translation>顯示 %1 的相關資訊</translation>
+    </message>
+    <message>
+        <source>About &amp;Qt</source>
+        <translation>關於 Qt &amp;Q</translation>
+    </message>
+    <message>
+        <source>Show information about Qt</source>
+        <translation>顯示 Qt 相關資訊</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation>選項... &amp;O</translation>
+    </message>
+    <message>
+        <source>Modify configuration options for %1</source>
+        <translation>修正 %1 的設定選項</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>加密錢包... &amp;E</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation>備份錢包... &amp;B</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation>改變密碼... &amp;C</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>付款位址... &amp;S</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>收款位址... &amp;R</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>開啓網址... &amp;U</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>正在為磁碟區塊重建索引...</translation>
+    </message>
+    <message>
+        <source>Send coins to a Bitcoin address</source>
+        <translation>付款至一個 Bitcoin 位址</translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation>把錢包備份到其它地方</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>改變錢包加密用的密碼</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>除錯視窗 &amp;D</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>開啓除錯和診斷主控台</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>驗證訊息... &amp;V</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>錢包</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>付款 &amp;S</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>收款 &amp;R</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>顯示 / 隱藏 &amp;S</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>顯示或隱藏主視窗</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>檔案 &amp;F</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>設定 &amp;S</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>說明 &amp;H</translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <translation>要求付款 (產生QR碼 bitcoin: URIs)</translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>正在為磁碟區塊建立索引...</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>錯誤</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>警告</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>資訊</translation>
+    </message>
+    <message>
+        <source>Date: %1
+</source>
+        <translation>日期: %1
+</translation>
+    </message>
+    </context>
+<context>
+    <name>CoinControlDialog</name>
+    <message>
+        <source>(no label)</source>
+        <translation>(無標記)</translation>
+    </message>
+    </context>
+<context>
+    <name>EditAddressDialog</name>
+    </context>
+<context>
+    <name>FreespaceChecker</name>
+    </context>
+<context>
+    <name>HelpMessageDialog</name>
+    </context>
+<context>
+    <name>Intro</name>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitcoin</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>錯誤</translation>
+    </message>
+    </context>
+<context>
+    <name>ModalOverlay</name>
+    </context>
+<context>
+    <name>OpenURIDialog</name>
+    </context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Error</source>
+        <translation>錯誤</translation>
+    </message>
+    </context>
+<context>
+    <name>OverviewPage</name>
+    </context>
+<context>
+    <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Sent</source>
+        <translation>已送出</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>已接收</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <translation>輸入一個 Bitcoin 位址 (例如 %1)</translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation>%1 日</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 小時</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 分</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation>%1 秒</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>沒有</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation>%1 亳秒</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation><numerusform>%n 秒</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation><numerusform>%n 分鐘</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n 小時</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n 日</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n 星期</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 和 %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation><numerusform>%n 年</numerusform></translation>
+    </message>
+    </context>
+<context>
+    <name>QObject::QObject</name>
+    </context>
+<context>
+    <name>QRImageWidget</name>
+    <message>
+        <source>Save QR Code</source>
+        <translation>儲存 QR 碼</translation>
+    </message>
+    <message>
+        <source>PNG Image (*.png)</source>
+        <translation>PNG 影像(*.png)</translation>
+    </message>
+</context>
+<context>
+    <name>RPCConsole</name>
+    <message>
+        <source>N/A</source>
+        <translation>N/A</translation>
+    </message>
+    <message>
+        <source>&amp;Information</source>
+        <translation>資訊 &amp;I</translation>
+    </message>
+    <message>
+        <source>Debug window</source>
+        <translation>除錯視窗</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>一般</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation>已接收</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>已送出</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>版本</translation>
+    </message>
+    </context>
+<context>
+    <name>ReceiveCoinsDialog</name>
+    </context>
+<context>
+    <name>ReceiveRequestDialog</name>
+    <message>
+        <source>Address</source>
+        <translation>地址</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>標記</translation>
+    </message>
+    </context>
+<context>
+    <name>RecentRequestsTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>標記</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(無標記)</translation>
+    </message>
+    </context>
+<context>
+    <name>SendCoinsDialog</name>
+    <message>
+        <source>(no label)</source>
+        <translation>(無標記)</translation>
+    </message>
+</context>
+<context>
+    <name>SendCoinsEntry</name>
+    </context>
+<context>
+    <name>SendConfirmationDialog</name>
+    </context>
+<context>
+    <name>ShutdownWindow</name>
+    </context>
+<context>
+    <name>SignVerifyMessageDialog</name>
+    </context>
+<context>
+    <name>SplashScreen</name>
+    </context>
+<context>
+    <name>TrafficGraphWidget</name>
+    </context>
+<context>
+    <name>TransactionDesc</name>
+    <message>
+        <source>Open until %1</source>
+        <translation>開放至 %1</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionDescDialog</name>
+    </context>
+<context>
+    <name>TransactionTableModel</name>
+    <message>
+        <source>Label</source>
+        <translation>標記</translation>
+    </message>
+    <message>
+        <source>Open until %1</source>
+        <translation>開放至 %1</translation>
+    </message>
+    <message>
+        <source>(no label)</source>
+        <translation>(無標記)</translation>
+    </message>
+    </context>
+<context>
+    <name>TransactionView</name>
+    <message>
+        <source>Comma separated file (*.csv)</source>
+        <translation>逗號分隔檔 (*.csv)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation>標記</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation>地址</translation>
+    </message>
+    <message>
+        <source>Exporting Failed</source>
+        <translation>匯出失敗</translation>
+    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
+<context>
+    <name>WalletFrame</name>
+    </context>
+<context>
+    <name>WalletModel</name>
+    </context>
+<context>
+    <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>匯出 &amp;E</translation>
+    </message>
+    <message>
+        <source>Export the data in the current tab to a file</source>
+        <translation>把目前分頁的資料匯出至檔案</translation>
+    </message>
+    </co
