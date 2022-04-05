@@ -408,4 +408,240 @@ void RPCExecutor::request(const QString &command)
                 "   example:    getblockhash 0\n"
                 "               getblockhash,0\n\n"
 
-                "Named results can be queried with a non-quoted
+                "Named results can be queried with a non-quoted key string in brackets.\n"
+                "   example:    getblock(getblockhash(0) true)[tx]\n\n"
+
+                "Results without keys can be queried using an integer in brackets.\n"
+                "   example:    getblock(getblockhash(0),true)[tx][0]\n\n")));
+            return;
+        }
+        if(!RPCConsole::RPCExecuteCommandLine(result, executableCommand))
+        {
+            Q_EMIT reply(RPCConsole::CMD_ERROR, QString("Parse error: unbalanced ' or \""));
+            return;
+        }
+
+        Q_EMIT reply(RPCConsole::CMD_REPLY, QString::fromStdString(result));
+    }
+    catch (UniValue& objError)
+    {
+        try // Nice formatting for standard-format error
+        {
+            int code = find_value(objError, "code").get_int();
+            std::string message = find_value(objError, "message").get_str();
+            Q_EMIT reply(RPCConsole::CMD_ERROR, QString::fromStdString(message) + " (code " + QString::number(code) + ")");
+        }
+        catch (const std::runtime_error&) // raised when converting to invalid type, i.e. missing code or message
+        {   // Show raw JSON object
+            Q_EMIT reply(RPCConsole::CMD_ERROR, QString::fromStdString(objError.write()));
+        }
+    }
+    catch (const std::exception& e)
+    {
+        Q_EMIT reply(RPCConsole::CMD_ERROR, QString("Error: ") + QString::fromStdString(e.what()));
+    }
+}
+
+RPCConsole::RPCConsole(const PlatformStyle *_platformStyle, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::RPCConsole),
+    clientModel(0),
+    historyPtr(0),
+    platformStyle(_platformStyle),
+    peersTableContextMenu(0),
+    banTableContextMenu(0),
+    consoleFontSize(0)
+{
+    ui->setupUi(this);
+    QSettings settings;
+    if (!restoreGeometry(settings.value("RPCConsoleWindowGeometry").toByteArray())) {
+        // Restore failed (perhaps missing setting), center the window
+        move(QApplication::desktop()->availableGeometry().center() - frameGeometry().center());
+    }
+
+    ui->openDebugLogfileButton->setToolTip(ui->openDebugLogfileButton->toolTip().arg(tr(PACKAGE_NAME)));
+
+    if (platformStyle->getImagesOnButtons()) {
+        ui->openDebugLogfileButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
+    }
+    ui->clearButton->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
+    ui->fontBiggerButton->setIcon(platformStyle->SingleColorIcon(":/icons/fontbigger"));
+    ui->fontSmallerButton->setIcon(platformStyle->SingleColorIcon(":/icons/fontsmaller"));
+
+    // Install event filter for up and down arrow
+    ui->lineEdit->installEventFilter(this);
+    ui->messagesWidget->installEventFilter(this);
+
+    connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+    connect(ui->fontBiggerButton, SIGNAL(clicked()), this, SLOT(fontBigger()));
+    connect(ui->fontSmallerButton, SIGNAL(clicked()), this, SLOT(fontSmaller()));
+    connect(ui->btnClearTrafficGraph, SIGNAL(clicked()), ui->trafficGraph, SLOT(clear()));
+
+    // set library version labels
+#ifdef ENABLE_WALLET
+    ui->berkeleyDBVersion->setText(DbEnv::version(0, 0, 0));
+#else
+    ui->label_berkeleyDBVersion->hide();
+    ui->berkeleyDBVersion->hide();
+#endif
+    // Register RPC timer interface
+    rpcTimerInterface = new QtRPCTimerInterface();
+    // avoid accidentally overwriting an existing, non QTThread
+    // based timer interface
+    RPCSetTimerInterfaceIfUnset(rpcTimerInterface);
+
+    setTrafficGraphRange(INITIAL_TRAFFIC_GRAPH_MINS);
+
+    ui->detailWidget->hide();
+    ui->peerHeading->setText(tr("Select a peer to view detailed information."));
+
+    consoleFontSize = settings.value(fontSizeSettingsKey, QFontInfo(QFont()).pointSize()).toInt();
+    clear();
+}
+
+RPCConsole::~RPCConsole()
+{
+    QSettings settings;
+    settings.setValue("RPCConsoleWindowGeometry", saveGeometry());
+    RPCUnsetTimerInterface(rpcTimerInterface);
+    delete rpcTimerInterface;
+    delete ui;
+}
+
+bool RPCConsole::eventFilter(QObject* obj, QEvent *event)
+{
+    if(event->type() == QEvent::KeyPress) // Special key handling
+    {
+        QKeyEvent *keyevt = static_cast<QKeyEvent*>(event);
+        int key = keyevt->key();
+        Qt::KeyboardModifiers mod = keyevt->modifiers();
+        switch(key)
+        {
+        case Qt::Key_Up: if(obj == ui->lineEdit) { browseHistory(-1); return true; } break;
+        case Qt::Key_Down: if(obj == ui->lineEdit) { browseHistory(1); return true; } break;
+        case Qt::Key_PageUp: /* pass paging keys to messages widget */
+        case Qt::Key_PageDown:
+            if(obj == ui->lineEdit)
+            {
+                QApplication::postEvent(ui->messagesWidget, new QKeyEvent(*keyevt));
+                return true;
+            }
+            break;
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            // forward these events to lineEdit
+            if(obj == autoCompleter->popup()) {
+                QApplication::postEvent(ui->lineEdit, new QKeyEvent(*keyevt));
+                return true;
+            }
+            break;
+        default:
+            // Typing in messages widget brings focus to line edit, and redirects key there
+            // Exclude most combinations and keys that emit no text, except paste shortcuts
+            if(obj == ui->messagesWidget && (
+                  (!mod && !keyevt->text().isEmpty() && key != Qt::Key_Tab) ||
+                  ((mod & Qt::ControlModifier) && key == Qt::Key_V) ||
+                  ((mod & Qt::ShiftModifier) && key == Qt::Key_Insert)))
+            {
+                ui->lineEdit->setFocus();
+                QApplication::postEvent(ui->lineEdit, new QKeyEvent(*keyevt));
+                return true;
+            }
+        }
+    }
+    return QWidget::eventFilter(obj, event);
+}
+
+void RPCConsole::setClientModel(ClientModel *model)
+{
+    clientModel = model;
+    ui->trafficGraph->setClientModel(model);
+    if (model && clientModel->getPeerTableModel() && clientModel->getBanTableModel()) {
+        // Keep up to date with client
+        setNumConnections(model->getNumConnections());
+        connect(model, SIGNAL(numConnectionsChanged(int)), this, SLOT(setNumConnections(int)));
+
+        setNumBlocks(model->getNumBlocks(), model->getLastBlockDate(), model->getVerificationProgress(nullptr), false);
+        connect(model, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(setNumBlocks(int,QDateTime,double,bool)));
+
+        updateNetworkState();
+        connect(model, SIGNAL(networkActiveChanged(bool)), this, SLOT(setNetworkActive(bool)));
+
+        updateTrafficStats(model->getTotalBytesRecv(), model->getTotalBytesSent());
+        connect(model, SIGNAL(bytesChanged(quint64,quint64)), this, SLOT(updateTrafficStats(quint64, quint64)));
+
+        connect(model, SIGNAL(mempoolSizeChanged(long,size_t)), this, SLOT(setMempoolSize(long,size_t)));
+
+        // set up peer table
+        ui->peerWidget->setModel(model->getPeerTableModel());
+        ui->peerWidget->verticalHeader()->hide();
+        ui->peerWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ui->peerWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui->peerWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+        ui->peerWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+        ui->peerWidget->setColumnWidth(PeerTableModel::Address, ADDRESS_COLUMN_WIDTH);
+        ui->peerWidget->setColumnWidth(PeerTableModel::Subversion, SUBVERSION_COLUMN_WIDTH);
+        ui->peerWidget->setColumnWidth(PeerTableModel::Ping, PING_COLUMN_WIDTH);
+        ui->peerWidget->horizontalHeader()->setStretchLastSection(true);
+
+        // create peer table context menu actions
+        QAction* disconnectAction = new QAction(tr("&Disconnect"), this);
+        QAction* banAction1h      = new QAction(tr("Ban for") + " " + tr("1 &hour"), this);
+        QAction* banAction24h     = new QAction(tr("Ban for") + " " + tr("1 &day"), this);
+        QAction* banAction7d      = new QAction(tr("Ban for") + " " + tr("1 &week"), this);
+        QAction* banAction365d    = new QAction(tr("Ban for") + " " + tr("1 &year"), this);
+
+        // create peer table context menu
+        peersTableContextMenu = new QMenu(this);
+        peersTableContextMenu->addAction(disconnectAction);
+        peersTableContextMenu->addAction(banAction1h);
+        peersTableContextMenu->addAction(banAction24h);
+        peersTableContextMenu->addAction(banAction7d);
+        peersTableContextMenu->addAction(banAction365d);
+
+        // Add a signal mapping to allow dynamic context menu arguments.
+        // We need to use int (instead of int64_t), because signal mapper only supports
+        // int or objects, which is okay because max bantime (1 year) is < int_max.
+        QSignalMapper* signalMapper = new QSignalMapper(this);
+        signalMapper->setMapping(banAction1h, 60*60);
+        signalMapper->setMapping(banAction24h, 60*60*24);
+        signalMapper->setMapping(banAction7d, 60*60*24*7);
+        signalMapper->setMapping(banAction365d, 60*60*24*365);
+        connect(banAction1h, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        connect(banAction24h, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        connect(banAction7d, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        connect(banAction365d, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(banSelectedNode(int)));
+
+        // peer table context menu signals
+        connect(ui->peerWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showPeersTableContextMenu(const QPoint&)));
+        connect(disconnectAction, SIGNAL(triggered()), this, SLOT(disconnectSelectedNode()));
+
+        // peer table signal handling - update peer details when selecting new node
+        connect(ui->peerWidget->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this, SLOT(peerSelected(const QItemSelection &, const QItemSelection &)));
+        // peer table signal handling - update peer details when new nodes are added to the model
+        connect(model->getPeerTableModel(), SIGNAL(layoutChanged()), this, SLOT(peerLayoutChanged()));
+        // peer table signal handling - cache selected node ids
+        connect(model->getPeerTableModel(), SIGNAL(layoutAboutToBeChanged()), this, SLOT(peerLayoutAboutToChange()));
+        
+        // set up ban table
+        ui->banlistWidget->setModel(model->getBanTableModel());
+        ui->banlistWidget->verticalHeader()->hide();
+        ui->banlistWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        ui->banlistWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+        ui->banlistWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+        ui->banlistWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+        ui->banlistWidget->setColumnWidth(BanTableModel::Address, BANSUBNET_COLUMN_WIDTH);
+        ui->banlistWidget->setColumnWidth(BanTableModel::Bantime, BANTIME_COLUMN_WIDTH);
+        ui->banlistWidget->horizontalHeader()->setStretchLastSection(true);
+
+        // create ban table context menu action
+        QAction* unbanAction = new QAction(tr("&Unban"), this);
+
+        // create ban table context menu
+        banTableContextMenu = new QMenu(this);
+        banTableContextMenu->addAction(unbanAction);
+
+        // ban table context menu signals
+        con
