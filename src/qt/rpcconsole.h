@@ -90,4 +90,70 @@ public Q_SLOTS:
     void setFontSize(int newSize);
     /** Append the message to the message widget */
     void message(int category, const QString &message, bool html = false);
-    /** 
+    /** Set number of connections shown in the UI */
+    void setNumConnections(int count);
+    /** Set network state shown in the UI */
+    void setNetworkActive(bool networkActive);
+    /** Set number of blocks and last block date shown in the UI */
+    void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers);
+    /** Set size (number of transactions and memory usage) of the mempool in the UI */
+    void setMempoolSize(long numberOfTxs, size_t dynUsage);
+    /** Go forward or back in history */
+    void browseHistory(int offset);
+    /** Scroll console view to end */
+    void scrollToEnd();
+    /** Handle selection of peer in peers list */
+    void peerSelected(const QItemSelection &selected, const QItemSelection &deselected);
+    /** Handle selection caching before update */
+    void peerLayoutAboutToChange();
+    /** Handle updated peer information */
+    void peerLayoutChanged();
+    /** Disconnect a selected node on the Peers tab */
+    void disconnectSelectedNode();
+    /** Ban a selected node on the Peers tab */
+    void banSelectedNode(int bantime);
+    /** Unban a selected node on the Bans tab */
+    void unbanSelectedNode();
+    /** set which tab has the focus (is visible) */
+    void setTabFocus(enum TabTypes tabType);
+
+Q_SIGNALS:
+    // For RPC command executor
+    void stopExecutor();
+    void cmdRequest(const QString &command);
+
+private:
+    void startExecutor();
+    void setTrafficGraphRange(int mins);
+    /** show detailed information on ui about selected node */
+    void updateNodeDetail(const CNodeCombinedStats *stats);
+
+    enum ColumnWidths
+    {
+        ADDRESS_COLUMN_WIDTH = 200,
+        SUBVERSION_COLUMN_WIDTH = 150,
+        PING_COLUMN_WIDTH = 80,
+        BANSUBNET_COLUMN_WIDTH = 200,
+        BANTIME_COLUMN_WIDTH = 250
+
+    };
+
+    Ui::RPCConsole *ui;
+    ClientModel *clientModel;
+    QStringList history;
+    int historyPtr;
+    QString cmdBeforeBrowsing;
+    QList<NodeId> cachedNodeids;
+    const PlatformStyle *platformStyle;
+    RPCTimerInterface *rpcTimerInterface;
+    QMenu *peersTableContextMenu;
+    QMenu *banTableContextMenu;
+    int consoleFontSize;
+    QCompleter *autoCompleter;
+    QThread thread;
+
+    /** Update UI with latest network info from model. */
+    void updateNetworkState();
+};
+
+#endif // BITCOIN_QT_RPCCONSOLE_H
