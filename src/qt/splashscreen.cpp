@@ -175,4 +175,58 @@ static void ShowProgress(SplashScreen *splash, const std::string &title, int nPr
     InitMessage(splash, title + std::string("\n") +
             (resume_possible ? _("(press q to shutdown and continue later)")
                                 : _("press q to shutdown")) +
-            strprintf("\n%d", nProgress) +
+            strprintf("\n%d", nProgress) + "%");
+}
+
+#ifdef ENABLE_WALLET
+void SplashScreen::ConnectWallet(CWallet* wallet)
+{
+    wallet->ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2, false));
+    connectedWallets.push_back(wallet);
+}
+#endif
+
+void SplashScreen::subscribeToCoreSignals()
+{
+    // Connect signals to client
+    uiInterface.InitMessage.connect(boost::bind(InitMessage, this, _1));
+    uiInterface.ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2, _3));
+#ifdef ENABLE_WALLET
+    uiInterface.LoadWallet.connect(boost::bind(&SplashScreen::ConnectWallet, this, _1));
+#endif
+}
+
+void SplashScreen::unsubscribeFromCoreSignals()
+{
+    // Disconnect signals from client
+    uiInterface.InitMessage.disconnect(boost::bind(InitMessage, this, _1));
+    uiInterface.ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2, _3));
+#ifdef ENABLE_WALLET
+    for (CWallet* const & pwallet : connectedWallets) {
+        pwallet->ShowProgress.disconnect(boost::bind(ShowProgress, this, _1, _2, false));
+    }
+#endif
+}
+
+void SplashScreen::showMessage(const QString &message, int alignment, const QColor &color)
+{
+    curMessage = message;
+    curAlignment = alignment;
+    curColor = color;
+    update();
+}
+
+void SplashScreen::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, pixmap);
+    QRect r = rect().adjusted(5, 5, -5, -5);
+    painter.setPen(curColor);
+    painter.drawText(r, curAlignment, curMessage);
+}
+
+void SplashScreen::closeEvent(QCloseEvent *event)
+{
+    StartShutdown(); // allows an "emergency" shutdown during startup
+    event->ignore();
+}
