@@ -169,4 +169,43 @@ void PaymentServerTests::paymentServerTests()
     // Unexpired payment request (expires is set to 0x8000000000000000 > max. int64_t, allowed uint64):
     // 9223372036854775808 (uint64), -9223372036854775808 (int64_t) and 0 (int32_t)
     // 0 is 1970-01-01 00:00:00 (for a 32 bit time values)
-    data = DecodeBase64(p
+    data = DecodeBase64(paymentrequest4_cert2_BASE64);
+    byteArray = QByteArray((const char*)data.data(), data.size());
+    r.paymentRequest.parse(byteArray);
+    // Ensure the request is initialized
+    QVERIFY(r.paymentRequest.IsInitialized());
+    // compares -9223372036854775808 < GetTime() == true (treated as expired payment request)
+    QCOMPARE(PaymentServer::verifyExpired(r.paymentRequest.getDetails()), true);
+
+    // Test BIP70 DoS protection:
+    unsigned char randData[BIP70_MAX_PAYMENTREQUEST_SIZE + 1];
+    GetRandBytes(randData, sizeof(randData));
+    // Write data to a temp file:
+    QTemporaryFile tempFile;
+    tempFile.open();
+    tempFile.write((const char*)randData, sizeof(randData));
+    tempFile.close();
+    // compares 50001 <= BIP70_MAX_PAYMENTREQUEST_SIZE == false
+    QCOMPARE(PaymentServer::verifySize(tempFile.size()), false);
+
+    // Payment request with amount overflow (amount is set to 21000001 BTC):
+    data = DecodeBase64(paymentrequest5_cert2_BASE64);
+    byteArray = QByteArray((const char*)data.data(), data.size());
+    r.paymentRequest.parse(byteArray);
+    // Ensure the request is initialized
+    QVERIFY(r.paymentRequest.IsInitialized());
+    // Extract address and amount from the request
+    QList<std::pair<CScript, CAmount> > sendingTos = r.paymentRequest.getPayTo();
+    for (const std::pair<CScript, CAmount>& sendingTo : sendingTos) {
+        CTxDestination dest;
+        if (ExtractDestination(sendingTo.first, dest))
+            QCOMPARE(PaymentServer::verifyAmount(sendingTo.second), false);
+    }
+
+    delete server;
+}
+
+void RecipientCatcher::getRecipient(const SendCoinsRecipient& r)
+{
+    recipient = r;
+}
