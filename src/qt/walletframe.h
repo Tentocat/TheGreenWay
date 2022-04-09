@@ -73,4 +73,24 @@ public Q_SLOTS:
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
-    /** Show Sign/Verify Message dialog and switch to verify m
+    /** Show Sign/Verify Message dialog and switch to verify message tab */
+    void gotoVerifyMessageTab(QString addr = "");
+
+    /** Encrypt the wallet */
+    void encryptWallet(bool status);
+    /** Backup the wallet */
+    void backupWallet();
+    /** Change encrypted wallet passphrase */
+    void changePassphrase();
+    /** Ask for passphrase to unlock wallet temporarily */
+    void unlockWallet();
+
+    /** Show used sending addresses */
+    void usedSendingAddresses();
+    /** Show used receiving addresses */
+    void usedReceivingAddresses();
+    /** Pass on signal over requested out-of-sync-warning information */
+    void outOfSyncWarningClicked();
+};
+
+#endif // BITCOIN_QT_WALLETFRAME_H
