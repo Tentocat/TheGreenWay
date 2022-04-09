@@ -179,4 +179,79 @@ void TransactionRecord::updateStatus(const CWalletTx &wtx)
         wtx.nTimeReceived,
         idx);
     status.countsForBalance = wtx.IsTrusted() && !(wtx.GetBlocksToMaturity() > 0);
-    status.depth = wtx.GetDepthInMa
+    status.depth = wtx.GetDepthInMainChain();
+    status.cur_num_blocks = chainActive.Height();
+
+    if (!CheckFinalTx(*wtx.tx))
+    {
+        if (wtx.tx->nLockTime < LOCKTIME_THRESHOLD)
+        {
+            status.status = TransactionStatus::OpenUntilBlock;
+            status.open_for = wtx.tx->nLockTime - chainActive.Height();
+        }
+        else
+        {
+            status.status = TransactionStatus::OpenUntilDate;
+            status.open_for = wtx.tx->nLockTime;
+        }
+    }
+    // For generated transactions, determine maturity
+    else if(type == TransactionRecord::Generated)
+    {
+        if (wtx.GetBlocksToMaturity() > 0)
+        {
+            status.status = TransactionStatus::Immature;
+
+            if (wtx.IsInMainChain())
+            {
+                status.matures_in = wtx.GetBlocksToMaturity();
+            }
+            else
+            {
+                status.status = TransactionStatus::NotAccepted;
+            }
+        }
+        else
+        {
+            status.status = TransactionStatus::Confirmed;
+        }
+    }
+    else
+    {
+        if (status.depth < 0)
+        {
+            status.status = TransactionStatus::Conflicted;
+        }
+        else if (status.depth == 0)
+        {
+            status.status = TransactionStatus::Unconfirmed;
+            if (wtx.isAbandoned())
+                status.status = TransactionStatus::Abandoned;
+        }
+        else if (status.depth < RecommendedNumConfirmations)
+        {
+            status.status = TransactionStatus::Confirming;
+        }
+        else
+        {
+            status.status = TransactionStatus::Confirmed;
+        }
+    }
+    status.needsUpdate = false;
+}
+
+bool TransactionRecord::statusUpdateNeeded() const
+{
+    AssertLockHeld(cs_main);
+    return status.cur_num_blocks != chainActive.Height() || status.needsUpdate;
+}
+
+QString TransactionRecord::getTxID() const
+{
+    return QString::fromStdString(hash.ToString());
+}
+
+int TransactionRecord::getOutputIndex() const
+{
+    return idx;
+}
