@@ -169,4 +169,8 @@ void TrafficGraphWidget::clear()
     fMax = 0.0f;
 
     if(clientModel) {
-        nLastBytesIn = cl
+        nLastBytesIn = clientModel->getTotalBytesRecv();
+        nLastBytesOut = clientModel->getTotalBytesSent();
+    }
+    timer->start();
+}
