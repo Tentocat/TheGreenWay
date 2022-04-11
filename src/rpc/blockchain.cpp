@@ -1125,4 +1125,229 @@ UniValue gettxoutsetinfo(const JSONRPCRequest& request)
         ret.push_back(Pair("transactions", (int64_t)stats.nTransactions));
         ret.push_back(Pair("txouts", (int64_t)stats.nTransactionOutputs));
         ret.push_back(Pair("bogosize", (int64_t)stats.nBogoSize));
-        ret.push_back(Pair("hash_serialized_2", stats.hashSeri
+        ret.push_back(Pair("hash_serialized_2", stats.hashSerialized.GetHex()));
+        ret.push_back(Pair("disk_size", stats.nDiskSize));
+        ret.push_back(Pair("total_amount", ValueFromAmount(stats.nTotalAmount)));
+    } else {
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Unable to read UTXO set");
+    }
+    return ret;
+}
+
+UniValue gettxout(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
+        throw std::runtime_error(
+            "gettxout \"txid\" n ( include_mempool )\n"
+            "\nReturns details about an unspent transaction output.\n"
+            "\nArguments:\n"
+            "1. \"txid\"             (string, required) The transaction id\n"
+            "2. \"n\"                (numeric, required) vout number\n"
+            "3. \"include_mempool\"  (boolean, optional) Whether to include the mempool. Default: true."
+            "     Note that an unspent output that is spent in the mempool won't appear.\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"bestblock\":  \"hash\",    (string) The hash of the block at the tip of the chain\n"
+            "  \"confirmations\" : n,       (numeric) The number of confirmations\n"
+            "  \"value\" : x.xxx,           (numeric) The transaction value in " + CURRENCY_UNIT + "\n"
+            "  \"scriptPubKey\" : {         (json object)\n"
+            "     \"asm\" : \"code\",       (string) \n"
+            "     \"hex\" : \"hex\",        (string) \n"
+            "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
+            "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
+            "     \"addresses\" : [          (array of string) array of smartusd addresses\n"
+            "        \"address\"     (string) smartusd address\n"
+            "        ,...\n"
+            "     ]\n"
+            "  },\n"
+            "  \"coinbase\" : true|false   (boolean) Coinbase or not\n"
+            "}\n"
+
+            "\nExamples:\n"
+            "\nGet unspent transactions\n"
+            + HelpExampleCli("listunspent", "") +
+            "\nView the details\n"
+            + HelpExampleCli("gettxout", "\"txid\" 1") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("gettxout", "\"txid\", 1")
+        );
+
+    LOCK(cs_main);
+
+    UniValue ret(UniValue::VOBJ);
+
+    std::string strHash = request.params[0].get_str();
+    uint256 hash(uint256S(strHash));
+    int n = request.params[1].get_int();
+    COutPoint out(hash, n);
+    bool fMempool = true;
+    if (!request.params[2].isNull())
+        fMempool = request.params[2].get_bool();
+
+    Coin coin;
+    if (fMempool) {
+        LOCK(mempool.cs);
+        CCoinsViewMemPool view(pcoinsTip.get(), mempool);
+        if (!view.GetCoin(out, coin) || mempool.isSpent(out)) {
+            return NullUniValue;
+        }
+    } else {
+        if (!pcoinsTip->GetCoin(out, coin)) {
+            return NullUniValue;
+        }
+    }
+
+    BlockMap::iterator it = mapBlockIndex.find(pcoinsTip->GetBestBlock());
+    CBlockIndex *pindex = it->second;
+    ret.push_back(Pair("bestblock", pindex->GetBlockHash().GetHex()));
+    if (coin.nHeight == MEMPOOL_HEIGHT) {
+        ret.push_back(Pair("confirmations", 0));
+    } else {
+        ret.push_back(Pair("confirmations", (int64_t)(pindex->nHeight - coin.nHeight + 1)));
+    }
+    ret.push_back(Pair("value", ValueFromAmount(coin.out.nValue)));
+    UniValue o(UniValue::VOBJ);
+    ScriptPubKeyToUniv(coin.out.scriptPubKey, o, true);
+    ret.push_back(Pair("scriptPubKey", o));
+    ret.push_back(Pair("coinbase", (bool)coin.fCoinBase));
+
+    return ret;
+}
+
+UniValue verifychain(const JSONRPCRequest& request)
+{
+    int nCheckLevel = gArgs.GetArg("-checklevel", DEFAULT_CHECKLEVEL);
+    int nCheckDepth = gArgs.GetArg("-checkblocks", DEFAULT_CHECKBLOCKS);
+    if (request.fHelp || request.params.size() > 2)
+        throw std::runtime_error(
+            "verifychain ( checklevel nblocks )\n"
+            "\nVerifies blockchain database.\n"
+            "\nArguments:\n"
+            "1. checklevel   (numeric, optional, 0-4, default=" + strprintf("%d", nCheckLevel) + ") How thorough the block verification is.\n"
+            "2. nblocks      (numeric, optional, default=" + strprintf("%d", nCheckDepth) + ", 0=all) The number of blocks to check.\n"
+            "\nResult:\n"
+            "true|false       (boolean) Verified or not\n"
+            "\nExamples:\n"
+            + HelpExampleCli("verifychain", "")
+            + HelpExampleRpc("verifychain", "")
+        );
+
+    LOCK(cs_main);
+
+    if (!request.params[0].isNull())
+        nCheckLevel = request.params[0].get_int();
+    if (!request.params[1].isNull())
+        nCheckDepth = request.params[1].get_int();
+
+    return CVerifyDB().VerifyDB(Params(), pcoinsTip.get(), nCheckLevel, nCheckDepth);
+}
+
+/** Implementation of IsSuperMajority with better feedback */
+static UniValue SoftForkMajorityDesc(int version, CBlockIndex* pindex, const Consensus::Params& consensusParams)
+{
+    UniValue rv(UniValue::VOBJ);
+    bool activated = false;
+    switch(version)
+    {
+        case 2:
+            activated = pindex->nHeight >= consensusParams.BIP34Height;
+            break;
+        case 3:
+            activated = pindex->nHeight >= consensusParams.BIP66Height;
+            break;
+        case 4:
+            activated = pindex->nHeight >= consensusParams.BIP65Height;
+            break;
+    }
+    rv.push_back(Pair("status", activated));
+    return rv;
+}
+
+static UniValue SoftForkDesc(const std::string &name, int version, CBlockIndex* pindex, const Consensus::Params& consensusParams)
+{
+    UniValue rv(UniValue::VOBJ);
+    rv.push_back(Pair("id", name));
+    rv.push_back(Pair("version", version));
+    rv.push_back(Pair("reject", SoftForkMajorityDesc(version, pindex, consensusParams)));
+    return rv;
+}
+
+static UniValue BIP9SoftForkDesc(const Consensus::Params& consensusParams, Consensus::DeploymentPos id)
+{
+    UniValue rv(UniValue::VOBJ);
+    const ThresholdState thresholdState = VersionBitsTipState(consensusParams, id);
+    switch (thresholdState) {
+    case THRESHOLD_DEFINED: rv.push_back(Pair("status", "defined")); break;
+    case THRESHOLD_STARTED: rv.push_back(Pair("status", "started")); break;
+    case THRESHOLD_LOCKED_IN: rv.push_back(Pair("status", "locked_in")); break;
+    case THRESHOLD_ACTIVE: rv.push_back(Pair("status", "active")); break;
+    case THRESHOLD_FAILED: rv.push_back(Pair("status", "failed")); break;
+    }
+    if (THRESHOLD_STARTED == thresholdState)
+    {
+        rv.push_back(Pair("bit", consensusParams.vDeployments[id].bit));
+    }
+    rv.push_back(Pair("startTime", consensusParams.vDeployments[id].nStartTime));
+    rv.push_back(Pair("timeout", consensusParams.vDeployments[id].nTimeout));
+    rv.push_back(Pair("since", VersionBitsTipStateSinceHeight(consensusParams, id)));
+    if (THRESHOLD_STARTED == thresholdState)
+    {
+        UniValue statsUV(UniValue::VOBJ);
+        BIP9Stats statsStruct = VersionBitsTipStatistics(consensusParams, id);
+        statsUV.push_back(Pair("period", statsStruct.period));
+        statsUV.push_back(Pair("threshold", statsStruct.threshold));
+        statsUV.push_back(Pair("elapsed", statsStruct.elapsed));
+        statsUV.push_back(Pair("count", statsStruct.count));
+        statsUV.push_back(Pair("possible", statsStruct.possible));
+        rv.push_back(Pair("statistics", statsUV));
+    }
+    return rv;
+}
+
+void BIP9SoftForkDescPushBack(UniValue& bip9_softforks, const Consensus::Params& consensusParams, Consensus::DeploymentPos id)
+{
+    // Deployments with timeout value of 0 are hidden.
+    // A timeout value of 0 guarantees a softfork will never be activated.
+    // This is used when softfork codes are merged without specifying the deployment schedule.
+    if (consensusParams.vDeployments[id].nTimeout > 0)
+        bip9_softforks.push_back(Pair(VersionBitsDeploymentInfo[id].name, BIP9SoftForkDesc(consensusParams, id)));
+}
+
+UniValue getblockchaininfo(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            "getblockchaininfo\n"
+            "Returns an object containing various state info regarding blockchain processing.\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"chain\": \"xxxx\",              (string) current network name as defined in BIP70 (main, test, regtest)\n"
+            "  \"blocks\": xxxxxx,             (numeric) the current number of blocks processed in the server\n"
+            "  \"headers\": xxxxxx,            (numeric) the current number of headers we have validated\n"
+            "  \"bestblockhash\": \"...\",       (string) the hash of the currently best block\n"
+            "  \"difficulty\": xxxxxx,         (numeric) the current difficulty\n"
+            "  \"mediantime\": xxxxxx,         (numeric) median time for the current best block\n"
+            "  \"verificationprogress\": xxxx, (numeric) estimate of verification progress [0..1]\n"
+            "  \"initialblockdownload\": xxxx, (bool) (debug information) estimate of whether this node is in Initial Block Download mode.\n"
+            "  \"chainwork\": \"xxxx\"           (string) total amount of work in active chain, in hexadecimal\n"
+            "  \"size_on_disk\": xxxxxx,       (numeric) the estimated size of the block and undo files on disk\n"
+            "  \"pruned\": xx,                 (boolean) if the blocks are subject to pruning\n"
+            "  \"pruneheight\": xxxxxx,        (numeric) lowest-height complete block stored (only present if pruning is enabled)\n"
+            "  \"automatic_pruning\": xx,      (boolean) whether automatic pruning is enabled (only present if pruning is enabled)\n"
+            "  \"prune_target_size\": xxxxxx,  (numeric) the target size used by pruning (only present if automatic pruning is enabled)\n"
+            "  \"cc_activation_height\": xxxxxx, (numeric) block height at which CC becomes active\n"
+            "  \"softforks\": [                (array) status of softforks in progress\n"
+            "     {\n"
+            "        \"id\": \"xxxx\",           (string) name of softfork\n"
+            "        \"version\": xx,          (numeric) block version\n"
+            "        \"reject\": {             (object) progress toward rejecting pre-softfork blocks\n"
+            "           \"status\": xx,        (boolean) true if threshold reached\n"
+            "        },\n"
+            "     }, ...\n"
+            "  ],\n"
+            "  \"bip9_softforks\": {           (object) status of BIP9 softforks in progress\n"
+            "     \"xxxx\" : {                 (string) name of the softfork\n"
+            "        \"status\": \"xxxx\",       (string) one of \"defined\", \"started\", \"locked_in\", \"active\", \"failed\"\n"
+            "        \"bit\": xx,              (numeric) the bit (0-28) in the block version field used to signal this softfork (only for \"started\" status)\n"
+            "        \"startTime\": xx,        (numeric) the minimum median time past of a block at which the bit gains its meaning\n"
+            "        \"timeout\": xx,          (numeric) the median time past of a block at which the deployment is considered fa
