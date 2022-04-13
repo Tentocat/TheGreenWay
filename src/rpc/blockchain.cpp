@@ -1872,4 +1872,299 @@ UniValue prices(const JSONRPCRequest& request)
                         }
                     }
                 }
-                
+                tmpbuf = (int64_t *)calloc(sizeof(int64_t),2*PRICES_DAYWINDOW);
+                for (i=0; i<maxsamples&&i<numsamples; i++)
+                {
+                    offset = j*width + i;
+                    smoothed = smartusd_priceave(tmpbuf,&correlated[i],1);
+                    if ( smartusd_priceget(checkprices,j,nextheight-1-i,1) >= 0 )
+                    {
+                        if ( checkprices[2] != smoothed )
+                        {
+                            LogPrintf("ind.%d ht.%d %.8f != %.8f\n",j,nextheight-1-i,(double)checkprices[2]/COIN,(double)smoothed/COIN);
+                            smoothed = checkprices[2];
+                        }
+                    }
+                    UniValue parr(UniValue::VARR);
+                    parr.push_back(ValueFromAmount((int64_t)prices[offset] * smartusd_pricemult(j)));
+                    parr.push_back(ValueFromAmount(correlated[i]));
+                    parr.push_back(ValueFromAmount(smoothed));
+                    // compare to alternate method
+                    p.push_back(parr);
+                }
+                free(tmpbuf);
+            }
+            else
+            {
+                for (i=0; i<maxsamples&&i<numsamples; i++)
+                {
+                    offset = j*width + i;
+                    UniValue parr(UniValue::VARR);
+                    parr.push_back(ValueFromAmount((int64_t)prices[offset] * smartusd_pricemult(j)));
+                    p.push_back(parr);
+                }
+            }
+            item.push_back(Pair("prices",p));
+        } else item.push_back(Pair("name","error"));
+        a.push_back(item);
+    }
+    ret.push_back(Pair("pricefeeds",a));
+    ret.push_back(Pair("result","success"));
+    ret.push_back(Pair("seed",(int64_t)seed));
+    ret.push_back(Pair("height",(int64_t)nextheight-1));
+    ret.push_back(Pair("maxsamples",(int64_t)maxsamples));
+    ret.push_back(Pair("width",(int64_t)width));
+    ret.push_back(Pair("daywindow",(int64_t)PRICES_DAYWINDOW));
+    ret.push_back(Pair("numpricefeeds",(int64_t)numpricefeeds));
+    free(prices);
+    free(correlated);
+    return ret;
+}
+
+UniValue pricesaddress(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C,*assetscp,C2; std::vector<unsigned char> pubkey; CPubKey pk,planpk,pricespk; char myaddr[64],houseaddr[64],exposureaddr[64];
+    cp = CCinit(&C,EVAL_PRICES);
+    assetscp = CCinit(&C2,EVAL_PRICES);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("pricesaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    result = CCaddress(cp,(char *)"Prices",pubkey);
+    pk = pubkey2pk(Mypubkey());
+    pricespk = GetUnspendable(cp,0);
+    GetCCaddress(assetscp,myaddr,pk);
+    GetCCaddress1of2(assetscp,houseaddr,pricespk,planpk);
+    GetCCaddress1of2(assetscp,exposureaddr,pricespk,pricespk);
+    result.push_back(Pair("myaddr",myaddr)); // for holding my asssets
+    result.push_back(Pair("houseaddr",houseaddr)); // globally accessible house assets
+    result.push_back(Pair("exposureaddr",exposureaddr)); // tracking of exposure
+    return(result);
+}
+
+uint32_t pricesGetParam(UniValue param) {
+    uint32_t filter = 0;
+    if (STR_TOLOWER(param.get_str()) == "all")
+        filter = 0;
+    else if (STR_TOLOWER(param.get_str()) == "open")
+        filter = 1;
+    else if (STR_TOLOWER(param.get_str()) == "closed")
+        filter = 2;
+    else
+        throw std::runtime_error("incorrect parameter\n");
+    return filter;
+}
+
+UniValue priceslist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() != 0 && request.params.size() != 1)
+        throw std::runtime_error("priceslist [all|open|closed]\n");
+    if ( ensure_CCrequirements(EVAL_PRICES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    uint32_t filter = 0;
+    if (request.params.size() == 1) 
+        filter = pricesGetParam(request.params[0]);
+    
+    CPubKey emptypk;
+
+    return(PricesList(filter, emptypk));
+}
+
+UniValue mypriceslist(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0 && request.params.size() != 1)
+        throw std::runtime_error("mypriceslist [all|open|closed]\n");
+    if (ensure_CCrequirements(EVAL_PRICES) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+    uint32_t filter = 0;
+    if (request.params.size() == 1)
+        filter = pricesGetParam(request.params[0]);
+    CPubKey pk;
+    pk = pubkey2pk(Mypubkey());
+
+    return(PricesList(filter, pk));
+}
+
+UniValue pricesinfo(const JSONRPCRequest& request)
+{
+    uint256 bettxid; int32_t height;
+    if ( request.fHelp || request.params.size() != 1 && request.params.size() != 2)
+        throw std::runtime_error("pricesinfo bettxid [height]\n");
+    if ( ensure_CCrequirements(EVAL_PRICES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bettxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    height = 0;
+    if (request.params.size() == 2)
+        height = atoi(request.params[1].get_str().c_str());
+    return(PricesInfo(bettxid, height));
+}
+
+// pricesbet rpc implementation
+UniValue pricesbet(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 3)
+        throw std::runtime_error("pricesbet amount leverage \"synthetic-expression\"\n"
+            "amount is in coins\n"
+            "leverage is integer non-zero value, positive for long, negative for short position\n"
+            "synthetic-expression example \"BTC_USD, 1\"\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    CAmount txfee = 10000;
+    CAmount amount = atof(request.params[0].get_str().c_str()) * COIN;
+    int16_t leverage = (int16_t)atoi(request.params[1].get_str().c_str());
+    if (leverage == 0)
+        throw std::runtime_error("invalid leverage\n");
+
+    std::string sexpr = request.params[2].get_str();
+    std::vector<std::string> vexpr;
+    SplitStr(sexpr, vexpr);
+
+    // debug print parsed strings:
+    std::cerr << "parsed synthetic: ";
+    for (auto s : vexpr)
+        std::cerr << s << " ";
+    std::cerr << std::endl;
+
+    return PricesBet(txfee, amount, leverage, vexpr);
+}
+
+// pricesaddfunding rpc implementation
+UniValue pricesaddfunding(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 2)
+        throw std::runtime_error("pricesaddfunding bettxid amount\n"
+            "where amount is in coins\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    CAmount txfee = 10000;
+    uint256 bettxid = Parseuint256(request.params[0].get_str().c_str());
+    if (bettxid.IsNull())
+        throw std::runtime_error("invalid bettxid\n");
+
+    CAmount amount = atof(request.params[1].get_str().c_str()) * COIN;
+    if (amount <= 0)
+        throw std::runtime_error("invalid amount\n");
+
+    return PricesAddFunding(txfee, bettxid, amount);
+}
+
+// rpc pricessetcostbasis implementation
+UniValue pricessetcostbasis(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error("pricessetcostbasis bettxid\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    uint256 bettxid = Parseuint256(request.params[0].get_str().c_str());
+    if (bettxid.IsNull())
+        throw std::runtime_error("invalid bettxid\n");
+
+    int64_t txfee = 10000;
+
+    return PricesSetcostbasis(txfee, bettxid);
+}
+
+// pricescashout rpc implementation
+UniValue pricescashout(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error("pricescashout bettxid\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    uint256 bettxid = Parseuint256(request.params[0].get_str().c_str());
+    if (bettxid.IsNull())
+        throw std::runtime_error("invalid bettxid\n");
+
+    int64_t txfee = 10000;
+
+    return PricesCashout(txfee, bettxid);
+}
+
+// pricesrekt rpc implementation
+UniValue pricesrekt(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 2)
+        throw std::runtime_error("pricesrekt bettxid height\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    uint256 bettxid = Parseuint256(request.params[0].get_str().c_str());
+    if (bettxid.IsNull())
+        throw std::runtime_error("invalid bettxid\n");
+
+    int32_t height = atoi(request.params[0].get_str().c_str());
+
+    int64_t txfee = 10000;
+
+    return PricesRekt(txfee, bettxid, height);
+}
+
+// pricesrekt rpc implementation
+UniValue pricesgetorderbook(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error("pricesgetorderbook\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    return PricesGetOrderbook();
+}
+
+// pricesrekt rpc implementation
+UniValue pricesrefillfund(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error("pricesrefillfund amount\n");
+    LOCK(cs_main);
+    UniValue ret(UniValue::VOBJ);
+
+    if (ASSETCHAINS_CBOPRET == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "only -ac_cbopret chains have prices");
+
+    CAmount amount = atof(request.params[0].get_str().c_str()) * COIN;
+
+    return PricesRefillFund(amount);
+}
+
+UniValue height_MoM(const JSONRPCRequest& request); // src/rpc/crosschain.cpp
+UniValue calc_MoM(const JSONRPCRequest& request); // src/rpc/crosschain.cpp
+
+static const CRPCCommand commands[] =
+{ //  category              name                      actor (function)         argNames
+  //  --------------------- ------------------------  -----------------------  ----------
+    { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      {} },
+    { "blockchain",         "getchaintxstats",        &getchaintxstats,        {"nblocks", "blockhash"} },
+    { "blockchain",         "getbestblockhash",       &getbestblockhash,       {} },
+    { "blockchain",         "getblockcount",          &getblockcount,          {} },
+    { "blockchain",         "getblock",               &getblock,               {"blockhash","verbosity|verbose"} },
+    { "blockchain",         "getblockhashes",         &getblockhashes,         {} },
+    { "blockchain",         "getblockhash",           &getblockhash,           {"height"} },
+    { "blockchain",         "getblockheader",         &getblockheader,         {"blockhash","verbose"} },
+    { "blockchain",         "getchaintips",           &getchaintips,           {} },
+    { "blockchain",         "getdifficulty",          &getdifficulty,          {} },
+    { "blockchain",
