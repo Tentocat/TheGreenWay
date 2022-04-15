@@ -2167,4 +2167,45 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getblockheader",         &getblockheader,         {"blockhash","verbose"} },
     { "blockchain",         "getchaintips",           &getchaintips,           {} },
     { "blockchain",         "getdifficulty",          &getdifficulty,          {} },
-    { "blockchain",
+    { "blockchain",         "getmempoolancestors",    &getmempoolancestors,    {"txid","verbose"} },
+    { "blockchain",         "getmempooldescendants",  &getmempooldescendants,  {"txid","verbose"} },
+    { "blockchain",         "getmempoolentry",        &getmempoolentry,        {"txid"} },
+    { "blockchain",         "getmempoolinfo",         &getmempoolinfo,         {} },
+    { "blockchain",         "getrawmempool",          &getrawmempool,          {"verbose"} },
+    { "blockchain",         "gettxout",               &gettxout,               {"txid","n","include_mempool"} },
+    { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        {} },
+    { "blockchain",         "pruneblockchain",        &pruneblockchain,        {"height"} },
+    { "blockchain",         "savemempool",            &savemempool,            {} },
+    { "blockchain",         "verifychain",            &verifychain,            {"checklevel","nblocks"} },
+    { "blockchain",         "preciousblock",          &preciousblock,          {"blockhash"} },
+    { "blockchain",         "calc_MoM",               &calc_MoM,               {"height", "MoMdepth"} },
+    { "blockchain",         "height_MoM",             &height_MoM,             {"height"} },
+ 
+    // Prices
+    { "prices",       "prices",      &prices,      {} },
+    { "prices",       "pricesaddress",      &pricesaddress,      {"pubkey"} },
+    { "prices",       "priceslist",         &priceslist,         {} },
+    { "prices",       "mypriceslist",         &mypriceslist,         {} },
+    { "prices",       "pricesinfo",         &pricesinfo,         {} },
+    { "prices",       "pricesbet",         &pricesbet,         {} },
+    { "prices",       "pricessetcostbasis",         &pricessetcostbasis,         {} },
+    { "prices",       "pricescashout",         &pricescashout,         {} },
+    { "prices",       "pricesrekt",         &pricesrekt,         {} },
+    { "prices",       "pricesaddfunding",         &pricesaddfunding,         {} },
+    { "prices",       "pricesgetorderbook",         &pricesgetorderbook,         {} },
+    { "prices",       "pricesrefillfund",         &pricesrefillfund,         {} },
+
+    /* Not shown in help */
+    { "hidden",             "invalidateblock",        &invalidateblock,        {"blockhash"} },
+    { "hidden",             "reconsiderblock",        &reconsiderblock,        {"blockhash"} },
+    { "hidden",             "waitfornewblock",        &waitfornewblock,        {"timeout"} },
+    { "hidden",             "waitforblock",           &waitforblock,           {"blockhash","timeout"} },
+    { "hidden",             "waitforblockheight",     &waitforblockheight,     {"height","timeout"} },
+    { "hidden",             "syncwithvalidationinterfacequeue", &syncwithvalidationinterfacequeue, {} },
+};
+
+void RegisterBlockchainRPCCommands(CRPCTable &t)
+{
+    for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
+        t.appendCommand(commands[vcidx].name, &commands[vcidx]);
+}
