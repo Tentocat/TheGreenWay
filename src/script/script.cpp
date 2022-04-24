@@ -263,4 +263,219 @@ bool CScript::IsWitnessProgram(int& version, std::vector<unsigned char>& program
 }
 
 // this returns true if either there is nothing left and pc points at the end
-// if there is data, it also returns all the values 
+// if there is data, it also returns all the values as byte vectors in a list of vectors
+bool CScript::GetPushedData(CScript::const_iterator pc, std::vector<std::vector<unsigned char>>& vData) const
+{
+    std::vector<unsigned char> data;
+    opcodetype opcode;
+    std::vector<unsigned char> vch1 = std::vector<unsigned char>(1);
+
+    vData.clear();
+
+    while (pc < end())
+    {
+        if (GetOp(pc, opcode, data))
+        {
+            if (opcode == OP_0)
+            {
+                vch1[0] = 0;
+                vData.push_back(vch1);
+            }
+            else if (opcode >= OP_1 && opcode <= OP_16)
+            {
+                vch1[0] = (opcode - OP_1) + 1;
+                vData.push_back(vch1);
+            }
+            else if (opcode > 0 && opcode <= OP_PUSHDATA4 && data.size() > 0)
+            {
+                vData.push_back(data);
+            }
+            else
+                return false;
+        }
+    }
+    return vData.size() != 0;
+}
+
+// this returns true if either there is nothing left and pc points at the end
+// if there is data, it also returns all the values as byte vectors in a list of vectors
+bool CScript::GetOpretData(std::vector<std::vector<unsigned char>>& vData) const
+{
+    std::vector<unsigned char> data;
+    opcodetype opcode;
+    CScript::const_iterator pc = this->begin();
+
+    if (GetOp(pc, opcode, data) && opcode == OP_RETURN)
+    {
+        return GetPushedData(pc, vData);
+    }
+    else return false;
+}
+
+bool CScript::IsPayToCryptoCondition(CScript *pCCSubScript, std::vector<std::vector<unsigned char>>& vParams) const
+{
+    const_iterator pc = begin();
+    std::vector<unsigned char> data;
+    opcodetype opcode;
+    if (GetOp(pc, opcode, data))
+        // Sha256 conditions are <76 bytes
+        if (opcode > OP_0 && opcode < OP_PUSHDATA1)
+            if (GetOp(pc, opcode, data))
+                if (opcode == OP_CHECKCRYPTOCONDITION)
+                {
+                    const_iterator pcCCEnd = pc;
+                    if (GetBalancedData(pc, vParams))
+                    {
+                        if (pCCSubScript)
+                            *pCCSubScript = CScript(begin(),pcCCEnd);
+                        return true;
+                    }
+                }
+    return false;
+}
+
+bool CScript::IsPayToCryptoCondition(CScript *pCCSubScript) const
+{
+    std::vector<std::vector<unsigned char>> vParams;
+    return IsPayToCryptoCondition(pCCSubScript, vParams);
+}
+
+bool CScript::IsPayToCryptoCondition() const
+{
+    return IsPayToCryptoCondition(NULL);
+}
+
+bool CScript::MayAcceptCryptoCondition() const
+{
+    // Get the type mask of the condition
+    const_iterator pc = this->begin();
+    std::vector<unsigned char> data;
+    opcodetype opcode;
+    if (!this->GetOp(pc, opcode, data)) return false;
+    if (!(opcode > OP_0 && opcode < OP_PUSHDATA1)) return false;
+    CC *cond = cc_readConditionBinary(data.data(), data.size());
+    if (!cond) return false;
+    bool out = IsSupportedCryptoCondition(cond);
+    cc_free(cond);
+    return out;
+}
+
+bool CScript::IsPushOnly(const_iterator pc) const
+{
+    while (pc < end())
+    {
+        opcodetype opcode;
+        if (!GetOp(pc, opcode))
+            return false;
+        // Note that IsPushOnly() *does* consider OP_RESERVED to be a
+        // push-type opcode, however execution of OP_RESERVED fails, so
+        // it's not relevant to P2SH/BIP62 as the scriptSig would fail prior to
+        // the P2SH special validation code being executed.
+        if (opcode > OP_16)
+            return false;
+    }
+    return true;
+}
+
+bool CScript::IsPushOnly() const
+{
+    return this->IsPushOnly(begin());
+}
+
+// this returns true if either there is nothing left and pc points at the end, or 
+// all instructions from the pc to the end of the script are balanced pushes and pops
+// if there is data, it also returns all the values as byte vectors in a list of vectors
+bool CScript::GetBalancedData(const_iterator& pc, std::vector<std::vector<unsigned char>>& vSolutions) const
+{
+    int netPushes = 0;
+    vSolutions.clear();
+
+    while (pc < end())
+    {
+        std::vector<unsigned char> data;
+        opcodetype opcode;
+        if (GetOp(pc, opcode, data))
+        {
+            if (opcode == OP_DROP)
+            {
+                // this should never pop what it hasn't pushed (like a success code)
+                if (--netPushes < 0)
+                    return false;
+            } 
+            else 
+            {
+                // push or fail
+                netPushes++;
+                if (opcode == OP_0)
+                {
+                    data.resize(1);
+                    data[0] = 0;
+                    vSolutions.push_back(data);
+                }
+                else if (opcode >= OP_1 && opcode <= OP_16)
+                {
+                    data.resize(1);
+                    data[0] = (opcode - OP_1) + 1;
+                    vSolutions.push_back(data);
+                }
+                else if (opcode > 0 && opcode <= OP_PUSHDATA4 && data.size() > 0)
+                {
+                    vSolutions.push_back(data);
+                }
+                else
+                    return false;
+            }
+        }
+        else
+            return false;
+    }
+    return netPushes == 0;
+}
+
+std::string CScriptWitness::ToString() const
+{
+    std::string ret = "CScriptWitness(";
+    for (unsigned int i = 0; i < stack.size(); i++) {
+        if (i) {
+            ret += ", ";
+        }
+        ret += HexStr(stack[i]);
+    }
+    return ret + ")";
+}
+
+bool CScript::HasValidOps() const
+{
+    CScript::const_iterator it = begin();
+    while (it < end()) {
+        opcodetype opcode;
+        std::vector<unsigned char> item;
+        if (!GetOp(it, opcode, item) || opcode > MAX_OPCODE || item.size() > MAX_SCRIPT_ELEMENT_SIZE) {
+            return false;
+        }
+    }
+    return true;
+}
+
+std::string CScript::ToString() const
+{
+    std::string str;
+    opcodetype opcode;
+    std::vector<unsigned char> vch;
+    const_iterator pc = begin();
+    while (pc < end())
+    {
+        if (!str.empty())
+            str += " ";
+        if (!GetOp(pc, opcode, vch))
+        {
+            str += "[error]";
+            return str;
+        }
+        if (0 <= opcode && opcode <= OP_PUSHDATA4)
+            str += ValueString(vch);
+        else
+            str += GetOpName(opcode);
+    }
+    return str;
+}
