@@ -344,4 +344,185 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
 
         addressRet = pubKey.GetID();
         return true;
-    
+    }
+    else if (whichType == TX_PUBKEYHASH)
+    {
+        addressRet = CKeyID(uint160(vSolutions[0]));
+        return true;
+    }
+    else if (whichType == TX_SCRIPTHASH)
+    {
+        addressRet = CScriptID(uint160(vSolutions[0]));
+        return true;
+    } 
+    else if (IsCryptoConditionsEnabled() != 0 && whichType == TX_CRYPTOCONDITION)
+    {
+        if (vSolutions.size() > 1)
+        {
+            CPubKey pk = CPubKey((vSolutions[1]));
+//We haven't CPubKey in CTxDestination now
+//            addressRet = pk;
+            addressRet = pk.GetID();
+            return pk.IsValid();
+        }
+        else
+        {
+            addressRet = CKeyID(uint160(vSolutions[0]));
+        }
+        return true;
+    } else if (whichType == TX_WITNESS_V0_KEYHASH) {
+        WitnessV0KeyHash hash;
+        std::copy(vSolutions[0].begin(), vSolutions[0].end(), hash.begin());
+        addressRet = hash;
+        return true;
+    } else if (whichType == TX_WITNESS_V0_SCRIPTHASH) {
+        WitnessV0ScriptHash hash;
+        std::copy(vSolutions[0].begin(), vSolutions[0].end(), hash.begin());
+        addressRet = hash;
+        return true;
+    } else if (whichType == TX_WITNESS_UNKNOWN) {
+        WitnessUnknown unk;
+        unk.version = vSolutions[0][0];
+        std::copy(vSolutions[1].begin(), vSolutions[1].end(), unk.program);
+        unk.length = vSolutions[1].size();
+        addressRet = unk;
+        return true;
+    }
+    // Multisig txns have more than one address...
+    return false;
+}
+
+bool ExtractDestinations(const CScript& scriptPubKey, txnouttype& typeRet, std::vector<CTxDestination>& addressRet, int& nRequiredRet)
+{
+    addressRet.clear();
+    typeRet = TX_NONSTANDARD;
+    std::vector<valtype> vSolutions;
+    if (!Solver(scriptPubKey, typeRet, vSolutions))
+        return false;
+    if (typeRet == TX_NULL_DATA){
+        // This is data, not addresses
+        return false;
+    }
+
+    if (typeRet == TX_MULTISIG)
+    {
+        nRequiredRet = vSolutions.front()[0];
+        for (unsigned int i = 1; i < vSolutions.size()-1; i++)
+        {
+            CPubKey pubKey(vSolutions[i]);
+            if (!pubKey.IsValid())
+                continue;
+
+            CTxDestination address = pubKey.GetID();
+            addressRet.push_back(address);
+        }
+
+        if (addressRet.empty())
+            return false;
+    }
+    else
+    {
+        nRequiredRet = 1;
+        CTxDestination address;
+        if (!ExtractDestination(scriptPubKey, address))
+           return false;
+        addressRet.push_back(address);
+    }
+
+    return true;
+}
+
+namespace
+{
+class CScriptVisitor : public boost::static_visitor<bool>
+{
+private:
+    CScript *script;
+public:
+    explicit CScriptVisitor(CScript *scriptin) { script = scriptin; }
+
+    bool operator()(const CNoDestination &dest) const {
+        script->clear();
+        return false;
+    }
+
+    bool operator()(const CKeyID &keyID) const {
+        script->clear();
+        *script << OP_DUP << OP_HASH160 << ToByteVector(keyID) << OP_EQUALVERIFY << OP_CHECKSIG;
+        return true;
+    }
+
+    bool operator()(const CScriptID &scriptID) const {
+        script->clear();
+        *script << OP_HASH160 << ToByteVector(scriptID) << OP_EQUAL;
+        return true;
+    }
+
+    bool operator()(const WitnessV0KeyHash& id) const
+    {
+        script->clear();
+        *script << OP_0 << ToByteVector(id);
+        return true;
+    }
+
+    bool operator()(const WitnessV0ScriptHash& id) const
+    {
+        script->clear();
+        *script << OP_0 << ToByteVector(id);
+        return true;
+    }
+
+    bool operator()(const WitnessUnknown& id) const
+    {
+        script->clear();
+        *script << CScript::EncodeOP_N(id.version) << std::vector<unsigned char>(id.program, id.program + id.length);
+        return true;
+    }
+};
+} // namespace
+
+CScript GetScriptForDestination(const CTxDestination& dest)
+{
+    CScript script;
+
+    boost::apply_visitor(CScriptVisitor(&script), dest);
+    return script;
+}
+
+CScript GetScriptForRawPubKey(const CPubKey& pubKey)
+{
+    return CScript() << std::vector<unsigned char>(pubKey.begin(), pubKey.end()) << OP_CHECKSIG;
+}
+
+CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
+{
+    CScript script;
+
+    script << CScript::EncodeOP_N(nRequired);
+    for (const CPubKey& key : keys)
+        script << ToByteVector(key);
+    script << CScript::EncodeOP_N(keys.size()) << OP_CHECKMULTISIG;
+    return script;
+}
+
+CScript GetScriptForWitness(const CScript& redeemscript)
+{
+    CScript ret;
+
+    txnouttype typ;
+    std::vector<std::vector<unsigned char> > vSolutions;
+    if (Solver(redeemscript, typ, vSolutions)) {
+        if (typ == TX_PUBKEY) {
+            return GetScriptForDestination(WitnessV0KeyHash(Hash160(vSolutions[0].begin(), vSolutions[0].end())));
+        } else if (typ == TX_PUBKEYHASH) {
+            return GetScriptForDestination(WitnessV0KeyHash(vSolutions[0]));
+        }
+    }
+    uint256 hash;
+    CSHA256().Write(&redeemscript[0], redeemscript.size()).Finalize(hash.begin());
+    return GetScriptForDestination(WitnessV0ScriptHash(hash));
+}
+
+bool IsValidDestination(const CTxDestination& dest) {
+    return dest.which() != 0;
+}
