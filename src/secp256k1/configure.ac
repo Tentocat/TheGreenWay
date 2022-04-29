@@ -432,4 +432,62 @@ if test x"$enable_module_ecdh" = x"yes"; then
 fi
 
 if test x"$enable_module_recovery" = x"yes"; then
-  AC_DEFINE(ENABLE_MODULE_RECOVERY, 1, [Define this symbol to enable the ECDSA pu
+  AC_DEFINE(ENABLE_MODULE_RECOVERY, 1, [Define this symbol to enable the ECDSA pubkey recovery module])
+fi
+
+AC_C_BIGENDIAN()
+
+if test x"$use_external_asm" = x"yes"; then
+  AC_DEFINE(USE_EXTERNAL_ASM, 1, [Define this symbol if an external (non-inline) assembly implementation is used])
+fi
+
+AC_MSG_NOTICE([Using static precomputation: $set_precomp])
+AC_MSG_NOTICE([Using assembly optimizations: $set_asm])
+AC_MSG_NOTICE([Using field implementation: $set_field])
+AC_MSG_NOTICE([Using bignum implementation: $set_bignum])
+AC_MSG_NOTICE([Using scalar implementation: $set_scalar])
+AC_MSG_NOTICE([Using endomorphism optimizations: $use_endomorphism])
+AC_MSG_NOTICE([Building for coverage analysis: $enable_coverage])
+AC_MSG_NOTICE([Building ECDH module: $enable_module_ecdh])
+AC_MSG_NOTICE([Building ECDSA pubkey recovery module: $enable_module_recovery])
+AC_MSG_NOTICE([Using jni: $use_jni])
+
+if test x"$enable_experimental" = x"yes"; then
+  AC_MSG_NOTICE([******])
+  AC_MSG_NOTICE([WARNING: experimental build])
+  AC_MSG_NOTICE([Experimental features do not have stable APIs or properties, and may not be safe for production use.])
+  AC_MSG_NOTICE([Building ECDH module: $enable_module_ecdh])
+  AC_MSG_NOTICE([******])
+else
+  if test x"$enable_module_ecdh" = x"yes"; then
+    AC_MSG_ERROR([ECDH module is experimental. Use --enable-experimental to allow.])
+  fi
+  if test x"$set_asm" = x"arm"; then
+    AC_MSG_ERROR([ARM assembly optimization is experimental. Use --enable-experimental to allow.])
+  fi
+fi
+
+AC_CONFIG_HEADERS([src/libsecp256k1-config.h])
+AC_CONFIG_FILES([Makefile libsecp256k1.pc])
+AC_SUBST(JNI_INCLUDES)
+AC_SUBST(SECP_INCLUDES)
+AC_SUBST(SECP_LIBS)
+AC_SUBST(SECP_TEST_LIBS)
+AC_SUBST(SECP_TEST_INCLUDES)
+AM_CONDITIONAL([ENABLE_COVERAGE], [test x"$enable_coverage" = x"yes"])
+AM_CONDITIONAL([USE_TESTS], [test x"$use_tests" != x"no"])
+AM_CONDITIONAL([USE_EXHAUSTIVE_TESTS], [test x"$use_exhaustive_tests" != x"no"])
+AM_CONDITIONAL([USE_BENCHMARK], [test x"$use_benchmark" = x"yes"])
+AM_CONDITIONAL([USE_ECMULT_STATIC_PRECOMPUTATION], [test x"$set_precomp" = x"yes"])
+AM_CONDITIONAL([ENABLE_MODULE_ECDH], [test x"$enable_module_ecdh" = x"yes"])
+AM_CONDITIONAL([ENABLE_MODULE_RECOVERY], [test x"$enable_module_recovery" = x"yes"])
+AM_CONDITIONAL([USE_JNI], [test x"$use_jni" == x"yes"])
+AM_CONDITIONAL([USE_EXTERNAL_ASM], [test x"$use_external_asm" = x"yes"])
+AM_CONDITIONAL([USE_ASM_ARM], [test x"$set_asm" = x"arm"])
+
+dnl make sure nothing new is exported so that we don't break the cache
+PKGCONFIG_PATH_TEMP="$PKG_CONFIG_PATH"
+unset PKG_CONFIG_PATH
+PKG_CONFIG_PATH="$PKGCONFIG_PATH_TEMP"
+
+AC_OUTPUT
