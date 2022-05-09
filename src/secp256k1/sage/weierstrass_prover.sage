@@ -181,3 +181,85 @@ def check_exhaustive_jacobian_weierstrass(name, A, B, branches, formula, p):
   for x in xrange(0, p):
     for y in xrange(0, p):
       point = affinepoint(F(x), F(y))
+      r, e = concrete_verify(on_weierstrass_curve(A, B, point))
+      if r:
+        points.append(point)
+
+  for za in xrange(1, p):
+    for zb in xrange(1, p):
+      for pa in points:
+        for pb in points:
+          for ia in xrange(2):
+            for ib in xrange(2):
+              pA = jacobianpoint(pa.x * F(za)^2, pa.y * F(za)^3, F(za), ia)
+              pB = jacobianpoint(pb.x * F(zb)^2, pb.y * F(zb)^3, F(zb), ib)
+              for branch in xrange(0, branches):
+                assumeAssert, assumeBranch, pC = formula(branch, pA, pB)
+                pC.X = F(pC.X)
+                pC.Y = F(pC.Y)
+                pC.Z = F(pC.Z)
+                pC.Infinity = F(pC.Infinity)
+                r, e = concrete_verify(assumeAssert + assumeBranch)
+                if r:
+                  match = False
+                  for key in laws_jacobian_weierstrass:
+                    assumeLaw, require = laws_jacobian_weierstrass[key](A, B, pa, pb, pA, pB, pC)
+                    r, e = concrete_verify(assumeLaw)
+                    if r:
+                      if match:
+                        print "  multiple branches for (%s,%s,%s,%s) + (%s,%s,%s,%s)" % (pA.X, pA.Y, pA.Z, pA.Infinity, pB.X, pB.Y, pB.Z, pB.Infinity)
+                      else:
+                        match = True
+                      r, e = concrete_verify(require)
+                      if not r:
+                        print "  failure in branch %i for (%s,%s,%s,%s) + (%s,%s,%s,%s) = (%s,%s,%s,%s): %s" % (branch, pA.X, pA.Y, pA.Z, pA.Infinity, pB.X, pB.Y, pB.Z, pB.Infinity, pC.X, pC.Y, pC.Z, pC.Infinity, e)
+  print
+
+
+def check_symbolic_function(R, assumeAssert, assumeBranch, f, A, B, pa, pb, pA, pB, pC):
+  assumeLaw, require = f(A, B, pa, pb, pA, pB, pC)
+  return check_symbolic(R, assumeLaw, assumeAssert, assumeBranch, require)
+
+def check_symbolic_jacobian_weierstrass(name, A, B, branches, formula):
+  """Verify an implementation of addition of Jacobian points on a Weierstrass curve symbolically"""
+  R.<ax,bx,ay,by,Az,Bz,Ai,Bi> = PolynomialRing(QQ,8,order='invlex')
+  lift = lambda x: fastfrac(R,x)
+  ax = lift(ax)
+  ay = lift(ay)
+  Az = lift(Az)
+  bx = lift(bx)
+  by = lift(by)
+  Bz = lift(Bz)
+  Ai = lift(Ai)
+  Bi = lift(Bi)
+
+  pa = affinepoint(ax, ay, Ai)
+  pb = affinepoint(bx, by, Bi)
+  pA = jacobianpoint(ax * Az^2, ay * Az^3, Az, Ai)
+  pB = jacobianpoint(bx * Bz^2, by * Bz^3, Bz, Bi)
+
+  res = {}
+
+  for key in laws_jacobian_weierstrass:
+    res[key] = []
+
+  print ("Formula " + name + ":")
+  count = 0
+  for branch in xrange(branches):
+    assumeFormula, assumeBranch, pC = formula(branch, pA, pB)
+    pC.X = lift(pC.X)
+    pC.Y = lift(pC.Y)
+    pC.Z = lift(pC.Z)
+    pC.Infinity = lift(pC.Infinity)
+
+    for key in laws_jacobian_weierstrass:
+      res[key].append((check_symbolic_function(R, assumeFormula, assumeBranch, laws_jacobian_weierstrass[key], A, B, pa, pb, pA, pB, pC), branch))
+
+  for key in res:
+    print "  %s:" % key
+    val = res[key]
+    for x in val:
+      if x[0] is not None:
+        print "    branch %i: %s" % (x[1], x[0])
+
+  print
