@@ -305,3 +305,275 @@ static void secp256k1_gej_double_var(secp256k1_gej *r, const secp256k1_gej *a, s
      *     https://hyperelliptic.org/EFD/g1p/auto-shortw-jacobian-0.html#doubling-dbl-2009-l
      * which trades a multiply for a square, but in practice this is actually slower,
      * mainly because it requires more normalizations.
+     */
+    secp256k1_fe t1,t2,t3,t4;
+    /** For secp256k1, 2Q is infinity if and only if Q is infinity. This is because if 2Q = infinity,
+     *  Q must equal -Q, or that Q.y == -(Q.y), or Q.y is 0. For a point on y^2 = x^3 + 7 to have
+     *  y=0, x^3 must be -7 mod p. However, -7 has no cube root mod p.
+     *
+     *  Having said this, if this function receives a point on a sextic twist, e.g. by
+     *  a fault attack, it is possible for y to be 0. This happens for y^2 = x^3 + 6,
+     *  since -6 does have a cube root mod p. For this point, this function will not set
+     *  the infinity flag even though the point doubles to infinity, and the result
+     *  point will be gibberish (z = 0 but infinity = 0).
+     */
+    r->infinity = a->infinity;
+    if (r->infinity) {
+        if (rzr != NULL) {
+            secp256k1_fe_set_int(rzr, 1);
+        }
+        return;
+    }
+
+    if (rzr != NULL) {
+        *rzr = a->y;
+        secp256k1_fe_normalize_weak(rzr);
+        secp256k1_fe_mul_int(rzr, 2);
+    }
+
+    secp256k1_fe_mul(&r->z, &a->z, &a->y);
+    secp256k1_fe_mul_int(&r->z, 2);       /* Z' = 2*Y*Z (2) */
+    secp256k1_fe_sqr(&t1, &a->x);
+    secp256k1_fe_mul_int(&t1, 3);         /* T1 = 3*X^2 (3) */
+    secp256k1_fe_sqr(&t2, &t1);           /* T2 = 9*X^4 (1) */
+    secp256k1_fe_sqr(&t3, &a->y);
+    secp256k1_fe_mul_int(&t3, 2);         /* T3 = 2*Y^2 (2) */
+    secp256k1_fe_sqr(&t4, &t3);
+    secp256k1_fe_mul_int(&t4, 2);         /* T4 = 8*Y^4 (2) */
+    secp256k1_fe_mul(&t3, &t3, &a->x);    /* T3 = 2*X*Y^2 (1) */
+    r->x = t3;
+    secp256k1_fe_mul_int(&r->x, 4);       /* X' = 8*X*Y^2 (4) */
+    secp256k1_fe_negate(&r->x, &r->x, 4); /* X' = -8*X*Y^2 (5) */
+    secp256k1_fe_add(&r->x, &t2);         /* X' = 9*X^4 - 8*X*Y^2 (6) */
+    secp256k1_fe_negate(&t2, &t2, 1);     /* T2 = -9*X^4 (2) */
+    secp256k1_fe_mul_int(&t3, 6);         /* T3 = 12*X*Y^2 (6) */
+    secp256k1_fe_add(&t3, &t2);           /* T3 = 12*X*Y^2 - 9*X^4 (8) */
+    secp256k1_fe_mul(&r->y, &t1, &t3);    /* Y' = 36*X^3*Y^2 - 27*X^6 (1) */
+    secp256k1_fe_negate(&t2, &t4, 2);     /* T2 = -8*Y^4 (3) */
+    secp256k1_fe_add(&r->y, &t2);         /* Y' = 36*X^3*Y^2 - 27*X^6 - 8*Y^4 (4) */
+}
+
+static SECP256K1_INLINE void secp256k1_gej_double_nonzero(secp256k1_gej *r, const secp256k1_gej *a, secp256k1_fe *rzr) {
+    VERIFY_CHECK(!secp256k1_gej_is_infinity(a));
+    secp256k1_gej_double_var(r, a, rzr);
+}
+
+static void secp256k1_gej_add_var(secp256k1_gej *r, const secp256k1_gej *a, const secp256k1_gej *b, secp256k1_fe *rzr) {
+    /* Operations: 12 mul, 4 sqr, 2 normalize, 12 mul_int/add/negate */
+    secp256k1_fe z22, z12, u1, u2, s1, s2, h, i, i2, h2, h3, t;
+
+    if (a->infinity) {
+        VERIFY_CHECK(rzr == NULL);
+        *r = *b;
+        return;
+    }
+
+    if (b->infinity) {
+        if (rzr != NULL) {
+            secp256k1_fe_set_int(rzr, 1);
+        }
+        *r = *a;
+        return;
+    }
+
+    r->infinity = 0;
+    secp256k1_fe_sqr(&z22, &b->z);
+    secp256k1_fe_sqr(&z12, &a->z);
+    secp256k1_fe_mul(&u1, &a->x, &z22);
+    secp256k1_fe_mul(&u2, &b->x, &z12);
+    secp256k1_fe_mul(&s1, &a->y, &z22); secp256k1_fe_mul(&s1, &s1, &b->z);
+    secp256k1_fe_mul(&s2, &b->y, &z12); secp256k1_fe_mul(&s2, &s2, &a->z);
+    secp256k1_fe_negate(&h, &u1, 1); secp256k1_fe_add(&h, &u2);
+    secp256k1_fe_negate(&i, &s1, 1); secp256k1_fe_add(&i, &s2);
+    if (secp256k1_fe_normalizes_to_zero_var(&h)) {
+        if (secp256k1_fe_normalizes_to_zero_var(&i)) {
+            secp256k1_gej_double_var(r, a, rzr);
+        } else {
+            if (rzr != NULL) {
+                secp256k1_fe_set_int(rzr, 0);
+            }
+            r->infinity = 1;
+        }
+        return;
+    }
+    secp256k1_fe_sqr(&i2, &i);
+    secp256k1_fe_sqr(&h2, &h);
+    secp256k1_fe_mul(&h3, &h, &h2);
+    secp256k1_fe_mul(&h, &h, &b->z);
+    if (rzr != NULL) {
+        *rzr = h;
+    }
+    secp256k1_fe_mul(&r->z, &a->z, &h);
+    secp256k1_fe_mul(&t, &u1, &h2);
+    r->x = t; secp256k1_fe_mul_int(&r->x, 2); secp256k1_fe_add(&r->x, &h3); secp256k1_fe_negate(&r->x, &r->x, 3); secp256k1_fe_add(&r->x, &i2);
+    secp256k1_fe_negate(&r->y, &r->x, 5); secp256k1_fe_add(&r->y, &t); secp256k1_fe_mul(&r->y, &r->y, &i);
+    secp256k1_fe_mul(&h3, &h3, &s1); secp256k1_fe_negate(&h3, &h3, 1);
+    secp256k1_fe_add(&r->y, &h3);
+}
+
+static void secp256k1_gej_add_ge_var(secp256k1_gej *r, const secp256k1_gej *a, const secp256k1_ge *b, secp256k1_fe *rzr) {
+    /* 8 mul, 3 sqr, 4 normalize, 12 mul_int/add/negate */
+    secp256k1_fe z12, u1, u2, s1, s2, h, i, i2, h2, h3, t;
+    if (a->infinity) {
+        VERIFY_CHECK(rzr == NULL);
+        secp256k1_gej_set_ge(r, b);
+        return;
+    }
+    if (b->infinity) {
+        if (rzr != NULL) {
+            secp256k1_fe_set_int(rzr, 1);
+        }
+        *r = *a;
+        return;
+    }
+    r->infinity = 0;
+
+    secp256k1_fe_sqr(&z12, &a->z);
+    u1 = a->x; secp256k1_fe_normalize_weak(&u1);
+    secp256k1_fe_mul(&u2, &b->x, &z12);
+    s1 = a->y; secp256k1_fe_normalize_weak(&s1);
+    secp256k1_fe_mul(&s2, &b->y, &z12); secp256k1_fe_mul(&s2, &s2, &a->z);
+    secp256k1_fe_negate(&h, &u1, 1); secp256k1_fe_add(&h, &u2);
+    secp256k1_fe_negate(&i, &s1, 1); secp256k1_fe_add(&i, &s2);
+    if (secp256k1_fe_normalizes_to_zero_var(&h)) {
+        if (secp256k1_fe_normalizes_to_zero_var(&i)) {
+            secp256k1_gej_double_var(r, a, rzr);
+        } else {
+            if (rzr != NULL) {
+                secp256k1_fe_set_int(rzr, 0);
+            }
+            r->infinity = 1;
+        }
+        return;
+    }
+    secp256k1_fe_sqr(&i2, &i);
+    secp256k1_fe_sqr(&h2, &h);
+    secp256k1_fe_mul(&h3, &h, &h2);
+    if (rzr != NULL) {
+        *rzr = h;
+    }
+    secp256k1_fe_mul(&r->z, &a->z, &h);
+    secp256k1_fe_mul(&t, &u1, &h2);
+    r->x = t; secp256k1_fe_mul_int(&r->x, 2); secp256k1_fe_add(&r->x, &h3); secp256k1_fe_negate(&r->x, &r->x, 3); secp256k1_fe_add(&r->x, &i2);
+    secp256k1_fe_negate(&r->y, &r->x, 5); secp256k1_fe_add(&r->y, &t); secp256k1_fe_mul(&r->y, &r->y, &i);
+    secp256k1_fe_mul(&h3, &h3, &s1); secp256k1_fe_negate(&h3, &h3, 1);
+    secp256k1_fe_add(&r->y, &h3);
+}
+
+static void secp256k1_gej_add_zinv_var(secp256k1_gej *r, const secp256k1_gej *a, const secp256k1_ge *b, const secp256k1_fe *bzinv) {
+    /* 9 mul, 3 sqr, 4 normalize, 12 mul_int/add/negate */
+    secp256k1_fe az, z12, u1, u2, s1, s2, h, i, i2, h2, h3, t;
+
+    if (b->infinity) {
+        *r = *a;
+        return;
+    }
+    if (a->infinity) {
+        secp256k1_fe bzinv2, bzinv3;
+        r->infinity = b->infinity;
+        secp256k1_fe_sqr(&bzinv2, bzinv);
+        secp256k1_fe_mul(&bzinv3, &bzinv2, bzinv);
+        secp256k1_fe_mul(&r->x, &b->x, &bzinv2);
+        secp256k1_fe_mul(&r->y, &b->y, &bzinv3);
+        secp256k1_fe_set_int(&r->z, 1);
+        return;
+    }
+    r->infinity = 0;
+
+    /** We need to calculate (rx,ry,rz) = (ax,ay,az) + (bx,by,1/bzinv). Due to
+     *  secp256k1's isomorphism we can multiply the Z coordinates on both sides
+     *  by bzinv, and get: (rx,ry,rz*bzinv) = (ax,ay,az*bzinv) + (bx,by,1).
+     *  This means that (rx,ry,rz) can be calculated as
+     *  (ax,ay,az*bzinv) + (bx,by,1), when not applying the bzinv factor to rz.
+     *  The variable az below holds the modified Z coordinate for a, which is used
+     *  for the computation of rx and ry, but not for rz.
+     */
+    secp256k1_fe_mul(&az, &a->z, bzinv);
+
+    secp256k1_fe_sqr(&z12, &az);
+    u1 = a->x; secp256k1_fe_normalize_weak(&u1);
+    secp256k1_fe_mul(&u2, &b->x, &z12);
+    s1 = a->y; secp256k1_fe_normalize_weak(&s1);
+    secp256k1_fe_mul(&s2, &b->y, &z12); secp256k1_fe_mul(&s2, &s2, &az);
+    secp256k1_fe_negate(&h, &u1, 1); secp256k1_fe_add(&h, &u2);
+    secp256k1_fe_negate(&i, &s1, 1); secp256k1_fe_add(&i, &s2);
+    if (secp256k1_fe_normalizes_to_zero_var(&h)) {
+        if (secp256k1_fe_normalizes_to_zero_var(&i)) {
+            secp256k1_gej_double_var(r, a, NULL);
+        } else {
+            r->infinity = 1;
+        }
+        return;
+    }
+    secp256k1_fe_sqr(&i2, &i);
+    secp256k1_fe_sqr(&h2, &h);
+    secp256k1_fe_mul(&h3, &h, &h2);
+    r->z = a->z; secp256k1_fe_mul(&r->z, &r->z, &h);
+    secp256k1_fe_mul(&t, &u1, &h2);
+    r->x = t; secp256k1_fe_mul_int(&r->x, 2); secp256k1_fe_add(&r->x, &h3); secp256k1_fe_negate(&r->x, &r->x, 3); secp256k1_fe_add(&r->x, &i2);
+    secp256k1_fe_negate(&r->y, &r->x, 5); secp256k1_fe_add(&r->y, &t); secp256k1_fe_mul(&r->y, &r->y, &i);
+    secp256k1_fe_mul(&h3, &h3, &s1); secp256k1_fe_negate(&h3, &h3, 1);
+    secp256k1_fe_add(&r->y, &h3);
+}
+
+
+static void secp256k1_gej_add_ge(secp256k1_gej *r, const secp256k1_gej *a, const secp256k1_ge *b) {
+    /* Operations: 7 mul, 5 sqr, 4 normalize, 21 mul_int/add/negate/cmov */
+    static const secp256k1_fe fe_1 = SECP256K1_FE_CONST(0, 0, 0, 0, 0, 0, 0, 1);
+    secp256k1_fe zz, u1, u2, s1, s2, t, tt, m, n, q, rr;
+    secp256k1_fe m_alt, rr_alt;
+    int infinity, degenerate;
+    VERIFY_CHECK(!b->infinity);
+    VERIFY_CHECK(a->infinity == 0 || a->infinity == 1);
+
+    /** In:
+     *    Eric Brier and Marc Joye, Weierstrass Elliptic Curves and Side-Channel Attacks.
+     *    In D. Naccache and P. Paillier, Eds., Public Key Cryptography, vol. 2274 of Lecture Notes in Computer Science, pages 335-345. Springer-Verlag, 2002.
+     *  we find as solution for a unified addition/doubling formula:
+     *    lambda = ((x1 + x2)^2 - x1 * x2 + a) / (y1 + y2), with a = 0 for secp256k1's curve equation.
+     *    x3 = lambda^2 - (x1 + x2)
+     *    2*y3 = lambda * (x1 + x2 - 2 * x3) - (y1 + y2).
+     *
+     *  Substituting x_i = Xi / Zi^2 and yi = Yi / Zi^3, for i=1,2,3, gives:
+     *    U1 = X1*Z2^2, U2 = X2*Z1^2
+     *    S1 = Y1*Z2^3, S2 = Y2*Z1^3
+     *    Z = Z1*Z2
+     *    T = U1+U2
+     *    M = S1+S2
+     *    Q = T*M^2
+     *    R = T^2-U1*U2
+     *    X3 = 4*(R^2-Q)
+     *    Y3 = 4*(R*(3*Q-2*R^2)-M^4)
+     *    Z3 = 2*M*Z
+     *  (Note that the paper uses xi = Xi / Zi and yi = Yi / Zi instead.)
+     *
+     *  This formula has the benefit of being the same for both addition
+     *  of distinct points and doubling. However, it breaks down in the
+     *  case that either point is infinity, or that y1 = -y2. We handle
+     *  these cases in the following ways:
+     *
+     *    - If b is infinity we simply bail by means of a VERIFY_CHECK.
+     *
+     *    - If a is infinity, we detect this, and at the end of the
+     *      computation replace the result (which will be meaningless,
+     *      but we compute to be constant-time) with b.x : b.y : 1.
+     *
+     *    - If a = -b, we have y1 = -y2, which is a degenerate case.
+     *      But here the answer is infinity, so we simply set the
+     *      infinity flag of the result, overriding the computed values
+     *      without even needing to cmov.
+     *
+     *    - If y1 = -y2 but x1 != x2, which does occur thanks to certain
+     *      properties of our curve (specifically, 1 has nontrivial cube
+     *      roots in our field, and the curve equation has no x coefficient)
+     *      then the answer is not infinity but also not given by the above
+     *      equation. In this case, we cmov in place an alternate expression
+     *      for lambda. Specifically (y1 - y2)/(x1 - x2). Where both these
+     *      expressions for lambda are defined, they are equal, and can be
+     *      obtained from each other by multiplication by (y1 + y2)/(y1 + y2)
+     *      then substitution of x^3 + 7 for y^2 (using the curve equation).
+     *      For all pairs of nonzero points (a, b) at least one is defined,
+     *      so this covers everything.
+     */
+
+    secp25
