@@ -540,4 +540,92 @@ int secp256k1_musig_partial_sig_verify(const secp256k1_context* ctx, const secp2
     }
     secp256k1_scalar_set_b32(&e, msghash, NULL);
 
-    /* Multiplying the message
+    /* Multiplying the messagehash by the musig coefficient is equivalent
+     * to multiplying the signer's public key by the coefficient, except
+     * much easier to do. */
+    secp256k1_musig_coefficient(&mu, session->pk_hash, signer->index);
+    secp256k1_scalar_mul(&e, &e, &mu);
+
+    if (!secp256k1_pubkey_load(ctx, &rp, &signer->nonce)) {
+        return 0;
+    }
+
+    if (!secp256k1_schnorrsig_real_verify(ctx, &rj, &s, &e, pubkey)) {
+        return 0;
+    }
+    if (!session->nonce_is_negated) {
+        secp256k1_ge_neg(&rp, &rp);
+    }
+    secp256k1_gej_add_ge_var(&rj, &rj, &rp, NULL);
+
+    return secp256k1_gej_is_infinity(&rj);
+}
+
+int secp256k1_musig_partial_sig_adapt(const secp256k1_context* ctx, secp256k1_musig_partial_signature *adaptor_sig, const secp256k1_musig_partial_signature *partial_sig, const unsigned char *sec_adaptor32, int nonce_is_negated) {
+    secp256k1_scalar s;
+    secp256k1_scalar t;
+    int overflow;
+
+    (void) ctx;
+    VERIFY_CHECK(ctx != NULL);
+    ARG_CHECK(adaptor_sig != NULL);
+    ARG_CHECK(partial_sig != NULL);
+    ARG_CHECK(sec_adaptor32 != NULL);
+
+    secp256k1_scalar_set_b32(&s, partial_sig->data, &overflow);
+    if (overflow) {
+        return 0;
+    }
+    secp256k1_scalar_set_b32(&t, sec_adaptor32, &overflow);
+    if (overflow) {
+        secp256k1_scalar_clear(&t);
+        return 0;
+    }
+
+    if (nonce_is_negated) {
+        secp256k1_scalar_negate(&t, &t);
+    }
+
+    secp256k1_scalar_add(&s, &s, &t);
+    secp256k1_scalar_get_b32(adaptor_sig->data, &s);
+    secp256k1_scalar_clear(&t);
+    return 1;
+}
+
+int secp256k1_musig_extract_secret_adaptor(const secp256k1_context* ctx, unsigned char *sec_adaptor32, const secp256k1_schnorrsig *sig, const secp256k1_musig_partial_signature *partial_sigs, size_t n_partial_sigs, int nonce_is_negated) {
+    secp256k1_scalar t;
+    secp256k1_scalar s;
+    int overflow;
+    size_t i;
+
+    (void) ctx;
+    VERIFY_CHECK(ctx != NULL);
+    ARG_CHECK(sec_adaptor32 != NULL);
+    ARG_CHECK(sig != NULL);
+    ARG_CHECK(partial_sigs != NULL);
+
+    secp256k1_scalar_set_b32(&t, &sig->data[32], &overflow);
+    if (overflow) {
+        return 0;
+    }
+    secp256k1_scalar_negate(&t, &t);
+
+    for (i = 0; i < n_partial_sigs; i++) {
+        secp256k1_scalar_set_b32(&s, partial_sigs[i].data, &overflow);
+        if (overflow) {
+            secp256k1_scalar_clear(&t);
+            return 0;
+        }
+        secp256k1_scalar_add(&t, &t, &s);
+    }
+
+    if (!nonce_is_negated) {
+        secp256k1_scalar_negate(&t, &t);
+    }
+    secp256k1_scalar_get_b32(sec_adaptor32, &t);
+    secp256k1_scalar_clear(&t);
+    return 1;
+}
+
+#endif
+
