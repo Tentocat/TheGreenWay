@@ -349,3 +349,209 @@ void musig_api_tests(secp256k1_scratch_space *scratch) {
         memcpy(&final_sig_tmp.data[32], ones, 32);
         CHECK(secp256k1_musig_extract_secret_adaptor(none, sec_adaptor1, &final_sig_tmp, partial_sig, 2, nonce_is_negated) == 0);
     }
+    CHECK(ecount == 2);
+    CHECK(secp256k1_musig_extract_secret_adaptor(none, sec_adaptor1, &final_sig, NULL, 2, 0) == 0);
+    CHECK(ecount == 3);
+    {
+        secp256k1_musig_partial_signature partial_sig_tmp[2];
+        partial_sig_tmp[0] = partial_sig[0];
+        partial_sig_tmp[1] = partial_sig_overflow;
+        CHECK(secp256k1_musig_extract_secret_adaptor(none, sec_adaptor1, &final_sig, partial_sig_tmp, 2, nonce_is_negated) == 0);
+    }
+    CHECK(ecount == 3);
+    CHECK(secp256k1_musig_extract_secret_adaptor(none, sec_adaptor1, &final_sig, partial_sig, 0, 0) == 1);
+    CHECK(secp256k1_musig_extract_secret_adaptor(none, sec_adaptor1, &final_sig, partial_sig, 2, 1) == 1);
+
+    /** cleanup **/
+    memset(&session, 0, sizeof(session));
+    secp256k1_context_destroy(none);
+    secp256k1_context_destroy(sign);
+    secp256k1_context_destroy(vrfy);
+}
+
+/* Initializes two sessions, one use the given parameters (session_id,
+ * nonce_commitments, etc.) except that `session_tmp` uses new signers with different
+ * public keys. The point of this test is to call `musig_session_get_public_nonce`
+ * with signers from `session_tmp` who have different public keys than the correct
+ * ones and return the resulting messagehash. This should not result in a different
+ * messagehash because the public keys of the signers are only used during session
+ * initialization. */
+int musig_state_machine_diff_signer_msghash_test(unsigned char *msghash, secp256k1_pubkey *pks, secp256k1_pubkey *combined_pk, unsigned char *pk_hash, const unsigned char * const *nonce_commitments, unsigned char *msg, secp256k1_pubkey *nonce_other, unsigned char *sk, unsigned char *session_id) {
+    secp256k1_musig_session session;
+    secp256k1_musig_session session_tmp;
+    unsigned char nonce_commitment[32];
+    secp256k1_musig_session_signer_data signers[2];
+    secp256k1_musig_session_signer_data signers_tmp[2];
+    unsigned char sk_dummy[32];
+    secp256k1_pubkey pks_tmp[2];
+    secp256k1_pubkey combined_pk_tmp;
+    unsigned char pk_hash_tmp[32];
+    secp256k1_pubkey nonce;
+
+    /* Set up signers with different public keys */
+    secp256k1_rand256(sk_dummy);
+    pks_tmp[0] = pks[0];
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pks_tmp[1], sk_dummy) == 1);
+    CHECK(secp256k1_musig_pubkey_combine(ctx, NULL, &combined_pk_tmp, pk_hash_tmp, pks_tmp, 2) == 1);
+    CHECK(secp256k1_musig_session_initialize(ctx, &session_tmp, signers_tmp, nonce_commitment, session_id, msg, &combined_pk_tmp, pk_hash_tmp, 2, 0, sk_dummy) == 1);
+
+    CHECK(secp256k1_musig_session_initialize(ctx, &session, signers, nonce_commitment, session_id, msg, combined_pk, pk_hash, 2, 0, sk) == 1);
+    CHECK(memcmp(nonce_commitment, nonce_commitments[1], 32) == 0);
+    /* Call get_public_nonce with different signers than the signers the session was
+     * initialized with. */
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session_tmp, signers, &nonce, nonce_commitments, 2) == 1);
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session, signers_tmp, &nonce, nonce_commitments, 2) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[0], nonce_other) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[1], &nonce) == 1);
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &session, signers, 2, NULL, NULL) == 1);
+
+    return secp256k1_musig_compute_messagehash(ctx, msghash, &session);
+}
+
+/* Creates a new session (with a different session id) and tries to use that session
+ * to combine nonces with given signers_other. This should fail, because the nonce
+ * commitments of signers_other do not match the nonce commitments the new session
+ * was initialized with. If do_test is 0, the correct signers are being used and
+ * therefore the function should return 1. */
+int musig_state_machine_diff_signers_combine_nonce_test(secp256k1_pubkey *combined_pk, unsigned char *pk_hash, unsigned char *nonce_commitment_other, secp256k1_pubkey *nonce_other, unsigned char *msg, unsigned char *sk, secp256k1_musig_session_signer_data *signers_other, int do_test) {
+    secp256k1_musig_session session;
+    secp256k1_musig_session_signer_data signers[2];
+    secp256k1_musig_session_signer_data *signers_to_use;
+    unsigned char nonce_commitment[32];
+    unsigned char session_id[32];
+    secp256k1_pubkey nonce;
+    const unsigned char *ncs[2];
+
+    /* Initialize new signers */
+    secp256k1_rand256(session_id);
+    CHECK(secp256k1_musig_session_initialize(ctx, &session, signers, nonce_commitment, session_id, msg, combined_pk, pk_hash, 2, 1, sk) == 1);
+    ncs[0] = nonce_commitment_other;
+    ncs[1] = nonce_commitment;
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session, signers, &nonce, ncs, 2) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[0], nonce_other) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[1], &nonce) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[1], &nonce) == 1);
+    secp256k1_musig_session_combine_nonces(ctx, &session, signers_other, 2, NULL, NULL);
+    if (do_test) {
+        signers_to_use = signers_other;
+    } else {
+        signers_to_use = signers;
+    }
+    return secp256k1_musig_session_combine_nonces(ctx, &session, signers_to_use, 2, NULL, NULL);
+}
+
+/* Recreates a session with the given session_id, signers, pk, msg etc. parameters
+ * and tries to sign and verify the other signers partial signature. Both should fail
+ * if msg is NULL. */
+int musig_state_machine_missing_msg_test(secp256k1_pubkey *pks, secp256k1_pubkey *combined_pk, unsigned char *pk_hash, unsigned char *nonce_commitment_other, secp256k1_pubkey *nonce_other, secp256k1_musig_partial_signature *partial_sig_other, unsigned char *sk, unsigned char *session_id, unsigned char *msg) {
+    secp256k1_musig_session session;
+    secp256k1_musig_session_signer_data signers[2];
+    unsigned char nonce_commitment[32];
+    const unsigned char *ncs[2];
+    secp256k1_pubkey nonce;
+    secp256k1_musig_partial_signature partial_sig;
+    int partial_sign, partial_verify;
+
+    CHECK(secp256k1_musig_session_initialize(ctx, &session, signers, nonce_commitment, session_id, msg, combined_pk, pk_hash, 2, 0, sk) == 1);
+    ncs[0] = nonce_commitment_other;
+    ncs[1] = nonce_commitment;
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session, signers, &nonce, ncs, 2) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[0], nonce_other) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[1], &nonce) == 1);
+
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &session, signers, 2, NULL, NULL) == 1);
+    partial_sign = secp256k1_musig_partial_sign(ctx, &session, &partial_sig);
+    partial_verify = secp256k1_musig_partial_sig_verify(ctx, &session, &signers[0], partial_sig_other, &pks[0]);
+    if (msg != NULL) {
+        /* Return 1 if both succeeded */
+        return partial_sign && partial_verify;
+    }
+    /* Return 0 if both failed */
+    return partial_sign || partial_verify;
+}
+
+/* Recreates a session with the given session_id, signers, pk, msg etc. parameters
+ * and tries to verify and combine partial sigs. If do_combine is 0, the
+ * combine_nonces step is left out. In that case verify and combine should fail and
+ * this function should return 0. */
+int musig_state_machine_missing_combine_test(secp256k1_pubkey *pks, secp256k1_pubkey *combined_pk, unsigned char *pk_hash, unsigned char *nonce_commitment_other, secp256k1_pubkey *nonce_other, secp256k1_musig_partial_signature *partial_sig_other, unsigned char *msg, unsigned char *sk, unsigned char *session_id, secp256k1_musig_partial_signature *partial_sig, int do_combine) {
+    secp256k1_musig_session session;
+    secp256k1_musig_session_signer_data signers[2];
+    unsigned char nonce_commitment[32];
+    const unsigned char *ncs[2];
+    secp256k1_pubkey nonce;
+    secp256k1_musig_partial_signature partial_sigs[2];
+    secp256k1_schnorrsig sig;
+    int partial_verify, sig_combine;
+
+    CHECK(secp256k1_musig_session_initialize(ctx, &session, signers, nonce_commitment, session_id, msg, combined_pk, pk_hash, 2, 0, sk) == 1);
+    ncs[0] = nonce_commitment_other;
+    ncs[1] = nonce_commitment;
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session, signers, &nonce, ncs, 2) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[0], nonce_other) == 1);
+    CHECK(secp256k1_musig_set_nonce(ctx, &signers[1], &nonce) == 1);
+
+    partial_sigs[0] = *partial_sig_other;
+    partial_sigs[1] = *partial_sig;
+    if (do_combine != 0) {
+        CHECK(secp256k1_musig_session_combine_nonces(ctx, &session, signers, 2, NULL, NULL) == 1);
+    }
+    partial_verify = secp256k1_musig_partial_sig_verify(ctx, &session, signers, partial_sig_other, &pks[0]);
+    sig_combine = secp256k1_musig_partial_sig_combine(ctx, &session, &sig, partial_sigs, 2);
+    if (do_combine != 0) {
+        /* Return 1 if both succeeded */
+        return partial_verify && sig_combine;
+    }
+    /* Return 0 if both failed */
+    return partial_verify || sig_combine;
+}
+
+void musig_state_machine_tests(secp256k1_scratch_space *scratch) {
+    size_t i;
+    secp256k1_musig_session session[2];
+    secp256k1_musig_session_signer_data signers0[2];
+    secp256k1_musig_session_signer_data signers1[2];
+    unsigned char nonce_commitment[2][32];
+    unsigned char session_id[2][32];
+    unsigned char msg[32];
+    unsigned char sk[2][32];
+    secp256k1_pubkey pk[2];
+    secp256k1_pubkey combined_pk;
+    unsigned char pk_hash[32];
+    secp256k1_pubkey nonce[2];
+    const unsigned char *ncs[2];
+    secp256k1_musig_partial_signature partial_sig[2];
+    unsigned char msghash1[32];
+    unsigned char msghash2[32];
+
+    /* Run state machine with the same objects twice to test that it's allowed to
+     * reinitialize session and session_signer_data. */
+    for (i = 0; i < 2; i++) {
+        /* Setup */
+        secp256k1_rand256(session_id[0]);
+        secp256k1_rand256(session_id[1]);
+        secp256k1_rand256(sk[0]);
+        secp256k1_rand256(sk[1]);
+        secp256k1_rand256(msg);
+        CHECK(secp256k1_ec_pubkey_create(ctx, &pk[0], sk[0]) == 1);
+        CHECK(secp256k1_ec_pubkey_create(ctx, &pk[1], sk[1]) == 1);
+        CHECK(secp256k1_musig_pubkey_combine(ctx, scratch, &combined_pk, pk_hash, pk, 2) == 1);
+        CHECK(secp256k1_musig_session_initialize(ctx, &session[0], signers0, nonce_commitment[0], session_id[0], msg, &combined_pk, pk_hash, 2, 0, sk[0]) == 1);
+        CHECK(secp256k1_musig_session_initialize(ctx, &session[1], signers1, nonce_commitment[1], session_id[1], msg, &combined_pk, pk_hash, 2, 1, sk[1]) == 1);
+
+        /* Set nonce commitments */
+        ncs[0] = nonce_commitment[0];
+        ncs[1] = nonce_commitment[1];
+        CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session[0], signers0, &nonce[0], ncs, 2) == 1);
+        /* Changing a nonce commitment is not okay */
+        ncs[1] = (unsigned char*) "this isn't a nonce commitment...";
+        CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session[0], signers0, &nonce[0], ncs, 2) == 0);
+        /* Repeating with the same nonce commitments is okay */
+        ncs[1] = nonce_commitment[1];
+        CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session[0], signers0, &nonce[0], ncs, 2) == 1);
+
+        /* Get nonce for signer 1 */
+        CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session[1], signers1, &nonce[1], ncs, 2) == 1);
+
+        /* Set nonces */
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers0[0], &nonce[0
