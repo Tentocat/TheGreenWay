@@ -554,4 +554,194 @@ void musig_state_machine_tests(secp256k1_scratch_space *scratch) {
         CHECK(secp256k1_musig_session_get_public_nonce(ctx, &session[1], signers1, &nonce[1], ncs, 2) == 1);
 
         /* Set nonces */
-        CHECK(secp256k1_musig_set_nonce(ctx, &signers0[0], &nonce[0
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers0[0], &nonce[0]) == 1);
+        /* Can't set nonce that doesn't match nonce commitment */
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers0[1], &nonce[0]) == 0);
+        /* Set correct nonce */
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers0[1], &nonce[1]) == 1);
+
+        /* Combine nonces */
+        CHECK(secp256k1_musig_session_combine_nonces(ctx, &session[0], signers0, 2, NULL, NULL) == 1);
+        /* Not everyone is present from signer 1's view */
+        CHECK(secp256k1_musig_session_combine_nonces(ctx, &session[1], signers1, 2, NULL, NULL) == 0);
+        /* Make everyone present */
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers1[0], &nonce[0]) == 1);
+        CHECK(secp256k1_musig_set_nonce(ctx, &signers1[1], &nonce[1]) == 1);
+
+        /* Can't combine nonces from signers of a different session */
+        CHECK(musig_state_machine_diff_signers_combine_nonce_test(&combined_pk, pk_hash, nonce_commitment[0], &nonce[0], msg, sk[1], signers1, 1) == 0);
+        CHECK(musig_state_machine_diff_signers_combine_nonce_test(&combined_pk, pk_hash, nonce_commitment[0], &nonce[0], msg, sk[1], signers1, 0) == 1);
+
+        /* Partially sign */
+        CHECK(secp256k1_musig_partial_sign(ctx, &session[0], &partial_sig[0]) == 1);
+        /* Can't verify or sign until nonce is combined */
+        CHECK(secp256k1_musig_partial_sig_verify(ctx, &session[1], &signers1[0], &partial_sig[0], &pk[0]) == 0);
+        CHECK(secp256k1_musig_partial_sign(ctx, &session[1], &partial_sig[1]) == 0);
+        CHECK(secp256k1_musig_session_combine_nonces(ctx, &session[1], signers1, 2, NULL, NULL) == 1);
+        CHECK(secp256k1_musig_partial_sig_verify(ctx, &session[1], &signers1[0], &partial_sig[0], &pk[0]) == 1);
+        /* messagehash should be the same as a session whose get_public_nonce was called
+         * with different signers (i.e. they diff in public keys). This is because the
+         * public keys of the signers is set in stone when initializing the session. */
+        CHECK(secp256k1_musig_compute_messagehash(ctx, msghash1, &session[1]) == 1);
+        CHECK(musig_state_machine_diff_signer_msghash_test(msghash2, pk, &combined_pk, pk_hash, ncs, msg, &nonce[0], sk[1], session_id[1]) == 1);
+        CHECK(memcmp(msghash1, msghash2, 32) == 0);
+        CHECK(secp256k1_musig_partial_sign(ctx, &session[1], &partial_sig[1]) == 1);
+        CHECK(secp256k1_musig_partial_sig_verify(ctx, &session[1], &signers1[1], &partial_sig[1], &pk[1]) == 1);
+        /* Wrong signature */
+        CHECK(secp256k1_musig_partial_sig_verify(ctx, &session[1], &signers1[1], &partial_sig[0], &pk[1]) == 0);
+        /* Can't sign or verify until msg is set */
+        CHECK(musig_state_machine_missing_msg_test(pk, &combined_pk, pk_hash, nonce_commitment[0], &nonce[0], &partial_sig[0], sk[1], session_id[1], NULL) == 0);
+        CHECK(musig_state_machine_missing_msg_test(pk, &combined_pk, pk_hash, nonce_commitment[0], &nonce[0], &partial_sig[0], sk[1], session_id[1], msg) == 1);
+
+        /* Can't verify and combine partial sigs until nonces are combined */
+        CHECK(musig_state_machine_missing_combine_test(pk, &combined_pk, pk_hash, nonce_commitment[0], &nonce[0], &partial_sig[0], msg, sk[1], session_id[1], &partial_sig[1], 0) == 0);
+        CHECK(musig_state_machine_missing_combine_test(pk, &combined_pk, pk_hash, nonce_commitment[0], &nonce[0], &partial_sig[0], msg, sk[1], session_id[1], &partial_sig[1], 1) == 1);
+    }
+}
+
+void scriptless_atomic_swap(secp256k1_scratch_space *scratch) {
+    /* Throughout this test "a" and "b" refer to two hypothetical blockchains,
+     * while the indices 0 and 1 refer to the two signers. Here signer 0 is
+     * sending a-coins to signer 1, while signer 1 is sending b-coins to signer
+     * 0. Signer 0 produces the adaptor signatures. */
+    secp256k1_schnorrsig final_sig_a;
+    secp256k1_schnorrsig final_sig_b;
+    secp256k1_musig_partial_signature partial_sig_a[2];
+    secp256k1_musig_partial_signature partial_sig_b_adapted[2];
+    secp256k1_musig_partial_signature partial_sig_b[2];
+    unsigned char sec_adaptor[32];
+    unsigned char sec_adaptor_extracted[32];
+    secp256k1_pubkey pub_adaptor;
+
+    unsigned char seckey_a[2][32];
+    unsigned char seckey_b[2][32];
+    secp256k1_pubkey pk_a[2];
+    secp256k1_pubkey pk_b[2];
+    unsigned char pk_hash_a[32];
+    unsigned char pk_hash_b[32];
+    secp256k1_pubkey combined_pk_a;
+    secp256k1_pubkey combined_pk_b;
+    secp256k1_musig_session musig_session_a[2];
+    secp256k1_musig_session musig_session_b[2];
+    unsigned char noncommit_a[2][32];
+    unsigned char noncommit_b[2][32];
+    const unsigned char *noncommit_a_ptr[2];
+    const unsigned char *noncommit_b_ptr[2];
+    secp256k1_pubkey pubnon_a[2];
+    secp256k1_pubkey pubnon_b[2];
+    int nonce_is_negated_a;
+    int nonce_is_negated_b;
+    secp256k1_musig_session_signer_data data_a[2];
+    secp256k1_musig_session_signer_data data_b[2];
+
+    const unsigned char seed[32] = "still tired of choosing seeds...";
+    const unsigned char msg32_a[32] = "this is the message blockchain a";
+    const unsigned char msg32_b[32] = "this is the message blockchain b";
+
+    /* Step 1: key setup */
+    secp256k1_rand256(seckey_a[0]);
+    secp256k1_rand256(seckey_a[1]);
+    secp256k1_rand256(seckey_b[0]);
+    secp256k1_rand256(seckey_b[1]);
+    secp256k1_rand256(sec_adaptor);
+
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pk_a[0], seckey_a[0]));
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pk_a[1], seckey_a[1]));
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pk_b[0], seckey_b[0]));
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pk_b[1], seckey_b[1]));
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pub_adaptor, sec_adaptor));
+
+    CHECK(secp256k1_musig_pubkey_combine(ctx, scratch, &combined_pk_a, pk_hash_a, pk_a, 2));
+    CHECK(secp256k1_musig_pubkey_combine(ctx, scratch, &combined_pk_b, pk_hash_b, pk_b, 2));
+
+    CHECK(secp256k1_musig_session_initialize(ctx, &musig_session_a[0], data_a, noncommit_a[0], seed, msg32_a, &combined_pk_a, pk_hash_a, 2, 0, seckey_a[0]));
+    CHECK(secp256k1_musig_session_initialize(ctx, &musig_session_a[1], data_a, noncommit_a[1], seed, msg32_a, &combined_pk_a, pk_hash_a, 2, 1, seckey_a[1]));
+    noncommit_a_ptr[0] = noncommit_a[0];
+    noncommit_a_ptr[1] = noncommit_a[1];
+
+    CHECK(secp256k1_musig_session_initialize(ctx, &musig_session_b[0], data_b, noncommit_b[0], seed, msg32_b, &combined_pk_b, pk_hash_b, 2, 0, seckey_b[0]));
+    CHECK(secp256k1_musig_session_initialize(ctx, &musig_session_b[1], data_b, noncommit_b[1], seed, msg32_b, &combined_pk_b, pk_hash_b, 2, 1, seckey_b[1]));
+    noncommit_b_ptr[0] = noncommit_b[0];
+    noncommit_b_ptr[1] = noncommit_b[1];
+
+    /* Step 2: Exchange nonces */
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &musig_session_a[0], data_a, &pubnon_a[0], noncommit_a_ptr, 2));
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &musig_session_a[1], data_a, &pubnon_a[1], noncommit_a_ptr, 2));
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &musig_session_b[0], data_b, &pubnon_b[0], noncommit_b_ptr, 2));
+    CHECK(secp256k1_musig_session_get_public_nonce(ctx, &musig_session_b[1], data_b, &pubnon_b[1], noncommit_b_ptr, 2));
+    CHECK(secp256k1_musig_set_nonce(ctx, &data_a[0], &pubnon_a[0]));
+    CHECK(secp256k1_musig_set_nonce(ctx, &data_a[1], &pubnon_a[1]));
+    CHECK(secp256k1_musig_set_nonce(ctx, &data_b[0], &pubnon_b[0]));
+    CHECK(secp256k1_musig_set_nonce(ctx, &data_b[1], &pubnon_b[1]));
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &musig_session_a[0], data_a, 2, &nonce_is_negated_a, &pub_adaptor));
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &musig_session_a[1], data_a, 2, NULL, &pub_adaptor));
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &musig_session_b[0], data_b, 2, &nonce_is_negated_b, &pub_adaptor));
+    CHECK(secp256k1_musig_session_combine_nonces(ctx, &musig_session_b[1], data_b, 2, NULL, &pub_adaptor));
+
+    /* Step 3: Signer 0 produces partial signatures for both chains. */
+    CHECK(secp256k1_musig_partial_sign(ctx, &musig_session_a[0], &partial_sig_a[0]));
+    CHECK(secp256k1_musig_partial_sign(ctx, &musig_session_b[0], &partial_sig_b[0]));
+
+    /* Step 4: Signer 1 receives partial signatures, verifies them and creates a
+     * partial signature to send B-coins to signer 0. */
+    CHECK(secp256k1_musig_partial_sig_verify(ctx, &musig_session_a[1], data_a, &partial_sig_a[0], &pk_a[0]) == 1);
+    CHECK(secp256k1_musig_partial_sig_verify(ctx, &musig_session_b[1], data_b, &partial_sig_b[0], &pk_b[0]) == 1);
+    CHECK(secp256k1_musig_partial_sign(ctx, &musig_session_b[1], &partial_sig_b[1]));
+
+    /* Step 5: Signer 0 adapts its own partial signature and combines it with the
+     * partial signature from signer 1. This results in a complete signature which
+     * is broadcasted by signer 0 to take B-coins. */
+    CHECK(secp256k1_musig_partial_sig_adapt(ctx, &partial_sig_b_adapted[0], &partial_sig_b[0], sec_adaptor, nonce_is_negated_b));
+    memcpy(&partial_sig_b_adapted[1], &partial_sig_b[1], sizeof(partial_sig_b_adapted[1]));
+    CHECK(secp256k1_musig_partial_sig_combine(ctx, &musig_session_b[0], &final_sig_b, partial_sig_b_adapted, 2) == 1);
+    CHECK(secp256k1_schnorrsig_verify(ctx, &final_sig_b, msg32_b, &combined_pk_b) == 1);
+
+    /* Step 6: Signer 1 extracts adaptor from the published signature, applies it to
+     * other partial signature, and takes A-coins. */
+    CHECK(secp256k1_musig_extract_secret_adaptor(ctx, sec_adaptor_extracted, &final_sig_b, partial_sig_b, 2, nonce_is_negated_b) == 1);
+    CHECK(memcmp(sec_adaptor_extracted, sec_adaptor, sizeof(sec_adaptor)) == 0); /* in real life we couldn't check this, of course */
+    CHECK(secp256k1_musig_partial_sig_adapt(ctx, &partial_sig_a[0], &partial_sig_a[0], sec_adaptor_extracted, nonce_is_negated_a));
+    CHECK(secp256k1_musig_partial_sign(ctx, &musig_session_a[1], &partial_sig_a[1]));
+    CHECK(secp256k1_musig_partial_sig_combine(ctx, &musig_session_a[1], &final_sig_a, partial_sig_a, 2) == 1);
+    CHECK(secp256k1_schnorrsig_verify(ctx, &final_sig_a, msg32_a, &combined_pk_a) == 1);
+}
+
+/* Checks that hash initialized by secp256k1_musig_sha256_init_tagged has the
+ * expected state. */
+void sha256_tag_test(void) {
+    char tag[17] = "MuSig coefficient";
+    secp256k1_sha256 sha;
+    secp256k1_sha256 sha_tagged;
+    unsigned char buf[32];
+    unsigned char buf2[32];
+    size_t i;
+
+    secp256k1_sha256_initialize(&sha);
+    secp256k1_sha256_write(&sha, (unsigned char *) tag, 17);
+    secp256k1_sha256_finalize(&sha, buf);
+    /* buf = SHA256("MuSig coefficient") */
+
+    secp256k1_sha256_initialize(&sha);
+    secp256k1_sha256_write(&sha, buf, 32);
+    secp256k1_sha256_write(&sha, buf, 32);
+    /* Is buffer fully consumed? */
+    CHECK((sha.bytes & 0x3F) == 0);
+
+    /* Compare with tagged SHA */
+    secp256k1_musig_sha256_init_tagged(&sha_tagged);
+    for (i = 0; i < 8; i++) {
+        CHECK(sha_tagged.s[i] == sha.s[i]);
+    }
+    secp256k1_sha256_write(&sha, buf, 32);
+    secp256k1_sha256_write(&sha_tagged, buf, 32);
+    secp256k1_sha256_finalize(&sha, buf);
+    secp256k1_sha256_finalize(&sha_tagged, buf2);
+    CHECK(memcmp(buf, buf2, 32) == 0);
+}
+
+void run_musig_tests(void) {
+    int i;
+    secp256k1_scratch_space *scratch = secp256k1_scratch_space_create(ctx, 1024 * 1024);
+
+    musig_api_tests(scratch);
+    musig_state_m
