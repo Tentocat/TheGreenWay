@@ -744,4 +744,15 @@ void run_musig_tests(void) {
     secp256k1_scratch_space *scratch = secp256k1_scratch_space_create(ctx, 1024 * 1024);
 
     musig_api_tests(scratch);
-    musig_state_m
+    musig_state_machine_tests(scratch);
+    for (i = 0; i < count; i++) {
+        /* Run multiple times to ensure that the nonce is negated in some tests */
+        scriptless_atomic_swap(scratch);
+    }
+    sha256_tag_test();
+
+    secp256k1_scratch_space_destroy(scratch);
+}
+
+#endif
+
