@@ -747,4 +747,303 @@ void scalar_test(void) {
         CHECK((secp256k1_scalar_is_high(&s) == secp256k1_scalar_is_high(&neg)) == secp256k1_scalar_is_zero(&s));
         secp256k1_scalar_get_num(&negnum2, &neg);
         /* Negating a scalar should be equal to (order - n) mod order on the number. */
-        CHECK(secp256k1
+        CHECK(secp256k1_num_eq(&negnum, &negnum2));
+        secp256k1_scalar_add(&neg, &neg, &s);
+        /* Adding a number to its negation should result in zero. */
+        CHECK(secp256k1_scalar_is_zero(&neg));
+        secp256k1_scalar_negate(&neg, &neg);
+        /* Negating zero should still result in zero. */
+        CHECK(secp256k1_scalar_is_zero(&neg));
+    }
+
+    {
+        /* Test secp256k1_scalar_mul_shift_var. */
+        secp256k1_scalar r;
+        secp256k1_num one;
+        secp256k1_num rnum;
+        secp256k1_num rnum2;
+        unsigned char cone[1] = {0x01};
+        unsigned int shift = 256 + secp256k1_rand_int(257);
+        secp256k1_scalar_mul_shift_var(&r, &s1, &s2, shift);
+        secp256k1_num_mul(&rnum, &s1num, &s2num);
+        secp256k1_num_shift(&rnum, shift - 1);
+        secp256k1_num_set_bin(&one, cone, 1);
+        secp256k1_num_add(&rnum, &rnum, &one);
+        secp256k1_num_shift(&rnum, 1);
+        secp256k1_scalar_get_num(&rnum2, &r);
+        CHECK(secp256k1_num_eq(&rnum, &rnum2));
+    }
+
+    {
+        /* test secp256k1_scalar_shr_int */
+        secp256k1_scalar r;
+        int i;
+        random_scalar_order_test(&r);
+        for (i = 0; i < 100; ++i) {
+            int low;
+            int shift = 1 + secp256k1_rand_int(15);
+            int expected = r.d[0] % (1 << shift);
+            low = secp256k1_scalar_shr_int(&r, shift);
+            CHECK(expected == low);
+        }
+    }
+#endif
+
+    {
+        /* Test that scalar inverses are equal to the inverse of their number modulo the order. */
+        if (!secp256k1_scalar_is_zero(&s)) {
+            secp256k1_scalar inv;
+#ifndef USE_NUM_NONE
+            secp256k1_num invnum;
+            secp256k1_num invnum2;
+#endif
+            secp256k1_scalar_inverse(&inv, &s);
+#ifndef USE_NUM_NONE
+            secp256k1_num_mod_inverse(&invnum, &snum, &order);
+            secp256k1_scalar_get_num(&invnum2, &inv);
+            CHECK(secp256k1_num_eq(&invnum, &invnum2));
+#endif
+            secp256k1_scalar_mul(&inv, &inv, &s);
+            /* Multiplying a scalar with its inverse must result in one. */
+            CHECK(secp256k1_scalar_is_one(&inv));
+            secp256k1_scalar_inverse(&inv, &inv);
+            /* Inverting one must result in one. */
+            CHECK(secp256k1_scalar_is_one(&inv));
+#ifndef USE_NUM_NONE
+            secp256k1_scalar_get_num(&invnum, &inv);
+            CHECK(secp256k1_num_is_one(&invnum));
+#endif
+        }
+    }
+
+    {
+        /* Test commutativity of add. */
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar_add(&r1, &s1, &s2);
+        secp256k1_scalar_add(&r2, &s2, &s1);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar b;
+        int i;
+        /* Test add_bit. */
+        int bit = secp256k1_rand_bits(8);
+        secp256k1_scalar_set_int(&b, 1);
+        CHECK(secp256k1_scalar_is_one(&b));
+        for (i = 0; i < bit; i++) {
+            secp256k1_scalar_add(&b, &b, &b);
+        }
+        r1 = s1;
+        r2 = s1;
+        if (!secp256k1_scalar_add(&r1, &r1, &b)) {
+            /* No overflow happened. */
+            secp256k1_scalar_cadd_bit(&r2, bit, 1);
+            CHECK(secp256k1_scalar_eq(&r1, &r2));
+            /* cadd is a noop when flag is zero */
+            secp256k1_scalar_cadd_bit(&r2, bit, 0);
+            CHECK(secp256k1_scalar_eq(&r1, &r2));
+        }
+    }
+
+    {
+        /* Test commutativity of mul. */
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar_mul(&r1, &s1, &s2);
+        secp256k1_scalar_mul(&r2, &s2, &s1);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        /* Test associativity of add. */
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar_add(&r1, &s1, &s2);
+        secp256k1_scalar_add(&r1, &r1, &s);
+        secp256k1_scalar_add(&r2, &s2, &s);
+        secp256k1_scalar_add(&r2, &s1, &r2);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        /* Test associativity of mul. */
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar_mul(&r1, &s1, &s2);
+        secp256k1_scalar_mul(&r1, &r1, &s);
+        secp256k1_scalar_mul(&r2, &s2, &s);
+        secp256k1_scalar_mul(&r2, &s1, &r2);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        /* Test distributitivity of mul over add. */
+        secp256k1_scalar r1, r2, t;
+        secp256k1_scalar_add(&r1, &s1, &s2);
+        secp256k1_scalar_mul(&r1, &r1, &s);
+        secp256k1_scalar_mul(&r2, &s1, &s);
+        secp256k1_scalar_mul(&t, &s2, &s);
+        secp256k1_scalar_add(&r2, &r2, &t);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        /* Test square. */
+        secp256k1_scalar r1, r2;
+        secp256k1_scalar_sqr(&r1, &s1);
+        secp256k1_scalar_mul(&r2, &s1, &s1);
+        CHECK(secp256k1_scalar_eq(&r1, &r2));
+    }
+
+    {
+        /* Test multiplicative identity. */
+        secp256k1_scalar r1, v1;
+        secp256k1_scalar_set_int(&v1,1);
+        secp256k1_scalar_mul(&r1, &s1, &v1);
+        CHECK(secp256k1_scalar_eq(&r1, &s1));
+    }
+
+    {
+        /* Test additive identity. */
+        secp256k1_scalar r1, v0;
+        secp256k1_scalar_set_int(&v0,0);
+        secp256k1_scalar_add(&r1, &s1, &v0);
+        CHECK(secp256k1_scalar_eq(&r1, &s1));
+    }
+
+    {
+        /* Test zero product property. */
+        secp256k1_scalar r1, v0;
+        secp256k1_scalar_set_int(&v0,0);
+        secp256k1_scalar_mul(&r1, &s1, &v0);
+        CHECK(secp256k1_scalar_eq(&r1, &v0));
+    }
+
+}
+
+void run_scalar_tests(void) {
+    int i;
+    for (i = 0; i < 128 * count; i++) {
+        scalar_test();
+    }
+
+    {
+        /* (-1)+1 should be zero. */
+        secp256k1_scalar s, o;
+        secp256k1_scalar_set_int(&s, 1);
+        CHECK(secp256k1_scalar_is_one(&s));
+        secp256k1_scalar_negate(&o, &s);
+        secp256k1_scalar_add(&o, &o, &s);
+        CHECK(secp256k1_scalar_is_zero(&o));
+        secp256k1_scalar_negate(&o, &o);
+        CHECK(secp256k1_scalar_is_zero(&o));
+    }
+
+#ifndef USE_NUM_NONE
+    {
+        /* A scalar with value of the curve order should be 0. */
+        secp256k1_num order;
+        secp256k1_scalar zero;
+        unsigned char bin[32];
+        int overflow = 0;
+        secp256k1_scalar_order_get_num(&order);
+        secp256k1_num_get_bin(bin, 32, &order);
+        secp256k1_scalar_set_b32(&zero, bin, &overflow);
+        CHECK(overflow == 1);
+        CHECK(secp256k1_scalar_is_zero(&zero));
+    }
+#endif
+
+    {
+        /* Does check_overflow check catch all ones? */
+        static const secp256k1_scalar overflowed = SECP256K1_SCALAR_CONST(
+            0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFFUL,
+            0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFFUL, 0xFFFFFFFFUL
+        );
+        CHECK(secp256k1_scalar_check_overflow(&overflowed));
+    }
+
+    {
+        /* Static test vectors.
+         * These were reduced from ~10^12 random vectors based on comparison-decision
+         *  and edge-case coverage on 32-bit and 64-bit implementations.
+         * The responses were generated with Sage 5.9.
+         */
+        secp256k1_scalar x;
+        secp256k1_scalar y;
+        secp256k1_scalar z;
+        secp256k1_scalar zz;
+        secp256k1_scalar one;
+        secp256k1_scalar r1;
+        secp256k1_scalar r2;
+#if defined(USE_SCALAR_INV_NUM)
+        secp256k1_scalar zzv;
+#endif
+        int overflow;
+        unsigned char chal[33][2][32] = {
+            {{0xff, 0xff, 0x03, 0x07, 0x00, 0x00, 0x00, 0x00,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0xff, 0xff,
+              0xff, 0xff, 0x03, 0x00, 0xc0, 0xff, 0xff, 0xff},
+             {0xff, 0xff, 0xff, 0xff, 0xff, 0x0f, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xff}},
+            {{0xef, 0xff, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+             {0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0,
+              0xff, 0xff, 0xff, 0xff, 0xfc, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0xff, 0x7f, 0x00, 0x80, 0xff}},
+            {{0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00,
+              0x80, 0x00, 0x00, 0x80, 0xff, 0x3f, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0xf8, 0xff, 0xff, 0xff, 0x00},
+             {0x00, 0x00, 0xfc, 0xff, 0xff, 0xff, 0xff, 0x80,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0x0f, 0x00, 0xe0,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0x7f, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x7f, 0xff, 0xff, 0xff}},
+            {{0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x80,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00,
+              0x00, 0x1e, 0xf8, 0xff, 0xff, 0xff, 0xfd, 0xff},
+             {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x1f,
+              0x00, 0x00, 0x00, 0xf8, 0xff, 0x03, 0x00, 0xe0,
+              0xff, 0x0f, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xff,
+              0xf3, 0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00}},
+            {{0x80, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0x00,
+              0x00, 0x1c, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0xe0, 0xff, 0xff, 0xff, 0x00,
+              0x00, 0x00, 0x00, 0x00, 0xe0, 0xff, 0xff, 0xff},
+             {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x03, 0x00,
+              0xf8, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0x1f, 0x00, 0x00, 0x80, 0xff, 0xff, 0x3f,
+              0x00, 0xfe, 0xff, 0xff, 0xff, 0xdf, 0xff, 0xff}},
+            {{0xff, 0xff, 0xff, 0xff, 0x00, 0x0f, 0xfc, 0x9f,
+              0xff, 0xff, 0xff, 0x00, 0x80, 0x00, 0x00, 0x80,
+              0xff, 0x0f, 0xfc, 0xff, 0x7f, 0x00, 0x00, 0x00,
+              0x00, 0xf8, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00},
+             {0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80,
+              0x00, 0x00, 0xf8, 0xff, 0x0f, 0xc0, 0xff, 0xff,
+              0xff, 0x1f, 0x00, 0x00, 0x00, 0xc0, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0x07, 0x80, 0xff, 0xff, 0xff}},
+            {{0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x00, 0x00,
+              0x80, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0xff,
+              0xf7, 0xff, 0xff, 0xef, 0xff, 0xff, 0xff, 0x00,
+              0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0xf0},
+             {0x00, 0x00, 0x00, 0x00, 0xf8, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0xff, 0x01, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}},
+            {{0x00, 0xf8, 0xff, 0x03, 0xff, 0xff, 0xff, 0x00,
+              0x00, 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00,
+              0x80, 0x00, 0x00, 0x80, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0x03, 0xc0, 0xff, 0x0f, 0xfc, 0xff},
+             {0xff, 0xff, 0xff, 0xff, 0xff, 0xe0, 0xff, 0xff,
+              0xff, 0x01, 0x00, 0x00, 0x00, 0x3f, 0x00, 0xc0,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}},
+            {{0x8f, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+              0x00, 0x00, 0xf8, 0xff, 0xff, 0xff, 0xff, 0xff,
+              0xff, 0x7f, 0x00, 
