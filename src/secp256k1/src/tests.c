@@ -432,4 +432,319 @@ void run_rand_bits(void) {
     }
 }
 
-void run_rand_int(void)
+void run_rand_int(void) {
+    static const uint32_t ms[] = {1, 3, 17, 1000, 13771, 999999, 33554432};
+    static const uint32_t ss[] = {1, 3, 6, 9, 13, 31, 64};
+    unsigned int m, s;
+    for (m = 0; m < sizeof(ms) / sizeof(ms[0]); m++) {
+        for (s = 0; s < sizeof(ss) / sizeof(ss[0]); s++) {
+            test_rand_int(ms[m] * ss[s], ss[s]);
+        }
+    }
+}
+
+/***** NUM TESTS *****/
+
+#ifndef USE_NUM_NONE
+void random_num_negate(secp256k1_num *num) {
+    if (secp256k1_rand_bits(1)) {
+        secp256k1_num_negate(num);
+    }
+}
+
+void random_num_order_test(secp256k1_num *num) {
+    secp256k1_scalar sc;
+    random_scalar_order_test(&sc);
+    secp256k1_scalar_get_num(num, &sc);
+}
+
+void random_num_order(secp256k1_num *num) {
+    secp256k1_scalar sc;
+    random_scalar_order(&sc);
+    secp256k1_scalar_get_num(num, &sc);
+}
+
+void test_num_negate(void) {
+    secp256k1_num n1;
+    secp256k1_num n2;
+    random_num_order_test(&n1); /* n1 = R */
+    random_num_negate(&n1);
+    secp256k1_num_copy(&n2, &n1); /* n2 = R */
+    secp256k1_num_sub(&n1, &n2, &n1); /* n1 = n2-n1 = 0 */
+    CHECK(secp256k1_num_is_zero(&n1));
+    secp256k1_num_copy(&n1, &n2); /* n1 = R */
+    secp256k1_num_negate(&n1); /* n1 = -R */
+    CHECK(!secp256k1_num_is_zero(&n1));
+    secp256k1_num_add(&n1, &n2, &n1); /* n1 = n2+n1 = 0 */
+    CHECK(secp256k1_num_is_zero(&n1));
+    secp256k1_num_copy(&n1, &n2); /* n1 = R */
+    secp256k1_num_negate(&n1); /* n1 = -R */
+    CHECK(secp256k1_num_is_neg(&n1) != secp256k1_num_is_neg(&n2));
+    secp256k1_num_negate(&n1); /* n1 = R */
+    CHECK(secp256k1_num_eq(&n1, &n2));
+}
+
+void test_num_add_sub(void) {
+    int i;
+    secp256k1_scalar s;
+    secp256k1_num n1;
+    secp256k1_num n2;
+    secp256k1_num n1p2, n2p1, n1m2, n2m1;
+    random_num_order_test(&n1); /* n1 = R1 */
+    if (secp256k1_rand_bits(1)) {
+        random_num_negate(&n1);
+    }
+    random_num_order_test(&n2); /* n2 = R2 */
+    if (secp256k1_rand_bits(1)) {
+        random_num_negate(&n2);
+    }
+    secp256k1_num_add(&n1p2, &n1, &n2); /* n1p2 = R1 + R2 */
+    secp256k1_num_add(&n2p1, &n2, &n1); /* n2p1 = R2 + R1 */
+    secp256k1_num_sub(&n1m2, &n1, &n2); /* n1m2 = R1 - R2 */
+    secp256k1_num_sub(&n2m1, &n2, &n1); /* n2m1 = R2 - R1 */
+    CHECK(secp256k1_num_eq(&n1p2, &n2p1));
+    CHECK(!secp256k1_num_eq(&n1p2, &n1m2));
+    secp256k1_num_negate(&n2m1); /* n2m1 = -R2 + R1 */
+    CHECK(secp256k1_num_eq(&n2m1, &n1m2));
+    CHECK(!secp256k1_num_eq(&n2m1, &n1));
+    secp256k1_num_add(&n2m1, &n2m1, &n2); /* n2m1 = -R2 + R1 + R2 = R1 */
+    CHECK(secp256k1_num_eq(&n2m1, &n1));
+    CHECK(!secp256k1_num_eq(&n2p1, &n1));
+    secp256k1_num_sub(&n2p1, &n2p1, &n2); /* n2p1 = R2 + R1 - R2 = R1 */
+    CHECK(secp256k1_num_eq(&n2p1, &n1));
+
+    /* check is_one */
+    secp256k1_scalar_set_int(&s, 1);
+    secp256k1_scalar_get_num(&n1, &s);
+    CHECK(secp256k1_num_is_one(&n1));
+    /* check that 2^n + 1 is never 1 */
+    secp256k1_scalar_get_num(&n2, &s);
+    for (i = 0; i < 250; ++i) {
+        secp256k1_num_add(&n1, &n1, &n1);    /* n1 *= 2 */
+        secp256k1_num_add(&n1p2, &n1, &n2);  /* n1p2 = n1 + 1 */
+        CHECK(!secp256k1_num_is_one(&n1p2));
+    }
+}
+
+void test_num_mod(void) {
+    int i;
+    secp256k1_scalar s;
+    secp256k1_num order, n;
+
+    /* check that 0 mod anything is 0 */
+    random_scalar_order_test(&s);
+    secp256k1_scalar_get_num(&order, &s);
+    secp256k1_scalar_set_int(&s, 0);
+    secp256k1_scalar_get_num(&n, &s);
+    secp256k1_num_mod(&n, &order);
+    CHECK(secp256k1_num_is_zero(&n));
+
+    /* check that anything mod 1 is 0 */
+    secp256k1_scalar_set_int(&s, 1);
+    secp256k1_scalar_get_num(&order, &s);
+    secp256k1_scalar_get_num(&n, &s);
+    secp256k1_num_mod(&n, &order);
+    CHECK(secp256k1_num_is_zero(&n));
+
+    /* check that increasing the number past 2^256 does not break this */
+    random_scalar_order_test(&s);
+    secp256k1_scalar_get_num(&n, &s);
+    /* multiply by 2^8, which'll test this case with high probability */
+    for (i = 0; i < 8; ++i) {
+        secp256k1_num_add(&n, &n, &n);
+    }
+    secp256k1_num_mod(&n, &order);
+    CHECK(secp256k1_num_is_zero(&n));
+}
+
+void test_num_jacobi(void) {
+    secp256k1_scalar sqr;
+    secp256k1_scalar small;
+    secp256k1_scalar five;  /* five is not a quadratic residue */
+    secp256k1_num order, n;
+    int i;
+    /* squares mod 5 are 1, 4 */
+    const int jacobi5[10] = { 0, 1, -1, -1, 1, 0, 1, -1, -1, 1 };
+
+    /* check some small values with 5 as the order */
+    secp256k1_scalar_set_int(&five, 5);
+    secp256k1_scalar_get_num(&order, &five);
+    for (i = 0; i < 10; ++i) {
+        secp256k1_scalar_set_int(&small, i);
+        secp256k1_scalar_get_num(&n, &small);
+        CHECK(secp256k1_num_jacobi(&n, &order) == jacobi5[i]);
+    }
+
+    /** test large values with 5 as group order */
+    secp256k1_scalar_get_num(&order, &five);
+    /* we first need a scalar which is not a multiple of 5 */
+    do {
+        secp256k1_num fiven;
+        random_scalar_order_test(&sqr);
+        secp256k1_scalar_get_num(&fiven, &five);
+        secp256k1_scalar_get_num(&n, &sqr);
+        secp256k1_num_mod(&n, &fiven);
+    } while (secp256k1_num_is_zero(&n));
+    /* next force it to be a residue. 2 is a nonresidue mod 5 so we can
+     * just multiply by two, i.e. add the number to itself */
+    if (secp256k1_num_jacobi(&n, &order) == -1) {
+        secp256k1_num_add(&n, &n, &n);
+    }
+
+    /* test residue */
+    CHECK(secp256k1_num_jacobi(&n, &order) == 1);
+    /* test nonresidue */
+    secp256k1_num_add(&n, &n, &n);
+    CHECK(secp256k1_num_jacobi(&n, &order) == -1);
+
+    /** test with secp group order as order */
+    secp256k1_scalar_order_get_num(&order);
+    random_scalar_order_test(&sqr);
+    secp256k1_scalar_sqr(&sqr, &sqr);
+    /* test residue */
+    secp256k1_scalar_get_num(&n, &sqr);
+    CHECK(secp256k1_num_jacobi(&n, &order) == 1);
+    /* test nonresidue */
+    secp256k1_scalar_mul(&sqr, &sqr, &five);
+    secp256k1_scalar_get_num(&n, &sqr);
+    CHECK(secp256k1_num_jacobi(&n, &order) == -1);
+    /* test multiple of the order*/
+    CHECK(secp256k1_num_jacobi(&order, &order) == 0);
+
+    /* check one less than the order */
+    secp256k1_scalar_set_int(&small, 1);
+    secp256k1_scalar_get_num(&n, &small);
+    secp256k1_num_sub(&n, &order, &n);
+    CHECK(secp256k1_num_jacobi(&n, &order) == 1);  /* sage confirms this is 1 */
+}
+
+void run_num_smalltests(void) {
+    int i;
+    for (i = 0; i < 100*count; i++) {
+        test_num_negate();
+        test_num_add_sub();
+        test_num_mod();
+        test_num_jacobi();
+    }
+}
+#endif
+
+/***** SCALAR TESTS *****/
+
+void scalar_test(void) {
+    secp256k1_scalar s;
+    secp256k1_scalar s1;
+    secp256k1_scalar s2;
+#ifndef USE_NUM_NONE
+    secp256k1_num snum, s1num, s2num;
+    secp256k1_num order, half_order;
+#endif
+    unsigned char c[32];
+
+    /* Set 's' to a random scalar, with value 'snum'. */
+    random_scalar_order_test(&s);
+
+    /* Set 's1' to a random scalar, with value 's1num'. */
+    random_scalar_order_test(&s1);
+
+    /* Set 's2' to a random scalar, with value 'snum2', and byte array representation 'c'. */
+    random_scalar_order_test(&s2);
+    secp256k1_scalar_get_b32(c, &s2);
+
+#ifndef USE_NUM_NONE
+    secp256k1_scalar_get_num(&snum, &s);
+    secp256k1_scalar_get_num(&s1num, &s1);
+    secp256k1_scalar_get_num(&s2num, &s2);
+
+    secp256k1_scalar_order_get_num(&order);
+    half_order = order;
+    secp256k1_num_shift(&half_order, 1);
+#endif
+
+    {
+        int i;
+        /* Test that fetching groups of 4 bits from a scalar and recursing n(i)=16*n(i-1)+p(i) reconstructs it. */
+        secp256k1_scalar n;
+        secp256k1_scalar_set_int(&n, 0);
+        for (i = 0; i < 256; i += 4) {
+            secp256k1_scalar t;
+            int j;
+            secp256k1_scalar_set_int(&t, secp256k1_scalar_get_bits(&s, 256 - 4 - i, 4));
+            for (j = 0; j < 4; j++) {
+                secp256k1_scalar_add(&n, &n, &n);
+            }
+            secp256k1_scalar_add(&n, &n, &t);
+        }
+        CHECK(secp256k1_scalar_eq(&n, &s));
+    }
+
+    {
+        /* Test that fetching groups of randomly-sized bits from a scalar and recursing n(i)=b*n(i-1)+p(i) reconstructs it. */
+        secp256k1_scalar n;
+        int i = 0;
+        secp256k1_scalar_set_int(&n, 0);
+        while (i < 256) {
+            secp256k1_scalar t;
+            int j;
+            int now = secp256k1_rand_int(15) + 1;
+            if (now + i > 256) {
+                now = 256 - i;
+            }
+            secp256k1_scalar_set_int(&t, secp256k1_scalar_get_bits_var(&s, 256 - now - i, now));
+            for (j = 0; j < now; j++) {
+                secp256k1_scalar_add(&n, &n, &n);
+            }
+            secp256k1_scalar_add(&n, &n, &t);
+            i += now;
+        }
+        CHECK(secp256k1_scalar_eq(&n, &s));
+    }
+
+#ifndef USE_NUM_NONE
+    {
+        /* Test that adding the scalars together is equal to adding their numbers together modulo the order. */
+        secp256k1_num rnum;
+        secp256k1_num r2num;
+        secp256k1_scalar r;
+        secp256k1_num_add(&rnum, &snum, &s2num);
+        secp256k1_num_mod(&rnum, &order);
+        secp256k1_scalar_add(&r, &s, &s2);
+        secp256k1_scalar_get_num(&r2num, &r);
+        CHECK(secp256k1_num_eq(&rnum, &r2num));
+    }
+
+    {
+        /* Test that multiplying the scalars is equal to multiplying their numbers modulo the order. */
+        secp256k1_scalar r;
+        secp256k1_num r2num;
+        secp256k1_num rnum;
+        secp256k1_num_mul(&rnum, &snum, &s2num);
+        secp256k1_num_mod(&rnum, &order);
+        secp256k1_scalar_mul(&r, &s, &s2);
+        secp256k1_scalar_get_num(&r2num, &r);
+        CHECK(secp256k1_num_eq(&rnum, &r2num));
+        /* The result can only be zero if at least one of the factors was zero. */
+        CHECK(secp256k1_scalar_is_zero(&r) == (secp256k1_scalar_is_zero(&s) || secp256k1_scalar_is_zero(&s2)));
+        /* The results can only be equal to one of the factors if that factor was zero, or the other factor was one. */
+        CHECK(secp256k1_num_eq(&rnum, &snum) == (secp256k1_scalar_is_zero(&s) || secp256k1_scalar_is_one(&s2)));
+        CHECK(secp256k1_num_eq(&rnum, &s2num) == (secp256k1_scalar_is_zero(&s2) || secp256k1_scalar_is_one(&s)));
+    }
+
+    {
+        secp256k1_scalar neg;
+        secp256k1_num negnum;
+        secp256k1_num negnum2;
+        /* Check that comparison with zero matches comparison with zero on the number. */
+        CHECK(secp256k1_num_is_zero(&snum) == secp256k1_scalar_is_zero(&s));
+        /* Check that comparison with the half order is equal to testing for high scalar. */
+        CHECK(secp256k1_scalar_is_high(&s) == (secp256k1_num_cmp(&snum, &half_order) > 0));
+        secp256k1_scalar_negate(&neg, &s);
+        secp256k1_num_sub(&negnum, &order, &snum);
+        secp256k1_num_mod(&negnum, &order);
+        /* Check that comparison with the half order is equal to testing for high scalar after negation. */
+        CHECK(secp256k1_scalar_is_high(&neg) == (secp256k1_num_cmp(&negnum, &half_order) > 0));
+        /* Negating should change the high property, unless the value was already zero. */
+        CHECK((secp256k1_scalar_is_high(&s) == secp256k1_scalar_is_high(&neg)) == secp256k1_scalar_is_zero(&s));
+        secp256k1_scalar_get_num(&negnum2, &neg);
+        /* Negating a scalar should be equal to (order - n) mod order on the number. */
+        CHECK(secp256k1
