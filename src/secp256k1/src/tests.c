@@ -1672,4 +1672,324 @@ void run_field_misc(void) {
         VERIFY_CHECK(!q.normalized && q.magnitude == z.magnitude);
         CHECK(fe_memcmp(&q, &z) == 0);
         secp256k1_fe_normalize_var(&x);
-        secp256k1_fe_normalize_var(&z)
+        secp256k1_fe_normalize_var(&z);
+        CHECK(!secp256k1_fe_equal_var(&x, &z));
+        secp256k1_fe_normalize_var(&q);
+        secp256k1_fe_cmov(&q, &z, (i&1));
+        VERIFY_CHECK(q.normalized && q.magnitude == 1);
+        for (j = 0; j < 6; j++) {
+            secp256k1_fe_negate(&z, &z, j+1);
+            secp256k1_fe_normalize_var(&q);
+            secp256k1_fe_cmov(&q, &z, (j&1));
+            VERIFY_CHECK(!q.normalized && q.magnitude == (j+2));
+        }
+        secp256k1_fe_normalize_var(&z);
+        /* Test storage conversion and conditional moves. */
+        secp256k1_fe_to_storage(&xs, &x);
+        secp256k1_fe_to_storage(&ys, &y);
+        secp256k1_fe_to_storage(&zs, &z);
+        secp256k1_fe_storage_cmov(&zs, &xs, 0);
+        secp256k1_fe_storage_cmov(&zs, &zs, 1);
+        CHECK(memcmp(&xs, &zs, sizeof(xs)) != 0);
+        secp256k1_fe_storage_cmov(&ys, &xs, 1);
+        CHECK(memcmp(&xs, &ys, sizeof(xs)) == 0);
+        secp256k1_fe_from_storage(&x, &xs);
+        secp256k1_fe_from_storage(&y, &ys);
+        secp256k1_fe_from_storage(&z, &zs);
+        /* Test that mul_int, mul, and add agree. */
+        secp256k1_fe_add(&y, &x);
+        secp256k1_fe_add(&y, &x);
+        z = x;
+        secp256k1_fe_mul_int(&z, 3);
+        CHECK(check_fe_equal(&y, &z));
+        secp256k1_fe_add(&y, &x);
+        secp256k1_fe_add(&z, &x);
+        CHECK(check_fe_equal(&z, &y));
+        z = x;
+        secp256k1_fe_mul_int(&z, 5);
+        secp256k1_fe_mul(&q, &x, &fe5);
+        CHECK(check_fe_equal(&z, &q));
+        secp256k1_fe_negate(&x, &x, 1);
+        secp256k1_fe_add(&z, &x);
+        secp256k1_fe_add(&q, &x);
+        CHECK(check_fe_equal(&y, &z));
+        CHECK(check_fe_equal(&q, &y));
+    }
+}
+
+void run_field_inv(void) {
+    secp256k1_fe x, xi, xii;
+    int i;
+    for (i = 0; i < 10*count; i++) {
+        random_fe_non_zero(&x);
+        secp256k1_fe_inv(&xi, &x);
+        CHECK(check_fe_inverse(&x, &xi));
+        secp256k1_fe_inv(&xii, &xi);
+        CHECK(check_fe_equal(&x, &xii));
+    }
+}
+
+void run_field_inv_var(void) {
+    secp256k1_fe x, xi, xii;
+    int i;
+    for (i = 0; i < 10*count; i++) {
+        random_fe_non_zero(&x);
+        secp256k1_fe_inv_var(&xi, &x);
+        CHECK(check_fe_inverse(&x, &xi));
+        secp256k1_fe_inv_var(&xii, &xi);
+        CHECK(check_fe_equal(&x, &xii));
+    }
+}
+
+void run_field_inv_all_var(void) {
+    secp256k1_fe x[16], xi[16], xii[16];
+    int i;
+    /* Check it's safe to call for 0 elements */
+    secp256k1_fe_inv_all_var(xi, x, 0);
+    for (i = 0; i < count; i++) {
+        size_t j;
+        size_t len = secp256k1_rand_int(15) + 1;
+        for (j = 0; j < len; j++) {
+            random_fe_non_zero(&x[j]);
+        }
+        secp256k1_fe_inv_all_var(xi, x, len);
+        for (j = 0; j < len; j++) {
+            CHECK(check_fe_inverse(&x[j], &xi[j]));
+        }
+        secp256k1_fe_inv_all_var(xii, xi, len);
+        for (j = 0; j < len; j++) {
+            CHECK(check_fe_equal(&x[j], &xii[j]));
+        }
+    }
+}
+
+void run_sqr(void) {
+    secp256k1_fe x, s;
+
+    {
+        int i;
+        secp256k1_fe_set_int(&x, 1);
+        secp256k1_fe_negate(&x, &x, 1);
+
+        for (i = 1; i <= 512; ++i) {
+            secp256k1_fe_mul_int(&x, 2);
+            secp256k1_fe_normalize(&x);
+            secp256k1_fe_sqr(&s, &x);
+        }
+    }
+}
+
+void test_sqrt(const secp256k1_fe *a, const secp256k1_fe *k) {
+    secp256k1_fe r1, r2;
+    int v = secp256k1_fe_sqrt(&r1, a);
+    CHECK((v == 0) == (k == NULL));
+
+    if (k != NULL) {
+        /* Check that the returned root is +/- the given known answer */
+        secp256k1_fe_negate(&r2, &r1, 1);
+        secp256k1_fe_add(&r1, k); secp256k1_fe_add(&r2, k);
+        secp256k1_fe_normalize(&r1); secp256k1_fe_normalize(&r2);
+        CHECK(secp256k1_fe_is_zero(&r1) || secp256k1_fe_is_zero(&r2));
+    }
+}
+
+void run_sqrt(void) {
+    secp256k1_fe ns, x, s, t;
+    int i;
+
+    /* Check sqrt(0) is 0 */
+    secp256k1_fe_set_int(&x, 0);
+    secp256k1_fe_sqr(&s, &x);
+    test_sqrt(&s, &x);
+
+    /* Check sqrt of small squares (and their negatives) */
+    for (i = 1; i <= 100; i++) {
+        secp256k1_fe_set_int(&x, i);
+        secp256k1_fe_sqr(&s, &x);
+        test_sqrt(&s, &x);
+        secp256k1_fe_negate(&t, &s, 1);
+        test_sqrt(&t, NULL);
+    }
+
+    /* Consistency checks for large random values */
+    for (i = 0; i < 10; i++) {
+        int j;
+        random_fe_non_square(&ns);
+        for (j = 0; j < count; j++) {
+            random_fe(&x);
+            secp256k1_fe_sqr(&s, &x);
+            test_sqrt(&s, &x);
+            secp256k1_fe_negate(&t, &s, 1);
+            test_sqrt(&t, NULL);
+            secp256k1_fe_mul(&t, &s, &ns);
+            test_sqrt(&t, NULL);
+        }
+    }
+}
+
+/***** GROUP TESTS *****/
+
+void ge_equals_ge(const secp256k1_ge *a, const secp256k1_ge *b) {
+    CHECK(a->infinity == b->infinity);
+    if (a->infinity) {
+        return;
+    }
+    CHECK(secp256k1_fe_equal_var(&a->x, &b->x));
+    CHECK(secp256k1_fe_equal_var(&a->y, &b->y));
+}
+
+/* This compares jacobian points including their Z, not just their geometric meaning. */
+int gej_xyz_equals_gej(const secp256k1_gej *a, const secp256k1_gej *b) {
+    secp256k1_gej a2;
+    secp256k1_gej b2;
+    int ret = 1;
+    ret &= a->infinity == b->infinity;
+    if (ret && !a->infinity) {
+        a2 = *a;
+        b2 = *b;
+        secp256k1_fe_normalize(&a2.x);
+        secp256k1_fe_normalize(&a2.y);
+        secp256k1_fe_normalize(&a2.z);
+        secp256k1_fe_normalize(&b2.x);
+        secp256k1_fe_normalize(&b2.y);
+        secp256k1_fe_normalize(&b2.z);
+        ret &= secp256k1_fe_cmp_var(&a2.x, &b2.x) == 0;
+        ret &= secp256k1_fe_cmp_var(&a2.y, &b2.y) == 0;
+        ret &= secp256k1_fe_cmp_var(&a2.z, &b2.z) == 0;
+    }
+    return ret;
+}
+
+void ge_equals_gej(const secp256k1_ge *a, const secp256k1_gej *b) {
+    secp256k1_fe z2s;
+    secp256k1_fe u1, u2, s1, s2;
+    CHECK(a->infinity == b->infinity);
+    if (a->infinity) {
+        return;
+    }
+    /* Check a.x * b.z^2 == b.x && a.y * b.z^3 == b.y, to avoid inverses. */
+    secp256k1_fe_sqr(&z2s, &b->z);
+    secp256k1_fe_mul(&u1, &a->x, &z2s);
+    u2 = b->x; secp256k1_fe_normalize_weak(&u2);
+    secp256k1_fe_mul(&s1, &a->y, &z2s); secp256k1_fe_mul(&s1, &s1, &b->z);
+    s2 = b->y; secp256k1_fe_normalize_weak(&s2);
+    CHECK(secp256k1_fe_equal_var(&u1, &u2));
+    CHECK(secp256k1_fe_equal_var(&s1, &s2));
+}
+
+void test_ge(void) {
+    int i, i1;
+#ifdef USE_ENDOMORPHISM
+    int runs = 6;
+#else
+    int runs = 4;
+#endif
+    /* Points: (infinity, p1, p1, -p1, -p1, p2, p2, -p2, -p2, p3, p3, -p3, -p3, p4, p4, -p4, -p4).
+     * The second in each pair of identical points uses a random Z coordinate in the Jacobian form.
+     * All magnitudes are randomized.
+     * All 17*17 combinations of points are added to each other, using all applicable methods.
+     *
+     * When the endomorphism code is compiled in, p5 = lambda*p1 and p6 = lambda^2*p1 are added as well.
+     */
+    secp256k1_ge *ge = (secp256k1_ge *)checked_malloc(&ctx->error_callback, sizeof(secp256k1_ge) * (1 + 4 * runs));
+    secp256k1_gej *gej = (secp256k1_gej *)checked_malloc(&ctx->error_callback, sizeof(secp256k1_gej) * (1 + 4 * runs));
+    secp256k1_fe *zinv = (secp256k1_fe *)checked_malloc(&ctx->error_callback, sizeof(secp256k1_fe) * (1 + 4 * runs));
+    secp256k1_fe zf;
+    secp256k1_fe zfi2, zfi3;
+
+    secp256k1_gej_set_infinity(&gej[0]);
+    secp256k1_ge_clear(&ge[0]);
+    secp256k1_ge_set_gej_var(&ge[0], &gej[0]);
+    for (i = 0; i < runs; i++) {
+        int j;
+        secp256k1_ge g;
+        random_group_element_test(&g);
+#ifdef USE_ENDOMORPHISM
+        if (i >= runs - 2) {
+            secp256k1_ge_mul_lambda(&g, &ge[1]);
+        }
+        if (i >= runs - 1) {
+            secp256k1_ge_mul_lambda(&g, &g);
+        }
+#endif
+        ge[1 + 4 * i] = g;
+        ge[2 + 4 * i] = g;
+        secp256k1_ge_neg(&ge[3 + 4 * i], &g);
+        secp256k1_ge_neg(&ge[4 + 4 * i], &g);
+        secp256k1_gej_set_ge(&gej[1 + 4 * i], &ge[1 + 4 * i]);
+        random_group_element_jacobian_test(&gej[2 + 4 * i], &ge[2 + 4 * i]);
+        secp256k1_gej_set_ge(&gej[3 + 4 * i], &ge[3 + 4 * i]);
+        random_group_element_jacobian_test(&gej[4 + 4 * i], &ge[4 + 4 * i]);
+        for (j = 0; j < 4; j++) {
+            random_field_element_magnitude(&ge[1 + j + 4 * i].x);
+            random_field_element_magnitude(&ge[1 + j + 4 * i].y);
+            random_field_element_magnitude(&gej[1 + j + 4 * i].x);
+            random_field_element_magnitude(&gej[1 + j + 4 * i].y);
+            random_field_element_magnitude(&gej[1 + j + 4 * i].z);
+        }
+    }
+
+    /* Compute z inverses. */
+    {
+        secp256k1_fe *zs = checked_malloc(&ctx->error_callback, sizeof(secp256k1_fe) * (1 + 4 * runs));
+        for (i = 0; i < 4 * runs + 1; i++) {
+            if (i == 0) {
+                /* The point at infinity does not have a meaningful z inverse. Any should do. */
+                do {
+                    random_field_element_test(&zs[i]);
+                } while(secp256k1_fe_is_zero(&zs[i]));
+            } else {
+                zs[i] = gej[i].z;
+            }
+        }
+        secp256k1_fe_inv_all_var(zinv, zs, 4 * runs + 1);
+        free(zs);
+    }
+
+    /* Generate random zf, and zfi2 = 1/zf^2, zfi3 = 1/zf^3 */
+    do {
+        random_field_element_test(&zf);
+    } while(secp256k1_fe_is_zero(&zf));
+    random_field_element_magnitude(&zf);
+    secp256k1_fe_inv_var(&zfi3, &zf);
+    secp256k1_fe_sqr(&zfi2, &zfi3);
+    secp256k1_fe_mul(&zfi3, &zfi3, &zfi2);
+
+    for (i1 = 0; i1 < 1 + 4 * runs; i1++) {
+        int i2;
+        for (i2 = 0; i2 < 1 + 4 * runs; i2++) {
+            /* Compute reference result using gej + gej (var). */
+            secp256k1_gej refj, resj;
+            secp256k1_ge ref;
+            secp256k1_fe zr;
+            secp256k1_gej_add_var(&refj, &gej[i1], &gej[i2], secp256k1_gej_is_infinity(&gej[i1]) ? NULL : &zr);
+            /* Check Z ratio. */
+            if (!secp256k1_gej_is_infinity(&gej[i1]) && !secp256k1_gej_is_infinity(&refj)) {
+                secp256k1_fe zrz; secp256k1_fe_mul(&zrz, &zr, &gej[i1].z);
+                CHECK(secp256k1_fe_equal_var(&zrz, &refj.z));
+            }
+            secp256k1_ge_set_gej_var(&ref, &refj);
+
+            /* Test gej + ge with Z ratio result (var). */
+            secp256k1_gej_add_ge_var(&resj, &gej[i1], &ge[i2], secp256k1_gej_is_infinity(&gej[i1]) ? NULL : &zr);
+            ge_equals_gej(&ref, &resj);
+            if (!secp256k1_gej_is_infinity(&gej[i1]) && !secp256k1_gej_is_infinity(&resj)) {
+                secp256k1_fe zrz; secp256k1_fe_mul(&zrz, &zr, &gej[i1].z);
+                CHECK(secp256k1_fe_equal_var(&zrz, &resj.z));
+            }
+
+            /* Test gej + ge (var, with additional Z factor). */
+            {
+                secp256k1_ge ge2_zfi = ge[i2]; /* the second term with x and y rescaled for z = 1/zf */
+                secp256k1_fe_mul(&ge2_zfi.x, &ge2_zfi.x, &zfi2);
+                secp256k1_fe_mul(&ge2_zfi.y, &ge2_zfi.y, &zfi3);
+                random_field_element_magnitude(&ge2_zfi.x);
+                random_field_element_magnitude(&ge2_zfi.y);
+                secp256k1_gej_add_zinv_var(&resj, &gej[i1], &ge2_zfi, &zf);
+                ge_equals_gej(&ref, &resj);
+            }
+
+            /* Test gej + ge (const). */
+            if (i2 != 0) {
+                /* secp256k1_gej_add_ge does not support its second argument being infinity. */
+                secp256k1_gej_add_ge(&resj, 
