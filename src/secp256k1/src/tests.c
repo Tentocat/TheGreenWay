@@ -2293,4 +2293,317 @@ void run_ecmult_chain(void) {
 
     /* the point being computed */
     x = a;
-    for (i = 0; i < 200*count; i
+    for (i = 0; i < 200*count; i++) {
+        /* in each iteration, compute X = xn*X + gn*G; */
+        secp256k1_ecmult(&ctx->ecmult_ctx, &x, &x, &xn, &gn);
+        /* also compute ae and ge: the actual accumulated factors for A and G */
+        /* if X was (ae*A+ge*G), xn*X + gn*G results in (xn*ae*A + (xn*ge+gn)*G) */
+        secp256k1_scalar_mul(&ae, &ae, &xn);
+        secp256k1_scalar_mul(&ge, &ge, &xn);
+        secp256k1_scalar_add(&ge, &ge, &gn);
+        /* modify xn and gn */
+        secp256k1_scalar_mul(&xn, &xn, &xf);
+        secp256k1_scalar_mul(&gn, &gn, &gf);
+
+        /* verify */
+        if (i == 19999) {
+            /* expected result after 19999 iterations */
+            secp256k1_gej rp = SECP256K1_GEJ_CONST(
+                0xD6E96687, 0xF9B10D09, 0x2A6F3543, 0x9D86CEBE,
+                0xA4535D0D, 0x409F5358, 0x6440BD74, 0xB933E830,
+                0xB95CBCA2, 0xC77DA786, 0x539BE8FD, 0x53354D2D,
+                0x3B4F566A, 0xE6580454, 0x07ED6015, 0xEE1B2A88
+            );
+
+            secp256k1_gej_neg(&rp, &rp);
+            secp256k1_gej_add_var(&rp, &rp, &x, NULL);
+            CHECK(secp256k1_gej_is_infinity(&rp));
+        }
+    }
+    /* redo the computation, but directly with the resulting ae and ge coefficients: */
+    secp256k1_ecmult(&ctx->ecmult_ctx, &x2, &a, &ae, &ge);
+    secp256k1_gej_neg(&x2, &x2);
+    secp256k1_gej_add_var(&x2, &x2, &x, NULL);
+    CHECK(secp256k1_gej_is_infinity(&x2));
+}
+
+void test_point_times_order(const secp256k1_gej *point) {
+    /* X * (point + G) + (order-X) * (pointer + G) = 0 */
+    secp256k1_scalar x;
+    secp256k1_scalar nx;
+    secp256k1_scalar zero = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0);
+    secp256k1_scalar one = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 1);
+    secp256k1_gej res1, res2;
+    secp256k1_ge res3;
+    unsigned char pub[65];
+    size_t psize = 65;
+    random_scalar_order_test(&x);
+    secp256k1_scalar_negate(&nx, &x);
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &x, &x); /* calc res1 = x * point + x * G; */
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res2, point, &nx, &nx); /* calc res2 = (order - x) * point + (order - x) * G; */
+    secp256k1_gej_add_var(&res1, &res1, &res2, NULL);
+    CHECK(secp256k1_gej_is_infinity(&res1));
+    CHECK(secp256k1_gej_is_valid_var(&res1) == 0);
+    secp256k1_ge_set_gej(&res3, &res1);
+    CHECK(secp256k1_ge_is_infinity(&res3));
+    CHECK(secp256k1_ge_is_valid_var(&res3) == 0);
+    CHECK(secp256k1_eckey_pubkey_serialize(&res3, pub, &psize, 0) == 0);
+    psize = 65;
+    CHECK(secp256k1_eckey_pubkey_serialize(&res3, pub, &psize, 1) == 0);
+    /* check zero/one edge cases */
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &zero, &zero);
+    secp256k1_ge_set_gej(&res3, &res1);
+    CHECK(secp256k1_ge_is_infinity(&res3));
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &one, &zero);
+    secp256k1_ge_set_gej(&res3, &res1);
+    ge_equals_gej(&res3, point);
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &zero, &one);
+    secp256k1_ge_set_gej(&res3, &res1);
+    ge_equals_ge(&res3, &secp256k1_ge_const_g);
+}
+
+void run_point_times_order(void) {
+    int i;
+    secp256k1_fe x = SECP256K1_FE_CONST(0, 0, 0, 0, 0, 0, 0, 2);
+    static const secp256k1_fe xr = SECP256K1_FE_CONST(
+        0x7603CB59, 0xB0EF6C63, 0xFE608479, 0x2A0C378C,
+        0xDB3233A8, 0x0F8A9A09, 0xA877DEAD, 0x31B38C45
+    );
+    for (i = 0; i < 500; i++) {
+        secp256k1_ge p;
+        if (secp256k1_ge_set_xo_var(&p, &x, 1)) {
+            secp256k1_gej j;
+            CHECK(secp256k1_ge_is_valid_var(&p));
+            secp256k1_gej_set_ge(&j, &p);
+            CHECK(secp256k1_gej_is_valid_var(&j));
+            test_point_times_order(&j);
+        }
+        secp256k1_fe_sqr(&x, &x);
+    }
+    secp256k1_fe_normalize_var(&x);
+    CHECK(secp256k1_fe_equal_var(&x, &xr));
+}
+
+void ecmult_const_random_mult(void) {
+    /* random starting point A (on the curve) */
+    secp256k1_ge a = SECP256K1_GE_CONST(
+        0x6d986544, 0x57ff52b8, 0xcf1b8126, 0x5b802a5b,
+        0xa97f9263, 0xb1e88044, 0x93351325, 0x91bc450a,
+        0x535c59f7, 0x325e5d2b, 0xc391fbe8, 0x3c12787c,
+        0x337e4a98, 0xe82a9011, 0x0123ba37, 0xdd769c7d
+    );
+    /* random initial factor xn */
+    secp256k1_scalar xn = SECP256K1_SCALAR_CONST(
+        0x649d4f77, 0xc4242df7, 0x7f2079c9, 0x14530327,
+        0xa31b876a, 0xd2d8ce2a, 0x2236d5c6, 0xd7b2029b
+    );
+    /* expected xn * A (from sage) */
+    secp256k1_ge expected_b = SECP256K1_GE_CONST(
+        0x23773684, 0x4d209dc7, 0x098a786f, 0x20d06fcd,
+        0x070a38bf, 0xc11ac651, 0x03004319, 0x1e2a8786,
+        0xed8c3b8e, 0xc06dd57b, 0xd06ea66e, 0x45492b0f,
+        0xb84e4e1b, 0xfb77e21f, 0x96baae2a, 0x63dec956
+    );
+    secp256k1_gej b;
+    secp256k1_ecmult_const(&b, &a, &xn,256);
+
+    CHECK(secp256k1_ge_is_valid_var(&a));
+    ge_equals_gej(&expected_b, &b);
+}
+
+void ecmult_const_commutativity(void) {
+    secp256k1_scalar a;
+    secp256k1_scalar b;
+    secp256k1_gej res1;
+    secp256k1_gej res2;
+    secp256k1_ge mid1;
+    secp256k1_ge mid2;
+    random_scalar_order_test(&a);
+    random_scalar_order_test(&b);
+
+    secp256k1_ecmult_const(&res1, &secp256k1_ge_const_g, &a,256);
+    secp256k1_ecmult_const(&res2, &secp256k1_ge_const_g, &b,256);
+    secp256k1_ge_set_gej(&mid1, &res1);
+    secp256k1_ge_set_gej(&mid2, &res2);
+    secp256k1_ecmult_const(&res1, &mid1, &b,256);
+    secp256k1_ecmult_const(&res2, &mid2, &a,256);
+    secp256k1_ge_set_gej(&mid1, &res1);
+    secp256k1_ge_set_gej(&mid2, &res2);
+    ge_equals_ge(&mid1, &mid2);
+}
+
+void ecmult_const_mult_zero_one(void) {
+    secp256k1_scalar zero = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0);
+    secp256k1_scalar one = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 1);
+    secp256k1_scalar negone;
+    secp256k1_gej res1;
+    secp256k1_ge res2;
+    secp256k1_ge point;
+    secp256k1_scalar_negate(&negone, &one);
+
+    random_group_element_test(&point);
+    secp256k1_ecmult_const(&res1, &point, &zero,256);
+    secp256k1_ge_set_gej(&res2, &res1);
+    CHECK(secp256k1_ge_is_infinity(&res2));
+    secp256k1_ecmult_const(&res1, &point, &one,256);
+    secp256k1_ge_set_gej(&res2, &res1);
+    ge_equals_ge(&res2, &point);
+    secp256k1_ecmult_const(&res1, &point, &negone,256);
+    secp256k1_gej_neg(&res1, &res1);
+    secp256k1_ge_set_gej(&res2, &res1);
+    ge_equals_ge(&res2, &point);
+}
+
+void ecmult_const_chain_multiply(void) {
+    /* Check known result (randomly generated test problem from sage) */
+    const secp256k1_scalar scalar = SECP256K1_SCALAR_CONST(
+        0x4968d524, 0x2abf9b7a, 0x466abbcf, 0x34b11b6d,
+        0xcd83d307, 0x827bed62, 0x05fad0ce, 0x18fae63b
+    );
+    const secp256k1_gej expected_point = SECP256K1_GEJ_CONST(
+        0x5494c15d, 0x32099706, 0xc2395f94, 0x348745fd,
+        0x757ce30e, 0x4e8c90fb, 0xa2bad184, 0xf883c69f,
+        0x5d195d20, 0xe191bf7f, 0x1be3e55f, 0x56a80196,
+        0x6071ad01, 0xf1462f66, 0xc997fa94, 0xdb858435
+    );
+    secp256k1_gej point;
+    secp256k1_ge res;
+    int i;
+
+    secp256k1_gej_set_ge(&point, &secp256k1_ge_const_g);
+    for (i = 0; i < 100; ++i) {
+        secp256k1_ge tmp;
+        secp256k1_ge_set_gej(&tmp, &point);
+        secp256k1_ecmult_const(&point, &tmp, &scalar,256);
+    }
+    secp256k1_ge_set_gej(&res, &point);
+    ge_equals_gej(&res, &expected_point);
+}
+
+void run_ecmult_const_tests(void) {
+    ecmult_const_mult_zero_one();
+    ecmult_const_random_mult();
+    ecmult_const_commutativity();
+    ecmult_const_chain_multiply();
+}
+
+void test_wnaf(const secp256k1_scalar *number, int w) {
+    secp256k1_scalar x, two, t;
+    int wnaf[256];
+    int zeroes = -1;
+    int i;
+    int bits;
+    secp256k1_scalar_set_int(&x, 0);
+    secp256k1_scalar_set_int(&two, 2);
+    bits = secp256k1_ecmult_wnaf(wnaf, 256, number, w);
+    CHECK(bits <= 256);
+    for (i = bits-1; i >= 0; i--) {
+        int v = wnaf[i];
+        secp256k1_scalar_mul(&x, &x, &two);
+        if (v) {
+            CHECK(zeroes == -1 || zeroes >= w-1); /* check that distance between non-zero elements is at least w-1 */
+            zeroes=0;
+            CHECK((v & 1) == 1); /* check non-zero elements are odd */
+            CHECK(v <= (1 << (w-1)) - 1); /* check range below */
+            CHECK(v >= -(1 << (w-1)) - 1); /* check range above */
+        } else {
+            CHECK(zeroes != -1); /* check that no unnecessary zero padding exists */
+            zeroes++;
+        }
+        if (v >= 0) {
+            secp256k1_scalar_set_int(&t, v);
+        } else {
+            secp256k1_scalar_set_int(&t, -v);
+            secp256k1_scalar_negate(&t, &t);
+        }
+        secp256k1_scalar_add(&x, &x, &t);
+    }
+    CHECK(secp256k1_scalar_eq(&x, number)); /* check that wnaf represents number */
+}
+
+void test_constant_wnaf_negate(const secp256k1_scalar *number) {
+    secp256k1_scalar neg1 = *number;
+    secp256k1_scalar neg2 = *number;
+    int sign1 = 1;
+    int sign2 = 1;
+
+    if (!secp256k1_scalar_get_bits(&neg1, 0, 1)) {
+        secp256k1_scalar_negate(&neg1, &neg1);
+        sign1 = -1;
+    }
+    sign2 = secp256k1_scalar_cond_negate(&neg2, secp256k1_scalar_is_even(&neg2));
+    CHECK(sign1 == sign2);
+    CHECK(secp256k1_scalar_eq(&neg1, &neg2));
+}
+
+void test_constant_wnaf(const secp256k1_scalar *number, int w) {
+    secp256k1_scalar x, shift;
+    int wnaf[256] = {0};
+    int i;
+    int skew;
+    secp256k1_scalar num = *number;
+
+    secp256k1_scalar_set_int(&x, 0);
+    secp256k1_scalar_set_int(&shift, 1 << w);
+    /* With USE_ENDOMORPHISM on we only consider 128-bit numbers */
+#ifdef USE_ENDOMORPHISM
+    for (i = 0; i < 16; ++i) {
+        secp256k1_scalar_shr_int(&num, 8);
+    }
+#endif
+    skew = secp256k1_wnaf_const(wnaf, num, w);
+
+    for (i = WNAF_SIZE(w); i >= 0; --i) {
+        secp256k1_scalar t;
+        int v = wnaf[i];
+        CHECK(v != 0); /* check nonzero */
+        CHECK(v & 1);  /* check parity */
+        CHECK(v > -(1 << w)); /* check range above */
+        CHECK(v < (1 << w));  /* check range below */
+
+        secp256k1_scalar_mul(&x, &x, &shift);
+        if (v >= 0) {
+            secp256k1_scalar_set_int(&t, v);
+        } else {
+            secp256k1_scalar_set_int(&t, -v);
+            secp256k1_scalar_negate(&t, &t);
+        }
+        secp256k1_scalar_add(&x, &x, &t);
+    }
+    /* Skew num because when encoding numbers as odd we use an offset */
+    secp256k1_scalar_cadd_bit(&num, skew == 2, 1);
+    CHECK(secp256k1_scalar_eq(&x, &num));
+}
+
+void run_wnaf(void) {
+    int i;
+    secp256k1_scalar n = {{0}};
+
+    /* Sanity check: 1 and 2 are the smallest odd and even numbers and should
+     *               have easier-to-diagnose failure modes  */
+    n.d[0] = 1;
+    test_constant_wnaf(&n, 4);
+    n.d[0] = 2;
+    test_constant_wnaf(&n, 4);
+    /* Random tests */
+    for (i = 0; i < count; i++) {
+        random_scalar_order(&n);
+        test_wnaf(&n, 4+(i%10));
+        test_constant_wnaf_negate(&n);
+        test_constant_wnaf(&n, 4 + (i % 10));
+    }
+    secp256k1_scalar_set_int(&n, 0);
+    CHECK(secp256k1_scalar_cond_negate(&n, 1) == -1);
+    CHECK(secp256k1_scalar_is_zero(&n));
+    CHECK(secp256k1_scalar_cond_negate(&n, 0) == 1);
+    CHECK(secp256k1_scalar_is_zero(&n));
+}
+
+void test_ecmult_constants(void) {
+    /* Test ecmult_gen() for [0..36) and [order-36..0). */
+    secp256k1_scalar x;
+    secp256k1_gej r;
+    secp256k1_ge ng;
+    int i;
+    int j;
+    secp256k1_ge_neg(&ng, &secp256k1_ge
