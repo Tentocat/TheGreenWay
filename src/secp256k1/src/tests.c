@@ -1992,4 +1992,305 @@ void test_ge(void) {
             /* Test gej + ge (const). */
             if (i2 != 0) {
                 /* secp256k1_gej_add_ge does not support its second argument being infinity. */
-                secp256k1_gej_add_ge(&resj, 
+                secp256k1_gej_add_ge(&resj, &gej[i1], &ge[i2]);
+                ge_equals_gej(&ref, &resj);
+            }
+
+            /* Test doubling (var). */
+            if ((i1 == 0 && i2 == 0) || ((i1 + 3)/4 == (i2 + 3)/4 && ((i1 + 3)%4)/2 == ((i2 + 3)%4)/2)) {
+                secp256k1_fe zr2;
+                /* Normal doubling with Z ratio result. */
+                secp256k1_gej_double_var(&resj, &gej[i1], &zr2);
+                ge_equals_gej(&ref, &resj);
+                /* Check Z ratio. */
+                secp256k1_fe_mul(&zr2, &zr2, &gej[i1].z);
+                CHECK(secp256k1_fe_equal_var(&zr2, &resj.z));
+                /* Normal doubling. */
+                secp256k1_gej_double_var(&resj, &gej[i2], NULL);
+                ge_equals_gej(&ref, &resj);
+            }
+
+            /* Test adding opposites. */
+            if ((i1 == 0 && i2 == 0) || ((i1 + 3)/4 == (i2 + 3)/4 && ((i1 + 3)%4)/2 != ((i2 + 3)%4)/2)) {
+                CHECK(secp256k1_ge_is_infinity(&ref));
+            }
+
+            /* Test adding infinity. */
+            if (i1 == 0) {
+                CHECK(secp256k1_ge_is_infinity(&ge[i1]));
+                CHECK(secp256k1_gej_is_infinity(&gej[i1]));
+                ge_equals_gej(&ref, &gej[i2]);
+            }
+            if (i2 == 0) {
+                CHECK(secp256k1_ge_is_infinity(&ge[i2]));
+                CHECK(secp256k1_gej_is_infinity(&gej[i2]));
+                ge_equals_gej(&ref, &gej[i1]);
+            }
+        }
+    }
+
+    /* Test adding all points together in random order equals infinity. */
+    {
+        secp256k1_gej sum = SECP256K1_GEJ_CONST_INFINITY;
+        secp256k1_gej *gej_shuffled = (secp256k1_gej *)checked_malloc(&ctx->error_callback, (4 * runs + 1) * sizeof(secp256k1_gej));
+        for (i = 0; i < 4 * runs + 1; i++) {
+            gej_shuffled[i] = gej[i];
+        }
+        for (i = 0; i < 4 * runs + 1; i++) {
+            int swap = i + secp256k1_rand_int(4 * runs + 1 - i);
+            if (swap != i) {
+                secp256k1_gej t = gej_shuffled[i];
+                gej_shuffled[i] = gej_shuffled[swap];
+                gej_shuffled[swap] = t;
+            }
+        }
+        for (i = 0; i < 4 * runs + 1; i++) {
+            secp256k1_gej_add_var(&sum, &sum, &gej_shuffled[i], NULL);
+        }
+        CHECK(secp256k1_gej_is_infinity(&sum));
+        free(gej_shuffled);
+    }
+
+    /* Test batch gej -> ge conversion with and without known z ratios. */
+    {
+        secp256k1_fe *zr = (secp256k1_fe *)checked_malloc(&ctx->error_callback, (4 * runs + 1) * sizeof(secp256k1_fe));
+        secp256k1_ge *ge_set_table = (secp256k1_ge *)checked_malloc(&ctx->error_callback, (4 * runs + 1) * sizeof(secp256k1_ge));
+        secp256k1_ge *ge_set_all = (secp256k1_ge *)checked_malloc(&ctx->error_callback, (4 * runs + 1) * sizeof(secp256k1_ge));
+        for (i = 0; i < 4 * runs + 1; i++) {
+            /* Compute gej[i + 1].z / gez[i].z (with gej[n].z taken to be 1). */
+            if (i < 4 * runs) {
+                secp256k1_fe_mul(&zr[i + 1], &zinv[i], &gej[i + 1].z);
+            }
+        }
+        secp256k1_ge_set_table_gej_var(ge_set_table, gej, zr, 4 * runs + 1);
+        secp256k1_ge_set_all_gej_var(ge_set_all, gej, 4 * runs + 1, &ctx->error_callback);
+        for (i = 0; i < 4 * runs + 1; i++) {
+            secp256k1_fe s;
+            random_fe_non_zero(&s);
+            secp256k1_gej_rescale(&gej[i], &s);
+            ge_equals_gej(&ge_set_table[i], &gej[i]);
+            ge_equals_gej(&ge_set_all[i], &gej[i]);
+        }
+        free(ge_set_table);
+        free(ge_set_all);
+        free(zr);
+    }
+
+    free(ge);
+    free(gej);
+    free(zinv);
+}
+
+void test_add_neg_y_diff_x(void) {
+    /* The point of this test is to check that we can add two points
+     * whose y-coordinates are negatives of each other but whose x
+     * coordinates differ. If the x-coordinates were the same, these
+     * points would be negatives of each other and their sum is
+     * infinity. This is cool because it "covers up" any degeneracy
+     * in the addition algorithm that would cause the xy coordinates
+     * of the sum to be wrong (since infinity has no xy coordinates).
+     * HOWEVER, if the x-coordinates are different, infinity is the
+     * wrong answer, and such degeneracies are exposed. This is the
+     * root of https://github.com/bitcoin-core/secp256k1/issues/257
+     * which this test is a regression test for.
+     *
+     * These points were generated in sage as
+     * # secp256k1 params
+     * F = FiniteField (0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F)
+     * C = EllipticCurve ([F (0), F (7)])
+     * G = C.lift_x(0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798)
+     * N = FiniteField(G.order())
+     *
+     * # endomorphism values (lambda is 1^{1/3} in N, beta is 1^{1/3} in F)
+     * x = polygen(N)
+     * lam  = (1 - x^3).roots()[1][0]
+     *
+     * # random "bad pair"
+     * P = C.random_element()
+     * Q = -int(lam) * P
+     * print "    P: %x %x" % P.xy()
+     * print "    Q: %x %x" % Q.xy()
+     * print "P + Q: %x %x" % (P + Q).xy()
+     */
+    secp256k1_gej aj = SECP256K1_GEJ_CONST(
+        0x8d24cd95, 0x0a355af1, 0x3c543505, 0x44238d30,
+        0x0643d79f, 0x05a59614, 0x2f8ec030, 0xd58977cb,
+        0x001e337a, 0x38093dcd, 0x6c0f386d, 0x0b1293a8,
+        0x4d72c879, 0xd7681924, 0x44e6d2f3, 0x9190117d
+    );
+    secp256k1_gej bj = SECP256K1_GEJ_CONST(
+        0xc7b74206, 0x1f788cd9, 0xabd0937d, 0x164a0d86,
+        0x95f6ff75, 0xf19a4ce9, 0xd013bd7b, 0xbf92d2a7,
+        0xffe1cc85, 0xc7f6c232, 0x93f0c792, 0xf4ed6c57,
+        0xb28d3786, 0x2897e6db, 0xbb192d0b, 0x6e6feab2
+    );
+    secp256k1_gej sumj = SECP256K1_GEJ_CONST(
+        0x671a63c0, 0x3efdad4c, 0x389a7798, 0x24356027,
+        0xb3d69010, 0x278625c3, 0x5c86d390, 0x184a8f7a,
+        0x5f6409c2, 0x2ce01f2b, 0x511fd375, 0x25071d08,
+        0xda651801, 0x70e95caf, 0x8f0d893c, 0xbed8fbbe
+    );
+    secp256k1_ge b;
+    secp256k1_gej resj;
+    secp256k1_ge res;
+    secp256k1_ge_set_gej(&b, &bj);
+
+    secp256k1_gej_add_var(&resj, &aj, &bj, NULL);
+    secp256k1_ge_set_gej(&res, &resj);
+    ge_equals_gej(&res, &sumj);
+
+    secp256k1_gej_add_ge(&resj, &aj, &b);
+    secp256k1_ge_set_gej(&res, &resj);
+    ge_equals_gej(&res, &sumj);
+
+    secp256k1_gej_add_ge_var(&resj, &aj, &b, NULL);
+    secp256k1_ge_set_gej(&res, &resj);
+    ge_equals_gej(&res, &sumj);
+}
+
+void run_ge(void) {
+    int i;
+    for (i = 0; i < count * 32; i++) {
+        test_ge();
+    }
+    test_add_neg_y_diff_x();
+}
+
+void test_ec_combine(void) {
+    secp256k1_scalar sum = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0);
+    secp256k1_pubkey data[6];
+    const secp256k1_pubkey* d[6];
+    secp256k1_pubkey sd;
+    secp256k1_pubkey sd2;
+    secp256k1_gej Qj;
+    secp256k1_ge Q;
+    int i;
+    for (i = 1; i <= 6; i++) {
+        secp256k1_scalar s;
+        random_scalar_order_test(&s);
+        secp256k1_scalar_add(&sum, &sum, &s);
+        secp256k1_ecmult_gen(&ctx->ecmult_gen_ctx, &Qj, &s);
+        secp256k1_ge_set_gej(&Q, &Qj);
+        secp256k1_pubkey_save(&data[i - 1], &Q);
+        d[i - 1] = &data[i - 1];
+        secp256k1_ecmult_gen(&ctx->ecmult_gen_ctx, &Qj, &sum);
+        secp256k1_ge_set_gej(&Q, &Qj);
+        secp256k1_pubkey_save(&sd, &Q);
+        CHECK(secp256k1_ec_pubkey_combine(ctx, &sd2, d, i) == 1);
+        CHECK(memcmp(&sd, &sd2, sizeof(sd)) == 0);
+    }
+}
+
+void run_ec_combine(void) {
+    int i;
+    for (i = 0; i < count * 8; i++) {
+         test_ec_combine();
+    }
+}
+
+void test_group_decompress(const secp256k1_fe* x) {
+    /* The input itself, normalized. */
+    secp256k1_fe fex = *x;
+    secp256k1_fe fez;
+    /* Results of set_xquad_var, set_xo_var(..., 0), set_xo_var(..., 1). */
+    secp256k1_ge ge_quad, ge_even, ge_odd;
+    secp256k1_gej gej_quad;
+    /* Return values of the above calls. */
+    int res_quad, res_even, res_odd;
+
+    secp256k1_fe_normalize_var(&fex);
+
+    res_quad = secp256k1_ge_set_xquad(&ge_quad, &fex);
+    res_even = secp256k1_ge_set_xo_var(&ge_even, &fex, 0);
+    res_odd = secp256k1_ge_set_xo_var(&ge_odd, &fex, 1);
+
+    CHECK(res_quad == res_even);
+    CHECK(res_quad == res_odd);
+
+    if (res_quad) {
+        secp256k1_fe_normalize_var(&ge_quad.x);
+        secp256k1_fe_normalize_var(&ge_odd.x);
+        secp256k1_fe_normalize_var(&ge_even.x);
+        secp256k1_fe_normalize_var(&ge_quad.y);
+        secp256k1_fe_normalize_var(&ge_odd.y);
+        secp256k1_fe_normalize_var(&ge_even.y);
+
+        /* No infinity allowed. */
+        CHECK(!ge_quad.infinity);
+        CHECK(!ge_even.infinity);
+        CHECK(!ge_odd.infinity);
+
+        /* Check that the x coordinates check out. */
+        CHECK(secp256k1_fe_equal_var(&ge_quad.x, x));
+        CHECK(secp256k1_fe_equal_var(&ge_even.x, x));
+        CHECK(secp256k1_fe_equal_var(&ge_odd.x, x));
+
+        /* Check that the Y coordinate result in ge_quad is a square. */
+        CHECK(secp256k1_fe_is_quad_var(&ge_quad.y));
+
+        /* Check odd/even Y in ge_odd, ge_even. */
+        CHECK(secp256k1_fe_is_odd(&ge_odd.y));
+        CHECK(!secp256k1_fe_is_odd(&ge_even.y));
+
+        /* Check secp256k1_gej_has_quad_y_var. */
+        secp256k1_gej_set_ge(&gej_quad, &ge_quad);
+        CHECK(secp256k1_gej_has_quad_y_var(&gej_quad));
+        do {
+            random_fe_test(&fez);
+        } while (secp256k1_fe_is_zero(&fez));
+        secp256k1_gej_rescale(&gej_quad, &fez);
+        CHECK(secp256k1_gej_has_quad_y_var(&gej_quad));
+        secp256k1_gej_neg(&gej_quad, &gej_quad);
+        CHECK(!secp256k1_gej_has_quad_y_var(&gej_quad));
+        do {
+            random_fe_test(&fez);
+        } while (secp256k1_fe_is_zero(&fez));
+        secp256k1_gej_rescale(&gej_quad, &fez);
+        CHECK(!secp256k1_gej_has_quad_y_var(&gej_quad));
+        secp256k1_gej_neg(&gej_quad, &gej_quad);
+        CHECK(secp256k1_gej_has_quad_y_var(&gej_quad));
+    }
+}
+
+void run_group_decompress(void) {
+    int i;
+    for (i = 0; i < count * 4; i++) {
+        secp256k1_fe fe;
+        random_fe_test(&fe);
+        test_group_decompress(&fe);
+    }
+}
+
+/***** ECMULT TESTS *****/
+
+void run_ecmult_chain(void) {
+    /* random starting point A (on the curve) */
+    secp256k1_gej a = SECP256K1_GEJ_CONST(
+        0x8b30bbe9, 0xae2a9906, 0x96b22f67, 0x0709dff3,
+        0x727fd8bc, 0x04d3362c, 0x6c7bf458, 0xe2846004,
+        0xa357ae91, 0x5c4a6528, 0x1309edf2, 0x0504740f,
+        0x0eb33439, 0x90216b4f, 0x81063cb6, 0x5f2f7e0f
+    );
+    /* two random initial factors xn and gn */
+    secp256k1_scalar xn = SECP256K1_SCALAR_CONST(
+        0x84cc5452, 0xf7fde1ed, 0xb4d38a8c, 0xe9b1b84c,
+        0xcef31f14, 0x6e569be9, 0x705d357a, 0x42985407
+    );
+    secp256k1_scalar gn = SECP256K1_SCALAR_CONST(
+        0xa1e58d22, 0x553dcd42, 0xb2398062, 0x5d4c57a9,
+        0x6e9323d4, 0x2b3152e5, 0xca2c3990, 0xedc7c9de
+    );
+    /* two small multipliers to be applied to xn and gn in every iteration: */
+    static const secp256k1_scalar xf = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0x1337);
+    static const secp256k1_scalar gf = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0x7113);
+    /* accumulators with the resulting coefficients to A and G */
+    secp256k1_scalar ae = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 1);
+    secp256k1_scalar ge = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0);
+    /* actual points */
+    secp256k1_gej x;
+    secp256k1_gej x2;
+    int i;
+
+    /* the point being computed */
+    x = a;
+    for (i = 0; i < 200*count; i
