@@ -3309,4 +3309,271 @@ void run_eckey_edge_case_test(void) {
     VG_UNDEF(&pubkey, sizeof(secp256k1_pubkey));
     CHECK(secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 1) == 1);
     VG_CHECK(&pubkey, sizeof(secp256k1_pubkey));
-    CHECK(memcmp(&pubkey, zeros, sizeof(secp256k1_pubkey)) 
+    CHECK(memcmp(&pubkey, zeros, sizeof(secp256k1_pubkey)) > 0);
+    CHECK(ecount == 3);
+    len = 33;
+    CHECK(secp256k1_ec_pubkey_serialize(ctx, ctmp, &len, &pubkey, SECP256K1_EC_COMPRESSED) == 1);
+    CHECK(secp256k1_ec_pubkey_serialize(ctx, ctmp2, &len, &pubkey_negone, SECP256K1_EC_COMPRESSED) == 1);
+    CHECK(memcmp(ctmp, ctmp2, 33) == 0);
+    /* Result is infinity. */
+    pubkeys[0] = &pubkey_one;
+    pubkeys[1] = &pubkey_negone;
+    memset(&pubkey, 255, sizeof(secp256k1_pubkey));
+    VG_UNDEF(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 2) == 0);
+    VG_CHECK(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(memcmp(&pubkey, zeros, sizeof(secp256k1_pubkey)) == 0);
+    CHECK(ecount == 3);
+    /* Passes through infinity but comes out one. */
+    pubkeys[2] = &pubkey_one;
+    memset(&pubkey, 255, sizeof(secp256k1_pubkey));
+    VG_UNDEF(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 3) == 1);
+    VG_CHECK(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(memcmp(&pubkey, zeros, sizeof(secp256k1_pubkey)) > 0);
+    CHECK(ecount == 3);
+    len = 33;
+    CHECK(secp256k1_ec_pubkey_serialize(ctx, ctmp, &len, &pubkey, SECP256K1_EC_COMPRESSED) == 1);
+    CHECK(secp256k1_ec_pubkey_serialize(ctx, ctmp2, &len, &pubkey_one, SECP256K1_EC_COMPRESSED) == 1);
+    CHECK(memcmp(ctmp, ctmp2, 33) == 0);
+    /* Adds to two. */
+    pubkeys[1] = &pubkey_one;
+    memset(&pubkey, 255, sizeof(secp256k1_pubkey));
+    VG_UNDEF(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(secp256k1_ec_pubkey_combine(ctx, &pubkey, pubkeys, 2) == 1);
+    VG_CHECK(&pubkey, sizeof(secp256k1_pubkey));
+    CHECK(memcmp(&pubkey, zeros, sizeof(secp256k1_pubkey)) > 0);
+    CHECK(ecount == 3);
+    secp256k1_context_set_illegal_callback(ctx, NULL, NULL);
+}
+
+void random_sign(secp256k1_scalar *sigr, secp256k1_scalar *sigs, const secp256k1_scalar *key, const secp256k1_scalar *msg, int *recid) {
+    secp256k1_scalar nonce;
+    do {
+        random_scalar_order_test(&nonce);
+    } while(!secp256k1_ecdsa_sig_sign(&ctx->ecmult_gen_ctx, sigr, sigs, key, msg, &nonce, recid));
+}
+
+void test_ecdsa_sign_verify(void) {
+    secp256k1_gej pubj;
+    secp256k1_ge pub;
+    secp256k1_scalar one;
+    secp256k1_scalar msg, key;
+    secp256k1_scalar sigr, sigs;
+    int recid;
+    int getrec;
+    random_scalar_order_test(&msg);
+    random_scalar_order_test(&key);
+    secp256k1_ecmult_gen(&ctx->ecmult_gen_ctx, &pubj, &key);
+    secp256k1_ge_set_gej(&pub, &pubj);
+    getrec = secp256k1_rand_bits(1);
+    random_sign(&sigr, &sigs, &key, &msg, getrec?&recid:NULL);
+    if (getrec) {
+        CHECK(recid >= 0 && recid < 4);
+    }
+    CHECK(secp256k1_ecdsa_sig_verify(&ctx->ecmult_ctx, &sigr, &sigs, &pub, &msg));
+    secp256k1_scalar_set_int(&one, 1);
+    secp256k1_scalar_add(&msg, &msg, &one);
+    CHECK(!secp256k1_ecdsa_sig_verify(&ctx->ecmult_ctx, &sigr, &sigs, &pub, &msg));
+}
+
+void run_ecdsa_sign_verify(void) {
+    int i;
+    for (i = 0; i < 10*count; i++) {
+        test_ecdsa_sign_verify();
+    }
+}
+
+/** Dummy nonce generation function that just uses a precomputed nonce, and fails if it is not accepted. Use only for testing. */
+static int precomputed_nonce_function(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter) {
+    (void)msg32;
+    (void)key32;
+    (void)algo16;
+    memcpy(nonce32, data, 32);
+    return (counter == 0);
+}
+
+static int nonce_function_test_fail(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter) {
+   /* Dummy nonce generator that has a fatal error on the first counter value. */
+   if (counter == 0) {
+       return 0;
+   }
+   return nonce_function_rfc6979(nonce32, msg32, key32, algo16, data, counter - 1);
+}
+
+static int nonce_function_test_retry(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, const unsigned char *algo16, void *data, unsigned int counter) {
+   /* Dummy nonce generator that produces unacceptable nonces for the first several counter values. */
+   if (counter < 3) {
+       memset(nonce32, counter==0 ? 0 : 255, 32);
+       if (counter == 2) {
+           nonce32[31]--;
+       }
+       return 1;
+   }
+   if (counter < 5) {
+       static const unsigned char order[] = {
+           0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+           0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,
+           0xBA,0xAE,0xDC,0xE6,0xAF,0x48,0xA0,0x3B,
+           0xBF,0xD2,0x5E,0x8C,0xD0,0x36,0x41,0x41
+       };
+       memcpy(nonce32, order, 32);
+       if (counter == 4) {
+           nonce32[31]++;
+       }
+       return 1;
+   }
+   /* Retry rate of 6979 is negligible esp. as we only call this in deterministic tests. */
+   /* If someone does fine a case where it retries for secp256k1, we'd like to know. */
+   if (counter > 5) {
+       return 0;
+   }
+   return nonce_function_rfc6979(nonce32, msg32, key32, algo16, data, counter - 5);
+}
+
+int is_empty_signature(const secp256k1_ecdsa_signature *sig) {
+    static const unsigned char res[sizeof(secp256k1_ecdsa_signature)] = {0};
+    return memcmp(sig, res, sizeof(secp256k1_ecdsa_signature)) == 0;
+}
+
+void test_ecdsa_end_to_end(void) {
+    unsigned char extra[32] = {0x00};
+    unsigned char privkey[32];
+    unsigned char message[32];
+    unsigned char privkey2[32];
+    secp256k1_ecdsa_signature signature[6];
+    secp256k1_scalar r, s;
+    unsigned char sig[74];
+    size_t siglen = 74;
+    unsigned char pubkeyc[65];
+    size_t pubkeyclen = 65;
+    secp256k1_pubkey pubkey;
+    secp256k1_pubkey pubkey_tmp;
+    unsigned char seckey[300];
+    size_t seckeylen = 300;
+
+    /* Generate a random key and message. */
+    {
+        secp256k1_scalar msg, key;
+        random_scalar_order_test(&msg);
+        random_scalar_order_test(&key);
+        secp256k1_scalar_get_b32(privkey, &key);
+        secp256k1_scalar_get_b32(message, &msg);
+    }
+
+    /* Construct and verify corresponding public key. */
+    CHECK(secp256k1_ec_seckey_verify(ctx, privkey) == 1);
+    CHECK(secp256k1_ec_pubkey_create(ctx, &pubkey, privkey) == 1);
+
+    /* Verify exporting and importing public key. */
+    CHECK(secp256k1_ec_pubkey_serialize(ctx, pubkeyc, &pubkeyclen, &pubkey, secp256k1_rand_bits(1) == 1 ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED));
+    memset(&pubkey, 0, sizeof(pubkey));
+    CHECK(secp256k1_ec_pubkey_parse(ctx, &pubkey, pubkeyc, pubkeyclen) == 1);
+
+    /* Verify negation changes the key and changes it back */
+    memcpy(&pubkey_tmp, &pubkey, sizeof(pubkey));
+    CHECK(secp256k1_ec_pubkey_negate(ctx, &pubkey_tmp) == 1);
+    CHECK(memcmp(&pubkey_tmp, &pubkey, sizeof(pubkey)) != 0);
+    CHECK(secp256k1_ec_pubkey_negate(ctx, &pubkey_tmp) == 1);
+    CHECK(memcmp(&pubkey_tmp, &pubkey, sizeof(pubkey)) == 0);
+
+    /* Verify private key import and export. */
+    CHECK(ec_privkey_export_der(ctx, seckey, &seckeylen, privkey, secp256k1_rand_bits(1) == 1));
+    CHECK(ec_privkey_import_der(ctx, privkey2, seckey, seckeylen) == 1);
+    CHECK(memcmp(privkey, privkey2, 32) == 0);
+
+    /* Optionally tweak the keys using addition. */
+    if (secp256k1_rand_int(3) == 0) {
+        int ret1;
+        int ret2;
+        unsigned char rnd[32];
+        secp256k1_pubkey pubkey2;
+        secp256k1_rand256_test(rnd);
+        ret1 = secp256k1_ec_privkey_tweak_add(ctx, privkey, rnd);
+        ret2 = secp256k1_ec_pubkey_tweak_add(ctx, &pubkey, rnd);
+        CHECK(ret1 == ret2);
+        if (ret1 == 0) {
+            return;
+        }
+        CHECK(secp256k1_ec_pubkey_create(ctx, &pubkey2, privkey) == 1);
+        CHECK(memcmp(&pubkey, &pubkey2, sizeof(pubkey)) == 0);
+    }
+
+    /* Optionally tweak the keys using multiplication. */
+    if (secp256k1_rand_int(3) == 0) {
+        int ret1;
+        int ret2;
+        unsigned char rnd[32];
+        secp256k1_pubkey pubkey2;
+        secp256k1_rand256_test(rnd);
+        ret1 = secp256k1_ec_privkey_tweak_mul(ctx, privkey, rnd);
+        ret2 = secp256k1_ec_pubkey_tweak_mul(ctx, &pubkey, rnd);
+        CHECK(ret1 == ret2);
+        if (ret1 == 0) {
+            return;
+        }
+        CHECK(secp256k1_ec_pubkey_create(ctx, &pubkey2, privkey) == 1);
+        CHECK(memcmp(&pubkey, &pubkey2, sizeof(pubkey)) == 0);
+    }
+
+    /* Sign. */
+    CHECK(secp256k1_ecdsa_sign(ctx, &signature[0], message, privkey, NULL, NULL) == 1);
+    CHECK(secp256k1_ecdsa_sign(ctx, &signature[4], message, privkey, NULL, NULL) == 1);
+    CHECK(secp256k1_ecdsa_sign(ctx, &signature[1], message, privkey, NULL, extra) == 1);
+    extra[31] = 1;
+    CHECK(secp256k1_ecdsa_sign(ctx, &signature[2], message, privkey, NULL, extra) == 1);
+    extra[31] = 0;
+    extra[0] = 1;
+    CHECK(secp256k1_ecdsa_sign(ctx, &signature[3], message, privkey, NULL, extra) == 1);
+    CHECK(memcmp(&signature[0], &signature[4], sizeof(signature[0])) == 0);
+    CHECK(memcmp(&signature[0], &signature[1], sizeof(signature[0])) != 0);
+    CHECK(memcmp(&signature[0], &signature[2], sizeof(signature[0])) != 0);
+    CHECK(memcmp(&signature[0], &signature[3], sizeof(signature[0])) != 0);
+    CHECK(memcmp(&signature[1], &signature[2], sizeof(signature[0])) != 0);
+    CHECK(memcmp(&signature[1], &signature[3], sizeof(signature[0])) != 0);
+    CHECK(memcmp(&signature[2], &signature[3], sizeof(signature[0])) != 0);
+    /* Verify. */
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[0], message, &pubkey) == 1);
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[1], message, &pubkey) == 1);
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[2], message, &pubkey) == 1);
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[3], message, &pubkey) == 1);
+    /* Test lower-S form, malleate, verify and fail, test again, malleate again */
+    CHECK(!secp256k1_ecdsa_signature_normalize(ctx, NULL, &signature[0]));
+    secp256k1_ecdsa_signature_load(ctx, &r, &s, &signature[0]);
+    secp256k1_scalar_negate(&s, &s);
+    secp256k1_ecdsa_signature_save(&signature[5], &r, &s);
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[5], message, &pubkey) == 0);
+    CHECK(secp256k1_ecdsa_signature_normalize(ctx, NULL, &signature[5]));
+    CHECK(secp256k1_ecdsa_signature_normalize(ctx, &signature[5], &signature[5]));
+    CHECK(!secp256k1_ecdsa_signature_normalize(ctx, NULL, &signature[5]));
+    CHECK(!secp256k1_ecdsa_signature_normalize(ctx, &signature[5], &signature[5]));
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[5], message, &pubkey) == 1);
+    secp256k1_scalar_negate(&s, &s);
+    secp256k1_ecdsa_signature_save(&signature[5], &r, &s);
+    CHECK(!secp256k1_ecdsa_signature_normalize(ctx, NULL, &signature[5]));
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[5], message, &pubkey) == 1);
+    CHECK(memcmp(&signature[5], &signature[0], 64) == 0);
+
+    /* Serialize/parse DER and verify again */
+    CHECK(secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature[0]) == 1);
+    memset(&signature[0], 0, sizeof(signature[0]));
+    CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &signature[0], sig, siglen) == 1);
+    CHECK(secp256k1_ecdsa_verify(ctx, &signature[0], message, &pubkey) == 1);
+    /* Serialize/destroy/parse DER and verify again. */
+    siglen = 74;
+    CHECK(secp256k1_ecdsa_signature_serialize_der(ctx, sig, &siglen, &signature[0]) == 1);
+    sig[secp256k1_rand_int(siglen)] += 1 + secp256k1_rand_int(255);
+    CHECK(secp256k1_ecdsa_signature_parse_der(ctx, &signature[0], sig, siglen) == 0 ||
+          secp256k1_ecdsa_verify(ctx, &signature[0], message, &pubkey) == 0);
+}
+
+void test_random_pubkeys(void) {
+    secp256k1_ge elem;
+    secp256k1_ge elem2;
+    unsigned char in[65];
+    /* Generate some randomly sized pubkeys. */
+    size_t len = secp256k1_rand_bits(2) == 0 ? 65 : 33;
+    if (secp256k1_rand_bits(2) == 0) {
+        len = secp256k1_rand_bits(6);
+    }
+    if (le
