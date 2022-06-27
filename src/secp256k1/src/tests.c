@@ -3576,4 +3576,314 @@ void test_random_pubkeys(void) {
     if (secp256k1_rand_bits(2) == 0) {
         len = secp256k1_rand_bits(6);
     }
-    if (le
+    if (len == 65) {
+      in[0] = secp256k1_rand_bits(1) ? 4 : (secp256k1_rand_bits(1) ? 6 : 7);
+    } else {
+      in[0] = secp256k1_rand_bits(1) ? 2 : 3;
+    }
+    if (secp256k1_rand_bits(3) == 0) {
+        in[0] = secp256k1_rand_bits(8);
+    }
+    if (len > 1) {
+        secp256k1_rand256(&in[1]);
+    }
+    if (len > 33) {
+        secp256k1_rand256(&in[33]);
+    }
+    if (secp256k1_eckey_pubkey_parse(&elem, in, len)) {
+        unsigned char out[65];
+        unsigned char firstb;
+        int res;
+        size_t size = len;
+        firstb = in[0];
+        /* If the pubkey can be parsed, it should round-trip... */
+        CHECK(secp256k1_eckey_pubkey_serialize(&elem, out, &size, len == 33));
+        CHECK(size == len);
+        CHECK(memcmp(&in[1], &out[1], len-1) == 0);
+        /* ... except for the type of hybrid inputs. */
+        if ((in[0] != 6) && (in[0] != 7)) {
+            CHECK(in[0] == out[0]);
+        }
+        size = 65;
+        CHECK(secp256k1_eckey_pubkey_serialize(&elem, in, &size, 0));
+        CHECK(size == 65);
+        CHECK(secp256k1_eckey_pubkey_parse(&elem2, in, size));
+        ge_equals_ge(&elem,&elem2);
+        /* Check that the X9.62 hybrid type is checked. */
+        in[0] = secp256k1_rand_bits(1) ? 6 : 7;
+        res = secp256k1_eckey_pubkey_parse(&elem2, in, size);
+        if (firstb == 2 || firstb == 3) {
+            if (in[0] == firstb + 4) {
+              CHECK(res);
+            } else {
+              CHECK(!res);
+            }
+        }
+        if (res) {
+            ge_equals_ge(&elem,&elem2);
+            CHECK(secp256k1_eckey_pubkey_serialize(&elem, out, &size, 0));
+            CHECK(memcmp(&in[1], &out[1], 64) == 0);
+        }
+    }
+}
+
+void run_random_pubkeys(void) {
+    int i;
+    for (i = 0; i < 10*count; i++) {
+        test_random_pubkeys();
+    }
+}
+
+void run_ecdsa_end_to_end(void) {
+    int i;
+    for (i = 0; i < 64*count; i++) {
+        test_ecdsa_end_to_end();
+    }
+}
+
+int test_ecdsa_der_parse(const unsigned char *sig, size_t siglen, int certainly_der, int certainly_not_der) {
+    static const unsigned char zeroes[32] = {0};
+#ifdef ENABLE_OPENSSL_TESTS
+    static const unsigned char max_scalar[32] = {
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe,
+        0xba, 0xae, 0xdc, 0xe6, 0xaf, 0x48, 0xa0, 0x3b,
+        0xbf, 0xd2, 0x5e, 0x8c, 0xd0, 0x36, 0x41, 0x40
+    };
+#endif
+
+    int ret = 0;
+
+    secp256k1_ecdsa_signature sig_der;
+    unsigned char roundtrip_der[2048];
+    unsigned char compact_der[64];
+    size_t len_der = 2048;
+    int parsed_der = 0, valid_der = 0, roundtrips_der = 0;
+
+    secp256k1_ecdsa_signature sig_der_lax;
+    unsigned char roundtrip_der_lax[2048];
+    unsigned char compact_der_lax[64];
+    size_t len_der_lax = 2048;
+    int parsed_der_lax = 0, valid_der_lax = 0, roundtrips_der_lax = 0;
+
+#ifdef ENABLE_OPENSSL_TESTS
+    ECDSA_SIG *sig_openssl;
+    const unsigned char *sigptr;
+    unsigned char roundtrip_openssl[2048];
+    int len_openssl = 2048;
+    int parsed_openssl, valid_openssl = 0, roundtrips_openssl = 0;
+#endif
+
+    parsed_der = secp256k1_ecdsa_signature_parse_der(ctx, &sig_der, sig, siglen);
+    if (parsed_der) {
+        ret |= (!secp256k1_ecdsa_signature_serialize_compact(ctx, compact_der, &sig_der)) << 0;
+        valid_der = (memcmp(compact_der, zeroes, 32) != 0) && (memcmp(compact_der + 32, zeroes, 32) != 0);
+    }
+    if (valid_der) {
+        ret |= (!secp256k1_ecdsa_signature_serialize_der(ctx, roundtrip_der, &len_der, &sig_der)) << 1;
+        roundtrips_der = (len_der == siglen) && memcmp(roundtrip_der, sig, siglen) == 0;
+    }
+
+    parsed_der_lax = ecdsa_signature_parse_der_lax(ctx, &sig_der_lax, sig, siglen);
+    if (parsed_der_lax) {
+        ret |= (!secp256k1_ecdsa_signature_serialize_compact(ctx, compact_der_lax, &sig_der_lax)) << 10;
+        valid_der_lax = (memcmp(compact_der_lax, zeroes, 32) != 0) && (memcmp(compact_der_lax + 32, zeroes, 32) != 0);
+    }
+    if (valid_der_lax) {
+        ret |= (!secp256k1_ecdsa_signature_serialize_der(ctx, roundtrip_der_lax, &len_der_lax, &sig_der_lax)) << 11;
+        roundtrips_der_lax = (len_der_lax == siglen) && memcmp(roundtrip_der_lax, sig, siglen) == 0;
+    }
+
+    if (certainly_der) {
+        ret |= (!parsed_der) << 2;
+    }
+    if (certainly_not_der) {
+        ret |= (parsed_der) << 17;
+    }
+    if (valid_der) {
+        ret |= (!roundtrips_der) << 3;
+    }
+
+    if (valid_der) {
+        ret |= (!roundtrips_der_lax) << 12;
+        ret |= (len_der != len_der_lax) << 13;
+        ret |= (memcmp(roundtrip_der_lax, roundtrip_der, len_der) != 0) << 14;
+    }
+    ret |= (roundtrips_der != roundtrips_der_lax) << 15;
+    if (parsed_der) {
+        ret |= (!parsed_der_lax) << 16;
+    }
+
+#ifdef ENABLE_OPENSSL_TESTS
+    sig_openssl = ECDSA_SIG_new();
+    sigptr = sig;
+    parsed_openssl = (d2i_ECDSA_SIG(&sig_openssl, &sigptr, siglen) != NULL);
+    if (parsed_openssl) {
+        valid_openssl = !BN_is_negative(sig_openssl->r) && !BN_is_negative(sig_openssl->s) && BN_num_bits(sig_openssl->r) > 0 && BN_num_bits(sig_openssl->r) <= 256 && BN_num_bits(sig_openssl->s) > 0 && BN_num_bits(sig_openssl->s) <= 256;
+        if (valid_openssl) {
+            unsigned char tmp[32] = {0};
+            BN_bn2bin(sig_openssl->r, tmp + 32 - BN_num_bytes(sig_openssl->r));
+            valid_openssl = memcmp(tmp, max_scalar, 32) < 0;
+        }
+        if (valid_openssl) {
+            unsigned char tmp[32] = {0};
+            BN_bn2bin(sig_openssl->s, tmp + 32 - BN_num_bytes(sig_openssl->s));
+            valid_openssl = memcmp(tmp, max_scalar, 32) < 0;
+        }
+    }
+    len_openssl = i2d_ECDSA_SIG(sig_openssl, NULL);
+    if (len_openssl <= 2048) {
+        unsigned char *ptr = roundtrip_openssl;
+        CHECK(i2d_ECDSA_SIG(sig_openssl, &ptr) == len_openssl);
+        roundtrips_openssl = valid_openssl && ((size_t)len_openssl == siglen) && (memcmp(roundtrip_openssl, sig, siglen) == 0);
+    } else {
+        len_openssl = 0;
+    }
+    ECDSA_SIG_free(sig_openssl);
+
+    ret |= (parsed_der && !parsed_openssl) << 4;
+    ret |= (valid_der && !valid_openssl) << 5;
+    ret |= (roundtrips_openssl && !parsed_der) << 6;
+    ret |= (roundtrips_der != roundtrips_openssl) << 7;
+    if (roundtrips_openssl) {
+        ret |= (len_der != (size_t)len_openssl) << 8;
+        ret |= (memcmp(roundtrip_der, roundtrip_openssl, len_der) != 0) << 9;
+    }
+#endif
+    return ret;
+}
+
+static void assign_big_endian(unsigned char *ptr, size_t ptrlen, uint32_t val) {
+    size_t i;
+    for (i = 0; i < ptrlen; i++) {
+        int shift = ptrlen - 1 - i;
+        if (shift >= 4) {
+            ptr[i] = 0;
+        } else {
+            ptr[i] = (val >> shift) & 0xFF;
+        }
+    }
+}
+
+static void damage_array(unsigned char *sig, size_t *len) {
+    int pos;
+    int action = secp256k1_rand_bits(3);
+    if (action < 1 && *len > 3) {
+        /* Delete a byte. */
+        pos = secp256k1_rand_int(*len);
+        memmove(sig + pos, sig + pos + 1, *len - pos - 1);
+        (*len)--;
+        return;
+    } else if (action < 2 && *len < 2048) {
+        /* Insert a byte. */
+        pos = secp256k1_rand_int(1 + *len);
+        memmove(sig + pos + 1, sig + pos, *len - pos);
+        sig[pos] = secp256k1_rand_bits(8);
+        (*len)++;
+        return;
+    } else if (action < 4) {
+        /* Modify a byte. */
+        sig[secp256k1_rand_int(*len)] += 1 + secp256k1_rand_int(255);
+        return;
+    } else { /* action < 8 */
+        /* Modify a bit. */
+        sig[secp256k1_rand_int(*len)] ^= 1 << secp256k1_rand_bits(3);
+        return;
+    }
+}
+
+static void random_ber_signature(unsigned char *sig, size_t *len, int* certainly_der, int* certainly_not_der) {
+    int der;
+    int nlow[2], nlen[2], nlenlen[2], nhbit[2], nhbyte[2], nzlen[2];
+    size_t tlen, elen, glen;
+    int indet;
+    int n;
+
+    *len = 0;
+    der = secp256k1_rand_bits(2) == 0;
+    *certainly_der = der;
+    *certainly_not_der = 0;
+    indet = der ? 0 : secp256k1_rand_int(10) == 0;
+
+    for (n = 0; n < 2; n++) {
+        /* We generate two classes of numbers: nlow==1 "low" ones (up to 32 bytes), nlow==0 "high" ones (32 bytes with 129 top bits set, or larger than 32 bytes) */
+        nlow[n] = der ? 1 : (secp256k1_rand_bits(3) != 0);
+        /* The length of the number in bytes (the first byte of which will always be nonzero) */
+        nlen[n] = nlow[n] ? secp256k1_rand_int(33) : 32 + secp256k1_rand_int(200) * secp256k1_rand_int(8) / 8;
+        CHECK(nlen[n] <= 232);
+        /* The top bit of the number. */
+        nhbit[n] = (nlow[n] == 0 && nlen[n] == 32) ? 1 : (nlen[n] == 0 ? 0 : secp256k1_rand_bits(1));
+        /* The top byte of the number (after the potential hardcoded 16 0xFF characters for "high" 32 bytes numbers) */
+        nhbyte[n] = nlen[n] == 0 ? 0 : (nhbit[n] ? 128 + secp256k1_rand_bits(7) : 1 + secp256k1_rand_int(127));
+        /* The number of zero bytes in front of the number (which is 0 or 1 in case of DER, otherwise we extend up to 300 bytes) */
+        nzlen[n] = der ? ((nlen[n] == 0 || nhbit[n]) ? 1 : 0) : (nlow[n] ? secp256k1_rand_int(3) : secp256k1_rand_int(300 - nlen[n]) * secp256k1_rand_int(8) / 8);
+        if (nzlen[n] > ((nlen[n] == 0 || nhbit[n]) ? 1 : 0)) {
+            *certainly_not_der = 1;
+        }
+        CHECK(nlen[n] + nzlen[n] <= 300);
+        /* The length of the length descriptor for the number. 0 means short encoding, anything else is long encoding. */
+        nlenlen[n] = nlen[n] + nzlen[n] < 128 ? 0 : (nlen[n] + nzlen[n] < 256 ? 1 : 2);
+        if (!der) {
+            /* nlenlen[n] max 127 bytes */
+            int add = secp256k1_rand_int(127 - nlenlen[n]) * secp256k1_rand_int(16) * secp256k1_rand_int(16) / 256;
+            nlenlen[n] += add;
+            if (add != 0) {
+                *certainly_not_der = 1;
+            }
+        }
+        CHECK(nlen[n] + nzlen[n] + nlenlen[n] <= 427);
+    }
+
+    /* The total length of the data to go, so far */
+    tlen = 2 + nlenlen[0] + nlen[0] + nzlen[0] + 2 + nlenlen[1] + nlen[1] + nzlen[1];
+    CHECK(tlen <= 856);
+
+    /* The length of the garbage inside the tuple. */
+    elen = (der || indet) ? 0 : secp256k1_rand_int(980 - tlen) * secp256k1_rand_int(8) / 8;
+    if (elen != 0) {
+        *certainly_not_der = 1;
+    }
+    tlen += elen;
+    CHECK(tlen <= 980);
+
+    /* The length of the garbage after the end of the tuple. */
+    glen = der ? 0 : secp256k1_rand_int(990 - tlen) * secp256k1_rand_int(8) / 8;
+    if (glen != 0) {
+        *certainly_not_der = 1;
+    }
+    CHECK(tlen + glen <= 990);
+
+    /* Write the tuple header. */
+    sig[(*len)++] = 0x30;
+    if (indet) {
+        /* Indeterminate length */
+        sig[(*len)++] = 0x80;
+        *certainly_not_der = 1;
+    } else {
+        int tlenlen = tlen < 128 ? 0 : (tlen < 256 ? 1 : 2);
+        if (!der) {
+            int add = secp256k1_rand_int(127 - tlenlen) * secp256k1_rand_int(16) * secp256k1_rand_int(16) / 256;
+            tlenlen += add;
+            if (add != 0) {
+                *certainly_not_der = 1;
+            }
+        }
+        if (tlenlen == 0) {
+            /* Short length notation */
+            sig[(*len)++] = tlen;
+        } else {
+            /* Long length notation */
+            sig[(*len)++] = 128 + tlenlen;
+            assign_big_endian(sig + *len, tlenlen, tlen);
+            *len += tlenlen;
+        }
+        tlen += tlenlen;
+    }
+    tlen += 2;
+    CHECK(tlen + glen <= 1119);
+
+    for (n = 0; n < 2; n++) {
+        /* Write the integer header. */
+        sig[(*len)++] = 0x02;
+        if (nlenlen[n] == 0) {
+            /* Shor
