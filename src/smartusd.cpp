@@ -164,4 +164,334 @@ h  = t0 + t1;
     RND(S[4],S[5],S[6],S[7],S[0],S[1],S[2],S[3],36,0x650a7354);
     RND(S[3],S[4],S[5],S[6],S[7],S[0],S[1],S[2],37,0x766a0abb);
     RND(S[2],S[3],S[4],S[5],S[6],S[7],S[0],S[1],38,0x81c2c92e);
-    RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],
+    RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[0],39,0x92722c85);
+    RND(S[0],S[1],S[2],S[3],S[4],S[5],S[6],S[7],40,0xa2bfe8a1);
+    RND(S[7],S[0],S[1],S[2],S[3],S[4],S[5],S[6],41,0xa81a664b);
+    RND(S[6],S[7],S[0],S[1],S[2],S[3],S[4],S[5],42,0xc24b8b70);
+    RND(S[5],S[6],S[7],S[0],S[1],S[2],S[3],S[4],43,0xc76c51a3);
+    RND(S[4],S[5],S[6],S[7],S[0],S[1],S[2],S[3],44,0xd192e819);
+    RND(S[3],S[4],S[5],S[6],S[7],S[0],S[1],S[2],45,0xd6990624);
+    RND(S[2],S[3],S[4],S[5],S[6],S[7],S[0],S[1],46,0xf40e3585);
+    RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[0],47,0x106aa070);
+    RND(S[0],S[1],S[2],S[3],S[4],S[5],S[6],S[7],48,0x19a4c116);
+    RND(S[7],S[0],S[1],S[2],S[3],S[4],S[5],S[6],49,0x1e376c08);
+    RND(S[6],S[7],S[0],S[1],S[2],S[3],S[4],S[5],50,0x2748774c);
+    RND(S[5],S[6],S[7],S[0],S[1],S[2],S[3],S[4],51,0x34b0bcb5);
+    RND(S[4],S[5],S[6],S[7],S[0],S[1],S[2],S[3],52,0x391c0cb3);
+    RND(S[3],S[4],S[5],S[6],S[7],S[0],S[1],S[2],53,0x4ed8aa4a);
+    RND(S[2],S[3],S[4],S[5],S[6],S[7],S[0],S[1],54,0x5b9cca4f);
+    RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[0],55,0x682e6ff3);
+    RND(S[0],S[1],S[2],S[3],S[4],S[5],S[6],S[7],56,0x748f82ee);
+    RND(S[7],S[0],S[1],S[2],S[3],S[4],S[5],S[6],57,0x78a5636f);
+    RND(S[6],S[7],S[0],S[1],S[2],S[3],S[4],S[5],58,0x84c87814);
+    RND(S[5],S[6],S[7],S[0],S[1],S[2],S[3],S[4],59,0x8cc70208);
+    RND(S[4],S[5],S[6],S[7],S[0],S[1],S[2],S[3],60,0x90befffa);
+    RND(S[3],S[4],S[5],S[6],S[7],S[0],S[1],S[2],61,0xa4506ceb);
+    RND(S[2],S[3],S[4],S[5],S[6],S[7],S[0],S[1],62,0xbef9a3f7);
+    RND(S[1],S[2],S[3],S[4],S[5],S[6],S[7],S[0],63,0xc67178f2);
+#undef RND
+    for (i=0; i<8; i++) // feedback
+        md->state[i] = md->state[i] + S[i];
+    return(0);
+}
+
+#undef RORc
+#undef Ch
+#undef Maj
+#undef S
+#undef R
+#undef Sigma0
+#undef Sigma1
+#undef Gamma0
+#undef Gamma1
+
+static inline void sha256_vinit(struct sha256_vstate * md)
+{
+    md->curlen = 0;
+    md->length = 0;
+    md->state[0] = 0x6A09E667UL;
+    md->state[1] = 0xBB67AE85UL;
+    md->state[2] = 0x3C6EF372UL;
+    md->state[3] = 0xA54FF53AUL;
+    md->state[4] = 0x510E527FUL;
+    md->state[5] = 0x9B05688CUL;
+    md->state[6] = 0x1F83D9ABUL;
+    md->state[7] = 0x5BE0CD19UL;
+}
+
+static inline int32_t sha256_vprocess(struct sha256_vstate *md,const uint8_t *in,uint64_t inlen)
+{
+    uint64_t n; int32_t err;
+    if ( md->curlen > sizeof(md->buf) )
+        return(-1);
+    while ( inlen > 0 )
+    {
+        if ( md->curlen == 0 && inlen >= 64 )
+        {
+            if ( (err= sha256_vcompress(md,(uint8_t *)in)) != 0 )
+                return(err);
+            md->length += 64 * 8, in += 64, inlen -= 64;
+        }
+        else
+        {
+            n = MIN(inlen,64 - md->curlen);
+            memcpy(md->buf + md->curlen,in,(size_t)n);
+            md->curlen += n, in += n, inlen -= n;
+            if ( md->curlen == 64 )
+            {
+                if ( (err= sha256_vcompress(md,md->buf)) != 0 )
+                    return(err);
+                md->length += 8*64;
+                md->curlen = 0;
+            }
+        }
+    }
+    return(0);
+}
+
+static inline int32_t sha256_vdone(struct sha256_vstate *md,uint8_t *out)
+{
+    int32_t i;
+    if ( md->curlen >= sizeof(md->buf) )
+        return(-1);
+    md->length += md->curlen * 8; // increase the length of the message
+    md->buf[md->curlen++] = (uint8_t)0x80; // append the '1' bit
+    // if len > 56 bytes we append zeros then compress.  Then we can fall back to padding zeros and length encoding like normal.
+    if ( md->curlen > 56 )
+    {
+        while ( md->curlen < 64 )
+            md->buf[md->curlen++] = (uint8_t)0;
+        sha256_vcompress(md,md->buf);
+        md->curlen = 0;
+    }
+    while ( md->curlen < 56 ) // pad upto 56 bytes of zeroes
+        md->buf[md->curlen++] = (uint8_t)0;
+    STORE64H(md->length,md->buf+56); // store length
+    sha256_vcompress(md,md->buf);
+    for (i=0; i<8; i++) // copy output
+        STORE32H(md->state[i],out+(4*i));
+    return(0);
+}
+
+void vcalc_sha256(char deprecated[(256 >> 3) * 2 + 1],uint8_t hash[256 >> 3],uint8_t *src,int32_t len)
+{
+    struct sha256_vstate md;
+    sha256_vinit(&md);
+    sha256_vprocess(&md,src,len);
+    sha256_vdone(&md,hash);
+
+    // we will use CSHA256 class instead of above implementation,
+    // in case if daemon compiled with USE_ASM enabled it will use
+    // hardware (SSE4) implementation, otherwise standart
+
+//    CSHA256().Write((const unsigned char *)src, len).Finalize(hash);
+}
+
+bits256 bits256_doublesha256(char *deprecated,uint8_t *data,int32_t datalen)
+{
+    bits256 hash,hash2; int32_t i;
+    vcalc_sha256(0,hash.bytes,data,datalen);
+    vcalc_sha256(0,hash2.bytes,hash.bytes,sizeof(hash));
+    for (i=0; i<sizeof(hash); i++)
+        hash.bytes[i] = hash2.bytes[sizeof(hash) - 1 - i];
+    return(hash);
+}
+
+
+// rmd160: the five basic functions F(), G() and H()
+#define F(x, y, z)        ((x) ^ (y) ^ (z))
+#define G(x, y, z)        (((x) & (y)) | (~(x) & (z)))
+#define H(x, y, z)        (((x) | ~(y)) ^ (z))
+#define I(x, y, z)        (((x) & (z)) | ((y) & ~(z)))
+#define J(x, y, z)        ((x) ^ ((y) | ~(z)))
+#define ROLc(x, y) ( (((unsigned long)(x)<<(unsigned long)((y)&31)) | (((unsigned long)(x)&0xFFFFFFFFUL)>>(unsigned long)(32-((y)&31)))) & 0xFFFFFFFFUL)
+
+/* the ten basic operations FF() through III() */
+#define FF(a, b, c, d, e, x, s)        \
+(a) += F((b), (c), (d)) + (x);\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define GG(a, b, c, d, e, x, s)        \
+(a) += G((b), (c), (d)) + (x) + 0x5a827999UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define HH(a, b, c, d, e, x, s)        \
+(a) += H((b), (c), (d)) + (x) + 0x6ed9eba1UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define II(a, b, c, d, e, x, s)        \
+(a) += I((b), (c), (d)) + (x) + 0x8f1bbcdcUL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define JJ(a, b, c, d, e, x, s)        \
+(a) += J((b), (c), (d)) + (x) + 0xa953fd4eUL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define FFF(a, b, c, d, e, x, s)        \
+(a) += F((b), (c), (d)) + (x);\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define GGG(a, b, c, d, e, x, s)        \
+(a) += G((b), (c), (d)) + (x) + 0x7a6d76e9UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define HHH(a, b, c, d, e, x, s)        \
+(a) += H((b), (c), (d)) + (x) + 0x6d703ef3UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define III(a, b, c, d, e, x, s)        \
+(a) += I((b), (c), (d)) + (x) + 0x5c4dd124UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+#define JJJ(a, b, c, d, e, x, s)        \
+(a) += J((b), (c), (d)) + (x) + 0x50a28be6UL;\
+(a) = ROLc((a), (s)) + (e);\
+(c) = ROLc((c), 10);
+
+static int32_t rmd160_vcompress(struct rmd160_vstate *md,uint8_t *buf)
+{
+    uint32_t aa,bb,cc,dd,ee,aaa,bbb,ccc,ddd,eee,X[16];
+    int i;
+
+    /* load words X */
+    for (i = 0; i < 16; i++){
+        LOAD32L(X[i], buf + (4 * i));
+    }
+
+    /* load state */
+    aa = aaa = md->state[0];
+    bb = bbb = md->state[1];
+    cc = ccc = md->state[2];
+    dd = ddd = md->state[3];
+    ee = eee = md->state[4];
+
+    /* round 1 */
+    FF(aa, bb, cc, dd, ee, X[ 0], 11);
+    FF(ee, aa, bb, cc, dd, X[ 1], 14);
+    FF(dd, ee, aa, bb, cc, X[ 2], 15);
+    FF(cc, dd, ee, aa, bb, X[ 3], 12);
+    FF(bb, cc, dd, ee, aa, X[ 4],  5);
+    FF(aa, bb, cc, dd, ee, X[ 5],  8);
+    FF(ee, aa, bb, cc, dd, X[ 6],  7);
+    FF(dd, ee, aa, bb, cc, X[ 7],  9);
+    FF(cc, dd, ee, aa, bb, X[ 8], 11);
+    FF(bb, cc, dd, ee, aa, X[ 9], 13);
+    FF(aa, bb, cc, dd, ee, X[10], 14);
+    FF(ee, aa, bb, cc, dd, X[11], 15);
+    FF(dd, ee, aa, bb, cc, X[12],  6);
+    FF(cc, dd, ee, aa, bb, X[13],  7);
+    FF(bb, cc, dd, ee, aa, X[14],  9);
+    FF(aa, bb, cc, dd, ee, X[15],  8);
+
+    /* round 2 */
+    GG(ee, aa, bb, cc, dd, X[ 7],  7);
+    GG(dd, ee, aa, bb, cc, X[ 4],  6);
+    GG(cc, dd, ee, aa, bb, X[13],  8);
+    GG(bb, cc, dd, ee, aa, X[ 1], 13);
+    GG(aa, bb, cc, dd, ee, X[10], 11);
+    GG(ee, aa, bb, cc, dd, X[ 6],  9);
+    GG(dd, ee, aa, bb, cc, X[15],  7);
+    GG(cc, dd, ee, aa, bb, X[ 3], 15);
+    GG(bb, cc, dd, ee, aa, X[12],  7);
+    GG(aa, bb, cc, dd, ee, X[ 0], 12);
+    GG(ee, aa, bb, cc, dd, X[ 9], 15);
+    GG(dd, ee, aa, bb, cc, X[ 5],  9);
+    GG(cc, dd, ee, aa, bb, X[ 2], 11);
+    GG(bb, cc, dd, ee, aa, X[14],  7);
+    GG(aa, bb, cc, dd, ee, X[11], 13);
+    GG(ee, aa, bb, cc, dd, X[ 8], 12);
+
+    /* round 3 */
+    HH(dd, ee, aa, bb, cc, X[ 3], 11);
+    HH(cc, dd, ee, aa, bb, X[10], 13);
+    HH(bb, cc, dd, ee, aa, X[14],  6);
+    HH(aa, bb, cc, dd, ee, X[ 4],  7);
+    HH(ee, aa, bb, cc, dd, X[ 9], 14);
+    HH(dd, ee, aa, bb, cc, X[15],  9);
+    HH(cc, dd, ee, aa, bb, X[ 8], 13);
+    HH(bb, cc, dd, ee, aa, X[ 1], 15);
+    HH(aa, bb, cc, dd, ee, X[ 2], 14);
+    HH(ee, aa, bb, cc, dd, X[ 7],  8);
+    HH(dd, ee, aa, bb, cc, X[ 0], 13);
+    HH(cc, dd, ee, aa, bb, X[ 6],  6);
+    HH(bb, cc, dd, ee, aa, X[13],  5);
+    HH(aa, bb, cc, dd, ee, X[11], 12);
+    HH(ee, aa, bb, cc, dd, X[ 5],  7);
+    HH(dd, ee, aa, bb, cc, X[12],  5);
+
+    /* round 4 */
+    II(cc, dd, ee, aa, bb, X[ 1], 11);
+    II(bb, cc, dd, ee, aa, X[ 9], 12);
+    II(aa, bb, cc, dd, ee, X[11], 14);
+    II(ee, aa, bb, cc, dd, X[10], 15);
+    II(dd, ee, aa, bb, cc, X[ 0], 14);
+    II(cc, dd, ee, aa, bb, X[ 8], 15);
+    II(bb, cc, dd, ee, aa, X[12],  9);
+    II(aa, bb, cc, dd, ee, X[ 4],  8);
+    II(ee, aa, bb, cc, dd, X[13],  9);
+    II(dd, ee, aa, bb, cc, X[ 3], 14);
+    II(cc, dd, ee, aa, bb, X[ 7],  5);
+    II(bb, cc, dd, ee, aa, X[15],  6);
+    II(aa, bb, cc, dd, ee, X[14],  8);
+    II(ee, aa, bb, cc, dd, X[ 5],  6);
+    II(dd, ee, aa, bb, cc, X[ 6],  5);
+    II(cc, dd, ee, aa, bb, X[ 2], 12);
+
+    /* round 5 */
+    JJ(bb, cc, dd, ee, aa, X[ 4],  9);
+    JJ(aa, bb, cc, dd, ee, X[ 0], 15);
+    JJ(ee, aa, bb, cc, dd, X[ 5],  5);
+    JJ(dd, ee, aa, bb, cc, X[ 9], 11);
+    JJ(cc, dd, ee, aa, bb, X[ 7],  6);
+    JJ(bb, cc, dd, ee, aa, X[12],  8);
+    JJ(aa, bb, cc, dd, ee, X[ 2], 13);
+    JJ(ee, aa, bb, cc, dd, X[10], 12);
+    JJ(dd, ee, aa, bb, cc, X[14],  5);
+    JJ(cc, dd, ee, aa, bb, X[ 1], 12);
+    JJ(bb, cc, dd, ee, aa, X[ 3], 13);
+    JJ(aa, bb, cc, dd, ee, X[ 8], 14);
+    JJ(ee, aa, bb, cc, dd, X[11], 11);
+    JJ(dd, ee, aa, bb, cc, X[ 6],  8);
+    JJ(cc, dd, ee, aa, bb, X[15],  5);
+    JJ(bb, cc, dd, ee, aa, X[13],  6);
+
+    /* parallel round 1 */
+    JJJ(aaa, bbb, ccc, ddd, eee, X[ 5],  8);
+    JJJ(eee, aaa, bbb, ccc, ddd, X[14],  9);
+    JJJ(ddd, eee, aaa, bbb, ccc, X[ 7],  9);
+    JJJ(ccc, ddd, eee, aaa, bbb, X[ 0], 11);
+    JJJ(bbb, ccc, ddd, eee, aaa, X[ 9], 13);
+    JJJ(aaa, bbb, ccc, ddd, eee, X[ 2], 15);
+    JJJ(eee, aaa, bbb, ccc, ddd, X[11], 15);
+    JJJ(ddd, eee, aaa, bbb, ccc, X[ 4],  5);
+    JJJ(ccc, ddd, eee, aaa, bbb, X[13],  7);
+    JJJ(bbb, ccc, ddd, eee, aaa, X[ 6],  7);
+    JJJ(aaa, bbb, ccc, ddd, eee, X[15],  8);
+    JJJ(eee, aaa, bbb, ccc, ddd, X[ 8], 11);
+    JJJ(ddd, eee, aaa, bbb, ccc, X[ 1], 14);
+    JJJ(ccc, ddd, eee, aaa, bbb, X[10], 14);
+    JJJ(bbb, ccc, ddd, eee, aaa, X[ 3], 12);
+    JJJ(aaa, bbb, ccc, ddd, eee, X[12],  6);
+
+    /* parallel round 2 */
+    III(eee, aaa, bbb, ccc, ddd, X[ 6],  9);
+    III(ddd, eee, aaa, bbb, ccc, X[11], 13);
+    III(ccc, ddd, eee, aaa, bbb, X[ 3], 15);
+    III(bbb, ccc, ddd, eee, aaa, X[ 7],  7);
+    III(aaa, bbb, ccc, ddd, eee, X[ 0], 12);
+    III(eee, aaa, bbb, ccc, ddd, X[13],  8);
+    III(ddd, eee, aaa, bbb, ccc, X[ 5],  9);
+    III(ccc, ddd, eee, aaa, bbb, X[10], 11);
+    III(bbb, ccc, ddd, eee, aaa, X[14],  7);
+    III(aaa, bbb, ccc, ddd, eee, X[15],  7);
+    III(eee, aaa, bbb, ccc, ddd, X[ 8], 12);
+    III(ddd, 
