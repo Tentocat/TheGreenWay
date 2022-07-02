@@ -494,4 +494,320 @@ static int32_t rmd160_vcompress(struct rmd160_vstate *md,uint8_t *buf)
     III(bbb, ccc, ddd, eee, aaa, X[14],  7);
     III(aaa, bbb, ccc, ddd, eee, X[15],  7);
     III(eee, aaa, bbb, ccc, ddd, X[ 8], 12);
-    III(ddd, 
+    III(ddd, eee, aaa, bbb, ccc, X[12],  7);
+    III(ccc, ddd, eee, aaa, bbb, X[ 4],  6);
+    III(bbb, ccc, ddd, eee, aaa, X[ 9], 15);
+    III(aaa, bbb, ccc, ddd, eee, X[ 1], 13);
+    III(eee, aaa, bbb, ccc, ddd, X[ 2], 11);
+
+    /* parallel round 3 */
+    HHH(ddd, eee, aaa, bbb, ccc, X[15],  9);
+    HHH(ccc, ddd, eee, aaa, bbb, X[ 5],  7);
+    HHH(bbb, ccc, ddd, eee, aaa, X[ 1], 15);
+    HHH(aaa, bbb, ccc, ddd, eee, X[ 3], 11);
+    HHH(eee, aaa, bbb, ccc, ddd, X[ 7],  8);
+    HHH(ddd, eee, aaa, bbb, ccc, X[14],  6);
+    HHH(ccc, ddd, eee, aaa, bbb, X[ 6],  6);
+    HHH(bbb, ccc, ddd, eee, aaa, X[ 9], 14);
+    HHH(aaa, bbb, ccc, ddd, eee, X[11], 12);
+    HHH(eee, aaa, bbb, ccc, ddd, X[ 8], 13);
+    HHH(ddd, eee, aaa, bbb, ccc, X[12],  5);
+    HHH(ccc, ddd, eee, aaa, bbb, X[ 2], 14);
+    HHH(bbb, ccc, ddd, eee, aaa, X[10], 13);
+    HHH(aaa, bbb, ccc, ddd, eee, X[ 0], 13);
+    HHH(eee, aaa, bbb, ccc, ddd, X[ 4],  7);
+    HHH(ddd, eee, aaa, bbb, ccc, X[13],  5);
+
+    /* parallel round 4 */
+    GGG(ccc, ddd, eee, aaa, bbb, X[ 8], 15);
+    GGG(bbb, ccc, ddd, eee, aaa, X[ 6],  5);
+    GGG(aaa, bbb, ccc, ddd, eee, X[ 4],  8);
+    GGG(eee, aaa, bbb, ccc, ddd, X[ 1], 11);
+    GGG(ddd, eee, aaa, bbb, ccc, X[ 3], 14);
+    GGG(ccc, ddd, eee, aaa, bbb, X[11], 14);
+    GGG(bbb, ccc, ddd, eee, aaa, X[15],  6);
+    GGG(aaa, bbb, ccc, ddd, eee, X[ 0], 14);
+    GGG(eee, aaa, bbb, ccc, ddd, X[ 5],  6);
+    GGG(ddd, eee, aaa, bbb, ccc, X[12],  9);
+    GGG(ccc, ddd, eee, aaa, bbb, X[ 2], 12);
+    GGG(bbb, ccc, ddd, eee, aaa, X[13],  9);
+    GGG(aaa, bbb, ccc, ddd, eee, X[ 9], 12);
+    GGG(eee, aaa, bbb, ccc, ddd, X[ 7],  5);
+    GGG(ddd, eee, aaa, bbb, ccc, X[10], 15);
+    GGG(ccc, ddd, eee, aaa, bbb, X[14],  8);
+
+    /* parallel round 5 */
+    FFF(bbb, ccc, ddd, eee, aaa, X[12] ,  8);
+    FFF(aaa, bbb, ccc, ddd, eee, X[15] ,  5);
+    FFF(eee, aaa, bbb, ccc, ddd, X[10] , 12);
+    FFF(ddd, eee, aaa, bbb, ccc, X[ 4] ,  9);
+    FFF(ccc, ddd, eee, aaa, bbb, X[ 1] , 12);
+    FFF(bbb, ccc, ddd, eee, aaa, X[ 5] ,  5);
+    FFF(aaa, bbb, ccc, ddd, eee, X[ 8] , 14);
+    FFF(eee, aaa, bbb, ccc, ddd, X[ 7] ,  6);
+    FFF(ddd, eee, aaa, bbb, ccc, X[ 6] ,  8);
+    FFF(ccc, ddd, eee, aaa, bbb, X[ 2] , 13);
+    FFF(bbb, ccc, ddd, eee, aaa, X[13] ,  6);
+    FFF(aaa, bbb, ccc, ddd, eee, X[14] ,  5);
+    FFF(eee, aaa, bbb, ccc, ddd, X[ 0] , 15);
+    FFF(ddd, eee, aaa, bbb, ccc, X[ 3] , 13);
+    FFF(ccc, ddd, eee, aaa, bbb, X[ 9] , 11);
+    FFF(bbb, ccc, ddd, eee, aaa, X[11] , 11);
+
+    /* combine results */
+    ddd += cc + md->state[1];               /* final result for md->state[0] */
+    md->state[1] = md->state[2] + dd + eee;
+    md->state[2] = md->state[3] + ee + aaa;
+    md->state[3] = md->state[4] + aa + bbb;
+    md->state[4] = md->state[0] + bb + ccc;
+    md->state[0] = ddd;
+
+    return 0;
+}
+
+/**
+ Initialize the hash state
+ @param md   The hash state you wish to initialize
+ @return 0 if successful
+ */
+int rmd160_vinit(struct rmd160_vstate * md)
+{
+    md->state[0] = 0x67452301UL;
+    md->state[1] = 0xefcdab89UL;
+    md->state[2] = 0x98badcfeUL;
+    md->state[3] = 0x10325476UL;
+    md->state[4] = 0xc3d2e1f0UL;
+    md->curlen   = 0;
+    md->length   = 0;
+    return 0;
+}
+#define HASH_PROCESS(func_name, compress_name, state_var, block_size)                       \
+int func_name (struct rmd160_vstate * md, const unsigned char *in, unsigned long inlen)               \
+{                                                                                           \
+unsigned long n;                                                                        \
+int           err;                                                                      \
+if (md->curlen > sizeof(md->buf)) {                             \
+return -1;                                                            \
+}                                                                                       \
+while (inlen > 0) {                                                                     \
+if (md->curlen == 0 && inlen >= block_size) {                           \
+if ((err = compress_name (md, (unsigned char *)in)) != 0) {               \
+return err;                                                                   \
+}                                                                                \
+md->length += block_size * 8;                                        \
+in             += block_size;                                                    \
+inlen          -= block_size;                                                    \
+} else {                                                                            \
+n = MIN(inlen, (block_size - md->curlen));                           \
+memcpy(md->buf + md->curlen, in, (size_t)n);              \
+md->curlen += n;                                                     \
+in             += n;                                                             \
+inlen          -= n;                                                             \
+if (md->curlen == block_size) {                                      \
+if ((err = compress_name (md, md->buf)) != 0) {            \
+return err;                                                                \
+}                                                                             \
+md->length += 8*block_size;                                       \
+md->curlen = 0;                                                   \
+}                                                                                \
+}                                                                                    \
+}                                                                                       \
+return 0;                                                                        \
+}
+
+/**
+ Process a block of memory though the hash
+ @param md     The hash state
+ @param in     The data to hash
+ @param inlen  The length of the data (octets)
+ @return 0 if successful
+ */
+HASH_PROCESS(rmd160_vprocess, rmd160_vcompress, rmd160, 64)
+
+/**
+ Terminate the hash to get the digest
+ @param md  The hash state
+ @param out [out] The destination of the hash (20 bytes)
+ @return 0 if successful
+ */
+int rmd160_vdone(struct rmd160_vstate * md, unsigned char *out)
+{
+    int i;
+    if (md->curlen >= sizeof(md->buf)) {
+        return -1;
+    }
+    /* increase the length of the message */
+    md->length += md->curlen * 8;
+
+    /* append the '1' bit */
+    md->buf[md->curlen++] = (unsigned char)0x80;
+
+    /* if the length is currently above 56 bytes we append zeros
+     * then compress.  Then we can fall back to padding zeros and length
+     * encoding like normal.
+     */
+    if (md->curlen > 56) {
+        while (md->curlen < 64) {
+            md->buf[md->curlen++] = (unsigned char)0;
+        }
+        rmd160_vcompress(md, md->buf);
+        md->curlen = 0;
+    }
+    /* pad upto 56 bytes of zeroes */
+    while (md->curlen < 56) {
+        md->buf[md->curlen++] = (unsigned char)0;
+    }
+    /* store length */
+    STORE64L(md->length, md->buf+56);
+    rmd160_vcompress(md, md->buf);
+    /* copy output */
+    for (i = 0; i < 5; i++) {
+        STORE32L(md->state[i], out+(4*i));
+    }
+    return 0;
+}
+
+void calc_rmd160(char deprecated[41],uint8_t buf[20],uint8_t *msg,int32_t len)
+{
+    struct rmd160_vstate md;
+    rmd160_vinit(&md);
+    rmd160_vprocess(&md,msg,len);
+    rmd160_vdone(&md, buf);
+}
+#undef F
+#undef G
+#undef H
+#undef I
+#undef J
+#undef ROLc
+#undef FF
+#undef GG
+#undef HH
+#undef II
+#undef JJ
+#undef FFF
+#undef GGG
+#undef HHH
+#undef III
+#undef JJJ
+
+void calc_rmd160_sha256(uint8_t rmd160[20],uint8_t *data,int32_t datalen)
+{
+    bits256 hash;
+    vcalc_sha256(0,hash.bytes,data,datalen);
+    calc_rmd160(0,rmd160,hash.bytes,sizeof(hash));
+}
+
+char *nonportable_path(char *str)
+{
+    int32_t i;
+    for (i=0; str[i]!=0; i++)
+        if ( str[i] == '/' )
+            str[i] = '\\';
+    return(str);
+}
+
+char *portable_path(char *str)
+{
+#ifdef _WIN32
+    return(nonportable_path(str));
+#else
+#ifdef __PNACL
+    /*int32_t i,n;
+     if ( str[0] == '/' )
+     return(str);
+     else
+     {
+     n = (int32_t)strlen(str);
+     for (i=n; i>0; i--)
+     str[i] = str[i-1];
+     str[0] = '/';
+     str[n+1] = 0;
+     }*/
+#endif
+    return(str);
+#endif
+}
+
+void *loadfile(char *fname,uint8_t **bufp,long *lenp,long *allocsizep)
+{
+    FILE *fp;
+    long  filesize,buflen = *allocsizep;
+    uint8_t *buf = *bufp;
+    *lenp = 0;
+    if ( (fp= fopen(portable_path(fname),"rb")) != 0 )
+    {
+        fseek(fp,0,SEEK_END);
+        filesize = ftell(fp);
+        if ( filesize == 0 )
+        {
+            fclose(fp);
+            *lenp = 0;
+            //LogPrintf("loadfile null size.(%s)\n",fname);
+            return(0);
+        }
+        if ( filesize > buflen )
+        {
+            *allocsizep = filesize;
+            *bufp = buf = (uint8_t *)realloc(buf,(long)*allocsizep+64);
+        }
+        rewind(fp);
+        if ( buf == 0 )
+            LogPrintf("Null buf ???\n");
+        else
+        {
+            if ( fread(buf,1,(long)filesize,fp) != (unsigned long)filesize )
+                LogPrintf("error reading filesize.%ld\n",(long)filesize);
+            buf[filesize] = 0;
+        }
+        fclose(fp);
+        *lenp = filesize;
+        //LogPrintf("loaded.(%s)\n",buf);
+    } //else LogPrintf("OS_loadfile couldnt load.(%s)\n",fname);
+    return(buf);
+}
+
+void *filestr(long *allocsizep,char *_fname)
+{
+    long filesize = 0; char *fname,*buf = 0; void *retptr;
+    *allocsizep = 0;
+    fname = (char *)malloc(strlen(_fname)+1);
+    strcpy(fname,_fname);
+    retptr = loadfile(fname,(uint8_t **)&buf,&filesize,allocsizep);
+    free(fname);
+    return(retptr);
+}
+
+char *bitcoin_address(char *coinaddr,uint8_t addrtype,uint8_t *pubkey_or_rmd160,int32_t len)
+{
+    int32_t i; uint8_t data[25]; bits256 hash;// char checkaddr[65];
+    if ( len != 20 )
+        calc_rmd160_sha256(data+1,pubkey_or_rmd160,len);
+    else memcpy(data+1,pubkey_or_rmd160,20);
+    //btc_convrmd160(checkaddr,addrtype,data+1);
+    data[0] = addrtype;
+    hash = bits256_doublesha256(0,data,21);
+    for (i=0; i<4; i++)
+        data[21+i] = hash.bytes[31-i];
+    if ( (coinaddr= bitcoin_base58encode(coinaddr,data,25)) != 0 )
+    {
+        //uint8_t checktype,rmd160[20];
+        //bitcoin_addr2rmd160(&checktype,rmd160,coinaddr);
+        //if ( strcmp(checkaddr,coinaddr) != 0 )
+        //    LogPrintf("checkaddr.(%s) vs coinaddr.(%s) %02x vs [%02x] memcmp.%d\n",checkaddr,coinaddr,addrtype,checktype,memcmp(rmd160,data+1,20));
+    }
+    return(coinaddr);
+}
+
+void InitKomodoInternalVariables() {
+    // used for init internal variables, called from bitcoind.cpp and qt/bitcoin.cpp after
+    // gArgs.ParseParameters(...), mean when params already parsed into mapArgs and mapMultiArgs.
+    // this function is analog of komodo_args in komodod ...
+
+    std::string NOTARY_PUBKEY = gArgs.GetArg("-pubkey", "");
+    if (IsHex(NOTARY_PUBKEY) && NOTARY_PUBKEY.size() == 2 * CPubKey::COMPRESSED_PUBLIC_KEY_SIZE) {
+        std::vector<unsigned char> vch_pubkey = ParseHex(NOTARY_PUBKEY);
+        std::copy(vch_pubkey.begin(), vch_pubkey.end(), NOTARY_PUBKEY33);
+    }
+
+}
