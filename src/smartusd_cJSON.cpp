@@ -451,3 +451,274 @@ bits256 get_API_bits256(cJSON *obj)
         if ( cJSON_IsString(obj) != 0 && (str= obj->valuestring) != 0 && strlen(str) == 64 )
             decode_hex(hash.bytes,sizeof(hash),str);
     }
+    return(hash);
+}
+bits256 jbits256(cJSON *json,char *field) { if ( field == 0 ) return(get_API_bits256(json)); return(get_API_bits256(cJSON_GetObjectItem(json,field))); }
+bits256 jbits256i(cJSON *json,int32_t i) { return(get_API_bits256(cJSON_GetArrayItem(json,i))); }
+void jaddbits256(cJSON *json,char *field,bits256 hash) { char str[65]; bits256_str(str,hash), jaddstr(json,field,str); }
+void jaddibits256(cJSON *json,bits256 hash) { char str[65]; bits256_str(str,hash), jaddistr(json,str); }
+
+char *get_cJSON_fieldname(cJSON *obj)
+{
+    if ( obj != 0 )
+    {
+        if ( obj->child != 0 && obj->child->string != 0 )
+            return(obj->child->string);
+        else if ( obj->string != 0 )
+            return(obj->string);
+    }
+    return((char *)"<no cJSON string field>");
+}
+
+int32_t jnum(cJSON *obj,char *field)
+{
+    char *str; int32_t polarity = 1;
+    if ( field != 0 )
+        obj = jobj(obj,field);
+    if ( obj != 0 )
+    {
+        if ( cJSON_IsNumber(obj) != 0 )
+            return(obj->valuedouble);
+        else if ( cJSON_IsString(obj) != 0 && (str= jstr(obj,0)) != 0 )
+        {
+            if ( str[0] == '-' )
+                polarity = -1, str++;
+            return(polarity * (int32_t)calc_nxt64bits(str));
+        }
+    }
+    return(0);
+}
+
+void ensure_jsonitem(cJSON *json,char *field,char *value)
+{
+    cJSON *obj = cJSON_GetObjectItem(json,field);
+    if ( obj == 0 )
+        cJSON_AddItemToObject(json,field,cJSON_CreateString(value));
+    else cJSON_ReplaceItemInObject(json,field,cJSON_CreateString(value));
+}
+
+int32_t in_jsonarray(cJSON *array,char *value)
+{
+    int32_t i,n;
+    struct destbuf remote;
+    if ( array != 0 && cJSON_IsArray(array) != 0 )
+    {
+        n = cJSON_GetArraySize(array);
+        for (i=0; i<n; i++)
+        {
+            if ( array == 0 || n == 0 )
+                break;
+            copy_cJSON(&remote,cJSON_GetArrayItem(array,i));
+            if ( strcmp(remote.buf,value) == 0 )
+                return(1);
+        }
+    }
+    return(0);
+}
+
+int32_t myatoi(char *str,int32_t range)
+{
+    long x; char *ptr;
+    x = strtol(str,&ptr,10);
+    if ( range != 0 && x >= range )
+        x = (range - 1);
+    return((int32_t)x);
+}
+
+int32_t get_API_int(cJSON *obj,int32_t val)
+{
+    struct destbuf buf;
+    if ( obj != 0 )
+    {
+        if ( cJSON_IsNumber(obj) != 0 )
+            return((int32_t)obj->valuedouble);
+        copy_cJSON(&buf,obj);
+        val = myatoi(buf.buf,0);
+        if ( val < 0 )
+            val = 0;
+    }
+    return(val);
+}
+
+int32_t jint(cJSON *json,char *field) { if ( json == 0 ) return(0); if ( field == 0 ) return(get_API_int(json,0)); return(get_API_int(cJSON_GetObjectItem(json,field),0)); }
+int32_t jinti(cJSON *json,int32_t i) { if ( json == 0 ) return(0); return(get_API_int(cJSON_GetArrayItem(json,i),0)); }
+
+uint32_t get_API_uint(cJSON *obj,uint32_t val)
+{
+    struct destbuf buf;
+    if ( obj != 0 )
+    {
+        if ( cJSON_IsNumber(obj) != 0 )
+            return((uint32_t)obj->valuedouble);
+        copy_cJSON(&buf,obj);
+        val = myatoi(buf.buf,0);
+    }
+    return(val);
+}
+uint32_t juint(cJSON *json,char *field) { if ( json == 0 ) return(0); if ( field == 0 ) return(get_API_uint(json,0)); return(get_API_uint(cJSON_GetObjectItem(json,field),0)); }
+uint32_t juinti(cJSON *json,int32_t i) { if ( json == 0 ) return(0); return(get_API_uint(cJSON_GetArrayItem(json,i),0)); }
+
+double get_API_float(cJSON *obj)
+{
+    double val = 0.;
+    struct destbuf buf;
+    if ( obj != 0 )
+    {
+        if ( cJSON_IsNumber(obj) != 0 )
+            return(obj->valuedouble);
+        copy_cJSON(&buf,obj);
+        val = atof(buf.buf);
+    }
+    return(val);
+}
+
+double jdouble(cJSON *json,char *field)
+{
+    if ( json != 0 )
+    {
+        if ( field == 0 )
+            return(get_API_float(json));
+        else return(get_API_float(cJSON_GetObjectItem(json,field)));
+    } else return(0.);
+}
+
+double jdoublei(cJSON *json,int32_t i)
+{
+    if ( json != 0 )
+        return(get_API_float(cJSON_GetArrayItem(json,i)));
+    else return(0.);
+}
+
+cJSON *jobj(cJSON *json,char *field) { if ( json != 0 ) return(cJSON_GetObjectItem(json,field)); return(0); }
+
+void jdelete(cJSON *json,char *field)
+{
+    if ( jobj(json,field) != 0 )
+        cJSON_DeleteItemFromObject(json,field);
+}
+
+cJSON *jduplicate(cJSON *json) { return(cJSON_Duplicate(json,1)); }
+
+cJSON *jitem(cJSON *array,int32_t i) { if ( array != 0 && cJSON_IsArray(array) != 0 && cJSON_GetArraySize(array) > i ) return(cJSON_GetArrayItem(array,i)); return(0); }
+cJSON *jarray(int32_t *nump,cJSON *json,char *field)
+{
+    cJSON *array;
+    if ( json != 0 )
+    {
+        if ( field == 0 )
+            array = json;
+        else array = cJSON_GetObjectItem(json,field);
+        if ( array != 0 && cJSON_IsArray(array) != 0 && (*nump= cJSON_GetArraySize(array)) > 0 )
+            return(array);
+    }
+    *nump = 0;
+    return(0);
+}
+
+int32_t expand_nxt64bits(char *NXTaddr,uint64_t nxt64bits)
+{
+    int32_t i,n;
+    uint64_t modval;
+    char rev[64];
+    for (i=0; nxt64bits!=0; i++)
+    {
+        modval = nxt64bits % 10;
+        rev[i] = (char)(modval + '0');
+        nxt64bits /= 10;
+    }
+    n = i;
+    for (i=0; i<n; i++)
+        NXTaddr[i] = rev[n-1-i];
+    NXTaddr[i] = 0;
+    return(n);
+}
+
+char *nxt64str(uint64_t nxt64bits)
+{
+    static char NXTaddr[64];
+    expand_nxt64bits(NXTaddr,nxt64bits);
+    return(NXTaddr);
+}
+
+char *nxt64str2(uint64_t nxt64bits)
+{
+    static char NXTaddr[64];
+    expand_nxt64bits(NXTaddr,nxt64bits);
+    return(NXTaddr);
+}
+
+int32_t cmp_nxt64bits(const char *str,uint64_t nxt64bits)
+{
+    char expanded[64];
+    if ( str == 0 )//|| str[0] == 0 || nxt64bits == 0 )
+        return(-1);
+    if ( nxt64bits == 0 && str[0] == 0 )
+        return(0);
+    expand_nxt64bits(expanded,nxt64bits);
+    return(strcmp(str,expanded));
+}
+
+uint64_t calc_nxt64bits(const char *NXTaddr)
+{
+    int32_t c;
+    int64_t n,i,polarity = 1;
+    uint64_t lastval,mult,nxt64bits = 0;
+    if ( NXTaddr == 0 )
+    {
+        //LogPrintf("calling calc_nxt64bits with null ptr!\n");
+        return(0);
+    }
+    n = strlen(NXTaddr);
+    if ( n >= 22 )
+    {
+        //LogPrintf("calc_nxt64bits: illegal NXTaddr.(%s) too long\n",NXTaddr);
+        return(0);
+    }
+    else if ( strcmp(NXTaddr,"0") == 0 || strcmp(NXTaddr,"false") == 0 )
+    {
+        // LogPrintf("zero address?\n"); getchar();
+        return(0);
+    }
+    if ( NXTaddr[0] == '-' )
+        polarity = -1, NXTaddr++, n--;
+    mult = 1;
+    lastval = 0;
+    for (i=n-1; i>=0; i--,mult*=10)
+    {
+        c = NXTaddr[i];
+        if ( c < '0' || c > '9' )
+        {
+            //LogPrintf("calc_nxt64bits: illegal char.(%c %d) in (%s).%d\n",c,c,NXTaddr,(int32_t)i);
+#ifdef __APPLE__
+            //while ( 1 )
+            {
+                //sleep(60);
+                //LogPrintf("calc_nxt64bits: illegal char.(%c %d) in (%s).%d\n",c,c,NXTaddr,(int32_t)i);
+            }
+#endif
+            return(0);
+        }
+        nxt64bits += mult * (c - '0');
+        //if ( nxt64bits < lastval )
+            //LogPrintf("calc_nxt64bits: warning: 64bit overflow %llx < %llx\n",(long long)nxt64bits,(long long)lastval);
+        lastval = nxt64bits;
+    }
+    while ( *NXTaddr == '0' && *NXTaddr != 0 )
+        NXTaddr++;
+    //if ( cmp_nxt64bits(NXTaddr,nxt64bits) != 0 )
+        //LogPrintf("error calculating nxt64bits: %s -> %llx -> %s\n",NXTaddr,(long long)nxt64bits,nxt64str(nxt64bits));
+    if ( polarity < 0 )
+        return(-(int64_t)nxt64bits);
+    return(nxt64bits);
+}
+
+cJSON *addrs_jsonarray(uint64_t *addrs,int32_t num)
+{
+    int32_t j; cJSON *array;
+    array = cJSON_CreateArray();
+    for (j=0; j<num; j++)
+        jaddi64bits(array,addrs[j]);
+    return(array);
+}
+
+void free_json(cJSON *json) { if ( json != 0 ) cJSON_Delete(json); }
