@@ -187,4 +187,119 @@ BOOST_AUTO_TEST_CASE(subnet_test)
     subnet = CSubNet(ResolveIP("1.2.3.4"), 8);
     BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/8");
     subnet = CSubNet(ResolveIP("1.2.3.4"), 0);
-    BOOST_CHECK_EQUAL(subne
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/0");
+
+    subnet = CSubNet(ResolveIP("1.2.3.4"), ResolveIP("255.255.255.255"));
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.4/32");
+    subnet = CSubNet(ResolveIP("1.2.3.4"), ResolveIP("255.0.0.0"));
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/8");
+    subnet = CSubNet(ResolveIP("1.2.3.4"), ResolveIP("0.0.0.0"));
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/0");
+
+    BOOST_CHECK(CSubNet(ResolveIP("1:2:3:4:5:6:7:8")).IsValid());
+    BOOST_CHECK(CSubNet(ResolveIP("1:2:3:4:5:6:7:8")).Match(ResolveIP("1:2:3:4:5:6:7:8")));
+    BOOST_CHECK(!CSubNet(ResolveIP("1:2:3:4:5:6:7:8")).Match(ResolveIP("1:2:3:4:5:6:7:9")));
+    BOOST_CHECK(CSubNet(ResolveIP("1:2:3:4:5:6:7:8")).ToString() == "1:2:3:4:5:6:7:8/128");
+
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.255");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.4/32");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.254");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.4/31");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.252");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.4/30");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.248");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/29");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.240");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/28");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.224");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/27");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.192");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/26");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.128");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/25");
+    subnet = ResolveSubNet("1.2.3.4/255.255.255.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.3.0/24");
+    subnet = ResolveSubNet("1.2.3.4/255.255.254.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.2.0/23");
+    subnet = ResolveSubNet("1.2.3.4/255.255.252.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/22");
+    subnet = ResolveSubNet("1.2.3.4/255.255.248.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/21");
+    subnet = ResolveSubNet("1.2.3.4/255.255.240.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/20");
+    subnet = ResolveSubNet("1.2.3.4/255.255.224.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/19");
+    subnet = ResolveSubNet("1.2.3.4/255.255.192.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/18");
+    subnet = ResolveSubNet("1.2.3.4/255.255.128.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/17");
+    subnet = ResolveSubNet("1.2.3.4/255.255.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/16");
+    subnet = ResolveSubNet("1.2.3.4/255.254.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/15");
+    subnet = ResolveSubNet("1.2.3.4/255.252.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/14");
+    subnet = ResolveSubNet("1.2.3.4/255.248.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/13");
+    subnet = ResolveSubNet("1.2.3.4/255.240.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/12");
+    subnet = ResolveSubNet("1.2.3.4/255.224.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/11");
+    subnet = ResolveSubNet("1.2.3.4/255.192.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/10");
+    subnet = ResolveSubNet("1.2.3.4/255.128.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/9");
+    subnet = ResolveSubNet("1.2.3.4/255.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.0.0.0/8");
+    subnet = ResolveSubNet("1.2.3.4/254.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/7");
+    subnet = ResolveSubNet("1.2.3.4/252.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/6");
+    subnet = ResolveSubNet("1.2.3.4/248.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/5");
+    subnet = ResolveSubNet("1.2.3.4/240.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/4");
+    subnet = ResolveSubNet("1.2.3.4/224.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/3");
+    subnet = ResolveSubNet("1.2.3.4/192.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/2");
+    subnet = ResolveSubNet("1.2.3.4/128.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/1");
+    subnet = ResolveSubNet("1.2.3.4/0.0.0.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "0.0.0.0/0");
+
+    subnet = ResolveSubNet("1:2:3:4:5:6:7:8/ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1:2:3:4:5:6:7:8/128");
+    subnet = ResolveSubNet("1:2:3:4:5:6:7:8/ffff:0000:0000:0000:0000:0000:0000:0000");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1::/16");
+    subnet = ResolveSubNet("1:2:3:4:5:6:7:8/0000:0000:0000:0000:0000:0000:0000:0000");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "::/0");
+    subnet = ResolveSubNet("1.2.3.4/255.255.232.0");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1.2.0.0/255.255.232.0");
+    subnet = ResolveSubNet("1:2:3:4:5:6:7:8/ffff:ffff:ffff:fffe:ffff:ffff:ffff:ff0f");
+    BOOST_CHECK_EQUAL(subnet.ToString(), "1:2:3:4:5:6:7:8/ffff:ffff:ffff:fffe:ffff:ffff:ffff:ff0f");
+
+}
+
+BOOST_AUTO_TEST_CASE(netbase_getgroup)
+{
+
+    BOOST_CHECK(ResolveIP("127.0.0.1").GetGroup() == std::vector<unsigned char>({0})); // Local -> !Routable()
+    BOOST_CHECK(ResolveIP("257.0.0.1").GetGroup() == std::vector<unsigned char>({0})); // !Valid -> !Routable()
+    BOOST_CHECK(ResolveIP("10.0.0.1").GetGroup() == std::vector<unsigned char>({0})); // RFC1918 -> !Routable()
+    BOOST_CHECK(ResolveIP("169.254.1.1").GetGroup() == std::vector<unsigned char>({0})); // RFC3927 -> !Routable()
+    BOOST_CHECK(ResolveIP("1.2.3.4").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV4, 1, 2})); // IPv4
+    BOOST_CHECK(ResolveIP("::FFFF:0:102:304").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV4, 1, 2})); // RFC6145
+    BOOST_CHECK(ResolveIP("64:FF9B::102:304").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV4, 1, 2})); // RFC6052
+    BOOST_CHECK(ResolveIP("2002:102:304:9999:9999:9999:9999:9999").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV4, 1, 2})); // RFC3964
+    BOOST_CHECK(ResolveIP("2001:0:9999:9999:9999:9999:FEFD:FCFB").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV4, 1, 2})); // RFC4380
+    BOOST_CHECK(ResolveIP("FD87:D87E:EB43:edb1:8e4:3588:e546:35ca").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_TOR, 239})); // Tor
+    BOOST_CHECK(ResolveIP("2001:470:abcd:9999:9999:9999:9999:9999").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV6, 32, 1, 4, 112, 175})); //he.net
+    BOOST_CHECK(ResolveIP("2001:2001:9999:9999:9999:9999:9999:9999").GetGroup() == std::vector<unsigned char>({(unsigned char)NET_IPV6, 32, 1, 32, 1})); //IPv6
+
+    // baz.net sha256 hash: 12929400eb4607c4ac075f087167e75286b179c693eb059a01774b864e8fe505
+    std::vector<unsigned char> internal_group = {NET_INTERNAL, 0x12, 0x92, 0x94, 0x00, 0xeb, 0x46, 0x07, 0xc4, 0xac, 0x07};
+    BOOST_CHECK(CreateInternal("baz.net").GetGroup() == internal_group);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
