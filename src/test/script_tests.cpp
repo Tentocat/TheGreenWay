@@ -1593,3 +1593,35 @@ BOOST_AUTO_TEST_CASE(bitcoinconsensus_verify_script_amount_required_err)
 
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << spendTx;
+
+    smartusdconsensus_error err;
+    int result = smartusdconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    BOOST_CHECK_EQUAL(result, 0);
+    BOOST_CHECK_EQUAL(err, smartusdconsensus_ERR_AMOUNT_REQUIRED);
+}
+
+/* Test bitcoinconsensus_verify_script returns invalid flags err */
+BOOST_AUTO_TEST_CASE(bitcoinconsensus_verify_script_invalid_flags)
+{
+    unsigned int libconsensus_flags = 1 << 3;
+    int nIn = 0;
+
+    CScript scriptPubKey;
+    CScript scriptSig;
+    CScriptWitness wit;
+
+    scriptPubKey << OP_EQUAL;
+    CTransaction creditTx = BuildCreditingTransaction(scriptPubKey, 1);
+    CTransaction spendTx = BuildSpendingTransaction(scriptSig, wit, creditTx);
+
+    CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
+    stream << spendTx;
+
+    smartusdconsensus_error err;
+    int result = smartusdconsensus_verify_script(scriptPubKey.data(), scriptPubKey.size(), (const unsigned char*)&stream[0], stream.size(), nIn, libconsensus_flags, &err);
+    BOOST_CHECK_EQUAL(result, 0);
+    BOOST_CHECK_EQUAL(err, smartusdconsensus_ERR_INVALID_FLAGS);
+}
+
+#endif
+BOOST_AUTO_TEST_SUITE_END()
