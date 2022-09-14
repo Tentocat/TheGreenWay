@@ -123,4 +123,4 @@ BOOST_AUTO_TEST_CASE(pmt_malleability)
     BOOST_CHECK(tree.ExtractMatches(vTxid, vIndex).IsNull());
 }
 
-BOOST_AUTO_T
+BOOST_AUTO_TEST_SUITE_END()
