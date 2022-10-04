@@ -359,4 +359,276 @@ bool CBlockTreeDB::ReadAddressIndex(uint160 addressHash, int type,
         try {
             std::pair<char, CAddressIndexKey> keyObj;
             pcursor->GetKey(keyObj);
-            char chType = keyObj
+            char chType = keyObj.first;
+            CAddressIndexKey indexKey = keyObj.second;
+
+            if (chType == DB_ADDRESSINDEX && indexKey.hashBytes == addressHash) {
+                if (end > 0 && indexKey.blockHeight > end) {
+                    break;
+                }
+                try {
+                    CAmount nValue;
+                    pcursor->GetValue(nValue);
+
+                    addressIndex.push_back(std::make_pair(indexKey, nValue));
+                    pcursor->Next();
+                } catch (const std::exception& e) {
+                    return error("failed to get address index value");
+                }
+            } else {
+                break;
+            }
+        } catch (const std::exception& e) {
+            break;
+        }
+    }
+
+    return true;
+}
+
+bool getAddressFromIndex(const int &type, const uint160 &hash, std::string &address);
+
+#define DECLARE_IGNORELIST std::map <std::string,int> ignoredMap = { \
+    {"XXX", 1} \
+};
+
+bool CBlockTreeDB::Snapshot2(std::map <std::string, CAmount> &addressAmounts, UniValue *ret)
+{
+    int64_t total = 0; int64_t totalAddresses = 0; std::string address;
+    int64_t utxos = 0; int64_t ignoredAddresses = 0, cryptoConditionsUTXOs = 0, cryptoConditionsTotals = 0;
+    DECLARE_IGNORELIST
+    boost::scoped_ptr<CDBIterator> iter(NewIterator());
+    //std::map <std::string, CAmount> addressAmounts;
+    for (iter->SeekToLast(); iter->Valid(); iter->Prev())
+    {
+        boost::this_thread::interruption_point();
+        try
+        {
+            std::vector<unsigned char> slKey = std::vector<unsigned char>();
+            std::pair<char, CAddressIndexIteratorKey> keyObj;
+            iter->GetKey(keyObj);
+
+            char chType = keyObj.first;
+            CAddressIndexIteratorKey indexKey = keyObj.second;
+            //LogPrintf( "chType=%d\n", chType);
+            if (chType == DB_ADDRESSUNSPENTINDEX)
+            {
+                try {
+                    CAmount nValue;
+                    iter->GetValue(nValue);
+                    if ( nValue == 0 )
+                        continue;
+                    getAddressFromIndex(indexKey.type, indexKey.hashBytes, address);
+                    if ( indexKey.type == 3 )
+                    {
+                        cryptoConditionsUTXOs++;
+                        cryptoConditionsTotals += nValue;
+                        total += nValue;
+                        continue;
+                    }
+                    std::map <std::string, int>::iterator ignored = ignoredMap.find(address);
+                    if (ignored != ignoredMap.end())
+                    {
+                        LogPrintf("ignoring %s\n", address.c_str());
+                        ignoredAddresses++;
+                        continue;
+                    }
+
+                    std::map <std::string, CAmount>::iterator pos = addressAmounts.find(address);
+                    if ( pos == addressAmounts.end() )
+                    {
+                        // insert new address + utxo amount
+                        //LogPrintf( "inserting new address %s with amount %li\n", address.c_str(), nValue);
+                        addressAmounts[address] = nValue;
+                        totalAddresses++;
+                    }
+                    else
+                    {
+                        // update unspent tally for this address
+                        //LogPrintf( "updating address %s with new utxo amount %li\n", address.c_str(), nValue);
+                        addressAmounts[address] += nValue;
+                    }
+                    //LogPrintf("{\"%s\", %.8f},\n",address.c_str(),(double)nValue/COIN);
+                    // total += nValue;
+                    utxos++;
+                    total += nValue;
+                }
+                catch (const std::exception& e)
+                {
+                    LogPrintf( "DONE %s: LevelDB addressindex exception! - %s\n", __func__, e.what());
+                    return false; //break; this means failiure of DB? we need to exit here if so for consensus code!
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            LogPrintf( "DONE reading index entries\n");
+            break;
+        }
+    }
+    //LogPrintf( "total=%f, totalAddresses=%li, utxos=%li, ignored=%li\n", (double) total / COIN, totalAddresses, utxos, ignoredAddresses);
+    
+    // this is for the snapshot RPC, you can skip this by passing a 0 as the last argument.
+    if (ret)
+    {
+        // Total circulating supply without CC vouts.
+        ret->push_back(std::make_pair("total", (double) (total)/ COIN ));
+        // Average amount in each address of this snapshot
+        ret->push_back(std::make_pair("average",(double) (total/COIN) / totalAddresses ));
+        // Total number of utxos processed in this snaphot
+        ret->push_back(std::make_pair("utxos", utxos));
+        // Total number of addresses in this snaphot
+        ret->push_back(std::make_pair("total_addresses", totalAddresses ));
+        // Total number of ignored addresses in this snaphot
+        ret->push_back(std::make_pair("ignored_addresses", ignoredAddresses));
+        // Total number of crypto condition utxos we skipped
+        ret->push_back(std::make_pair("skipped_cc_utxos", cryptoConditionsUTXOs));
+        // Total value of skipped crypto condition utxos
+        ret->push_back(std::make_pair("cc_utxo_value", (double) cryptoConditionsTotals / COIN));
+        // total of all the address's, does not count coins in CC vouts.
+        ret->push_back(std::make_pair("total_includeCCvouts", (double) (total+cryptoConditionsTotals)/ COIN ));
+        // The snapshot finished at this block height
+        ret->push_back(std::make_pair("ending_height", chainActive.Height()));
+    }
+    return true;
+}
+
+
+std::vector <std::pair<CAmount, CTxDestination>> vAddressSnapshot;
+
+UniValue CBlockTreeDB::Snapshot(int top)
+{
+    int topN = 0;
+    std::vector <std::pair<CAmount, std::string>> vaddr;
+    //std::vector <std::vector <std::pair<CAmount, CScript>>> tokenids;
+    std::map <std::string, CAmount> addressAmounts;
+    UniValue result(UniValue::VOBJ);
+    UniValue addressesSorted(UniValue::VARR);
+    result.push_back(Pair("start_time", (int) time(NULL)));
+    if ( (vAddressSnapshot.size() > 0 && top < 0) || (Snapshot2(addressAmounts,&result) && top >= 0) )
+    {
+        if ( top > -1 )
+        {
+            for (std::pair<std::string, CAmount> element : addressAmounts)
+                vaddr.push_back( std::make_pair(element.second, element.first) );
+            std::sort(vaddr.rbegin(), vaddr.rend());
+        }
+        else 
+        {
+            for ( auto address : vAddressSnapshot )
+                vaddr.push_back(std::make_pair(address.first, EncodeDestination(address.second)));
+            top = vAddressSnapshot.size();
+        }
+        int topN = 0;
+        for (std::vector<std::pair<CAmount, std::string>>::iterator it = vaddr.begin(); it!=vaddr.end(); ++it)
+        {
+          	UniValue obj(UniValue::VOBJ);
+          	obj.push_back( std::make_pair("addr", it->second.c_str() ) );
+          	char amount[32];
+          	sprintf(amount, "%.8f", (double) it->first / COIN);
+          	obj.push_back( std::make_pair("amount", amount) );
+          	addressesSorted.push_back(obj);
+            topN++;
+            // If requested, only show top N addresses in output JSON
+           	if ( top == topN )
+                break;
+        }
+    	// Array of all addreses with balances
+        result.push_back(std::make_pair("addresses", addressesSorted));
+    } else result.push_back(std::make_pair("error", "problem doing snapshot"));
+    return(result);
+}
+
+bool CBlockTreeDB::WriteTimestampIndex(const CTimestampIndexKey &timestampIndex) {
+    CDBBatch batch(*this);
+    batch.Write(std::make_pair(DB_TIMESTAMPINDEX, timestampIndex), 0);
+    return WriteBatch(batch);
+}
+
+bool CBlockTreeDB::ReadTimestampIndex(const unsigned int &high, const unsigned int &low, const bool fActiveOnly, std::vector<std::pair<uint256, unsigned int> > &hashes) {
+
+    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+
+    pcursor->Seek(std::make_pair(DB_TIMESTAMPINDEX, CTimestampIndexIteratorKey(low)));
+
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        try {
+            std::pair<char, CTimestampIndexKey> keyObj;
+            pcursor->GetKey(keyObj);
+            char chType = keyObj.first;
+            CTimestampIndexKey indexKey = keyObj.second;
+
+            if (chType == DB_TIMESTAMPINDEX && indexKey.timestamp < high) {
+                if (fActiveOnly) {
+                    if (blockOnchainActive(indexKey.blockHash)) {
+                        hashes.push_back(std::make_pair(indexKey.blockHash, indexKey.timestamp));
+                    }
+                } else {
+                    hashes.push_back(std::make_pair(indexKey.blockHash, indexKey.timestamp));
+                }
+
+                pcursor->Next();
+            } else {
+                break;
+            }
+        } catch (const std::exception& e) {
+            break;
+        }
+    }
+
+    return true;
+}
+
+bool CBlockTreeDB::WriteTimestampBlockIndex(const CTimestampBlockIndexKey &blockhashIndex, const CTimestampBlockIndexValue &logicalts) {
+    CDBBatch batch(*this);
+    batch.Write(std::make_pair(DB_BLOCKHASHINDEX, blockhashIndex), logicalts);
+    return WriteBatch(batch);
+}
+
+bool CBlockTreeDB::ReadTimestampBlockIndex(const uint256 &hash, unsigned int &ltimestamp) {
+
+    CTimestampBlockIndexValue(lts);
+    if (!Read(std::make_pair(DB_BLOCKHASHINDEX, hash), lts))
+	return false;
+
+    ltimestamp = lts.ltimestamp;
+    return true;
+}
+
+bool CBlockTreeDB::blockOnchainActive(const uint256 &hash) {
+    BlockMap::const_iterator it = mapBlockIndex.find(hash);
+    CBlockIndex* pblockindex = it != mapBlockIndex.end() ? it->second : NULL;
+
+    if (!pblockindex || !chainActive.Contains(pblockindex)) {
+	    return false;
+    }
+
+    return true;
+}
+
+bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, std::function<CBlockIndex*(const uint256&)> insertBlockIndex)
+{
+    std::unique_ptr<CDBIterator> pcursor(NewIterator());
+
+    pcursor->Seek(std::make_pair(DB_BLOCK_INDEX, uint256()));
+
+    // Load mapBlockIndex
+    while (pcursor->Valid()) {
+        boost::this_thread::interruption_point();
+        std::pair<char, uint256> key;
+        if (pcursor->GetKey(key) && key.first == DB_BLOCK_INDEX) {
+            CDiskBlockIndex diskindex;
+            if (pcursor->GetValue(diskindex)) {
+                // Construct block index object
+                CBlockIndex* pindexNew = insertBlockIndex(diskindex.GetBlockHash());
+                pindexNew->pprev          = insertBlockIndex(diskindex.hashPrev);
+                pindexNew->nHeight        = diskindex.nHeight;
+                pindexNew->nFile          = diskindex.nFile;
+                pindexNew->nDataPos       = diskindex.nDataPos;
+                pindexNew->nUndoPos       = diskindex.nUndoPos;
+                pindexNew->nVersion       = diskindex.nVersion;
+                pindexNew->hashMerkleRoot = diskindex.hashMerkleRoot;
+                pindexNew->nTime          = diskindex.nTime;
+                pindexNew->nBits          = diskindex.nBits;
+                pindexNew->nNonce         = diskindex.nNonce
