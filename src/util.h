@@ -271,4 +271,99 @@ public:
      *
      * @param strArg Argument to get (e.g. "-foo")
      * @param fDefault (true or false)
-     * @retu
+     * @return command-line argument or default value
+     */
+    bool GetBoolArg(const std::string& strArg, bool fDefault) const;
+
+    /**
+     * Set an argument if it doesn't already have a value
+     *
+     * @param strArg Argument to set (e.g. "-foo")
+     * @param strValue Value (e.g. "1")
+     * @return true if argument gets set, false if it already had a value
+     */
+    bool SoftSetArg(const std::string& strArg, const std::string& strValue);
+
+    /**
+     * Set a boolean argument if it doesn't already have a value
+     *
+     * @param strArg Argument to set (e.g. "-foo")
+     * @param fValue Value (e.g. false)
+     * @return true if argument gets set, false if it already had a value
+     */
+    bool SoftSetBoolArg(const std::string& strArg, bool fValue);
+
+    // Forces an arg setting. Called by SoftSetArg() if the arg hasn't already
+    // been set. Also called directly in testing.
+    void ForceSetArg(const std::string& strArg, const std::string& strValue);
+};
+
+extern ArgsManager gArgs;
+
+/**
+ * Format a string to be used as group of options in help messages
+ *
+ * @param message Group name (e.g. "RPC server options:")
+ * @return the formatted string
+ */
+std::string HelpMessageGroup(const std::string& message);
+
+/**
+ * Format a string to be used as option description in help messages
+ *
+ * @param option Option message (e.g. "-rpcuser=<user>")
+ * @param message Option description (e.g. "Username for JSON-RPC connections")
+ * @return the formatted string
+ */
+std::string HelpMessageOpt(const std::string& option, const std::string& message);
+
+/**
+ * Return the number of physical cores available on the current system.
+ * @note This does not count virtual cores, such as those provided by HyperThreading
+ * when boost is newer than 1.56.
+ */
+int GetNumCores();
+
+void RenameThread(const char* name);
+
+/**
+ * .. and a wrapper that just calls func once
+ */
+template <typename Callable> void TraceThread(const char* name,  Callable func)
+{
+    std::string s = strprintf("bitcoin-%s", name);
+    RenameThread(s.c_str());
+    try
+    {
+        LogPrintf("%s thread start\n", name);
+        func();
+        LogPrintf("%s thread exit\n", name);
+    }
+    catch (const boost::thread_interrupted&)
+    {
+        LogPrintf("%s thread interrupt\n", name);
+        throw;
+    }
+    catch (const std::exception& e) {
+        PrintExceptionContinue(&e, name);
+        throw;
+    }
+    catch (...) {
+        PrintExceptionContinue(nullptr, name);
+        throw;
+    }
+}
+
+std::string CopyrightHolders(const std::string& strPrefix);
+
+//! Substitute for C++14 std::make_unique.
+template <typename T, typename... Args>
+std::unique_ptr<T> MakeUnique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+// split string using by space or comma as a delimiter char
+void SplitStr(const std::string& strVal, std::vector<std::string> &outVals);
+
+#endif // BITCOIN_UTIL_H
