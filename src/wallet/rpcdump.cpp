@@ -1163,4 +1163,113 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
             "may report that the imported keys, addresses or scripts exists but related transactions are still missing.\n"
             "\nExamples:\n" +
             HelpExampleCli("importmulti", "'[{ \"scriptPubKey\": { \"address\": \"<my address>\" }, \"timestamp\":1455191478 }, "
-                                          "{ \"scriptPubKey\": { \"address\": \"<my 2nd address>\" }, \"labe
+                                          "{ \"scriptPubKey\": { \"address\": \"<my 2nd address>\" }, \"label\": \"example 2\", \"timestamp\": 1455191480 }]'") +
+            HelpExampleCli("importmulti", "'[{ \"scriptPubKey\": { \"address\": \"<my address>\" }, \"timestamp\":1455191478 }]' '{ \"rescan\": false}'") +
+
+            "\nResponse is an array with the same size as the input that has the execution result :\n"
+            "  [{ \"success\": true } , { \"success\": false, \"error\": { \"code\": -1, \"message\": \"Internal Server Error\"} }, ... ]\n");
+
+    // clang-format on
+
+    RPCTypeCheck(mainRequest.params, {UniValue::VARR, UniValue::VOBJ});
+
+    const UniValue& requests = mainRequest.params[0];
+
+    //Default options
+    bool fRescan = true;
+
+    if (!mainRequest.params[1].isNull()) {
+        const UniValue& options = mainRequest.params[1];
+
+        if (options.exists("rescan")) {
+            fRescan = options["rescan"].get_bool();
+        }
+    }
+
+    WalletRescanReserver reserver(pwallet);
+    if (fRescan && !reserver.reserve()) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
+    }
+
+    int64_t now = 0;
+    bool fRunScan = false;
+    int64_t nLowestTimestamp = 0;
+    UniValue response(UniValue::VARR);
+    {
+        LOCK2(cs_main, pwallet->cs_wallet);
+        EnsureWalletIsUnlocked(pwallet);
+
+        // Verify all timestamps are present before importing any keys.
+        now = chainActive.Tip() ? chainActive.Tip()->GetMedianTimePast() : 0;
+        for (const UniValue& data : requests.getValues()) {
+            GetImportTimestamp(data, now);
+        }
+
+        const int64_t minimumTimestamp = 1;
+
+        if (fRescan && chainActive.Tip()) {
+            nLowestTimestamp = chainActive.Tip()->GetBlockTime();
+        } else {
+            fRescan = false;
+        }
+
+        for (const UniValue& data : requests.getValues()) {
+            const int64_t timestamp = std::max(GetImportTimestamp(data, now), minimumTimestamp);
+            const UniValue result = ProcessImport(pwallet, data, timestamp);
+            response.push_back(result);
+
+            if (!fRescan) {
+                continue;
+            }
+
+            // If at least one request was successful then allow rescan.
+            if (result["success"].get_bool()) {
+                fRunScan = true;
+            }
+
+            // Get the lowest timestamp.
+            if (timestamp < nLowestTimestamp) {
+                nLowestTimestamp = timestamp;
+            }
+        }
+    }
+    if (fRescan && fRunScan && requests.size()) {
+        int64_t scannedTime = pwallet->RescanFromTime(nLowestTimestamp, reserver, true /* update */);
+        pwallet->ReacceptWalletTransactions();
+
+        if (scannedTime > nLowestTimestamp) {
+            std::vector<UniValue> results = response.getValues();
+            response.clear();
+            response.setArray();
+            size_t i = 0;
+            for (const UniValue& request : requests.getValues()) {
+                // If key creation date is within the successfully scanned
+                // range, or if the import result already has an error set, let
+                // the result stand unmodified. Otherwise replace the result
+                // with an error message.
+                if (scannedTime <= GetImportTimestamp(request, now) || results.at(i).exists("error")) {
+                    response.push_back(results.at(i));
+                } else {
+                    UniValue result = UniValue(UniValue::VOBJ);
+                    result.pushKV("success", UniValue(false));
+                    result.pushKV(
+                        "error",
+                        JSONRPCError(
+                            RPC_MISC_ERROR,
+                            strprintf("Rescan failed for key with creation timestamp %d. There was an error reading a "
+                                      "block from time %d, which is after or within %d seconds of key creation, and "
+                                      "could contain transactions pertaining to the key. As a result, transactions "
+                                      "and coins using this key may not appear in the wallet. This error could be "
+                                      "caused by pruning or data corruption (see bitcoind log for details) and could "
+                                      "be dealt with by downloading and rescanning the relevant blocks (see -reindex "
+                                      "and -rescan options).",
+                                GetImportTimestamp(request, now), scannedTime - TIMESTAMP_WINDOW - 1, TIMESTAMP_WINDOW)));
+                    response.push_back(std::move(result));
+                }
+                ++i;
+            }
+        }
+    }
+
+    return response;
+}
