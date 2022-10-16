@@ -664,3 +664,269 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
 
 
 UniValue dumpwallet(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "dumpwallet \"filename\"\n"
+            "\nDumps all wallet keys in a human-readable format to a server-side file. This does not allow overwriting existing files.\n"
+            "Imported scripts are included in the dumpfile, but corresponding BIP173 addresses, etc. may not be added automatically by importwallet.\n"
+            "Note that if your wallet contains keys which are not derived from your HD seed (e.g. imported keys), these are not covered by\n"
+            "only backing up the seed itself, and must be backed up too (e.g. ensure you back up the whole dumpfile).\n"
+            "\nArguments:\n"
+            "1. \"filename\"    (string, required) The filename with path (either absolute or relative to bitcoind)\n"
+            "\nResult:\n"
+            "{                           (json object)\n"
+            "  \"filename\" : {        (string) The filename with full absolute path\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("dumpwallet", "\"test\"")
+            + HelpExampleRpc("dumpwallet", "\"test\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    EnsureWalletIsUnlocked(pwallet);
+
+    boost::filesystem::path filepath = request.params[0].get_str();
+    filepath = boost::filesystem::absolute(filepath);
+
+    /* Prevent arbitrary files from being overwritten. There have been reports
+     * that users have overwritten wallet files this way:
+     * https://github.com/bitcoin/bitcoin/issues/9934
+     * It may also avoid other security issues.
+     */
+    if (boost::filesystem::exists(filepath)) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, filepath.string() + " already exists. If you are sure this is what you want, move it out of the way first");
+    }
+
+    std::ofstream file;
+    file.open(filepath.string().c_str());
+    if (!file.is_open())
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot open wallet dump file");
+
+    std::map<CTxDestination, int64_t> mapKeyBirth;
+    const std::map<CKeyID, int64_t>& mapKeyPool = pwallet->GetAllReserveKeys();
+    pwallet->GetKeyBirthTimes(mapKeyBirth);
+
+    std::set<CScriptID> scripts = pwallet->GetCScripts();
+    // TODO: include scripts in GetKeyBirthTimes() output instead of separate
+
+    // sort time/key pairs
+    std::vector<std::pair<int64_t, CKeyID> > vKeyBirth;
+    for (const auto& entry : mapKeyBirth) {
+        if (const CKeyID* keyID = boost::get<CKeyID>(&entry.first)) { // set and test
+            vKeyBirth.push_back(std::make_pair(entry.second, *keyID));
+        }
+    }
+    mapKeyBirth.clear();
+    std::sort(vKeyBirth.begin(), vKeyBirth.end());
+
+    // produce output
+    file << strprintf("# Wallet dump created by SmartUSD %s\n", CLIENT_BUILD);
+    file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
+    file << strprintf("# * Best block at time of backup was %i (%s),\n", chainActive.Height(), chainActive.Tip()->GetBlockHash().ToString());
+    file << strprintf("#   mined on %s\n", EncodeDumpTime(chainActive.Tip()->GetBlockTime()));
+    file << "\n";
+
+    // add the base58check encoded extended master if the wallet uses HD
+    CKeyID masterKeyID = pwallet->GetHDChain().masterKeyID;
+    if (!masterKeyID.IsNull())
+    {
+        CKey key;
+        if (pwallet->GetKey(masterKeyID, key)) {
+            CExtKey masterKey;
+            masterKey.SetMaster(key.begin(), key.size());
+
+            CBitcoinExtKey b58extkey;
+            b58extkey.SetKey(masterKey);
+
+            file << "# extended private masterkey: " << b58extkey.ToString() << "\n\n";
+        }
+    }
+    for (std::vector<std::pair<int64_t, CKeyID> >::const_iterator it = vKeyBirth.begin(); it != vKeyBirth.end(); it++) {
+        const CKeyID &keyid = it->second;
+        std::string strTime = EncodeDumpTime(it->first);
+        std::string strAddr;
+        std::string strLabel;
+        CKey key;
+        if (pwallet->GetKey(keyid, key)) {
+            file << strprintf("%s %s ", CBitcoinSecret(key).ToString(), strTime);
+            if (GetWalletAddressesForKey(pwallet, keyid, strAddr, strLabel)) {
+               file << strprintf("label=%s", strLabel);
+            } else if (keyid == masterKeyID) {
+                file << "hdmaster=1";
+            } else if (mapKeyPool.count(keyid)) {
+                file << "reserve=1";
+            } else if (pwallet->mapKeyMetadata[keyid].hdKeypath == "m") {
+                file << "inactivehdmaster=1";
+            } else {
+                file << "change=1";
+            }
+            file << strprintf(" # addr=%s%s\n", strAddr, (pwallet->mapKeyMetadata[keyid].hdKeypath.size() > 0 ? " hdkeypath="+pwallet->mapKeyMetadata[keyid].hdKeypath : ""));
+        }
+    }
+    file << "\n";
+    for (const CScriptID &scriptid : scripts) {
+        CScript script;
+        std::string create_time = "0";
+        std::string address = EncodeDestination(scriptid);
+        // get birth times for scripts with metadata
+        auto it = pwallet->m_script_metadata.find(scriptid);
+        if (it != pwallet->m_script_metadata.end()) {
+            create_time = EncodeDumpTime(it->second.nCreateTime);
+        }
+        if(pwallet->GetCScript(scriptid, script)) {
+            file << strprintf("%s %s script=1", HexStr(script.begin(), script.end()), create_time);
+            file << strprintf(" # addr=%s\n", address);
+        }
+    }
+    file << "\n";
+    file << "# End of dump\n";
+    file.close();
+
+    UniValue reply(UniValue::VOBJ);
+    reply.push_back(Pair("filename", filepath.string()));
+
+    return reply;
+}
+
+
+UniValue ProcessImport(CWallet * const pwallet, const UniValue& data, const int64_t timestamp)
+{
+    try {
+        bool success = false;
+
+        // Required fields.
+        const UniValue& scriptPubKey = data["scriptPubKey"];
+
+        // Should have script or JSON with "address".
+        if (!(scriptPubKey.getType() == UniValue::VOBJ && scriptPubKey.exists("address")) && !(scriptPubKey.getType() == UniValue::VSTR)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid scriptPubKey");
+        }
+
+        // Optional fields.
+        const std::string& strRedeemScript = data.exists("redeemscript") ? data["redeemscript"].get_str() : "";
+        const UniValue& pubKeys = data.exists("pubkeys") ? data["pubkeys"].get_array() : UniValue();
+        const UniValue& keys = data.exists("keys") ? data["keys"].get_array() : UniValue();
+        const bool internal = data.exists("internal") ? data["internal"].get_bool() : false;
+        const bool watchOnly = data.exists("watchonly") ? data["watchonly"].get_bool() : false;
+        const std::string& label = data.exists("label") && !internal ? data["label"].get_str() : "";
+
+        bool isScript = scriptPubKey.getType() == UniValue::VSTR;
+        bool isP2SH = strRedeemScript.length() > 0;
+        const std::string& output = isScript ? scriptPubKey.get_str() : scriptPubKey["address"].get_str();
+
+        // Parse the output.
+        CScript script;
+        CTxDestination dest;
+
+        if (!isScript) {
+            dest = DecodeDestination(output);
+            if (!IsValidDestination(dest)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid address");
+            }
+            script = GetScriptForDestination(dest);
+        } else {
+            if (!IsHex(output)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid scriptPubKey");
+            }
+
+            std::vector<unsigned char> vData(ParseHex(output));
+            script = CScript(vData.begin(), vData.end());
+        }
+
+        // Watchonly and private keys
+        if (watchOnly && keys.size()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Incompatibility found between watchonly and keys");
+        }
+
+        // Internal + Label
+        if (internal && data.exists("label")) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Incompatibility found between internal and label");
+        }
+
+        // Not having Internal + Script
+        if (!internal && isScript) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Internal must be set for hex scriptPubKey");
+        }
+
+        // Keys / PubKeys size check.
+        if (!isP2SH && (keys.size() > 1 || pubKeys.size() > 1)) { // Address / scriptPubKey
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "More than private key given for one address");
+        }
+
+        // Invalid P2SH redeemScript
+        if (isP2SH && !IsHex(strRedeemScript)) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid redeem script");
+        }
+
+        // Process. //
+
+        // P2SH
+        if (isP2SH) {
+            // Import redeem script.
+            std::vector<unsigned char> vData(ParseHex(strRedeemScript));
+            CScript redeemScript = CScript(vData.begin(), vData.end());
+
+            // Invalid P2SH address
+            if (!script.IsPayToScriptHash()) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid P2SH address / script");
+            }
+
+            pwallet->MarkDirty();
+
+            if (!pwallet->AddWatchOnly(redeemScript, timestamp)) {
+                throw JSONRPCError(RPC_WALLET_ERROR, "Error adding address to wallet");
+            }
+
+            if (!pwallet->HaveCScript(redeemScript) && !pwallet->AddCScript(redeemScript)) {
+                throw JSONRPCError(RPC_WALLET_ERROR, "Error adding p2sh redeemScript to wallet");
+            }
+
+            CTxDestination redeem_dest = CScriptID(redeemScript);
+            CScript redeemDestination = GetScriptForDestination(redeem_dest);
+
+            if (::IsMine(*pwallet, redeemDestination) == ISMINE_SPENDABLE) {
+                throw JSONRPCError(RPC_WALLET_ERROR, "The wallet already contains the private key for this address or script");
+            }
+
+            pwallet->MarkDirty();
+
+            if (!pwallet->AddWatchOnly(redeemDestination, timestamp)) {
+                throw JSONRPCError(RPC_WALLET_ERROR, "Error adding address to wallet");
+            }
+
+            // add to address book or update label
+            if (IsValidDestination(dest)) {
+                pwallet->SetAddressBook(dest, label, "receive");
+            }
+
+            // Import private keys.
+            if (keys.size()) {
+                for (size_t i = 0; i < keys.size(); i++) {
+                    const std::string& privkey = keys[i].get_str();
+
+                    CBitcoinSecret vchSecret;
+                    bool fGood = vchSecret.SetString(privkey);
+
+                    if (!fGood) {
+                        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key encoding");
+                    }
+
+                    CKey key = vchSecret.GetKey();
+
+                    if (!key.IsValid()) {
+                        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Private key outside allowed range");
+                    }
+
+                    CPubKey pubkey = key.GetPubKey();
+                    assert(key.VerifyPubKey(pubkey));
+
+                    CKeyID vchAddress = pubkey.GetID();
+                    pwallet->MarkDirty();
+                    pwallet->SetAddressBook(vchAddress, label, "rece
