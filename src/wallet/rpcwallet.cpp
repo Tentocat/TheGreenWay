@@ -175,4 +175,289 @@ UniValue getnewaddress(const JSONRPCRequest& request)
 
     OutputType output_type = g_address_type;
     if (!request.params[1].isNull()) {
-        output_
+        output_type = ParseOutputType(request.params[1].get_str(), g_address_type);
+        if (output_type == OUTPUT_TYPE_NONE) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[1].get_str()));
+        }
+    }
+
+    if (!pwallet->IsLocked()) {
+        pwallet->TopUpKeyPool();
+    }
+
+    // Generate a new key that is added to wallet
+    CPubKey newKey;
+    if (!pwallet->GetKeyFromPool(newKey)) {
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+    }
+    pwallet->LearnRelatedScripts(newKey, output_type);
+    CTxDestination dest = GetDestinationForKey(newKey, output_type);
+
+    pwallet->SetAddressBook(dest, strAccount, "receive");
+
+    return EncodeDestination(dest);
+}
+
+
+CTxDestination GetAccountDestination(CWallet* const pwallet, std::string strAccount, bool bForceNew=false)
+{
+    CTxDestination dest;
+    if (!pwallet->GetAccountDestination(dest, strAccount, bForceNew)) {
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+    }
+
+    return dest;
+}
+
+UniValue getaccountaddress(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "getaccountaddress \"account\"\n"
+            "\nDEPRECATED. Returns the current SmartUSD address for receiving payments to this account.\n"
+            "\nArguments:\n"
+            "1. \"account\"       (string, required) The account name for the address. It can also be set to the empty string \"\" to represent the default account. The account does not need to exist, it will be created and a new address created  if there is no account by the given name.\n"
+            "\nResult:\n"
+            "\"address\"          (string) The account smartusd address\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getaccountaddress", "")
+            + HelpExampleCli("getaccountaddress", "\"\"")
+            + HelpExampleCli("getaccountaddress", "\"myaccount\"")
+            + HelpExampleRpc("getaccountaddress", "\"myaccount\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    // Parse the account first so we don't generate a key if there's an error
+    std::string strAccount = AccountFromValue(request.params[0]);
+
+    UniValue ret(UniValue::VSTR);
+
+    ret = EncodeDestination(GetAccountDestination(pwallet, strAccount));
+    return ret;
+}
+
+
+UniValue getrawchangeaddress(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 1)
+        throw std::runtime_error(
+            "getrawchangeaddress ( \"address_type\" )\n"
+            "\nReturns a new SmartUSD address, for receiving change.\n"
+            "This is for use with raw transactions, NOT normal use.\n"
+            "\nArguments:\n"
+            "1. \"address_type\"           (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -changetype.\n"
+            "\nResult:\n"
+            "\"address\"    (string) The address\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getrawchangeaddress", "")
+            + HelpExampleRpc("getrawchangeaddress", "")
+       );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    if (!pwallet->IsLocked()) {
+        pwallet->TopUpKeyPool();
+    }
+
+    OutputType output_type = g_change_type != OUTPUT_TYPE_NONE ? g_change_type : g_address_type;
+    if (!request.params[0].isNull()) {
+        output_type = ParseOutputType(request.params[0].get_str(), output_type);
+        if (output_type == OUTPUT_TYPE_NONE) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[0].get_str()));
+        }
+    }
+
+    CReserveKey reservekey(pwallet);
+    CPubKey vchPubKey;
+    if (!reservekey.GetReservedKey(vchPubKey, true))
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+
+    reservekey.KeepKey();
+
+    pwallet->LearnRelatedScripts(vchPubKey, output_type);
+    CTxDestination dest = GetDestinationForKey(vchPubKey, output_type);
+
+    return EncodeDestination(dest);
+}
+
+
+UniValue setaccount(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+        throw std::runtime_error(
+            "setaccount \"address\" \"account\"\n"
+            "\nDEPRECATED. Sets the account associated with the given address.\n"
+            "\nArguments:\n"
+            "1. \"address\"         (string, required) The smartusd address to be associated with an account.\n"
+            "2. \"account\"         (string, required) The account to assign the address to.\n"
+            "\nExamples:\n"
+            + HelpExampleCli("setaccount", "\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\" \"tabby\"")
+            + HelpExampleRpc("setaccount", "\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\", \"tabby\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SmartUSD address");
+    }
+
+    std::string strAccount;
+    if (!request.params[1].isNull())
+        strAccount = AccountFromValue(request.params[1]);
+
+    // Only add the account if the address is yours.
+    if (IsMine(*pwallet, dest)) {
+        // Detect when changing the account of an address that is the 'unused current key' of another account:
+        if (pwallet->mapAddressBook.count(dest)) {
+            std::string strOldAccount = pwallet->mapAddressBook[dest].name;
+            if (dest == GetAccountDestination(pwallet, strOldAccount)) {
+                GetAccountDestination(pwallet, strOldAccount, true);
+            }
+        }
+        pwallet->SetAddressBook(dest, strAccount, "receive");
+    }
+    else
+        throw JSONRPCError(RPC_MISC_ERROR, "setaccount can only be used with own address");
+
+    return NullUniValue;
+}
+
+
+UniValue getaccount(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "getaccount \"address\"\n"
+            "\nDEPRECATED. Returns the account associated with the given address.\n"
+            "\nArguments:\n"
+            "1. \"address\"         (string, required) The smartusd address for account lookup.\n"
+            "\nResult:\n"
+            "\"accountname\"        (string) the account address\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getaccount", "\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\"")
+            + HelpExampleRpc("getaccount", "\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SmartUSD address");
+    }
+
+    std::string strAccount;
+    std::map<CTxDestination, CAddressBookData>::iterator mi = pwallet->mapAddressBook.find(dest);
+    if (mi != pwallet->mapAddressBook.end() && !(*mi).second.name.empty()) {
+        strAccount = (*mi).second.name;
+    }
+    return strAccount;
+}
+
+
+UniValue getaddressesbyaccount(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "getaddressesbyaccount \"account\"\n"
+            "\nDEPRECATED. Returns the list of addresses for the given account.\n"
+            "\nArguments:\n"
+            "1. \"account\"        (string, required) The account name.\n"
+            "\nResult:\n"
+            "[                     (json array of string)\n"
+            "  \"address\"         (string) a smartusd address associated with the given account\n"
+            "  ,...\n"
+            "]\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getaddressesbyaccount", "\"tabby\"")
+            + HelpExampleRpc("getaddressesbyaccount", "\"tabby\"")
+        );
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    std::string strAccount = AccountFromValue(request.params[0]);
+
+    // Find all addresses that have the given account
+    UniValue ret(UniValue::VARR);
+    for (const std::pair<CTxDestination, CAddressBookData>& item : pwallet->mapAddressBook) {
+        const CTxDestination& dest = item.first;
+        const std::string& strName = item.second.name;
+        if (strName == strAccount) {
+            ret.push_back(EncodeDestination(dest));
+        }
+    }
+    return ret;
+}
+
+static void SendMoney(CWallet * const pwallet, const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, const CCoinControl& coin_control)
+{
+    // Parse Bitcoin address
+    CScript scriptPubKey = GetScriptForDestination(address);
+
+    return SendMoneyToScript(pwallet, scriptPubKey, nValue, fSubtractFeeFromAmount, wtxNew, coin_control);
+}
+
+void SendMoneyToScript(CWallet* const pwallet, const CScript &scriptPubKey,
+                       CAmount nValue,
+                       bool fSubtractFeeFromAmount, CWalletTx& wtxNew,
+                       const CCoinControl& coin_control)
+{
+    CAmount curBalance = pwallet->GetBalance();
+
+    // Check amount
+    if (nValue <= 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid amount");
+
+    /* If we have an additional input that is a name, we have to take this
+       name's value into account as well for the balance check.  Otherwise one
+       sees spurious "Insufficient funds" errors when updating names when the
+       wallet's balance it smaller than the amount locked in the name.  */
+    CAmount lockedValue = 0;
+    std::string strError;
+
+    if (nValue > curBalance + lockedValue)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+
+    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+    }
+
+    // Create and send the transaction
+    CReserveKey reservekey(pwallet);
+    CAmount nFeeRequired;
+    std::vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
+    vecSend.push_back(recipient);
+    if (!pwallet->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strError, coin_control)) {
+        if (!fSubtractFeeFromAmount && nValue + nFeeRequired > curBalance)
+            strError = strprintf("Error: This transaction requires a transaction fee of at least %s", FormatMoney(nFeeRequired));
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
+    CValidation
