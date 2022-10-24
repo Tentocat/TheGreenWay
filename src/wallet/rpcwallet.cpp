@@ -956,4 +956,218 @@ UniValue movecmd(const JSONRPCRequest& request)
         // unused parameter, used to be nMinDepth, keep type-checking it though
         (void)request.params[3].get_int();
     std::string strComment;
-    if (
+    if (!request.params[4].isNull())
+        strComment = request.params[4].get_str();
+
+    if (!pwallet->AccountMove(strFrom, strTo, nAmount, strComment)) {
+        throw JSONRPCError(RPC_DATABASE_ERROR, "database error");
+    }
+
+    return true;
+}
+
+
+UniValue sendfrom(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 3 || request.params.size() > 6)
+        throw std::runtime_error(
+            "sendfrom \"fromaccount\" \"toaddress\" amount ( minconf \"comment\" \"comment_to\" )\n"
+            "\nDEPRECATED (use sendtoaddress). Sent an amount from an account to a bitcoin address."
+            + HelpRequiringPassphrase(pwallet) + "\n"
+            "\nArguments:\n"
+            "1. \"fromaccount\"       (string, required) The name of the account to send funds from. May be the default account using \"\".\n"
+            "                       Specifying an account does not influence coin selection, but it does associate the newly created\n"
+            "                       transaction with the account, so the account's balance computation and transaction history can reflect\n"
+            "                       the spend.\n"
+            "2. \"toaddress\"         (string, required) The smartusd address to send funds to.\n"
+            "3. amount                (numeric or string, required) The amount in " + CURRENCY_UNIT + " (transaction fee is added on top).\n"
+            "4. minconf               (numeric, optional, default=1) Only use funds with at least this many confirmations.\n"
+            "5. \"comment\"           (string, optional) A comment used to store what the transaction is for. \n"
+            "                                     This is not part of the transaction, just kept in your wallet.\n"
+            "6. \"comment_to\"        (string, optional) An optional comment to store the name of the person or organization \n"
+            "                                     to which you're sending the transaction. This is not part of the transaction, \n"
+            "                                     it is just kept in your wallet.\n"
+            "\nResult:\n"
+            "\"txid\"                 (string) The transaction id.\n"
+            "\nExamples:\n"
+            "\nSend 0.01 " + CURRENCY_UNIT + " from the default account to the address, must have at least 1 confirmation\n"
+            + HelpExampleCli("sendfrom", "\"\" \"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZfx\" 0.01") +
+            "\nSend 0.01 from the tabby account to the given address, funds must have at least 6 confirmations\n"
+            + HelpExampleCli("sendfrom", "\"tabby\" \"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZfx\" 0.01 6 \"donation\" \"seans outpost\"") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("sendfrom", "\"tabby\", \"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZfx\", 0.01, 6, \"donation\", \"seans outpost\"")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    std::string strAccount = AccountFromValue(request.params[0]);
+    CTxDestination dest = DecodeDestination(request.params[1].get_str());
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SmartUSD address");
+    }
+    CAmount nAmount = AmountFromValue(request.params[2]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    int nMinDepth = 1;
+    if (!request.params[3].isNull())
+        nMinDepth = request.params[3].get_int();
+
+    CWalletTx wtx;
+    wtx.strFromAccount = strAccount;
+    if (!request.params[4].isNull() && !request.params[4].get_str().empty())
+        wtx.mapValue["comment"] = request.params[4].get_str();
+    if (!request.params[5].isNull() && !request.params[5].get_str().empty())
+        wtx.mapValue["to"]      = request.params[5].get_str();
+
+    EnsureWalletIsUnlocked(pwallet);
+
+    // Check funds
+    CAmount nBalance = pwallet->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth, &strAccount);
+    if (nAmount > nBalance)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Account has insufficient funds");
+
+    CCoinControl no_coin_control; // This is a deprecated API
+    SendMoney(pwallet, dest, nAmount, false, wtx, no_coin_control);
+
+    return wtx.GetHash().GetHex();
+}
+
+
+UniValue sendmany(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 8)
+        throw std::runtime_error(
+            "sendmany \"fromaccount\" {\"address\":amount,...} ( minconf \"comment\" [\"address\",...] replaceable conf_target \"estimate_mode\")\n"
+            "\nSend multiple times. Amounts are double-precision floating point numbers."
+            + HelpRequiringPassphrase(pwallet) + "\n"
+            "\nArguments:\n"
+            "1. \"fromaccount\"         (string, required) DEPRECATED. The account to send the funds from. Should be \"\" for the default account\n"
+            "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
+            "    {\n"
+            "      \"address\":amount   (numeric or string) The smartusd address is the key, the numeric amount (can be string) in " + CURRENCY_UNIT + " is the value\n"
+            "      ,...\n"
+            "    }\n"
+            "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
+            "4. \"comment\"             (string, optional) A comment\n"
+            "5. subtractfeefrom         (array, optional) A json array with addresses.\n"
+            "                           The fee will be equally deducted from the amount of each selected address.\n"
+            "                           Those recipients will receive less smartusds than you enter in their corresponding amount field.\n"
+            "                           If no addresses are specified here, the sender pays the fee.\n"
+            "    [\n"
+            "      \"address\"          (string) Subtract fee from this address\n"
+            "      ,...\n"
+            "    ]\n"
+            "6. replaceable            (boolean, optional) Allow this transaction to be replaced by a transaction with higher fees via BIP 125\n"
+            "7. conf_target            (numeric, optional) Confirmation target (in blocks)\n"
+            "8. \"estimate_mode\"      (string, optional, default=UNSET) The fee estimate mode, must be one of:\n"
+            "       \"UNSET\"\n"
+            "       \"ECONOMICAL\"\n"
+            "       \"CONSERVATIVE\"\n"
+             "\nResult:\n"
+            "\"txid\"                   (string) The transaction id for the send. Only 1 transaction is created regardless of \n"
+            "                                    the number of addresses.\n"
+            "\nExamples:\n"
+            "\nSend two amounts to two different addresses:\n"
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\\\":0.01,\\\"NDLTK7j8CzK5YAbpCdUxC3Gi1bXGDCdVXX\\\":0.02}\"") +
+            "\nSend two amounts to two different addresses setting the confirmation and comment:\n"
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\\\":0.01,\\\"NDLTK7j8CzK5YAbpCdUxC3Gi1bXGDCdVXX\\\":0.02}\" 6 \"testing\"") +
+            "\nSend two amounts to two different addresses, subtract fee from amount:\n"
+            + HelpExampleCli("sendmany", "\"\" \"{\\\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\\\":0.01,\\\"NDLTK7j8CzK5YAbpCdUxC3Gi1bXGDCdVXX\\\":0.02}\" 1 \"\" \"[\\\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\\\",\\\"NDLTK7j8CzK5YAbpCdUxC3Gi1bXGDCdVXX\\\"]\"") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("sendmany", "\"\", {\"N2xHFZ8NWNkGuuXfDxv8iMXdQGMd3tjZXX\":0.01,\"NDLTK7j8CzK5YAbpCdUxC3Gi1bXGDCdVXX\":0.02}, 6, \"testing\"")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    if (pwallet->GetBroadcastTransactions() && !g_connman) {
+        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+    }
+
+    std::string strAccount = AccountFromValue(request.params[0]);
+    UniValue sendTo = request.params[1].get_obj();
+    int nMinDepth = 1;
+    if (!request.params[2].isNull())
+        nMinDepth = request.params[2].get_int();
+
+    CWalletTx wtx;
+    wtx.strFromAccount = strAccount;
+    if (!request.params[3].isNull() && !request.params[3].get_str().empty())
+        wtx.mapValue["comment"] = request.params[3].get_str();
+
+    UniValue subtractFeeFromAmount(UniValue::VARR);
+    if (!request.params[4].isNull())
+        subtractFeeFromAmount = request.params[4].get_array();
+
+    CCoinControl coin_control;
+    if (!request.params[5].isNull()) {
+        coin_control.signalRbf = request.params[5].get_bool();
+    }
+
+    if (!request.params[6].isNull()) {
+        coin_control.m_confirm_target = ParseConfirmTarget(request.params[6]);
+    }
+
+    if (!request.params[7].isNull()) {
+        if (!FeeModeFromString(request.params[7].get_str(), coin_control.m_fee_mode)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
+        }
+    }
+
+    std::set<CTxDestination> destinations;
+    std::vector<CRecipient> vecSend;
+
+    CAmount totalAmount = 0;
+    std::vector<std::string> keys = sendTo.getKeys();
+    for (const std::string& name_ : keys) {
+        CTxDestination dest = DecodeDestination(name_);
+        if (!IsValidDestination(dest)) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid SmartUSD address: ") + name_);
+        }
+
+        if (destinations.count(dest)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ") + name_);
+        }
+        destinations.insert(dest);
+
+        CScript scriptPubKey = GetScriptForDestination(dest);
+        CAmount nAmount = AmountFromValue(sendTo[name_]);
+        if (nAmount <= 0)
+            throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+        totalAmount += nAmount;
+
+        bool fSubtractFeeFromAmount = false;
+        for (unsigned int idx = 0; idx < subtractFeeFromAmount.size(); idx++) {
+            const UniValue& addr = subtractFeeFromAmount[idx];
+            if (addr.get_str() == name_)
+                fSubtractFeeFromAmount = true;
+        }
+
+        CRecipient recipient = {scriptPubKey, nAmount, fSubtractFeeFromAmount};
+        vecSend.push_back(recipient);
+    }
+
+    EnsureWalletIsUnlocked(pwallet);
+
+    // Check f
