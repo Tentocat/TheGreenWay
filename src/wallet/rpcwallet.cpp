@@ -716,4 +716,244 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     LOCK2(cs_main, pwallet->cs_wallet);
 
     // Bitcoin address
-    CTxDest
+    CTxDestination dest = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SmartUSD address");
+    }
+    CScript scriptPubKey = GetScriptForDestination(dest);
+    if (!IsMine(*pwallet, scriptPubKey)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Address not found in wallet");
+    }
+
+    // Minimum confirmations
+    int nMinDepth = 1;
+    if (!request.params[1].isNull())
+        nMinDepth = request.params[1].get_int();
+
+    // Tally
+    CAmount nAmount = 0;
+    for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+        const CWalletTx& wtx = pairWtx.second;
+        if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx))
+            continue;
+
+        for (const CTxOut& txout : wtx.tx->vout)
+            if (txout.scriptPubKey == scriptPubKey)
+                if (wtx.GetDepthInMainChain() >= nMinDepth)
+                    nAmount += txout.nValue;
+    }
+
+    return  ValueFromAmount(nAmount);
+}
+
+
+UniValue getreceivedbyaccount(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+        throw std::runtime_error(
+            "getreceivedbyaccount \"account\" ( minconf )\n"
+            "\nDEPRECATED. Returns the total amount received by addresses with <account> in transactions with at least [minconf] confirmations.\n"
+            "\nArguments:\n"
+            "1. \"account\"      (string, required) The selected account, may be the default account using \"\".\n"
+            "2. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
+            "\nResult:\n"
+            "amount              (numeric) The total amount in " + CURRENCY_UNIT + " received for this account.\n"
+            "\nExamples:\n"
+            "\nAmount received by the default account with at least 1 confirmation\n"
+            + HelpExampleCli("getreceivedbyaccount", "\"\"") +
+            "\nAmount received at the tabby account including unconfirmed amounts with zero confirmations\n"
+            + HelpExampleCli("getreceivedbyaccount", "\"tabby\" 0") +
+            "\nThe amount with at least 6 confirmations\n"
+            + HelpExampleCli("getreceivedbyaccount", "\"tabby\" 6") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("getreceivedbyaccount", "\"tabby\", 6")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    // Minimum confirmations
+    int nMinDepth = 1;
+    if (!request.params[1].isNull())
+        nMinDepth = request.params[1].get_int();
+
+    // Get the set of pub keys assigned to account
+    std::string strAccount = AccountFromValue(request.params[0]);
+    std::set<CTxDestination> setAddress = pwallet->GetAccountAddresses(strAccount);
+
+    // Tally
+    CAmount nAmount = 0;
+    for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+        const CWalletTx& wtx = pairWtx.second;
+        if (wtx.IsCoinBase() || !CheckFinalTx(*wtx.tx))
+            continue;
+
+        for (const CTxOut& txout : wtx.tx->vout)
+        {
+            CTxDestination address;
+            if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*pwallet, address) && setAddress.count(address)) {
+                if (wtx.GetDepthInMainChain() >= nMinDepth)
+                    nAmount += txout.nValue;
+            }
+        }
+    }
+
+    return ValueFromAmount(nAmount);
+}
+
+
+UniValue getbalance(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 3)
+        throw std::runtime_error(
+            "getbalance ( \"account\" minconf include_watchonly )\n"
+            "\nIf account is not specified, returns the server's total available balance.\n"
+            "The available balance is what the wallet considers currently spendable, and is\n"
+            "thus affected by options which limit spendability such as -spendzeroconfchange.\n"
+            "If account is specified (DEPRECATED), returns the balance in the account.\n"
+            "Note that the account \"\" is not the same as leaving the parameter out.\n"
+            "The server total may be different to the balance in the default \"\" account.\n"
+            "\nArguments:\n"
+            "1. \"account\"         (string, optional) DEPRECATED. The account string may be given as a\n"
+            "                     specific account name to find the balance associated with wallet keys in\n"
+            "                     a named account, or as the empty string (\"\") to find the balance\n"
+            "                     associated with wallet keys not in any named account, or as \"*\" to find\n"
+            "                     the balance associated with all wallet keys regardless of account.\n"
+            "                     When this option is specified, it calculates the balance in a different\n"
+            "                     way than when it is not specified, and which can count spends twice when\n"
+            "                     there are conflicting pending transactions (such as those created by\n"
+            "                     the bumpfee command), temporarily resulting in low or even negative\n"
+            "                     balances. In general, account balance calculation is not considered\n"
+            "                     reliable and has resulted in confusing outcomes, so it is recommended to\n"
+            "                     avoid passing this argument.\n"
+            "2. minconf           (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
+            "3. include_watchonly (bool, optional, default=false) Also include balance in watch-only addresses (see 'importaddress')\n"
+            "\nResult:\n"
+            "amount              (numeric) The total amount in " + CURRENCY_UNIT + " received for this account.\n"
+            "\nExamples:\n"
+            "\nThe total amount in the wallet with 1 or more confirmations\n"
+            + HelpExampleCli("getbalance", "") +
+            "\nThe total amount in the wallet at least 6 blocks confirmed\n"
+            + HelpExampleCli("getbalance", "\"*\" 6") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("getbalance", "\"*\", 6")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    const UniValue& account_value = request.params[0];
+    const UniValue& minconf = request.params[1];
+    const UniValue& include_watchonly = request.params[2];
+
+    if (account_value.isNull()) {
+        if (!minconf.isNull()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                "getbalance minconf option is only currently supported if an account is specified");
+        }
+        if (!include_watchonly.isNull()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                "getbalance include_watchonly option is only currently supported if an account is specified");
+        }
+        return ValueFromAmount(pwallet->GetBalance());
+    }
+
+    const std::string& account_param = account_value.get_str();
+    const std::string* account = account_param != "*" ? &account_param : nullptr;
+
+    int nMinDepth = 1;
+    if (!minconf.isNull())
+        nMinDepth = minconf.get_int();
+    isminefilter filter = ISMINE_SPENDABLE;
+    if(!include_watchonly.isNull())
+        if(include_watchonly.get_bool())
+            filter = filter | ISMINE_WATCH_ONLY;
+
+    return ValueFromAmount(pwallet->GetLegacyBalance(filter, nMinDepth, account));
+}
+
+UniValue getunconfirmedbalance(const JSONRPCRequest &request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 0)
+        throw std::runtime_error(
+                "getunconfirmedbalance\n"
+                "Returns the server's total unconfirmed balance\n");
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    return ValueFromAmount(pwallet->GetUnconfirmedBalance());
+}
+
+
+UniValue movecmd(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 3 || request.params.size() > 5)
+        throw std::runtime_error(
+            "move \"fromaccount\" \"toaccount\" amount ( minconf \"comment\" )\n"
+            "\nDEPRECATED. Move a specified amount from one account in your wallet to another.\n"
+            "\nArguments:\n"
+            "1. \"fromaccount\"   (string, required) The name of the account to move funds from. May be the default account using \"\".\n"
+            "2. \"toaccount\"     (string, required) The name of the account to move funds to. May be the default account using \"\".\n"
+            "3. amount            (numeric) Quantity of " + CURRENCY_UNIT + " to move between accounts.\n"
+            "4. (dummy)           (numeric, optional) Ignored. Remains for backward compatibility.\n"
+            "5. \"comment\"       (string, optional) An optional comment, stored in the wallet only.\n"
+            "\nResult:\n"
+            "true|false           (boolean) true if successful.\n"
+            "\nExamples:\n"
+            "\nMove 0.01 " + CURRENCY_UNIT + " from the default account to the account named tabby\n"
+            + HelpExampleCli("move", "\"\" \"tabby\" 0.01") +
+            "\nMove 0.01 " + CURRENCY_UNIT + " timotei to akiko with a comment and funds have 6 confirmations\n"
+            + HelpExampleCli("move", "\"timotei\" \"akiko\" 0.01 6 \"happy birthday!\"") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("move", "\"timotei\", \"akiko\", 0.01, 6, \"happy birthday!\"")
+        );
+
+    ObserveSafeMode();
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    std::string strFrom = AccountFromValue(request.params[0]);
+    std::string strTo = AccountFromValue(request.params[1]);
+    CAmount nAmount = AmountFromValue(request.params[2]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    if (!request.params[3].isNull())
+        // unused parameter, used to be nMinDepth, keep type-checking it though
+        (void)request.params[3].get_int();
+    std::string strComment;
+    if (
