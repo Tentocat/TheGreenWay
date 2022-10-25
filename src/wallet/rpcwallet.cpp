@@ -1469,4 +1469,275 @@ UniValue ListReceived(CWallet * const pwallet, const UniValue& params, bool fByA
         const CTxDestination& dest = item.first;
         const std::string& strAccount = item.second.name;
         std::map<CTxDestination, tallyitem>::iterator it = mapTally.find(dest);
-        if (it == mapTally.end
+        if (it == mapTally.end() && !fIncludeEmpty)
+            continue;
+
+        CAmount nAmount = 0;
+        int nConf = std::numeric_limits<int>::max();
+        bool fIsWatchonly = false;
+        if (it != mapTally.end())
+        {
+            nAmount = (*it).second.nAmount;
+            nConf = (*it).second.nConf;
+            fIsWatchonly = (*it).second.fIsWatchonly;
+        }
+
+        if (fByAccounts)
+        {
+            tallyitem& _item = mapAccountTally[strAccount];
+            _item.nAmount += nAmount;
+            _item.nConf = std::min(_item.nConf, nConf);
+            _item.fIsWatchonly = fIsWatchonly;
+        }
+        else
+        {
+            UniValue obj(UniValue::VOBJ);
+            if(fIsWatchonly)
+                obj.push_back(Pair("involvesWatchonly", true));
+            obj.push_back(Pair("address",       EncodeDestination(dest)));
+            obj.push_back(Pair("account",       strAccount));
+            obj.push_back(Pair("amount",        ValueFromAmount(nAmount)));
+            obj.push_back(Pair("confirmations", (nConf == std::numeric_limits<int>::max() ? 0 : nConf)));
+            if (!fByAccounts)
+                obj.push_back(Pair("label", strAccount));
+            UniValue transactions(UniValue::VARR);
+            if (it != mapTally.end())
+            {
+                for (const uint256& _item : (*it).second.txids)
+                {
+                    transactions.push_back(_item.GetHex());
+                }
+            }
+            obj.push_back(Pair("txids", transactions));
+            ret.push_back(obj);
+        }
+    }
+
+    if (fByAccounts)
+    {
+        for (const auto& entry : mapAccountTally)
+        {
+            CAmount nAmount = entry.second.nAmount;
+            int nConf = entry.second.nConf;
+            UniValue obj(UniValue::VOBJ);
+            if (entry.second.fIsWatchonly)
+                obj.push_back(Pair("involvesWatchonly", true));
+            obj.push_back(Pair("account",       entry.first));
+            obj.push_back(Pair("amount",        ValueFromAmount(nAmount)));
+            obj.push_back(Pair("confirmations", (nConf == std::numeric_limits<int>::max() ? 0 : nConf)));
+            ret.push_back(obj);
+        }
+    }
+
+    return ret;
+}
+
+UniValue listreceivedbyaddress(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 3)
+        throw std::runtime_error(
+            "listreceivedbyaddress ( minconf include_empty include_watchonly)\n"
+            "\nList balances by receiving address.\n"
+            "\nArguments:\n"
+            "1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
+            "2. include_empty     (bool, optional, default=false) Whether to include addresses that haven't received any payments.\n"
+            "3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').\n"
+
+            "\nResult:\n"
+            "[\n"
+            "  {\n"
+            "    \"involvesWatchonly\" : true,        (bool) Only returned if imported addresses were involved in transaction\n"
+            "    \"address\" : \"receivingaddress\",  (string) The receiving address\n"
+            "    \"account\" : \"accountname\",       (string) DEPRECATED. The account of the receiving address. The default account is \"\".\n"
+            "    \"amount\" : x.xxx,                  (numeric) The total amount in " + CURRENCY_UNIT + " received by the address\n"
+            "    \"confirmations\" : n,               (numeric) The number of confirmations of the most recent transaction included\n"
+            "    \"label\" : \"label\",               (string) A comment for the address/transaction, if any\n"
+            "    \"txids\": [\n"
+            "       \"txid\",                         (string) The ids of transactions received with the address \n"
+            "       ...\n"
+            "    ]\n"
+            "  }\n"
+            "  ,...\n"
+            "]\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("listreceivedbyaddress", "")
+            + HelpExampleCli("listreceivedbyaddress", "6 true")
+            + HelpExampleRpc("listreceivedbyaddress", "6, true, true")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    return ListReceived(pwallet, request.params, false);
+}
+
+UniValue listreceivedbyaccount(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 3)
+        throw std::runtime_error(
+            "listreceivedbyaccount ( minconf include_empty include_watchonly)\n"
+            "\nDEPRECATED. List balances by account.\n"
+            "\nArguments:\n"
+            "1. minconf           (numeric, optional, default=1) The minimum number of confirmations before payments are included.\n"
+            "2. include_empty     (bool, optional, default=false) Whether to include accounts that haven't received any payments.\n"
+            "3. include_watchonly (bool, optional, default=false) Whether to include watch-only addresses (see 'importaddress').\n"
+
+            "\nResult:\n"
+            "[\n"
+            "  {\n"
+            "    \"involvesWatchonly\" : true,   (bool) Only returned if imported addresses were involved in transaction\n"
+            "    \"account\" : \"accountname\",  (string) The account name of the receiving account\n"
+            "    \"amount\" : x.xxx,             (numeric) The total amount received by addresses with this account\n"
+            "    \"confirmations\" : n,          (numeric) The number of confirmations of the most recent transaction included\n"
+            "    \"label\" : \"label\"           (string) A comment for the address/transaction, if any\n"
+            "  }\n"
+            "  ,...\n"
+            "]\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("listreceivedbyaccount", "")
+            + HelpExampleCli("listreceivedbyaccount", "6 true")
+            + HelpExampleRpc("listreceivedbyaccount", "6, true, true")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    return ListReceived(pwallet, request.params, true);
+}
+
+static void MaybePushAddress(UniValue & entry, const CTxDestination &dest)
+{
+    if (IsValidDestination(dest)) {
+        entry.push_back(Pair("address", EncodeDestination(dest)));
+    }
+}
+
+/**
+ * List transactions based on the given criteria.
+ *
+ * @param  pwallet    The wallet.
+ * @param  wtx        The wallet transaction.
+ * @param  strAccount The account, if any, or "*" for all.
+ * @param  nMinDepth  The minimum confirmation depth.
+ * @param  fLong      Whether to include the JSON version of the transaction.
+ * @param  ret        The UniValue into which the result is stored.
+ * @param  filter     The "is mine" filter bool.
+ */
+void ListTransactions(CWallet* const pwallet, const CWalletTx& wtx, const std::string& strAccount, int nMinDepth, bool fLong, UniValue& ret, const isminefilter& filter)
+{
+    CAmount nFee;
+    std::string strSentAccount;
+    std::list<COutputEntry> listReceived;
+    std::list<COutputEntry> listSent;
+
+    wtx.GetAmounts(listReceived, listSent, nFee, strSentAccount, filter);
+
+    bool fAllAccounts = (strAccount == std::string("*"));
+    bool involvesWatchonly = wtx.IsFromMe(ISMINE_WATCH_ONLY);
+
+    // Sent
+    if ((!listSent.empty() || nFee != 0) && (fAllAccounts || strAccount == strSentAccount))
+    {
+        for (const COutputEntry& s : listSent)
+        {
+            UniValue entry(UniValue::VOBJ);
+            if (involvesWatchonly || (::IsMine(*pwallet, s.destination) & ISMINE_WATCH_ONLY)) {
+                entry.push_back(Pair("involvesWatchonly", true));
+            }
+            entry.push_back(Pair("account", strSentAccount));
+            MaybePushAddress(entry, s.destination);
+            if(!s.nameOp.empty())
+                entry.push_back(Pair("name", s.nameOp));
+            entry.push_back(Pair("category", "send"));
+            entry.push_back(Pair("amount", ValueFromAmount(-s.amount)));
+            if (pwallet->mapAddressBook.count(s.destination)) {
+                entry.push_back(Pair("label", pwallet->mapAddressBook[s.destination].name));
+            }
+            entry.push_back(Pair("vout", s.vout));
+            entry.push_back(Pair("fee", ValueFromAmount(-nFee)));
+            if (fLong)
+                WalletTxToJSON(wtx, entry);
+            entry.push_back(Pair("abandoned", wtx.isAbandoned()));
+            ret.push_back(entry);
+        }
+    }
+
+    // Received
+    if (listReceived.size() > 0 && wtx.GetDepthInMainChain() >= nMinDepth)
+    {
+        for (const COutputEntry& r : listReceived)
+        {
+            std::string account;
+            if (pwallet->mapAddressBook.count(r.destination)) {
+                account = pwallet->mapAddressBook[r.destination].name;
+            }
+            if (fAllAccounts || (account == strAccount))
+            {
+                UniValue entry(UniValue::VOBJ);
+                if (involvesWatchonly || (::IsMine(*pwallet, r.destination) & ISMINE_WATCH_ONLY)) {
+                    entry.push_back(Pair("involvesWatchonly", true));
+                }
+                entry.push_back(Pair("account", account));
+                MaybePushAddress(entry, r.destination);
+                if(!r.nameOp.empty())
+                    entry.push_back(Pair("name", r.nameOp));
+                if (wtx.IsCoinBase())
+                {
+                    if (wtx.GetDepthInMainChain() < 1)
+                        entry.push_back(Pair("category", "orphan"));
+                    else if (wtx.GetBlocksToMaturity() > 0)
+                        entry.push_back(Pair("category", "immature"));
+                    else
+                        entry.push_back(Pair("category", "generate"));
+                }
+                else
+                {
+                    entry.push_back(Pair("category", "receive"));
+                }
+                entry.push_back(Pair("amount", ValueFromAmount(r.amount)));
+                if (pwallet->mapAddressBook.count(r.destination)) {
+                    entry.push_back(Pair("label", account));
+                }
+                entry.push_back(Pair("vout", r.vout));
+                if (fLong)
+                    WalletTxToJSON(wtx, entry);
+                ret.push_back(entry);
+            }
+        }
+    }
+}
+
+void AcentryToJSON(const CAccountingEntry& acentry, const std::string& strAccount, UniValue& ret)
+{
+    bool fAllAccounts = (strAccount == std::string("*"));
+
+    if (fAllAccounts || acentry.strAccount == strAccount)
+    {
+        UniValue entry(UniValue::VOBJ);
+        entry.push_back(Pair("account", acentry.strAccount));
+        entry.push_back(Pair("category", "move"));
+        entry.push_back(Pair("time", acentry.nTime));
+        entry.push_back(Pair("amount", ValueFromAmount(acentry.nCreditDebit)));
+        entry.push_back(Pair("otheraccount", acentry.st
