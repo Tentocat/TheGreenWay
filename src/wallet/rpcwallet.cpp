@@ -1951,4 +1951,189 @@ UniValue listaccounts(const JSONRPCRequest& request)
         mapAccountBalances[strSentAccount] -= nFee;
         for (const COutputEntry& s : listSent)
             mapAccountBalances[strSentAccount] -= s.amount;
- 
+        if (nDepth >= nMinDepth)
+        {
+            for (const COutputEntry& r : listReceived)
+                if (pwallet->mapAddressBook.count(r.destination)) {
+                    mapAccountBalances[pwallet->mapAddressBook[r.destination].name] += r.amount;
+                }
+                else
+                    mapAccountBalances[""] += r.amount;
+        }
+    }
+
+    const std::list<CAccountingEntry>& acentries = pwallet->laccentries;
+    for (const CAccountingEntry& entry : acentries)
+        mapAccountBalances[entry.strAccount] += entry.nCreditDebit;
+
+    UniValue ret(UniValue::VOBJ);
+    for (const std::pair<std::string, CAmount>& accountBalance : mapAccountBalances) {
+        ret.push_back(Pair(accountBalance.first, ValueFromAmount(accountBalance.second)));
+    }
+    return ret;
+}
+
+UniValue listsinceblock(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 4)
+        throw std::runtime_error(
+            "listsinceblock ( \"blockhash\" target_confirmations include_watchonly include_removed )\n"
+            "\nGet all transactions in blocks since block [blockhash], or all transactions if omitted.\n"
+            "If \"blockhash\" is no longer a part of the main chain, transactions from the fork point onward are included.\n"
+            "Additionally, if include_removed is set, transactions affecting the wallet which were removed are returned in the \"removed\" array.\n"
+            "\nArguments:\n"
+            "1. \"blockhash\"            (string, optional) The block hash to list transactions since\n"
+            "2. target_confirmations:    (numeric, optional, default=1) Return the nth block hash from the main chain. e.g. 1 would mean the best block hash. Note: this is not used as a filter, but only affects [lastblock] in the return value\n"
+            "3. include_watchonly:       (bool, optional, default=false) Include transactions to watch-only addresses (see 'importaddress')\n"
+            "4. include_removed:         (bool, optional, default=true) Show transactions that were removed due to a reorg in the \"removed\" array\n"
+            "                                                           (not guaranteed to work on pruned nodes)\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"transactions\": [\n"
+            "    \"account\":\"accountname\",       (string) DEPRECATED. The account name associated with the transaction. Will be \"\" for the default account.\n"
+            "    \"address\":\"address\",    (string) The smartusd address of the transaction. Not present for move transactions (category = move).\n"
+            "    \"category\":\"send|receive\",     (string) The transaction category. 'send' has negative amounts, 'receive' has positive amounts.\n"
+            "    \"amount\": x.xxx,          (numeric) The amount in " + CURRENCY_UNIT + ". This is negative for the 'send' category, and for the 'move' category for moves \n"
+            "                                          outbound. It is positive for the 'receive' category, and for the 'move' category for inbound funds.\n"
+            "    \"vout\" : n,               (numeric) the vout value\n"
+            "    \"fee\": x.xxx,             (numeric) The amount of the fee in " + CURRENCY_UNIT + ". This is negative and only available for the 'send' category of transactions.\n"
+            "    \"confirmations\": n,       (numeric) The number of confirmations for the transaction. Available for 'send' and 'receive' category of transactions.\n"
+            "                                          When it's < 0, it means the transaction conflicted that many blocks ago.\n"
+            "    \"blockhash\": \"hashvalue\",     (string) The block hash containing the transaction. Available for 'send' and 'receive' category of transactions.\n"
+            "    \"blockindex\": n,          (numeric) The index of the transaction in the block that includes it. Available for 'send' and 'receive' category of transactions.\n"
+            "    \"blocktime\": xxx,         (numeric) The block time in seconds since epoch (1 Jan 1970 GMT).\n"
+            "    \"txid\": \"transactionid\",  (string) The transaction id. Available for 'send' and 'receive' category of transactions.\n"
+            "    \"time\": xxx,              (numeric) The transaction time in seconds since epoch (Jan 1 1970 GMT).\n"
+            "    \"timereceived\": xxx,      (numeric) The time received in seconds since epoch (Jan 1 1970 GMT). Available for 'send' and 'receive' category of transactions.\n"
+            "    \"bip125-replaceable\": \"yes|no|unknown\",  (string) Whether this transaction could be replaced due to BIP125 (replace-by-fee);\n"
+            "                                                   may be unknown for unconfirmed transactions not in the mempool\n"
+            "    \"abandoned\": xxx,         (bool) 'true' if the transaction has been abandoned (inputs are respendable). Only available for the 'send' category of transactions.\n"
+            "    \"comment\": \"...\",       (string) If a comment is associated with the transaction.\n"
+            "    \"label\" : \"label\"       (string) A comment for the address/transaction, if any\n"
+            "    \"to\": \"...\",            (string) If a comment to is associated with the transaction.\n"
+            "  ],\n"
+            "  \"removed\": [\n"
+            "    <structure is the same as \"transactions\" above, only present if include_removed=true>\n"
+            "    Note: transactions that were readded in the active chain will appear as-is in this array, and may thus have a positive confirmation count.\n"
+            "  ],\n"
+            "  \"lastblock\": \"lastblockhash\"     (string) The hash of the block (target_confirmations-1) from the best block on the main chain. This is typically used to feed back into listsinceblock the next time you call it. So you would generally use a target_confirmations of say 6, so you will be continually re-notified of transactions until they've reached 6 confirmations plus any new ones\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("listsinceblock", "")
+            + HelpExampleCli("listsinceblock", "\"000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad\" 6")
+            + HelpExampleRpc("listsinceblock", "\"000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad\", 6")
+        );
+
+    ObserveSafeMode();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    const CBlockIndex* pindex = nullptr;    // Block index of the specified block or the common ancestor, if the block provided was in a deactivated chain.
+    const CBlockIndex* paltindex = nullptr; // Block index of the specified block, even if it's in a deactivated chain.
+    int target_confirms = 1;
+    isminefilter filter = ISMINE_SPENDABLE;
+
+    if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
+        uint256 blockId;
+
+        blockId.SetHex(request.params[0].get_str());
+        BlockMap::iterator it = mapBlockIndex.find(blockId);
+        if (it == mapBlockIndex.end()) {
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Block not found");
+        }
+        paltindex = pindex = it->second;
+        if (chainActive[pindex->nHeight] != pindex) {
+            // the block being asked for is a part of a deactivated chain;
+            // we don't want to depend on its perceived height in the block
+            // chain, we want to instead use the last common ancestor
+            pindex = chainActive.FindFork(pindex);
+        }
+    }
+
+    if (!request.params[1].isNull()) {
+        target_confirms = request.params[1].get_int();
+
+        if (target_confirms < 1) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter");
+        }
+    }
+
+    if (!request.params[2].isNull() && request.params[2].get_bool()) {
+        filter = filter | ISMINE_WATCH_ONLY;
+    }
+
+    bool include_removed = (request.params[3].isNull() || request.params[3].get_bool());
+
+    int depth = pindex ? (1 + chainActive.Height() - pindex->nHeight) : -1;
+
+    UniValue transactions(UniValue::VARR);
+
+    for (const std::pair<uint256, CWalletTx>& pairWtx : pwallet->mapWallet) {
+        CWalletTx tx = pairWtx.second;
+
+        if (depth == -1 || tx.GetDepthInMainChain() < depth) {
+            ListTransactions(pwallet, tx, "*", 0, true, transactions, filter);
+        }
+    }
+
+    // when a reorg'd block is requested, we also list any relevant transactions
+    // in the blocks of the chain that was detached
+    UniValue removed(UniValue::VARR);
+    while (include_removed && paltindex && paltindex != pindex) {
+        CBlock block;
+        if (!ReadBlockFromDisk(block, paltindex, Params().GetConsensus())) {
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
+        }
+        for (const CTransactionRef& tx : block.vtx) {
+            auto it = pwallet->mapWallet.find(tx->GetHash());
+            if (it != pwallet->mapWallet.end()) {
+                // We want all transactions regardless of confirmation count to appear here,
+                // even negative confirmation ones, hence the big negative.
+                ListTransactions(pwallet, it->second, "*", -100000000, true, removed, filter);
+            }
+        }
+        paltindex = paltindex->pprev;
+    }
+
+    CBlockIndex *pblockLast = chainActive[chainActive.Height() + 1 - target_confirms];
+    uint256 lastblock = pblockLast ? pblockLast->GetBlockHash() : uint256();
+
+    UniValue ret(UniValue::VOBJ);
+    ret.push_back(Pair("transactions", transactions));
+    if (include_removed) ret.push_back(Pair("removed", removed));
+    ret.push_back(Pair("lastblock", lastblock.GetHex()));
+
+    return ret;
+}
+
+UniValue gettransaction(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+        throw std::runtime_error(
+            "gettransaction \"txid\" ( include_watchonly )\n"
+            "\nGet detailed information about in-wallet transaction <txid>\n"
+            "\nArguments:\n"
+            "1. \"txid\"                  (string, required) The transaction id\n"
+            "2. \"include_watchonly\"     (bool, optional, default=false) Whether to include watch-only addresses in balance calculation and details[]\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"amount\" : x.xxx,        (numeric) The transaction amount in " + CURRENCY_UNIT + "\n"
+            "  \"fee\": x.xxx,            (numeric) The amount of the fee in " + CURRENCY_UNIT + ". This is negative and only available for the \n"
+            "                              'send' category of transactions.\n"
+            "  \"confirmations\" : n,     (numeric) The number of confirmations\n"
+            "  \"blockhash\" : \"hash\",  (string) The block hash\n"
+            "  \"blockindex\" : xx,       (numeric) The index of the transaction in the block t
