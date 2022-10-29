@@ -3119,4 +3119,222 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
                             "\nResult:\n"
                             "{\n"
                             "  \"hex\":       \"value\", (string)  The resulting raw transaction (hex-encoded string)\n"
-                            "  \"fee\":       n,         (numeric) Fee in 
+                            "  \"fee\":       n,         (numeric) Fee in " + CURRENCY_UNIT + " the resulting transaction pays\n"
+                            "  \"changepos\": n          (numeric) The position of the added change output, or -1\n"
+                            "}\n"
+                            "\nExamples:\n"
+                            "\nCreate a transaction with no inputs\n"
+                            + HelpExampleCli("createrawtransaction", "\"[]\" \"{\\\"myaddress\\\":0.01}\"") +
+                            "\nAdd sufficient unsigned inputs to meet the output value\n"
+                            + HelpExampleCli("fundrawtransaction", "\"rawtransactionhex\"") +
+                            "\nSign the transaction\n"
+                            + HelpExampleCli("signrawtransaction", "\"fundedtransactionhex\"") +
+                            "\nSend the transaction\n"
+                            + HelpExampleCli("sendrawtransaction", "\"signedtransactionhex\"")
+                            );
+
+    ObserveSafeMode();
+    RPCTypeCheck(request.params, {UniValue::VSTR});
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    CCoinControl coinControl;
+    int changePosition = -1;
+    bool lockUnspents = false;
+    UniValue subtractFeeFromOutputs;
+    std::set<int> setSubtractFeeFromOutputs;
+
+    if (!request.params[1].isNull()) {
+      if (request.params[1].type() == UniValue::VBOOL) {
+        // backward compatibility bool only fallback
+        coinControl.fAllowWatchOnly = request.params[1].get_bool();
+      }
+      else {
+        RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VOBJ, UniValue::VBOOL});
+
+        UniValue options = request.params[1];
+
+        RPCTypeCheckObj(options,
+            {
+                {"changeAddress", UniValueType(UniValue::VSTR)},
+                {"changePosition", UniValueType(UniValue::VNUM)},
+                {"change_type", UniValueType(UniValue::VSTR)},
+                {"includeWatching", UniValueType(UniValue::VBOOL)},
+                {"lockUnspents", UniValueType(UniValue::VBOOL)},
+                {"reserveChangeKey", UniValueType(UniValue::VBOOL)}, // DEPRECATED (and ignored), should be removed in 0.16 or so.
+                {"feeRate", UniValueType()}, // will be checked below
+                {"subtractFeeFromOutputs", UniValueType(UniValue::VARR)},
+                {"replaceable", UniValueType(UniValue::VBOOL)},
+                {"conf_target", UniValueType(UniValue::VNUM)},
+                {"estimate_mode", UniValueType(UniValue::VSTR)},
+            },
+            true, true);
+
+        if (options.exists("changeAddress")) {
+            CTxDestination dest = DecodeDestination(options["changeAddress"].get_str());
+
+            if (!IsValidDestination(dest)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "changeAddress must be a valid bitcoin address");
+            }
+
+            coinControl.destChange = dest;
+        }
+
+        if (options.exists("changePosition"))
+            changePosition = options["changePosition"].get_int();
+
+        if (options.exists("change_type")) {
+            if (options.exists("changeAddress")) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot specify both changeAddress and address_type options");
+            }
+            coinControl.change_type = ParseOutputType(options["change_type"].get_str(), coinControl.change_type);
+            if (coinControl.change_type == OUTPUT_TYPE_NONE) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown change type '%s'", options["change_type"].get_str()));
+            }
+        }
+
+        if (options.exists("includeWatching"))
+            coinControl.fAllowWatchOnly = options["includeWatching"].get_bool();
+
+        if (options.exists("lockUnspents"))
+            lockUnspents = options["lockUnspents"].get_bool();
+
+        if (options.exists("feeRate"))
+        {
+            coinControl.m_feerate = CFeeRate(AmountFromValue(options["feeRate"]));
+            coinControl.fOverrideFeeRate = true;
+        }
+
+        if (options.exists("subtractFeeFromOutputs"))
+            subtractFeeFromOutputs = options["subtractFeeFromOutputs"].get_array();
+
+        if (options.exists("replaceable")) {
+            coinControl.signalRbf = options["replaceable"].get_bool();
+        }
+        if (options.exists("conf_target")) {
+            if (options.exists("feeRate")) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot specify both conf_target and feeRate");
+            }
+            coinControl.m_confirm_target = ParseConfirmTarget(options["conf_target"]);
+        }
+        if (options.exists("estimate_mode")) {
+            if (options.exists("feeRate")) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot specify both estimate_mode and feeRate");
+            }
+            if (!FeeModeFromString(options["estimate_mode"].get_str(), coinControl.m_fee_mode)) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
+            }
+        }
+      }
+    }
+
+    // parse hex string from parameter
+    CMutableTransaction tx;
+    bool try_witness = request.params[2].isNull() ? true : request.params[2].get_bool();
+    bool try_no_witness = request.params[2].isNull() ? true : !request.params[2].get_bool();
+    if (!DecodeHexTx(tx, request.params[0].get_str(), try_no_witness, try_witness)) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+    }
+
+    if (tx.vout.size() == 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "TX must have at least one output");
+
+    if (changePosition != -1 && (changePosition < 0 || (unsigned int)changePosition > tx.vout.size()))
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "changePosition out of bounds");
+
+    for (unsigned int idx = 0; idx < subtractFeeFromOutputs.size(); idx++) {
+        int pos = subtractFeeFromOutputs[idx].get_int();
+        if (setSubtractFeeFromOutputs.count(pos))
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid parameter, duplicated position: %d", pos));
+        if (pos < 0)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid parameter, negative position: %d", pos));
+        if (pos >= int(tx.vout.size()))
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid parameter, position too large: %d", pos));
+        setSubtractFeeFromOutputs.insert(pos);
+    }
+
+    CAmount nFeeOut;
+    std::string strFailReason;
+
+    if (!pwallet->FundTransaction(tx, nFeeOut, changePosition, strFailReason, lockUnspents, setSubtractFeeFromOutputs, coinControl)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, strFailReason);
+    }
+
+    UniValue result(UniValue::VOBJ);
+    result.push_back(Pair("hex", EncodeHexTx(tx)));
+    result.push_back(Pair("changepos", changePosition));
+    result.push_back(Pair("fee", ValueFromAmount(nFeeOut)));
+
+    return result;
+}
+
+UniValue bumpfee(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp))
+        return NullUniValue;
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
+        throw std::runtime_error(
+            "bumpfee \"txid\" ( options ) \n"
+            "\nBumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.\n"
+            "An opt-in RBF transaction with the given txid must be in the wallet.\n"
+            "The command will pay the additional fee by decreasing (or perhaps removing) its change output.\n"
+            "If the change output is not big enough to cover the increased fee, the command will currently fail\n"
+            "instead of adding new inputs to compensate. (A future implementation could improve this.)\n"
+            "The command will fail if the wallet or mempool contains a transaction that spends one of T's outputs.\n"
+            "By default, the new fee will be calculated automatically using estimatesmartfee.\n"
+            "The user can specify a confirmation target for estimatesmartfee.\n"
+            "Alternatively, the user can specify totalFee, or use RPC settxfee to set a higher fee rate.\n"
+            "At a minimum, the new fee rate must be high enough to pay an additional new relay fee (incrementalfee\n"
+            "returned by getnetworkinfo) to enter the node's mempool.\n"
+            "\nArguments:\n"
+            "1. txid                  (string, required) The txid to be bumped\n"
+            "2. options               (object, optional)\n"
+            "   {\n"
+            "     \"confTarget\"        (numeric, optional) Confirmation target (in blocks)\n"
+            "     \"totalFee\"          (numeric, optional) Total fee (NOT feerate) to pay, in satoshis.\n"
+            "                         In rare cases, the actual fee paid might be slightly higher than the specified\n"
+            "                         totalFee if the tx change output has to be removed because it is too close to\n"
+            "                         the dust threshold.\n"
+            "     \"replaceable\"       (boolean, optional, default true) Whether the new transaction should still be\n"
+            "                         marked bip-125 replaceable. If true, the sequence numbers in the transaction will\n"
+            "                         be left unchanged from the original. If false, any input sequence numbers in the\n"
+            "                         original transaction that were less than 0xfffffffe will be increased to 0xfffffffe\n"
+            "                         so the new transaction will not be explicitly bip-125 replaceable (though it may\n"
+            "                         still be replaceable in practice, for example if it has unconfirmed ancestors which\n"
+            "                         are replaceable).\n"
+            "     \"estimate_mode\"     (string, optional, default=UNSET) The fee estimate mode, must be one of:\n"
+            "         \"UNSET\"\n"
+            "         \"ECONOMICAL\"\n"
+            "         \"CONSERVATIVE\"\n"
+            "   }\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"txid\":    \"value\",   (string)  The id of the new transaction\n"
+            "  \"origfee\":  n,         (numeric) Fee of the replaced transaction\n"
+            "  \"fee\":      n,         (numeric) Fee of the new transaction\n"
+            "  \"errors\":  [ str... ] (json array of strings) Errors encountered during processing (may be empty)\n"
+            "}\n"
+            "\nExamples:\n"
+            "\nBump the fee, get the new transaction\'s txid\n" +
+            HelpExampleCli("bumpfee", "<txid>"));
+    }
+
+    RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VOBJ});
+    uint256 hash;
+    hash.SetHex(request.params[0].get_str());
+
+    // optional parameters
+    CAmount totalFee = 0;
+    CCoinControl coin_control;
+    coin_control.signalRbf = true;
+    if (!request.params[1].isNull()) {
+        UniValue options = request.params[1];
+        RPCTypeCheckObj(options,
+            {
+                {"confTarget", UniValueType(UniValue::VNUM)},
+                {"totalFee", Uni
