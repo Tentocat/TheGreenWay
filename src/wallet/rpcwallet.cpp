@@ -2405,4 +2405,269 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
 
     pwallet->TopUpKeyPool();
 
-    pwallet->nRelockTime = GetTime() + nSleepT
+    pwallet->nRelockTime = GetTime() + nSleepTime;
+    RPCRunLater(strprintf("lockwallet(%s)", pwallet->GetName()), boost::bind(LockWallet, pwallet), nSleepTime);
+
+    return NullUniValue;
+}
+
+
+UniValue walletpassphrasechange(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 2) {
+        throw std::runtime_error(
+            "walletpassphrasechange \"oldpassphrase\" \"newpassphrase\"\n"
+            "\nChanges the wallet passphrase from 'oldpassphrase' to 'newpassphrase'.\n"
+            "\nArguments:\n"
+            "1. \"oldpassphrase\"      (string) The current passphrase\n"
+            "2. \"newpassphrase\"      (string) The new passphrase\n"
+            "\nExamples:\n"
+            + HelpExampleCli("walletpassphrasechange", "\"old one\" \"new one\"")
+            + HelpExampleRpc("walletpassphrasechange", "\"old one\", \"new one\"")
+        );
+    }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    if (request.fHelp)
+        return true;
+    if (!pwallet->IsCrypted()) {
+        throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an unencrypted wallet, but walletpassphrasechange was called.");
+    }
+
+    // TODO: get rid of these .c_str() calls by implementing SecureString::operator=(std::string)
+    // Alternately, find a way to make request.params[0] mlock()'d to begin with.
+    SecureString strOldWalletPass;
+    strOldWalletPass.reserve(100);
+    strOldWalletPass = request.params[0].get_str().c_str();
+
+    SecureString strNewWalletPass;
+    strNewWalletPass.reserve(100);
+    strNewWalletPass = request.params[1].get_str().c_str();
+
+    if (strOldWalletPass.length() < 1 || strNewWalletPass.length() < 1)
+        throw std::runtime_error(
+            "walletpassphrasechange <oldpassphrase> <newpassphrase>\n"
+            "Changes the wallet passphrase from <oldpassphrase> to <newpassphrase>.");
+
+    if (!pwallet->ChangeWalletPassphrase(strOldWalletPass, strNewWalletPass)) {
+        throw JSONRPCError(RPC_WALLET_PASSPHRASE_INCORRECT, "Error: The wallet passphrase entered was incorrect.");
+    }
+
+    return NullUniValue;
+}
+
+
+UniValue walletlock(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 0) {
+        throw std::runtime_error(
+            "walletlock\n"
+            "\nRemoves the wallet encryption key from memory, locking the wallet.\n"
+            "After calling this method, you will need to call walletpassphrase again\n"
+            "before being able to call any methods which require the wallet to be unlocked.\n"
+            "\nExamples:\n"
+            "\nSet the passphrase for 2 minutes to perform a transaction\n"
+            + HelpExampleCli("walletpassphrase", "\"my pass phrase\" 120") +
+            "\nPerform a send (requires passphrase set)\n"
+            + HelpExampleCli("sendtoaddress", "\"1M72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" 1.0") +
+            "\nClear the passphrase since we are done before 2 minutes is up\n"
+            + HelpExampleCli("walletlock", "") +
+            "\nAs json rpc call\n"
+            + HelpExampleRpc("walletlock", "")
+        );
+    }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    if (request.fHelp)
+        return true;
+    if (!pwallet->IsCrypted()) {
+        throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an unencrypted wallet, but walletlock was called.");
+    }
+
+    pwallet->Lock();
+    pwallet->nRelockTime = 0;
+
+    return NullUniValue;
+}
+
+
+UniValue encryptwallet(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() != 1) {
+        throw std::runtime_error(
+            "encryptwallet \"passphrase\"\n"
+            "\nEncrypts the wallet with 'passphrase'. This is for first time encryption.\n"
+            "After this, any calls that interact with private keys such as sending or signing \n"
+            "will require the passphrase to be set prior the making these calls.\n"
+            "Use the walletpassphrase call for this, and then walletlock call.\n"
+            "If the wallet is already encrypted, use the walletpassphrasechange call.\n"
+            "Note that this will shutdown the server.\n"
+            "\nArguments:\n"
+            "1. \"passphrase\"    (string) The pass phrase to encrypt the wallet with. It must be at least 1 character, but should be long.\n"
+            "\nExamples:\n"
+            "\nEncrypt your wallet\n"
+            + HelpExampleCli("encryptwallet", "\"my pass phrase\"") +
+            "\nNow set the passphrase to use the wallet, such as for signing or sending smartusd\n"
+            + HelpExampleCli("walletpassphrase", "\"my pass phrase\"") +
+            "\nNow we can do something like sign\n"
+            + HelpExampleCli("signmessage", "\"address\" \"test message\"") +
+            "\nNow lock the wallet again by removing the passphrase\n"
+            + HelpExampleCli("walletlock", "") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("encryptwallet", "\"my pass phrase\"")
+        );
+    }
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    if (request.fHelp)
+        return true;
+    if (pwallet->IsCrypted()) {
+        throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an encrypted wallet, but encryptwallet was called.");
+    }
+
+    // TODO: get rid of this .c_str() by implementing SecureString::operator=(std::string)
+    // Alternately, find a way to make request.params[0] mlock()'d to begin with.
+    SecureString strWalletPass;
+    strWalletPass.reserve(100);
+    strWalletPass = request.params[0].get_str().c_str();
+
+    if (strWalletPass.length() < 1)
+        throw std::runtime_error(
+            "encryptwallet <passphrase>\n"
+            "Encrypts the wallet with <passphrase>.");
+
+    if (!pwallet->EncryptWallet(strWalletPass)) {
+        throw JSONRPCError(RPC_WALLET_ENCRYPTION_FAILED, "Error: Failed to encrypt the wallet.");
+    }
+
+    // BDB seems to have a bad habit of writing old data into
+    // slack space in .dat files; that is bad if the old data is
+    // unencrypted private keys. So:
+    StartShutdown();
+    return "wallet encrypted; SmartUSD server stopping, restart to run with encrypted wallet. The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
+}
+
+UniValue lockunspent(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
+        throw std::runtime_error(
+            "lockunspent unlock ([{\"txid\":\"txid\",\"vout\":n},...])\n"
+            "\nUpdates list of temporarily unspendable outputs.\n"
+            "Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs.\n"
+            "If no transaction outputs are specified when unlocking then all current locked transaction outputs are unlocked.\n"
+            "A locked transaction output will not be chosen by automatic coin selection, when spending smartusds.\n"
+            "Locks are stored in memory only. Nodes start with zero locked outputs, and the locked output list\n"
+            "is always cleared (by virtue of process exit) when a node stops or fails.\n"
+            "Also see the listunspent call\n"
+            "\nArguments:\n"
+            "1. unlock            (boolean, required) Whether to unlock (true) or lock (false) the specified transactions\n"
+            "2. \"transactions\"  (string, optional) A json array of objects. Each object the txid (string) vout (numeric)\n"
+            "     [           (json array of json objects)\n"
+            "       {\n"
+            "         \"txid\":\"id\",    (string) The transaction id\n"
+            "         \"vout\": n         (numeric) The output number\n"
+            "       }\n"
+            "       ,...\n"
+            "     ]\n"
+
+            "\nResult:\n"
+            "true|false    (boolean) Whether the command was successful or not\n"
+
+            "\nExamples:\n"
+            "\nList the unspent transactions\n"
+            + HelpExampleCli("listunspent", "") +
+            "\nLock an unspent transaction\n"
+            + HelpExampleCli("lockunspent", "false \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"") +
+            "\nList the locked transactions\n"
+            + HelpExampleCli("listlockunspent", "") +
+            "\nUnlock the transaction again\n"
+            + HelpExampleCli("lockunspent", "true \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"") +
+            "\nAs a json rpc call\n"
+            + HelpExampleRpc("lockunspent", "false, \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"")
+        );
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    RPCTypeCheckArgument(request.params[0], UniValue::VBOOL);
+
+    bool fUnlock = request.params[0].get_bool();
+
+    if (request.params[1].isNull()) {
+        if (fUnlock)
+            pwallet->UnlockAllCoins();
+        return true;
+    }
+
+    RPCTypeCheckArgument(request.params[1], UniValue::VARR);
+
+    const UniValue& output_params = request.params[1];
+
+    // Create and validate the COutPoints first.
+
+    std::vector<COutPoint> outputs;
+    outputs.reserve(output_params.size());
+
+    for (unsigned int idx = 0; idx < output_params.size(); idx++) {
+        const UniValue& o = output_params[idx].get_obj();
+
+        RPCTypeCheckObj(o,
+            {
+                {"txid", UniValueType(UniValue::VSTR)},
+                {"vout", UniValueType(UniValue::VNUM)},
+            });
+
+        const std::string& txid = find_value(o, "txid").get_str();
+        if (!IsHex(txid)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected hex txid");
+        }
+
+        const int nOutput = find_value(o, "vout").get_int();
+        if (nOutput < 0) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout must be positive");
+        }
+
+        const COutPoint outpt(uint256S(txid), nOutput);
+
+        const auto it = pwallet->mapWallet.find(outpt.hash);
+        if (it == pwallet->mapWallet.end()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, unknown transaction");
+        }
+
+        const CWalletTx& trans = it->second;
+
+        if (outpt.n >= trans.tx->vout.size()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout index out of bounds");
+        }
+
+        if (pwallet->IsSpent(outpt.hash, outpt.n)) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected unspent output");
+        }
+
+        const bool is_locked = pwallet->IsLockedCoin(outpt.hash
