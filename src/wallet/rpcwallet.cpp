@@ -3337,4 +3337,281 @@ UniValue bumpfee(const JSONRPCRequest& request)
         RPCTypeCheckObj(options,
             {
                 {"confTarget", UniValueType(UniValue::VNUM)},
-                {"totalFee", Uni
+                {"totalFee", UniValueType(UniValue::VNUM)},
+                {"replaceable", UniValueType(UniValue::VBOOL)},
+                {"estimate_mode", UniValueType(UniValue::VSTR)},
+            },
+            true, true);
+
+        if (options.exists("confTarget") && options.exists("totalFee")) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "confTarget and totalFee options should not both be set. Please provide either a confirmation target for fee estimation or an explicit total fee for the transaction.");
+        } else if (options.exists("confTarget")) { // TODO: alias this to conf_target
+            coin_control.m_confirm_target = ParseConfirmTarget(options["confTarget"]);
+        } else if (options.exists("totalFee")) {
+            totalFee = options["totalFee"].get_int64();
+            if (totalFee <= 0) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid totalFee %s (must be greater than 0)", FormatMoney(totalFee)));
+            }
+        }
+
+        if (options.exists("replaceable")) {
+            coin_control.signalRbf = options["replaceable"].get_bool();
+        }
+        if (options.exists("estimate_mode")) {
+            if (!FeeModeFromString(options["estimate_mode"].get_str(), coin_control.m_fee_mode)) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid estimate_mode parameter");
+            }
+        }
+    }
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK2(cs_main, pwallet->cs_wallet);
+    EnsureWalletIsUnlocked(pwallet);
+
+
+    std::vector<std::string> errors;
+    CAmount old_fee;
+    CAmount new_fee;
+    CMutableTransaction mtx;
+    feebumper::Result res = feebumper::CreateTransaction(pwallet, hash, coin_control, totalFee, errors, old_fee, new_fee, mtx);
+    if (res != feebumper::Result::OK) {
+        switch(res) {
+            case feebumper::Result::INVALID_ADDRESS_OR_KEY:
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, errors[0]);
+                break;
+            case feebumper::Result::INVALID_REQUEST:
+                throw JSONRPCError(RPC_INVALID_REQUEST, errors[0]);
+                break;
+            case feebumper::Result::INVALID_PARAMETER:
+                throw JSONRPCError(RPC_INVALID_PARAMETER, errors[0]);
+                break;
+            case feebumper::Result::WALLET_ERROR:
+                throw JSONRPCError(RPC_WALLET_ERROR, errors[0]);
+                break;
+            default:
+                throw JSONRPCError(RPC_MISC_ERROR, errors[0]);
+                break;
+        }
+    }
+
+    // sign bumped transaction
+    if (!feebumper::SignTransaction(pwallet, mtx)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Can't sign transaction.");
+    }
+    // commit the bumped transaction
+    uint256 txid;
+    if (feebumper::CommitTransaction(pwallet, hash, std::move(mtx), errors, txid) != feebumper::Result::OK) {
+        throw JSONRPCError(RPC_WALLET_ERROR, errors[0]);
+    }
+    UniValue result(UniValue::VOBJ);
+    result.push_back(Pair("txid", txid.GetHex()));
+    result.push_back(Pair("origfee", ValueFromAmount(old_fee)));
+    result.push_back(Pair("fee", ValueFromAmount(new_fee)));
+    UniValue result_errors(UniValue::VARR);
+    for (const std::string& error : errors) {
+        result_errors.push_back(error);
+    }
+    result.push_back(Pair("errors", result_errors));
+
+    return result;
+}
+
+UniValue generate(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 2) {
+        throw std::runtime_error(
+            "generate nblocks ( maxtries )\n"
+            "\nMine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.\n"
+            "\nArguments:\n"
+            "1. nblocks      (numeric, required) How many blocks are generated immediately.\n"
+            "2. maxtries     (numeric, optional) How many iterations to try (default = 1000000).\n"
+            "\nResult:\n"
+            "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "\nExamples:\n"
+            "\nGenerate 11 blocks\n"
+            + HelpExampleCli("generate", "11")
+        );
+    }
+
+    int num_generate = request.params[0].get_int();
+    uint64_t max_tries = 1000000;
+    if (!request.params[1].isNull()) {
+        max_tries = request.params[1].get_int();
+    }
+
+    std::shared_ptr<CReserveScript> coinbase_script;
+    pwallet->GetScriptForMining(coinbase_script);
+
+    // If the keypool is exhausted, no script is returned at all.  Catch this.
+    if (!coinbase_script) {
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+    }
+
+    //throw an error if no script was provided
+    if (coinbase_script->reserveScript.empty()) {
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available");
+    }
+
+    return generateBlocks(coinbase_script, num_generate, max_tries, true);
+}
+
+UniValue rescanblockchain(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp || request.params.size() > 2) {
+        throw std::runtime_error(
+            "rescanblockchain (\"start_height\") (\"stop_height\")\n"
+            "\nRescan the local blockchain for wallet related transactions.\n"
+            "\nArguments:\n"
+            "1. \"start_height\"    (numeric, optional) block height where the rescan should start\n"
+            "2. \"stop_height\"     (numeric, optional) the last block height that should be scanned\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"start_height\"     (numeric) The block height where the rescan has started. If omitted, rescan started from the genesis block.\n"
+            "  \"stop_height\"      (numeric) The height of the last rescanned block. If omitted, rescan stopped at the chain tip.\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("rescanblockchain", "100000 120000")
+            + HelpExampleRpc("rescanblockchain", "100000, 120000")
+            );
+    }
+
+    WalletRescanReserver reserver(pwallet);
+    if (!reserver.reserve()) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
+    }
+
+    CBlockIndex *pindexStart = nullptr;
+    CBlockIndex *pindexStop = nullptr;
+    CBlockIndex *pChainTip = nullptr;
+    {
+        LOCK(cs_main);
+        pindexStart = chainActive.Genesis();
+        pChainTip = chainActive.Tip();
+
+        if (!request.params[0].isNull()) {
+            pindexStart = chainActive[request.params[0].get_int()];
+            if (!pindexStart) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid start_height");
+            }
+        }
+
+        if (!request.params[1].isNull()) {
+            pindexStop = chainActive[request.params[1].get_int()];
+            if (!pindexStop) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid stop_height");
+            }
+            else if (pindexStop->nHeight < pindexStart->nHeight) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "stop_height must be greater then start_height");
+            }
+        }
+    }
+
+    // We can't rescan beyond non-pruned blocks, stop and throw an error
+    if (fPruneMode) {
+        LOCK(cs_main);
+        CBlockIndex *block = pindexStop ? pindexStop : pChainTip;
+        while (block && block->nHeight >= pindexStart->nHeight) {
+            if (!(block->nStatus & BLOCK_HAVE_DATA)) {
+                throw JSONRPCError(RPC_MISC_ERROR, "Can't rescan beyond pruned data. Use RPC call getblockchaininfo to determine your pruned height.");
+            }
+            block = block->pprev;
+        }
+    }
+
+    CBlockIndex *stopBlock = pwallet->ScanForWalletTransactions(pindexStart, pindexStop, reserver, true);
+    if (!stopBlock) {
+        if (pwallet->IsAbortingRescan()) {
+            throw JSONRPCError(RPC_MISC_ERROR, "Rescan aborted.");
+        }
+        // if we got a nullptr returned, ScanForWalletTransactions did rescan up to the requested stopindex
+        stopBlock = pindexStop ? pindexStop : pChainTip;
+    }
+    else {
+        throw JSONRPCError(RPC_MISC_ERROR, "Rescan failed. Potentially corrupted data files.");
+    }
+    UniValue response(UniValue::VOBJ);
+    response.pushKV("start_height", pindexStart->nHeight);
+    response.pushKV("stop_height", stopBlock->nHeight);
+    return response;
+}
+
+UniValue getauxblock(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        return NullUniValue;
+    }
+
+    if (request.fHelp
+          || (request.params.size() != 0 && request.params.size() != 2))
+        throw std::runtime_error(
+            "getauxblock (hash auxpow)\n"
+            "\nCreate or submit a merge-mined block.\n"
+            "\nWithout arguments, create a new block and return information\n"
+            "required to merge-mine it.  With arguments, submit a solved\n"
+            "auxpow for a previously returned block.\n"
+            "\nArguments:\n"
+            "1. hash      (string, optional) hash of the block to submit\n"
+            "2. auxpow    (string, optional) serialised auxpow found\n"
+            "\nResult (without arguments):\n"
+            "{\n"
+            "  \"hash\"               (string) hash of the created block\n"
+            "  \"chainid\"            (numeric) chain ID for this block\n"
+            "  \"previousblockhash\"  (string) hash of the previous block\n"
+            "  \"coinbasevalue\"      (numeric) value of the block's coinbase\n"
+            "  \"bits\"               (string) compressed target of the block\n"
+            "  \"height\"             (numeric) height of the block\n"
+            "  \"_target\"            (string) target in reversed byte order, deprecated\n"
+            "}\n"
+            "\nResult (with arguments):\n"
+            "xxxxx        (boolean) whether the submitted block was correct\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getauxblock", "")
+            + HelpExampleCli("getauxblock", "\"hash\" \"serialised auxpow\"")
+            + HelpExampleRpc("getauxblock", "")
+            );
+
+
+    /*
+    std::shared_ptr<CReserveScript> coinbaseScript;
+    pwallet->GetScriptForMining(coinbaseScript);
+
+    // If the keypool is exhausted, no script is returned at all.  Catch this.
+    if (!coinbaseScript)
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+
+    // throw an error if no script was provided
+    if (!coinbaseScript->reserveScript.size())
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
+
+    // Create a new block
+    if (request.params.size() == 0)
+        return AuxMiningCreateBlock(coinbaseScript->reserveScript);
+    */
+
+   std::shared_ptr<CScript> coinbaseScript;
+   std::shared_ptr<CReserveScript> coinbaseReserveScript;
+   bool fReserveUsed = false;
+
+   {
+        LOCK(cs_main);
+        CBlockIndex* const pindexPrev = chainActive.Tip();
+        int64_t nHeight = pindexPrev->nHeight+1;
+        const CChainParams& m_params = Params();
+        const std::set<CScri
