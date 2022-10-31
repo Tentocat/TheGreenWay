@@ -3614,4 +3614,291 @@ UniValue getauxblock(const JSONRPCRequest& request)
         CBlockIndex* const pindexPrev = chainActive.Tip();
         int64_t nHeight = pindexPrev->nHeight+1;
         const CChainParams& m_params = Params();
-        const std::set<CScri
+        const std::set<CScript>& setAllowedMiners = m_params.GetAllowedLicensedMinersScriptsAtHeight(nHeight);
+
+        if (setAllowedMiners.size() != 0) {
+            std::set<CScript>::iterator it = setAllowedMiners.begin();
+            // we will take first allowed miner for merged mining, or we can somehow advance iterator
+            // to take the script that we exactly need
+            coinbaseScript = std::make_shared<CScript>(*it);
+        }
+        else
+        {
+            // any script for mining is allowed, back to original scheme
+            pwallet->GetScriptForMining(coinbaseReserveScript);
+            fReserveUsed = true;
+            if (!coinbaseReserveScript) {
+                throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+            }
+            if (!coinbaseReserveScript->reserveScript.size()) {
+                throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
+            }
+            coinbaseScript = std::make_shared<CScript>(coinbaseReserveScript->reserveScript);
+        }
+   }
+
+    // Create a new block
+    if (request.params.size() == 0)
+        return AuxMiningCreateBlock(*coinbaseScript);
+
+    /* Submit a block instead.  Note that this need not lock cs_main,
+       since ProcessNewBlock below locks it instead.  */
+    assert(request.params.size() == 2);
+    bool fAccepted = AuxMiningSubmitBlock(request.params[0].get_str(), 
+                                          request.params[1].get_str());
+    if (fAccepted && fReserveUsed)
+        coinbaseReserveScript->KeepScript();
+
+    return fAccepted;
+}
+
+#include "../cc/CCfaucet.h"
+#include "../cc/CCassets.h"
+#include "../cc/CCrewards.h"
+#include "../cc/CCdice.h"
+#include "../cc/CCfsm.h"
+#include "../cc/CCauction.h"
+#include "../cc/CClotto.h"
+#include "../cc/CCchannels.h"
+#include "../cc/CCOracles.h"
+#include "../cc/CCGateways.h"
+#include "../cc/CCPrices.h"
+#include "../cc/CCHeir.h"
+#include "../cc/CCMarmara.h"
+#include "../cc/CCPayments.h"
+#include "../cc/CCPegs.h"
+
+int32_t ensure_CCrequirements(uint8_t evalcode)
+{
+    CCerror = "";
+    if ( ASSETCHAINS_CCDISABLES[evalcode] != 0 || (evalcode == EVAL_MARMARA && ASSETCHAINS_MARMARA == 0) )
+    {
+        // check if a height activation has been set. 
+        LogPrintf( "evalcode.%i activates at height. %i current height.%i\n", evalcode, mapHeightEvalActivate[evalcode], currentheight());
+        if ( mapHeightEvalActivate[evalcode] == 0 || currentheight() == 0 || mapHeightEvalActivate[evalcode] > currentheight() )
+        {
+            LogPrintf("evalcode %d disabled\n",evalcode);
+            return(-1);
+        }
+    }
+    if ( NOTARY_PUBKEY33[0] == 0 )
+    {
+        LogPrintf("no -pubkey set\n");
+        return(-1);
+    }
+    else if ( gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX) == 0 )
+    {
+        LogPrintf("no -addressindex\n");
+        return(-1);
+    }
+    else if ( gArgs.GetBoolArg("-spentindex", DEFAULT_SPENTINDEX) == 0 )
+    {
+        LogPrintf("no -spentindex\n");
+        return(-1);
+    }
+    else return(0);
+}
+
+UniValue CCaddress(struct CCcontract_info *cp,char *name,std::vector<unsigned char> &pubkey)
+{
+    UniValue result(UniValue::VOBJ); char destaddr[64],str[64]; CPubKey mypk,pk;
+    pk = GetUnspendable(cp,0);
+    GetCCaddress(cp,destaddr,pk);
+    if ( strcmp(destaddr,cp->unspendableCCaddr) != 0 )
+    {
+        uint8_t priv[32];
+        Myprivkey(priv); // it is assumed the CC's normal address'es -pubkey was used
+        LogPrintf("fix mismatched CCaddr %s -> %s\n",cp->unspendableCCaddr,destaddr);
+        strlcpy(cp->unspendableCCaddr,destaddr,ARRAYSIZE(cp->unspendableCCaddr));
+        memset(priv,0,32);
+    }
+    result.push_back(Pair("result", "success"));
+    sprintf(str,"%sCCAddress",name);
+    result.push_back(Pair(str,cp->unspendableCCaddr));
+    sprintf(str,"%sCCBalance",name);
+    result.push_back(Pair(str,ValueFromAmount(CCaddress_balance(cp->unspendableCCaddr,1))));
+    sprintf(str,"%sNormalAddress",name);
+    result.push_back(Pair(str,cp->normaladdr));
+    sprintf(str,"%sNormalBalance",name);
+    result.push_back(Pair(str,ValueFromAmount(CCaddress_balance(cp->normaladdr,0))));
+    if (strcmp(name,"Gateways")==0) result.push_back(Pair("GatewaysPubkey","03ea9c062b9652d8eff34879b504eda0717895d27597aaeb60347d65eed96ccb40"));
+    if ((strcmp(name,"Channels")==0 || strcmp(name,"Heir")==0) && pubkey.size() == 33)
+    {
+        sprintf(str,"%sCC1of2Address",name);
+        mypk = pubkey2pk(Mypubkey());
+        GetCCaddress1of2(cp,destaddr,mypk,pubkey2pk(pubkey));
+        result.push_back(Pair(str,destaddr));
+        if (GetTokensCCaddress1of2(cp,destaddr,mypk,pubkey2pk(pubkey))>0)
+        {
+            sprintf(str,"%sCC1of2TokensAddress",name);
+            result.push_back(Pair(str,destaddr));
+        }
+    }
+    else if (strcmp(name,"Tokens")!=0)
+    {
+        if (GetTokensCCaddress(cp,destaddr,pk)>0)
+        {
+            sprintf(str,"%sCCTokensAddress",name);
+            result.push_back(Pair(str,destaddr));
+        }
+    }
+    if ( pubkey.size() == 33 )
+    {
+        if ( GetCCaddress(cp,destaddr,pubkey2pk(pubkey)) != 0 )
+        {
+            sprintf(str,"PubkeyCCaddress(%s)",name);
+            result.push_back(Pair(str,destaddr));
+            sprintf(str,"PubkeyCCbalance(%s)",name);
+            result.push_back(Pair(str,ValueFromAmount(CCaddress_balance(destaddr,0))));
+        }
+    }
+    if ( GetCCaddress(cp,destaddr,pubkey2pk(Mypubkey())) != 0 )
+    {
+        sprintf(str,"myCCAddress(%s)",name);
+        result.push_back(Pair(str,destaddr));
+        sprintf(str,"myCCbalance(%s)",name);
+        result.push_back(Pair(str,ValueFromAmount(CCaddress_balance(destaddr,1))));
+    }
+    if ( Getscriptaddress(destaddr,(CScript() << Mypubkey() << OP_CHECKSIG)) != 0 )
+    {
+        result.push_back(Pair("myaddress",destaddr));
+        result.push_back(Pair("mybalance",ValueFromAmount(CCaddress_balance(destaddr,0))));
+    }
+    return(result);
+}
+
+UniValue channelsaddress(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+
+    cp = CCinit(&C,EVAL_CHANNELS);
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("channelsaddress pubkey\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Channels",pubkey));
+}
+
+UniValue cclibaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey; uint8_t evalcode = EVAL_FIRSTUSER;
+    if ( request.fHelp || request.params.size() > 2 )
+        throw std::runtime_error("cclibaddress [evalcode] [pubkey]\n");
+    if ( request.params.size() >= 1 )
+    {
+        evalcode = atoi(request.params[0].get_str().c_str());
+        if ( evalcode < EVAL_FIRSTUSER || evalcode > EVAL_LASTUSER )
+            throw std::runtime_error("evalcode not between EVAL_FIRSTUSER and EVAL_LASTUSER\n");
+        if ( request.params.size() == 2 )
+            pubkey = ParseHex(request.params[1].get_str().c_str());
+    }
+    cp = CCinit(&C,evalcode);
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( cp == 0 )
+        throw std::runtime_error("error creating *cp\n");
+    return(CCaddress(cp,(char *)"CClib",pubkey));
+}
+
+UniValue cclibinfo(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; uint8_t evalcode = EVAL_FIRSTUSER;
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("cclibinfo\n");
+    if ( ensure_CCrequirements(0) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    cp = CCinit(&C,evalcode);
+    return(CClib_info(cp));
+}
+
+UniValue cclib(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; char *method,*jsonstr=0; uint8_t evalcode = EVAL_FIRSTUSER;
+    std::string vobjJsonSerialized;
+
+    if ( request.fHelp || request.params.size() > 3 )
+        throw std::runtime_error("cclib method [evalcode] [JSON params]\n");
+    if ( ASSETCHAINS_CCLIB.size() == 0 )
+        throw std::runtime_error("no -ac_cclib= specified\n");
+    if ( ensure_CCrequirements(0) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    method = (char *)request.params[0].get_str().c_str();
+    if ( request.params.size() >= 2 )
+    {
+        evalcode = atoi(request.params[1].get_str().c_str());
+        if ( evalcode < EVAL_FIRSTUSER || evalcode > EVAL_LASTUSER )
+        {
+            //LogPrintf("evalcode.%d vs (%d, %d)\n",evalcode,EVAL_FIRSTUSER,EVAL_LASTUSER);
+            throw std::runtime_error("evalcode not between EVAL_FIRSTUSER and EVAL_LASTUSER\n");
+        }
+        if ( request.params.size() == 3 )
+        {
+            if (request.params[2].getType() == UniValue::VOBJ) {
+                vobjJsonSerialized = request.params[2].write(0, 0);
+                jsonstr = (char *)vobjJsonSerialized.c_str();
+            }
+            else  // VSTR assumed
+                jsonstr = (char *)request.params[2].get_str().c_str();
+            //fprintf(stderr,"params.(%s %s %s)\n",request.params[0].get_str().c_str(),request.params[1].get_str().c_str(),jsonstr);
+        }
+    }
+    cp = CCinit(&C,evalcode);
+    return(CClib(cp,method,jsonstr));
+}
+
+UniValue payments_release(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentsrelease \"[%22createtxid%22,amount,(skipminimum)]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsRelease(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_fund(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentsfund \"[%22createtxid%22,amount(,useopret)]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsFund(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_merge(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentsmerge \"[%22createtxid%22]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsMerge(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_txidopret(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentstxidopret \"[allocation,%22scriptPubKey%22(,%22destopret%22)]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsTxidopret(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_creat
