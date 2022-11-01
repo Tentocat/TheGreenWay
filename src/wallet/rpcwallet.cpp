@@ -4411,4 +4411,285 @@ UniValue channelsclose(const JSONRPCRequest& request)
     cp = CCinit(&C,EVAL_CHANNELS);
     if ( request.fHelp || request.params.size() != 1 )
         throw std::runtime_error("channelsclose opentxid\n");
-    if ( ensure_CCrequirements(EVAL_CHANNEL
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    opentxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    result = ChannelClose(CPubKey(),0,opentxid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue channelsrefund(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; uint256 opentxid,closetxid;
+    cp = CCinit(&C,EVAL_CHANNELS);
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("channelsrefund opentxid closetxid\n");
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    opentxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    closetxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    result = ChannelRefund(CPubKey(),0,opentxid,closetxid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue rewardscreatefunding(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); char *name; int64_t funds,APR,minseconds,maxseconds,mindeposit; std::string hex;
+    if ( request.fHelp || request.params.size() > 6 || request.params.size() < 2 )
+        throw std::runtime_error("rewardscreatefunding name amount APR mindays maxdays mindeposit\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+   // default to OOT request.params
+    APR = 5 * COIN;
+    minseconds = maxseconds = 60 * 3600 * 24;
+    mindeposit = 100 * COIN;
+    name = (char *)request.params[0].get_str().c_str();
+    funds = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+
+    if ( funds <= 0 ) {
+        ERR_RESULT("funds must be positive");
+        return result;
+    }
+    if ( request.params.size() > 2 )
+    {
+        APR = atof(request.params[2].get_str().c_str()) * COIN;
+        if ( APR > REWARDSCC_MAXAPR )
+        {
+            ERR_RESULT("25% APR is maximum");
+            return result;
+        }
+        if ( request.params.size() > 3 )
+        {
+            minseconds = atol(request.params[3].get_str().c_str()) * 3600 * 24;
+            if ( minseconds < 0 ) {
+                ERR_RESULT("mindays must be non-negative");
+                return result;
+            }
+            if ( request.params.size() > 4 )
+            {
+                maxseconds = atol(request.params[4].get_str().c_str()) * 3600 * 24;
+                if ( maxseconds <= 0 ) {
+                    ERR_RESULT("maxdays must be positive");
+                    return result;
+                }
+                if ( maxseconds < minseconds ) {
+                    ERR_RESULT("maxdays must be greater than mindays");
+                    return result;
+                }
+                if ( request.params.size() > 5 )
+                    mindeposit = atof(request.params[5].get_str().c_str()) * COIN + 0.00000000499999;
+                    if ( mindeposit <= 0 ) {
+                        ERR_RESULT("mindeposit must be positive");
+                        return result;
+                    }
+            }
+        }
+    }
+    hex = RewardsCreateFunding(0,name,funds,APR,minseconds,maxseconds,mindeposit);
+    if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt create rewards funding transaction");
+    return(result);
+}
+
+UniValue rewardslock(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); char *name; uint256 fundingtxid; int64_t amount; std::string hex;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("rewardslock name fundingtxid amount\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    amount = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    hex = RewardsLock(0,name,fundingtxid,amount);
+
+    if (!VALID_PLAN_NAME(name)) {
+            ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+            return(result);
+    }
+    if ( CCerror != "" ){
+        ERR_RESULT(CCerror);
+    } else if ( amount > 0 ) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT( "couldnt create rewards lock transaction");
+    } else ERR_RESULT("amount must be positive");
+    return(result);
+}
+
+UniValue rewardsaddfunding(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); char *name; uint256 fundingtxid; int64_t amount; std::string hex;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("rewardsaddfunding name fundingtxid amount\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    amount = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    hex = RewardsAddfunding(0,name,fundingtxid,amount);
+
+    if (!VALID_PLAN_NAME(name)) {
+            ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+            return(result);
+    }
+    if (CCerror != "") {
+        ERR_RESULT(CCerror);
+    } else if (amount > 0) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else {
+            result.push_back(Pair("result", "error"));
+            result.push_back(Pair("error", "couldnt create rewards addfunding transaction"));
+        }
+    } else {
+            ERR_RESULT("funding amount must be positive");
+    }
+    return(result);
+}
+
+UniValue rewardsunlock(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex; char *name; uint256 fundingtxid,txid;
+    if ( request.fHelp || request.params.size() > 3 || request.params.size() < 2 )
+        throw std::runtime_error("rewardsunlock name fundingtxid [txid]\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+
+    if (!VALID_PLAN_NAME(name)) {
+            ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+            return(result);
+    }
+    if ( request.params.size() > 2 )
+        txid = Parseuint256((char *)request.params[2].get_str().c_str());
+    else memset(&txid,0,sizeof(txid));
+    hex = RewardsUnlock(0,name,fundingtxid,txid);
+    if (CCerror != "") {
+        ERR_RESULT(CCerror);
+    } else if ( hex.size() > 0 ) {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt create rewards unlock transaction");
+    return(result);
+}
+
+UniValue rewardslist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("rewardslist\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    return(RewardsList());
+}
+
+UniValue rewardsinfo(const JSONRPCRequest& request)
+{
+    uint256 fundingtxid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("rewardsinfo fundingtxid\n");
+    if ( ensure_CCrequirements(EVAL_REWARDS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    fundingtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(RewardsInfo(fundingtxid));
+}
+
+UniValue gatewayslist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("gatewayslist\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    return(GatewaysList());
+}
+
+UniValue gatewaysexternaladdress(const JSONRPCRequest& request)
+{
+    uint256 bindtxid; CPubKey pubkey;
+
+    if ( request.fHelp || request.params.size() != 2)
+        throw std::runtime_error("gatewaysexternaladdress bindtxid pubkey\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    pubkey = ParseHex(request.params[1].get_str().c_str());
+    return(GatewaysExternalAddress(bindtxid,pubkey));
+}
+
+UniValue gatewaysdumpprivkey(const JSONRPCRequest& request)
+{
+    uint256 bindtxid;
+
+    if ( request.fHelp || request.params.size() != 2)
+        throw std::runtime_error("gatewaysdumpprivkey bindtxid address\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    std::string strAddress = request.params[1].get_str();
+    CTxDestination dest = DecodeDestination(strAddress);
+    if (!IsValidDestination(dest)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid transparent address");
+    }
+    const CKeyID *keyID = boost::get<CKeyID>(&dest);
+    if (!keyID) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");
+    }
+    CKey vchSecret;
+    if (!pwalletMain->GetKey(*keyID, vchSecret)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Private key for address " + strAddress + " is not known");
+    }
+    return(GatewaysDumpPrivKey(bindtxid,vchSecret));
+}
+
+UniValue gatewaysinfo(const JSONRPCRequest& request)
+{
+    uint256 txid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("gatewaysinfo bindtxid\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(GatewaysInfo(txid));
+}
+
+UniValue gatewaysbind(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 tokenid,oracletxid; int32_t i; int64_t totalsupply; std::vector<CPubKey> pubkeys;
+    uint8_t M,N,p1,p2,p3,p4=0; std::string coin; std::vector<unsigned char> pubkey;
+
+    if ( request.fHelp || request.params.size() < 10 )
+        throw std::runtime_error("gatewaysbind tokenid oracletxid coin tokensupply M N pubkey(s) pubtype p2shtyp
