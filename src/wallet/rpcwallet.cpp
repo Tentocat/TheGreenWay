@@ -3901,4 +3901,274 @@ UniValue payments_txidopret(const JSONRPCRequest& request)
     return(PaymentsTxidopret(cp,(char *)request.params[0].get_str().c_str()));
 }
 
-UniValue payments_creat
+UniValue payments_create(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentscreate \"[lockedblocks,minamount,%22paytxid0%22,...,%22paytxidN%22]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsCreate(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_airdrop(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentsairdrop \"[lockedblocks,minamount,mintoaddress,top,bottom,fixedFlag,%22excludeAddress%22,...,%22excludeAddressN%22]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsAirdrop(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_airdroptokens(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("payments_airdroptokens \"[%22tokenid%22,lockedblocks,minamount,mintoaddress,top,bottom,fixedFlag,%22excludePubKey%22,...,%22excludePubKeyN%22]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsAirdropTokens(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_info(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("paymentsinfo \"[%22createtxid%22]\"\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsInfo(cp,(char *)request.params[0].get_str().c_str()));
+}
+
+UniValue payments_list(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C;
+    if ( request.fHelp || request.params.size() != 0 )
+        throw std::runtime_error("paymentslist\n");
+    if ( ensure_CCrequirements(EVAL_PAYMENTS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    return(PaymentsList(cp,(char *)""));
+}
+
+UniValue oraclesaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_ORACLES);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("oraclesaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Oracles",pubkey));
+}
+
+UniValue pegsaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_PEGS);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("pegssaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Pegs",pubkey));
+}
+
+UniValue marmaraaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_MARMARA);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("Marmaraaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Marmara",pubkey));
+}
+
+UniValue paymentsaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_PAYMENTS);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("paymentsaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Payments",pubkey));
+}
+
+UniValue gatewaysaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_GATEWAYS);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("gatewaysaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Gateways",pubkey));
+}
+
+UniValue heiraddress(const JSONRPCRequest& request)
+{
+	struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+	cp = CCinit(&C,EVAL_HEIR);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("heiraddress pubkey\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pubkey = ParseHex(request.params[0].get_str().c_str());
+	return(CCaddress(cp,(char *)"Heir",pubkey));
+}
+
+UniValue 
+lottoaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_LOTTO);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("lottoaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Lotto",pubkey));
+}
+
+UniValue FSMaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_FSM);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("FSMaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"FSM",pubkey));
+}
+
+UniValue auctionaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_AUCTION);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("auctionaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Auction",pubkey));
+}
+
+UniValue diceaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_DICE);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("diceaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Dice",pubkey));
+}
+
+UniValue faucetaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    int error;
+    cp = CCinit(&C,EVAL_FAUCET);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("faucetaddress [pubkey]\n");
+    error = ensure_CCrequirements(cp->evalcode);
+    if ( error < 0 )
+        throw std::runtime_error(strprintf("to use CC contracts, you need to launch daemon with valid -pubkey= for an address in your wallet. ERR=%d\n", error));
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Faucet",pubkey));
+}
+
+UniValue rewardsaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_REWARDS);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("rewardsaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Rewards",pubkey));
+}
+
+UniValue assetsaddress(const JSONRPCRequest& request)
+{
+	struct CCcontract_info *cp, C; std::vector<unsigned char> pubkey;
+	cp = CCinit(&C, EVAL_ASSETS);
+	if (request.fHelp || request.params.size() > 1)
+		throw std::runtime_error("assetsaddress [pubkey]\n");
+	if (ensure_CCrequirements(cp->evalcode) < 0)
+		throw std::runtime_error(CC_REQUIREMENTS_MSG);
+	if (request.params.size() == 1)
+		pubkey = ParseHex(request.params[0].get_str().c_str());
+	return(CCaddress(cp, (char *)"Assets", pubkey));
+}
+
+UniValue tokenaddress(const JSONRPCRequest& request)
+{
+    struct CCcontract_info *cp,C; std::vector<unsigned char> pubkey;
+    cp = CCinit(&C,EVAL_TOKENS);
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("tokenaddress [pubkey]\n");
+    if ( ensure_CCrequirements(cp->evalcode) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    if ( request.params.size() == 1 )
+        pubkey = ParseHex(request.params[0].get_str().c_str());
+    return(CCaddress(cp,(char *)"Tokens", pubkey));
+}
+
+UniValue marmara_poolpayout(const JSONRPCRequest& request)
+{
+    int32_t firstheight; double perc; char *jsonstr;
+    if ( request.fHelp || request.params.size() != 3 )
+    {
+        // marmarapoolpayout 0.5 2 '[["024131032ed90941e714db8e6dd176fe5a86c9d873d279edecf005c06f773da686",1000],["02ebc786cb83de8dc3922ab83c21f3f8a2f3216940c3bf9da43ce39e2a3a882c92",100]]';
+        //marmarapoolpayout 0 2 '[["024131032ed90941e714db8e6dd176fe5a86c9d873d279edecf005c06f773da686",1000]]'
+        throw std::runtime_error("marmarapoolpayout perc firstheight \"[[\\\"pubkey\\\":shares], ...]\"\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    perc = atof(request.params[0].get_str().c_str()) / 100.;
+    firstheight = atol(request.params[1].get_str().c_str());
+    jsonstr = (char *)request.params[2].get_str().c_str();
+    return(MarmaraPoolPayout(0,firstheight,perc,jsonstr)); // [[pk0, shares0], [pk1, shares1], ...]
+}
+
+UniValue marmara_receive(const JSONRPCRequest& request)
+{
+    U
