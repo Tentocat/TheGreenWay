@@ -4171,4 +4171,244 @@ UniValue marmara_poolpayout(const JSONRPCRequest& request)
 
 UniValue marmara_receive(const JSONRPCRequest& request)
 {
-    U
+    UniValue result(UniValue::VOBJ); uint256 batontxid; std::vector<uint8_t> senderpub; int64_t amount; int32_t matures; std::string currency;
+    if ( request.fHelp || (request.params.size() != 5 && request.params.size() != 4) )
+    {
+        // automatic flag -> lsb of matures
+        // 1st marmarareceive 028076d42eb20efc10007fafb5ca66a2052523c0d2221e607adf958d1a332159f6 7.5 MARMARA 1440
+        // after marmarareceive 039433dc3749aece1bd568f374a45da3b0bc6856990d7da3cd175399577940a775 7.5 MARMARA 1168 d72d87aa0d50436de695c93e2bf3d7273c63c92ef6307913aa01a6ee6a16548b
+        throw std::runtime_error("marmarareceive senderpk amount currency matures batontxid\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    memset(&batontxid,0,sizeof(batontxid));
+    senderpub = ParseHex(request.params[0].get_str().c_str());
+    if (senderpub.size()!= 33)
+    {
+        ERR_RESULT("invalid sender pubkey");
+        return result;
+    }
+    amount = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+    currency = request.params[2].get_str();
+    if ( request.params.size() == 5 )
+    {
+        matures = atol(request.params[3].get_str().c_str());
+        batontxid = Parseuint256((char *)request.params[4].get_str().c_str());
+    } else matures = atol(request.params[3].get_str().c_str()) + chainActive.LastTip()->GetHeight() + 1;
+    return(MarmaraReceive(0,pubkey2pk(senderpub),amount,currency,matures,batontxid,true));
+}
+
+UniValue marmara_issue(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 approvaltxid; std::vector<uint8_t> receiverpub; int64_t amount; int32_t matures; std::string currency;
+    if ( request.fHelp || request.params.size() != 5 )
+    {
+        // marmaraissue 039433dc3749aece1bd568f374a45da3b0bc6856990d7da3cd175399577940a775 7.5 MARMARA 1168 32da4cb3e886ee42de90b4a15042d71169077306badf909099c5c5c692df3f27
+        // marmaraissue 039433dc3749aece1bd568f374a45da3b0bc6856990d7da3cd175399577940a775 700 MARMARA 2629 11fe8bf1de80c2ef69124d08907f259aef7f41e3a632ca2d48ad072a8c8f3078 -> 335df3a5dd6b92a3d020c9465d4d76e0d8242126106b83756dcecbad9813fdf3
+
+        throw std::runtime_error("marmaraissue receiverpk amount currency matures approvaltxid\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    receiverpub = ParseHex(request.params[0].get_str().c_str());
+    if (receiverpub.size()!= 33)
+    {
+        ERR_RESULT("invalid receiverpub pubkey");
+        return result;
+    }
+    amount = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+    currency = request.params[2].get_str();
+    matures = atol(request.params[3].get_str().c_str());
+    approvaltxid = Parseuint256((char *)request.params[4].get_str().c_str());
+    return(MarmaraIssue(0,'I',pubkey2pk(receiverpub),amount,currency,matures,approvaltxid,zeroid));
+}
+
+UniValue marmara_transfer(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 approvaltxid,batontxid; std::vector<uint8_t> receiverpub; int64_t amount; int32_t matures; std::string currency; std::vector<uint256> creditloop;
+    if ( request.fHelp || request.params.size() != 5 )
+    {
+        // marmaratransfer 028076d42eb20efc10007fafb5ca66a2052523c0d2221e607adf958d1a332159f6 7.5 MARMARA 1168 1506c774e4b2804a6e25260920840f4cfca8d1fb400e69fe6b74b8e593dbedc5
+        throw std::runtime_error("marmaratransfer receiverpk amount currency matures approvaltxid\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    receiverpub = ParseHex(request.params[0].get_str().c_str());
+    if (receiverpub.size()!= 33)
+    {
+        ERR_RESULT("invalid receiverpub pubkey");
+        return result;
+    }
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    amount = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+    currency = request.params[2].get_str();
+    matures = atol(request.params[3].get_str().c_str());
+    approvaltxid = Parseuint256((char *)request.params[4].get_str().c_str());
+    if ( MarmaraGetbatontxid(creditloop,batontxid,approvaltxid) < 0 )
+        throw std::runtime_error("couldnt find batontxid\n");
+    return(MarmaraIssue(0,'T',pubkey2pk(receiverpub),amount,currency,matures,approvaltxid,batontxid));
+}
+
+UniValue marmara_info(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); CPubKey issuerpk; std::vector<uint8_t> issuerpub; int64_t minamount,maxamount; int32_t firstheight,lastheight; std::string currency;
+    if ( request.fHelp || request.params.size() < 4 || request.params.size() > 6 )
+    {
+        throw std::runtime_error("marmarainfo firstheight lastheight minamount maxamount [currency issuerpk]\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    firstheight = atol(request.params[0].get_str().c_str());
+    lastheight = atol(request.params[1].get_str().c_str());
+    minamount = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    maxamount = atof(request.params[3].get_str().c_str()) * COIN + 0.00000000499999;
+    if ( request.params.size() >= 5 )
+        currency = request.params[4].get_str();
+    if ( request.params.size() == 6 )
+    {
+        issuerpub = ParseHex(request.params[5].get_str().c_str());
+        if ( issuerpub.size()!= 33 )
+        {
+            ERR_RESULT("invalid issuer pubkey");
+            return result;
+        }
+        issuerpk = pubkey2pk(issuerpub);
+    }
+    result = MarmaraInfo(issuerpk,firstheight,lastheight,minamount,maxamount,currency);
+    return(result);
+}
+
+UniValue marmara_creditloop(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid;
+    if ( request.fHelp || request.params.size() != 1 )
+    {
+        // marmaracreditloop 010ff7f9256cefe3b5dee3d72c0eeae9fc6f34884e6f32ffe5b60916df54a9be
+        throw std::runtime_error("marmaracreditloop txid\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    result = MarmaraCreditloop(txid);
+    return(result);
+}
+
+UniValue marmara_settlement(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 batontxid;
+    if ( request.fHelp || request.params.size() != 1 )
+    {
+        // marmarasettlement 010ff7f9256cefe3b5dee3d72c0eeae9fc6f34884e6f32ffe5b60916df54a9be
+        // marmarasettlement ff3e259869196f3da9b5ea3f9e088a76c4fc063cf36ab586b652e121d441a603
+        throw std::runtime_error("marmarasettlement batontxid\n");
+    }
+    if ( ensure_CCrequirements(EVAL_MARMARA) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    batontxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    result = MarmaraSettlement(0,batontxid);
+    return(result);
+}
+
+UniValue marmara_lock(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t amount; int32_t height;
+    if ( request.fHelp || request.params.size() > 2 || request.params.size() == 0 )
+    {
+        throw std::runtime_error("marmaralock amount unlockht\n");
+    }
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    amount = atof(request.params[0].get_str().c_str()) * COIN + 0.00000000499999;
+    if ( request.params.size() == 2 )
+        height = atol(request.params[1].get_str().c_str());
+    else height = chainActive.LastTip()->GetHeight() + 1;
+    return(MarmaraLock(0,amount,height));
+}
+
+UniValue channelslist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("channelslist\n");
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(ChannelsList(CPubKey()));
+}
+
+UniValue channelsinfo(const JSONRPCRequest& request)
+{
+    uint256 opentxid;
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("channelsinfo [opentxid]\n");
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    opentxid=zeroid;
+    if (request.params.size() > 0 && !request.params[0].isNull() && !request.params[0].get_str().empty())
+        opentxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(ChannelsInfo(CPubKey(),opentxid));
+}
+
+UniValue channelsopen(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int32_t numpayments; int64_t payment; std::vector<unsigned char> destpub; struct CCcontract_info *cp,C;
+    uint256 tokenid=zeroid;
+
+    cp = CCinit(&C,EVAL_CHANNELS);
+    if ( request.fHelp || request.params.size() < 3 || request.params.size() > 4)
+        throw std::runtime_error("channelsopen destpubkey numpayments payment [tokenid]\n");
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    destpub = ParseHex(request.params[0].get_str().c_str());
+    numpayments = atoi(request.params[1].get_str().c_str());
+    payment = atol(request.params[2].get_str().c_str());
+    if (request.params.size()==4)
+    {
+        tokenid=Parseuint256((char *)request.params[3].get_str().c_str());
+    }
+    result = ChannelOpen(CPubKey(),0,pubkey2pk(destpub),numpayments,payment,tokenid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue channelspayment(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; uint256 opentxid,secret=zeroid; int32_t n; int64_t amount;
+    cp = CCinit(&C,EVAL_CHANNELS);
+    if ( request.fHelp || request.params.size() < 2 ||  request.params.size() >3 )
+        throw std::runtime_error("channelspayment opentxid amount [secret]\n");
+    if ( ensure_CCrequirements(EVAL_CHANNELS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    opentxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    amount = atoi((char *)request.params[1].get_str().c_str());
+    if (request.params.size() > 2 && !request.params[2].isNull() && !request.params[2].get_str().empty())
+    {
+        secret = Parseuint256((char *)request.params[2].get_str().c_str());
+    }
+    result = ChannelPayment(CPubKey(),0,opentxid,amount,secret);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue channelsclose(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); struct CCcontract_info *cp,C; uint256 opentxid;
+    cp = CCinit(&C,EVAL_CHANNELS);
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("channelsclose opentxid\n");
+    if ( ensure_CCrequirements(EVAL_CHANNEL
