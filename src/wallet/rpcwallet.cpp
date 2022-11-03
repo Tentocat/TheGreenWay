@@ -4692,4 +4692,269 @@ UniValue gatewaysbind(const JSONRPCRequest& request)
     uint8_t M,N,p1,p2,p3,p4=0; std::string coin; std::vector<unsigned char> pubkey;
 
     if ( request.fHelp || request.params.size() < 10 )
-        throw std::runtime_error("gatewaysbind tokenid oracletxid coin tokensupply M N pubkey(s) pubtype p2shtyp
+        throw std::runtime_error("gatewaysbind tokenid oracletxid coin tokensupply M N pubkey(s) pubtype p2shtype wiftype [taddr]\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    oracletxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    coin = request.params[2].get_str();
+    totalsupply = atol((char *)request.params[3].get_str().c_str());
+    M = atoi((char *)request.params[4].get_str().c_str());
+    N = atoi((char *)request.params[5].get_str().c_str());
+    if ( M > N || N == 0 || N > 15 || totalsupply < COIN/100 || tokenid == zeroid )
+    {
+        throw std::runtime_error("illegal M or N > 15 or tokensupply or invalid tokenid\n");
+    }
+    if ( request.params.size() < 6+N+3 )
+    {
+        throw std::runtime_error("not enough parameters for N pubkeys\n");
+    }
+    for (i=0; i<N; i++)
+    {       
+        pubkey = ParseHex(request.params[6+i].get_str().c_str());
+        if (pubkey.size()!= 33)
+        {
+            throw std::runtime_error("invalid destination pubkey");
+        }
+        pubkeys.push_back(pubkey2pk(pubkey));
+    }
+    p1 = atoi((char *)request.params[6+N].get_str().c_str());
+    p2 = atoi((char *)request.params[6+N+1].get_str().c_str());
+    p3 = atoi((char *)request.params[6+N+2].get_str().c_str());
+    if (request.params.size() == 9+N+1) p4 = atoi((char *)request.params[9+N].get_str().c_str());
+    result = GatewaysBind(CPubKey(),0,coin,tokenid,totalsupply,oracletxid,M,N,pubkeys,p1,p2,p3,p4);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewaysdeposit(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int32_t i,claimvout,height; int64_t amount; std::string coin,deposithex; uint256 bindtxid,cointxid; std::vector<uint8_t>proof,destpub,pubkey;
+    if ( request.fHelp || request.params.size() != 9 )
+        throw std::runtime_error("gatewaysdeposit bindtxid height coin cointxid claimvout deposithex proof destpub amount\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    height = atoi((char *)request.params[1].get_str().c_str());
+    coin = request.params[2].get_str();
+    cointxid = Parseuint256((char *)request.params[3].get_str().c_str());
+    claimvout = atoi((char *)request.params[4].get_str().c_str());
+    deposithex = request.params[5].get_str();
+    proof = ParseHex(request.params[6].get_str());
+    destpub = ParseHex(request.params[7].get_str());
+    amount = atof((char *)request.params[8].get_str().c_str()) * COIN + 0.00000000499999;
+    if ( amount <= 0 || claimvout < 0 )
+    {
+        throw std::runtime_error("invalid param: amount, numpks or claimvout\n");
+    }
+    if (destpub.size()!= 33)
+    {
+        throw std::runtime_error("invalid destination pubkey");
+    }
+    result = GatewaysDeposit(CPubKey(),0,bindtxid,height,coin,cointxid,claimvout,deposithex,proof,pubkey2pk(destpub),amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewaysclaim(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string coin; uint256 bindtxid,deposittxid; std::vector<uint8_t>destpub; int64_t amount;
+    if ( request.fHelp || request.params.size() != 5 )
+        throw std::runtime_error("gatewaysclaim bindtxid coin deposittxid destpub amount\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    deposittxid = Parseuint256((char *)request.params[2].get_str().c_str());
+    destpub = ParseHex(request.params[3].get_str());
+    amount = atof((char *)request.params[4].get_str().c_str()) * COIN + 0.00000000499999;
+    if (destpub.size()!= 33)
+    {
+        throw std::runtime_error("invalid destination pubkey");
+    }
+    result = GatewaysClaim(CPubKey(),0,bindtxid,coin,deposittxid,pubkey2pk(destpub),amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewayswithdraw(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 bindtxid; int64_t amount; std::string coin; std::vector<uint8_t> withdrawpub;
+    if ( request.fHelp || request.params.size() != 4 )
+        throw std::runtime_error("gatewayswithdraw bindtxid coin withdrawpub amount\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    withdrawpub = ParseHex(request.params[2].get_str());
+    amount = atof((char *)request.params[3].get_str().c_str()) * COIN + 0.00000000499999;
+    if (withdrawpub.size()!= 33)
+    {
+        throw std::runtime_error("invalid destination pubkey");
+    }
+    result = GatewaysWithdraw(CPubKey(),0,bindtxid,coin,pubkey2pk(withdrawpub),amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewayspartialsign(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string coin,parthex; uint256 txid;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("gatewayspartialsign txidaddr refcoin hex\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    parthex = request.params[2].get_str();
+    result = GatewaysPartialSign(CPubKey(),0,txid,coin,parthex);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewayscompletesigning(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 withdrawtxid; std::string txhex,coin;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("gatewayscompletesigning withdrawtxid coin hex\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    withdrawtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    txhex = request.params[2].get_str();
+    result = GatewaysCompleteSigning(CPubKey(),0,withdrawtxid,coin,txhex);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewaysmarkdone(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 completetxid; std::string coin;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("gatewaysmarkdone completesigningtx coin\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    completetxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    result = GatewaysMarkDone(CPubKey(),0,completetxid,coin);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue gatewayspendingdeposits(const JSONRPCRequest& request)
+{
+    uint256 bindtxid; std::string coin;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("gatewayspendingdeposits bindtxid coin\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    return(GatewaysPendingDeposits(CPubKey(),bindtxid,coin));
+}
+
+UniValue gatewayspendingwithdraws(const JSONRPCRequest& request)
+{
+    uint256 bindtxid; std::string coin;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("gatewayspendingwithdraws bindtxid coin\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    return(GatewaysPendingWithdraws(CPubKey(),bindtxid,coin));
+}
+
+UniValue gatewaysprocessed(const JSONRPCRequest& request)
+{
+    uint256 bindtxid; std::string coin;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("gatewaysprocessed bindtxid coin\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    bindtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    coin = request.params[1].get_str();
+    return(GatewaysProcessedWithdraws(CPubKey(),bindtxid,coin));
+}
+
+UniValue oracleslist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("oracleslist\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(OraclesList());
+}
+
+UniValue oraclesinfo(const JSONRPCRequest& request)
+{
+    uint256 txid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("oraclesinfo oracletxid\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(OracleInfo(txid));
+}
+
+UniValue oraclesfund(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("oraclesfund oracletxid\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    result = OracleFund(CPubKey(),0,txid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue oraclesregister(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid; int64_t datafee;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("oraclesregister oracletxid datafee\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    if ( (datafee= atol((char *)request.params[1].get_str().c_str())) == 0 )
+        datafee = atof((char *)request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+    result = OracleRegister(CPubKey(),0,txid,datafee);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue oraclessubscribe(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid; int64_t amount; std::vector<unsigned char> pubkey;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("oraclessubscribe oracletxid publisher amount\n");
+  
