@@ -4957,4 +4957,282 @@ UniValue oraclessubscribe(const JSONRPCRequest& request)
     UniValue result(UniValue::VOBJ); uint256 txid; int64_t amount; std::vector<unsigned char> pubkey;
     if ( request.fHelp || request.params.size() != 3 )
         throw std::runtime_error("oraclessubscribe oracletxid publisher amount\n");
-  
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    pubkey = ParseHex(request.params[1].get_str().c_str());
+    amount = atof((char *)request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    result = OracleSubscribe(CPubKey(),0,txid,pubkey2pk(pubkey),amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue oraclessample(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 oracletxid,txid; int32_t num; char *batonaddr;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("oraclessample oracletxid txid\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    oracletxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    txid = Parseuint256((char *)request.params[1].get_str().c_str());
+    return(OracleDataSample(oracletxid,txid));
+}
+
+UniValue oraclessamples(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid; int32_t num; char *batonaddr;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("oraclessamples oracletxid batonaddress num\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    batonaddr = (char *)request.params[1].get_str().c_str();
+    num = atoi((char *)request.params[2].get_str().c_str());
+    return(OracleDataSamples(txid,batonaddr,num));
+}
+
+UniValue oraclesdata(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 txid; std::vector<unsigned char> data;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("oraclesdata oracletxid hexstr\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    txid = Parseuint256((char *)request.params[0].get_str().c_str());
+    data = ParseHex(request.params[1].get_str().c_str());
+    result = OracleData(CPubKey(),0,txid,data);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue oraclescreate(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string name,description,format;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("oraclescreate name description format\n");
+    if ( ensure_CCrequirements(EVAL_ORACLES) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    name = request.params[0].get_str();
+    description = request.params[1].get_str();
+    format = request.params[2].get_str();
+    result = OracleCreate(CPubKey(),0,name,description,format);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue FSMcreate(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string name,states,hex;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("FSMcreate name states\n");
+    if ( ensure_CCrequirements(EVAL_FSM) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = request.params[0].get_str();
+    states = request.params[1].get_str();
+    hex = FSMCreate(0,name,states);
+    if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else result.push_back(Pair("error", "couldnt create FSM transaction"));
+    return(result);
+}
+
+UniValue FSMlist(const JSONRPCRequest& request)
+{
+    uint256 tokenid;
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("FSMlist\n");
+    if ( ensure_CCrequirements(EVAL_FSM) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(FSMList());
+}
+
+UniValue FSMinfo(const JSONRPCRequest& request)
+{
+    uint256 FSMtxid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("FSMinfo fundingtxid\n");
+    if ( ensure_CCrequirements(EVAL_FSM) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    FSMtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(FSMInfo(FSMtxid));
+}
+
+UniValue faucetinfo(const JSONRPCRequest& request)
+{
+    uint256 fundingtxid;
+    if ( request.fHelp || request.params.size() != 0 )
+        throw std::runtime_error("faucetinfo\n");
+    if ( ensure_CCrequirements(EVAL_FAUCET) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(FaucetInfo());
+}
+
+UniValue faucetfund(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t funds; std::string hex;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("faucetfund amount\n");
+    funds = atof(request.params[0].get_str().c_str()) * COIN + 0.00000000499999;
+    if ( ensure_CCrequirements(EVAL_FAUCET) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+    //const CKeyStore& keystore = *pwalletMain;
+    //LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    bool lockWallet = false;
+//    if (!mypk.IsValid())   // if mypk is not set then it is a local call, use local wallet in AddNormalInputs
+    lockWallet = true;
+
+    if (funds > 0) 
+    {
+        if (lockWallet)
+        {
+            ENTER_CRITICAL_SECTION(cs_main);
+            ENTER_CRITICAL_SECTION(pwalletMain->cs_wallet);
+        }
+        result = FaucetFund(CPubKey(), 0,(uint64_t) funds);
+        if (lockWallet)
+        {
+            LEAVE_CRITICAL_SECTION(pwalletMain->cs_wallet);
+            LEAVE_CRITICAL_SECTION(cs_main);
+        }
+
+        if ( result[JSON_HEXTX].getValStr().size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            //result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt create faucet funding transaction");
+    } else ERR_RESULT( "funding amount must be positive");
+    return(result);
+}
+
+UniValue faucetget(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex;
+    if ( request.fHelp || request.params.size() !=0 )
+        throw std::runtime_error("faucetget\n");
+    if ( ensure_CCrequirements(EVAL_FAUCET) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+    bool lockWallet = false;
+//    if (!mypk.IsValid())   // if mypk is not set then it is a local call, use wallet in AddNormalInputs (see check for this there)
+    lockWallet = true;
+
+    //const CKeyStore& keystore = *pwalletMain;
+    //LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    if (lockWallet)
+    {
+        // use this instead LOCK2 because we need conditional wallet lock
+        ENTER_CRITICAL_SECTION(cs_main);
+        ENTER_CRITICAL_SECTION(pwalletMain->cs_wallet);
+    }
+    result = FaucetGet(CPubKey(), 0);
+    if (lockWallet)
+    {
+        LEAVE_CRITICAL_SECTION(pwalletMain->cs_wallet);
+        LEAVE_CRITICAL_SECTION(cs_main);
+    }
+
+    if (result[JSON_HEXTX].getValStr().size() > 0 ) {
+        result.push_back(Pair("result", "success"));
+        //result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt create faucet get transaction");
+    return(result);
+}
+
+UniValue dicefund(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t funds,minbet,maxbet,maxodds,timeoutblocks; std::string hex; char *name;
+    if ( request.fHelp || request.params.size() != 6 )
+        throw std::runtime_error("dicefund name funds minbet maxbet maxodds timeoutblocks\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    funds = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;
+    minbet = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    maxbet = atof(request.params[3].get_str().c_str()) * COIN + 0.00000000499999;
+    maxodds = atol(request.params[4].get_str().c_str());
+    timeoutblocks = atol(request.params[5].get_str().c_str());
+
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+
+    hex = DiceCreateFunding(0,name,funds,minbet,maxbet,maxodds,timeoutblocks);
+    if (CCerror != "") {
+        ERR_RESULT(CCerror);
+    } else if ( hex.size() > 0 ) {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else  {
+        ERR_RESULT( "couldnt create dice funding transaction");
+    }
+    return(result);
+}
+
+UniValue diceaddfunds(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); char *name; uint256 fundingtxid; int64_t amount; std::string hex;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("diceaddfunds name fundingtxid amount\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    amount = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+    if ( amount > 0 ) {
+        hex = DiceAddfunding(0,name,fundingtxid,amount);
+        if (CCerror != "") {
+            ERR_RESULT(CCerror);
+        } else if ( hex.size() > 0 ) {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt create dice addfunding transaction");
+    } else ERR_RESULT("amount must be positive");
+    return(result);
+}
+
+UniValue dicebet(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex,error; uint256 fundingtxid; int64_t amount,odds; char *name;
+    if ( request.fHelp || request.params.size() != 4 )
+        throw std::runtime_error("dicebet name fundingtxid amount odds\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    amount = atof(request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    odds = atol(request.params[3].get_str().c_str());
+
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+    if (amount > 0 && odds > 0) {
+        hex = DiceBet(0,name,fundingtxid,amount,odds);
