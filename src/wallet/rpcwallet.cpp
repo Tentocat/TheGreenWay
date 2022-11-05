@@ -5236,3 +5236,315 @@ UniValue dicebet(const JSONRPCRequest& request)
     }
     if (amount > 0 && odds > 0) {
         hex = DiceBet(0,name,fundingtxid,amount,odds);
+        RETURN_IF_ERROR(CCerror);
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        }
+    } else {
+        ERR_RESULT("amount and odds must be positive");
+    }
+    return(result);
+}
+
+UniValue dicefinish(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint8_t funcid; char *name; uint256 entropyused,fundingtxid,bettxid; std::string hex; int32_t r,entropyvout;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("dicefinish name fundingtxid bettxid\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    bettxid = Parseuint256((char *)request.params[2].get_str().c_str());
+    hex = DiceBetFinish(funcid,entropyused,entropyvout,&r,0,name,fundingtxid,bettxid,1,zeroid,-1);
+    if ( CCerror != "" )
+    {
+        ERR_RESULT(CCerror);
+    } else if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+        if ( funcid != 0 )
+        {
+            char funcidstr[2];
+            funcidstr[0] = funcid;
+            funcidstr[1] = 0;
+            result.push_back(Pair("funcid", funcidstr));
+        }
+    } else ERR_RESULT( "couldnt create dicefinish transaction");
+    return(result);
+}
+
+UniValue dicestatus(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); char *name; uint256 fundingtxid,bettxid; std::string status,error; double winnings;
+    if ( request.fHelp || (request.params.size() != 2 && request.params.size() != 3) )
+        throw std::runtime_error("dicestatus name fundingtxid bettxid\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = (char *)request.params[0].get_str().c_str();
+    if (!VALID_PLAN_NAME(name)) {
+        ERR_RESULT(strprintf("Plan name can be at most %d ASCII characters",PLAN_NAME_MAX));
+        return(result);
+    }
+    fundingtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    memset(&bettxid,0,sizeof(bettxid));
+    if ( request.params.size() == 3 )
+        bettxid = Parseuint256((char *)request.params[2].get_str().c_str());
+    winnings = DiceStatus(0,name,fundingtxid,bettxid);
+    RETURN_IF_ERROR(CCerror);
+
+    result.push_back(Pair("result", "success"));
+    if ( winnings >= 0. )
+    {
+        if ( winnings > 0. )
+        {
+            if ( request.params.size() == 3 )
+            {
+                int64_t val;
+                val = winnings * COIN + 0.00000000499999;
+                result.push_back(Pair("status", "win"));
+                result.push_back(Pair("won", ValueFromAmount(val)));
+            }
+            else
+            {
+                result.push_back(Pair("status", "finalized"));
+                result.push_back(Pair("n", (int64_t)winnings));
+            }
+        }
+        else
+        {
+            if ( request.params.size() == 3 )
+                result.push_back(Pair("status", "loss"));
+            else result.push_back(Pair("status", "no pending bets"));
+        }
+    } else result.push_back(Pair("status", "bet still pending"));
+    return(result);
+}
+
+UniValue dicelist(const JSONRPCRequest& request)
+{
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("dicelist\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(DiceList());
+}
+
+UniValue diceinfo(const JSONRPCRequest& request)
+{
+    uint256 fundingtxid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("diceinfo fundingtxid\n");
+    if ( ensure_CCrequirements(EVAL_DICE) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    fundingtxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(DiceInfo(fundingtxid));
+}
+
+UniValue tokenlist(const JSONRPCRequest& request)
+{
+    uint256 tokenid;
+    if ( request.fHelp || request.params.size() > 0 )
+        throw std::runtime_error("tokenlist\n");
+    if ( ensure_CCrequirements(EVAL_TOKENS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    return(TokenList());
+}
+
+UniValue tokeninfo(const JSONRPCRequest& request)
+{
+    uint256 tokenid;
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("tokeninfo tokenid\n");
+    if ( ensure_CCrequirements(EVAL_TOKENS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(TokenInfo(tokenid));
+}
+
+UniValue tokenorders(const JSONRPCRequest& request)
+{
+    uint256 tokenid;
+    if ( request.fHelp || request.params.size() > 1 )
+        throw std::runtime_error("tokenorders [tokenid]\n"
+                            "returns token orders for the tokenid or all available token orders if tokenid is not set\n"
+                            "(this rpc supports only fungible tokens)\n" "\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+	if (request.params.size() == 1) {
+		tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+		if (tokenid == zeroid) 
+			throw std::runtime_error("incorrect tokenid\n");
+        return AssetOrders(tokenid, CPubKey(), 0);
+	}
+    else {
+        // throw std::runtime_error("no tokenid\n");
+        return AssetOrders(zeroid, CPubKey(), 0);
+    }
+}
+
+
+UniValue mytokenorders(const JSONRPCRequest& request)
+{
+    uint256 tokenid;
+    if (request.fHelp || request.params.size() > 1)
+        throw std::runtime_error("mytokenorders [evalcode]\n"
+                            "returns all the token orders for mypubkey\n"
+                            "if evalcode is set then returns mypubkey token orders for non-fungible tokens with this evalcode\n" "\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    uint8_t additionalEvalCode = 0;
+    if (request.params.size() == 1)
+        additionalEvalCode = strtol(request.params[0].get_str().c_str(), NULL, 0);  // supports also 0xEE-like values
+
+    return AssetOrders(zeroid, Mypubkey(), additionalEvalCode);
+}
+
+UniValue tokenbalance(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 tokenid; uint64_t balance; std::vector<unsigned char> pubkey; struct CCcontract_info *cp,C;
+	CCerror.clear();
+
+    if ( request.fHelp || request.params.size() > 2 )
+        throw std::runtime_error("tokenbalance tokenid [pubkey]\n");
+    if ( ensure_CCrequirements(EVAL_TOKENS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    
+	LOCK(cs_main);
+
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    if ( request.params.size() == 2 )
+        pubkey = ParseHex(request.params[1].get_str().c_str());
+    else 
+		pubkey = Mypubkey();
+
+    balance = GetTokenBalance(pubkey2pk(pubkey),tokenid);
+
+	if (CCerror.empty()) {
+		char destaddr[64];
+
+		result.push_back(Pair("result", "success"));
+        cp = CCinit(&C,EVAL_TOKENS);
+		if (GetCCaddress(cp, destaddr, pubkey2pk(pubkey)) != 0)
+			result.push_back(Pair("CCaddress", destaddr));
+
+		result.push_back(Pair("tokenid", request.params[0].get_str()));
+		result.push_back(Pair("balance", (int64_t)balance));
+	}
+	else {
+		ERR_RESULT(CCerror);
+	}
+
+    return(result);
+}
+
+UniValue tokencreate(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ);
+    std::string name, description, hextx; 
+    std::vector<uint8_t> nonfungibleData;
+    int64_t supply; // changed from uin64_t to int64_t for this 'if ( supply <= 0 )' to work as expected
+
+    CCerror.clear();
+
+    if ( request.fHelp || request.params.size() > 4 || request.params.size() < 2 )
+        throw std::runtime_error("tokencreate name supply [description][data]\n");
+    if ( ensure_CCrequirements(EVAL_TOKENS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    name = request.params[0].get_str();
+    if (name.size() == 0 || name.size() > 32)   {
+        ERR_RESULT("Token name must not be empty and up to 32 characters");
+        return(result);
+    }
+
+    supply = atof(request.params[1].get_str().c_str()) * COIN + 0.00000000499999;   // what for is this '+0.00000000499999'? it will be lost while converting double to int64_t (dimxy)
+    if (supply <= 0)    {
+        ERR_RESULT("Token supply must be positive");
+        return(result);
+    }
+    
+    if (request.params.size() >= 3)     {
+        description = request.params[2].get_str();
+        if (description.size() > 4096)   {
+            ERR_RESULT("Token description must be <= 4096 characters");
+            return(result);
+        }
+    }
+    
+    if (request.params.size() == 4)    {
+        nonfungibleData = ParseHex(request.params[3].get_str());
+        if (nonfungibleData.size() > IGUANA_MAXSCRIPTSIZE) // opret limit
+        {
+            ERR_RESULT("Non-fungible data size must be <= " + std::to_string(IGUANA_MAXSCRIPTSIZE));
+            return(result);
+        }
+        if( nonfungibleData.empty() ) {
+            ERR_RESULT("Non-fungible data incorrect");
+            return(result);
+        }
+    }
+
+    hextx = CreateToken(0, supply, name, description, nonfungibleData);
+    if( hextx.size() > 0 )     {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hextx));
+    } 
+    else 
+        ERR_RESULT(CCerror);
+    return(result);
+}
+
+UniValue tokentransfer(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); 
+    std::string hex; 
+    int64_t amount; 
+    uint256 tokenid;
+    
+    CCerror.clear();
+
+    if ( request.fHelp || request.params.size() != 3)
+        throw std::runtime_error("tokentransfer tokenid destpubkey amount\n");
+    if ( ensure_CCrequirements(EVAL_TOKENS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    std::vector<unsigned char> pubkey(ParseHex(request.params[1].get_str().c_str()));
+    //amount = atol(request.params[2].get_str().c_str());
+	amount = atoll(request.params[2].get_str().c_str()); // dimxy changed to prevent loss of significance
+    if( tokenid == zeroid )    {
+        ERR_RESULT("invalid tokenid");
+        return(result);
+    }
+    if( amount <= 0 )    {
+        ERR_RESULT("amount must be positive");
+        return(result);
+    }
+
+    hex = TokenTransfer(0, tokenid, pubkey, amount);
+
+    if( !CCerror.empty() )   {
+        ERR_RESULT(CCerror);
+    }
+    else {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    }
+ 
