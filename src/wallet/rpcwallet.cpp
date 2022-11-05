@@ -5823,4 +5823,314 @@ UniValue tokenfillswap(const JSONRPCRequest& request)
     if ( request.fHelp || request.params.size() != 4 )
         throw std::runtime_error("tokenfillswap tokenid otherid asktxid fillunits\n");
     if ( ensure_CCrequirements(EVAL_ASSETS) < 0 )
-        t
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    otherid = Parseuint256((char *)request.params[1].get_str().c_str());
+    asktxid = Parseuint256((char *)request.params[2].get_str().c_str());
+    //fillunits = atol(request.params[3].get_str().c_str());
+	fillunits = atoll(request.params[3].get_str().c_str());  // dimxy changed to prevent loss of significance
+    hex = FillSell(0,tokenid,otherid,asktxid,fillunits);
+    if (fillunits > 0) {
+        if ( hex.size() > 0 ) {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt fill bid");
+    } else {
+        ERR_RESULT("fillunits must be positive");
+    }
+    return(result);
+}
+
+// heir contract functions for coins and tokens
+UniValue heirfund(const JSONRPCRequest& request)
+{
+	UniValue result(UniValue::VOBJ);
+	uint256 tokenid = zeroid;
+	int64_t amount;
+	int64_t inactivitytime;
+	std::string hex;
+	std::vector<unsigned char> pubkey;
+	std::string name, memo;
+
+        CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+	if (!EnsureWalletIsAvailable(pwallet,request.fHelp))
+	    return NullUniValue;
+
+	if (request.fHelp || request.params.size() != 5 && request.params.size() != 6)
+		throw std::runtime_error("heirfund funds heirname heirpubkey inactivitytime memo [tokenid]\n");
+	if (ensure_CCrequirements(EVAL_HEIR) < 0)
+		throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+	const CKeyStore& keystore = *pwalletMain;
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+
+	if (request.params.size() == 6)	// tokens in satoshis:
+		amount = atoll(request.params[0].get_str().c_str());
+    	else { // coins:
+        	amount = 0;   
+        	if (!ParseFixedPoint(request.params[0].get_str(), 8, &amount))  // using ParseFixedPoint instead atof to avoid small round errors
+            		amount = -1; // set error
+    	}
+	if (amount <= 0) {
+		result.push_back(Pair("result", "error"));
+		result.push_back(Pair("error", "incorrect amount"));
+		return result;
+	}
+
+	name = request.params[1].get_str();
+
+	pubkey = ParseHex(request.params[2].get_str().c_str());
+	if (!pubkey2pk(pubkey).IsValid()) {
+		result.push_back(Pair("result", "error"));
+		result.push_back(Pair("error", "incorrect pubkey"));
+		return result;
+	}
+
+	inactivitytime = atoll(request.params[3].get_str().c_str());
+	if (inactivitytime <= 0) {
+		result.push_back(Pair("result", "error"));
+		result.push_back(Pair("error", "incorrect inactivity time"));
+		return result;
+	}
+
+	memo = request.params[4].get_str();
+
+	if (request.params.size() == 6) {
+		tokenid = Parseuint256((char*)request.params[5].get_str().c_str());
+		if (tokenid == zeroid) {
+			result.push_back(Pair("result", "error"));
+			result.push_back(Pair("error", "incorrect tokenid"));
+			return result;
+		}
+	}
+
+	if( tokenid == zeroid )
+		result = HeirFundCoinCaller(0, amount, name, pubkey2pk(pubkey), inactivitytime, memo);
+	else
+		result = HeirFundTokenCaller(0, amount, name, pubkey2pk(pubkey), inactivitytime, memo, tokenid);
+
+	return result;
+}
+
+UniValue heiradd(const JSONRPCRequest& request)
+{
+	UniValue result; 
+	uint256 fundingtxid;
+	int64_t amount;
+	int64_t inactivitytime;
+	std::string hex;
+	std::vector<unsigned char> pubkey;
+	std::string name;
+
+        CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+	if (!EnsureWalletIsAvailable(pwallet,request.fHelp))
+	    return NullUniValue;
+
+	if (request.fHelp || request.params.size() != 2)
+		throw std::runtime_error("heiradd funds fundingtxid\n");
+	if (ensure_CCrequirements(EVAL_HEIR) < 0)
+		throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+	const CKeyStore& keystore = *pwalletMain;
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+
+	std::string strAmount = request.params[0].get_str();
+	fundingtxid = Parseuint256((char*)request.params[1].get_str().c_str());
+
+	result = HeirAddCaller(fundingtxid, 0, strAmount);
+	return result;
+}
+
+UniValue heirclaim(const JSONRPCRequest& request)
+{
+	UniValue result; uint256 fundingtxid;
+
+        CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+	if (!EnsureWalletIsAvailable(pwallet,request.fHelp))
+	    return NullUniValue;
+	if (request.fHelp || request.params.size() != 2)
+		throw std::runtime_error("heirclaim funds fundingtxid\n");
+	if (ensure_CCrequirements(EVAL_HEIR) < 0)
+		throw std::runtime_error(CC_REQUIREMENTS_MSG);
+
+	const CKeyStore& keystore = *pwalletMain;
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    	std::string strAmount = request.params[0].get_str();
+	fundingtxid = Parseuint256((char*)request.params[1].get_str().c_str());
+	result = HeirClaimCaller(fundingtxid, 0, strAmount);
+	return result;
+}
+
+UniValue heirinfo(const JSONRPCRequest& request)
+{
+	uint256 fundingtxid;
+	if (request.fHelp || request.params.size() != 1) 
+		throw std::runtime_error("heirinfo fundingtxid\n");
+    if ( ensure_CCrequirements(EVAL_HEIR) < 0 )
+	    throw std::runtime_error(CC_REQUIREMENTS_MSG);
+	fundingtxid = Parseuint256((char*)request.params[0].get_str().c_str());
+	return (HeirInfo(fundingtxid));
+}
+
+UniValue heirlist(const JSONRPCRequest& request)
+{
+	if (request.fHelp || request.params.size() != 0) 
+		throw std::runtime_error("heirlist\n");
+    if ( ensure_CCrequirements(EVAL_HEIR) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+	return (HeirList());
+}
+
+UniValue pegscreate(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int32_t i; std::vector<uint256> txids;
+    uint8_t N; uint256 txid; int64_t amount;
+
+    if ( request.fHelp || request.params.size()<3)
+        throw std::runtime_error("pegscreate amount N bindtxid1 [bindtxid2 ...]\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    amount = atof((char *)request.params[0].get_str().c_str()) * COIN + 0.00000000499999;
+    N = atoi((char *)request.params[1].get_str().c_str());
+    if ( request.params.size() < N+1 )
+    {
+        throw std::runtime_error("not enough parameters for N pegscreate\n");
+    }
+    for (i=0; i<N; i++)
+    {       
+        txid = Parseuint256(request.params[i+2].get_str().c_str());
+        txids.push_back(txid);
+    }
+    result = PegsCreate(CPubKey(),0,amount,txids);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsfund(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 pegstxid,tokenid; int64_t amount;
+
+
+    if ( request.fHelp || request.params.size()!=3)
+        throw std::runtime_error("pegsfund pegstxid tokenid amount\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    pegstxid = Parseuint256(request.params[0].get_str().c_str());
+    tokenid = Parseuint256(request.params[1].get_str().c_str());
+    amount = atof((char *)request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    result = PegsFund(CPubKey(),0,pegstxid,tokenid,amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsget(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 pegstxid,tokenid; int64_t amount;
+
+    if ( request.fHelp || request.params.size()!=3)
+        throw std::runtime_error("pegsget pegstxid tokenid amount\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256(request.params[0].get_str().c_str());
+    tokenid = Parseuint256(request.params[1].get_str().c_str());
+    amount = atof((char *)request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    result = PegsGet(CPubKey(),0,pegstxid,tokenid,amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsredeem(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 pegstxid,tokenid; int64_t amount;
+
+    if ( request.fHelp || request.params.size()!=2)
+        throw std::runtime_error("pegsredeem pegstxid tokenid\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256(request.params[0].get_str().c_str());
+    tokenid = Parseuint256(request.params[1].get_str().c_str());
+    result = PegsRedeem(CPubKey(),0,pegstxid,tokenid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsliquidate(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 pegstxid,tokenid,accounttxid;
+
+    if ( request.fHelp || request.params.size()!=3)
+        throw std::runtime_error("pegsliquidate pegstxid tokenid accounttxid\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256(request.params[0].get_str().c_str());
+    tokenid = Parseuint256(request.params[1].get_str().c_str());
+    accounttxid = Parseuint256(request.params[2].get_str().c_str());
+    result = PegsLiquidate(CPubKey(),0,pegstxid,tokenid,accounttxid);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsexchange(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); uint256 pegstxid,tokenid,accounttxid; int64_t amount;
+
+    if ( request.fHelp || request.params.size()!=3)
+        throw std::runtime_error("pegsexchange pegstxid tokenid amount\n");
+    if ( ensure_CCrequirements(EVAL_PEGS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256(request.params[0].get_str().c_str());
+    tokenid = Parseuint256(request.params[1].get_str().c_str());
+    amount = atof((char *)request.params[2].get_str().c_str()) * COIN + 0.00000000499999;
+    result = PegsExchange(CPubKey(),0,pegstxid,tokenid,amount);
+    if ( result[JSON_HEXTX].getValStr().size() > 0  )
+    {
+        result.push_back(Pair("result", "success"));
+    }
+    return(result);
+}
+
+UniValue pegsaccounthistory(const JSONRPCRequest& request)
+{
+    uint256 pegstxid;
+
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("pegsaccounthistory pegstxid\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(PegsAccountHistory(CPubKey(),pegstxid));
+}
+
+UniValue pegsaccountinfo(const JSONRPCRequest& request)
+{
+    uint256 pegstxid;
+
+    if ( request.fHelp || request.params.size() != 1 )
+        throw std::runtime_error("pegsaccountinfo pegstxid\n");
+    if ( ensure_CCrequirements(EVAL_GATEWAYS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    pegstxid = Parseuint256((char *)request.params[0].get_str().c_str());
+    return(PegsAccountInfo(CPubKey(),pegstxid));
+}
+
+UniValue pegsworstac
