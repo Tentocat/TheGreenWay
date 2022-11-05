@@ -5547,4 +5547,280 @@ UniValue tokentransfer(const JSONRPCRequest& request)
         result.push_back(Pair("result", "success"));
         result.push_back(Pair("hex", hex));
     }
- 
+    return(result);
+}
+
+UniValue tokenconvert(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex; int32_t evalcode; int64_t amount; uint256 tokenid;
+    if ( request.fHelp || request.params.size() != 4 )
+        throw std::runtime_error("tokenconvert evalcode tokenid pubkey amount\n");
+    if ( ensure_CCrequirements(EVAL_ASSETS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    evalcode = atoi(request.params[0].get_str().c_str());
+    tokenid = Parseuint256((char *)request.params[1].get_str().c_str());
+    std::vector<unsigned char> pubkey(ParseHex(request.params[2].get_str().c_str()));
+    //amount = atol(request.params[3].get_str().c_str());
+	amount = atoll(request.params[3].get_str().c_str()); // dimxy changed to prevent loss of significance
+    if ( tokenid == zeroid )
+    {
+        ERR_RESULT("invalid tokenid");
+        return(result);
+    }
+    if ( amount <= 0 )
+    {
+        ERR_RESULT("amount must be positive");
+        return(result);
+    }
+
+	ERR_RESULT("deprecated");
+	return(result);
+
+/*    hex = AssetConvert(0,tokenid,pubkey,amount,evalcode);
+    if (amount > 0) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt convert tokens");
+    } else {
+        ERR_RESULT("amount must be positive");
+    }
+    return(result); */
+}
+
+UniValue tokenbid(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t bidamount,numtokens; std::string hex; double price; uint256 tokenid;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("tokenbid numtokens tokenid price\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    //numtokens = atoi(request.params[0].get_str().c_str());
+	numtokens = atoll(request.params[0].get_str().c_str());  // dimxy changed to prevent loss of significance
+    tokenid = Parseuint256((char *)request.params[1].get_str().c_str());
+    price = atof(request.params[2].get_str().c_str());
+    bidamount = (price * numtokens) * COIN + 0.0000000049999;
+    if ( price <= 0 )
+    {
+        ERR_RESULT("price must be positive");
+        return(result);
+    }
+    if ( tokenid == zeroid )
+    {
+        ERR_RESULT("invalid tokenid");
+        return(result);
+    }
+    if ( bidamount <= 0 )
+    {
+        ERR_RESULT("bid amount must be positive");
+        return(result);
+    }
+    hex = CreateBuyOffer(0,bidamount,tokenid,numtokens);
+    if (price > 0 && numtokens > 0) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt create bid");
+    } else {
+        ERR_RESULT("price and numtokens must be positive");
+    }
+    return(result);
+}
+
+UniValue tokencancelbid(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex; int32_t i; uint256 tokenid,bidtxid;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("tokencancelbid tokenid bidtxid\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    bidtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    if ( tokenid == zeroid || bidtxid == zeroid )
+    {
+        result.push_back(Pair("error", "invalid parameter"));
+        return(result);
+    }
+    hex = CancelBuyOffer(0,tokenid,bidtxid);
+    if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt cancel bid");
+    return(result);
+}
+
+UniValue tokenfillbid(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t fillamount; std::string hex; uint256 tokenid,bidtxid;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("tokenfillbid tokenid bidtxid fillamount\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    bidtxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    // fillamount = atol(request.params[2].get_str().c_str());
+	fillamount = atoll(request.params[2].get_str().c_str());		// dimxy changed to prevent loss of significance
+    if ( fillamount <= 0 )
+    {
+        ERR_RESULT("fillamount must be positive");
+        return(result);
+    }
+    if ( tokenid == zeroid || bidtxid == zeroid )
+    {
+        ERR_RESULT("must provide tokenid and bidtxid");
+        return(result);
+    }
+    hex = FillBuyOffer(0,tokenid,bidtxid,fillamount);
+    if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt fill bid");
+    return(result);
+}
+
+UniValue tokenask(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t askamount,numtokens; std::string hex; double price; uint256 tokenid;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("tokenask numtokens tokenid price\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    //numtokens = atoi(request.params[0].get_str().c_str());
+	numtokens = atoll(request.params[0].get_str().c_str());			// dimxy changed to prevent loss of significance
+    tokenid = Parseuint256((char *)request.params[1].get_str().c_str());
+    price = atof(request.params[2].get_str().c_str());
+    askamount = (price * numtokens) * COIN + 0.0000000049999;
+	//std::cerr << std::boolalpha << "tokenask(): (tokenid == zeroid) is "  << (tokenid == zeroid) << " (numtokens <= 0) is " << (numtokens <= 0) << " (price <= 0) is " << (price <= 0) << " (askamount <= 0) is " << (askamount <= 0) << std::endl;
+    if ( tokenid == zeroid || numtokens <= 0 || price <= 0 || askamount <= 0 )
+    {
+        ERR_RESULT("invalid parameter");
+        return(result);
+    }
+    hex = CreateSell(0,numtokens,tokenid,askamount);
+    if (price > 0 && numtokens > 0) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt create ask");
+    } else {
+        ERR_RESULT("price and numtokens must be positive");
+    }
+    return(result);
+}
+
+UniValue tokenswapask(const JSONRPCRequest& request)
+{
+    static uint256 zeroid;
+    UniValue result(UniValue::VOBJ); int64_t askamount,numtokens; std::string hex; double price; uint256 tokenid,otherid;
+    if ( request.fHelp || request.params.size() != 4 )
+        throw std::runtime_error("tokenswapask numtokens tokenid otherid price\n");
+    if ( ensure_CCrequirements(EVAL_ASSETS) < 0 )
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    //numtokens = atoi(request.params[0].get_str().c_str());
+	numtokens = atoll(request.params[0].get_str().c_str());			// dimxy changed to prevent loss of significance
+    tokenid = Parseuint256((char *)request.params[1].get_str().c_str());
+    otherid = Parseuint256((char *)request.params[2].get_str().c_str());
+    price = atof(request.params[3].get_str().c_str());
+    askamount = (price * numtokens);
+    hex = CreateSwap(0,numtokens,tokenid,otherid,askamount);
+    if (price > 0 && numtokens > 0) {
+        if ( hex.size() > 0 )
+        {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else ERR_RESULT("couldnt create swap");
+    } else {
+        ERR_RESULT("price and numtokens must be positive");
+    }
+    return(result);
+}
+
+UniValue tokencancelask(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); std::string hex; int32_t i; uint256 tokenid,asktxid;
+    if ( request.fHelp || request.params.size() != 2 )
+        throw std::runtime_error("tokencancelask tokenid asktxid\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    asktxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    if ( tokenid == zeroid || asktxid == zeroid )
+    {
+        result.push_back(Pair("error", "invalid parameter"));
+        return(result);
+    }
+    hex = CancelSell(0,tokenid,asktxid);
+    if ( hex.size() > 0 )
+    {
+        result.push_back(Pair("result", "success"));
+        result.push_back(Pair("hex", hex));
+    } else ERR_RESULT("couldnt cancel ask");
+    return(result);
+}
+
+UniValue tokenfillask(const JSONRPCRequest& request)
+{
+    UniValue result(UniValue::VOBJ); int64_t fillunits; std::string hex; uint256 tokenid,asktxid;
+    if ( request.fHelp || request.params.size() != 3 )
+        throw std::runtime_error("tokenfillask tokenid asktxid fillunits\n");
+    if (ensure_CCrequirements(EVAL_ASSETS) < 0 || ensure_CCrequirements(EVAL_TOKENS) < 0)
+        throw std::runtime_error(CC_REQUIREMENTS_MSG);
+    const CKeyStore& keystore = *pwalletMain;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    tokenid = Parseuint256((char *)request.params[0].get_str().c_str());
+    asktxid = Parseuint256((char *)request.params[1].get_str().c_str());
+    //fillunits = atol(request.params[2].get_str().c_str());
+	fillunits = atoll(request.params[2].get_str().c_str());	 // dimxy changed to prevent loss of significance
+    if ( fillunits <= 0 )
+    {
+        ERR_RESULT("fillunits must be positive");
+        return(result);
+    }
+    if ( tokenid == zeroid || asktxid == zeroid )
+    {
+        result.push_back(Pair("error", "invalid parameter"));
+        return(result);
+    }
+    hex = FillSell(0,tokenid,zeroid,asktxid,fillunits);
+    if (fillunits > 0) {
+        if (CCerror != "") {
+            ERR_RESULT(CCerror);
+        } else if ( hex.size() > 0) {
+            result.push_back(Pair("result", "success"));
+            result.push_back(Pair("hex", hex));
+        } else {
+            ERR_RESULT("couldnt fill ask");
+        }
+    } else {
+        ERR_RESULT("fillunits must be positive");
+    }
+    return(result);
+}
+
+UniValue tokenfillswap(const JSONRPCRequest& request)
+{
+    static uint256 zeroid;
+    UniValue result(UniValue::VOBJ); int64_t fillunits; std::string hex; uint256 tokenid,otherid,asktxid;
+    if ( request.fHelp || request.params.size() != 4 )
+        throw std::runtime_error("tokenfillswap tokenid otherid asktxid fillunits\n");
+    if ( ensure_CCrequirements(EVAL_ASSETS) < 0 )
+        t
