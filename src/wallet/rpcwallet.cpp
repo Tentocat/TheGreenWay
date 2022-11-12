@@ -6298,4 +6298,86 @@ static const CRPCCommand commands[] =
     { "marmara",       "marmaralock",   &marmara_lock,      {} },
 
     { "CClib",       "cclibaddress",   &cclibaddress,      {} },
-    { "CClib",       "cclibinfo",   &cclibinf
+    { "CClib",       "cclibinfo",   &cclibinfo,      {} },
+    { "CClib",       "cclib",   &cclib,      {} },
+
+    // Payments
+    { "payments",       "paymentsaddress",   &paymentsaddress,       {"pubkey"} },
+    { "payments",       "paymentstxidopret", &payments_txidopret,    {"allocation","scriptPubKey","destopret"} },
+    { "payments",       "paymentscreate",    &payments_create,       {"lockedblocks","minamount","paytxid"} },
+    { "payments",       "paymentsairdrop",   &payments_airdrop,      {} },
+    { "payments",       "paymentsairdroptokens",   &payments_airdroptokens,      {} },
+    { "payments",       "paymentslist",      &payments_list,         {} },
+    { "payments",       "paymentsinfo",      &payments_info,         {} },
+    { "payments",       "paymentsfund",      &payments_fund,         {"createtxid","amount","useopret"} },
+    { "payments",       "paymentsmerge",     &payments_merge,        {"createtxid"} },
+    { "payments",       "paymentsrelease",   &payments_release,      {"createtxid","amount","skipminimum"} },
+
+    // Gateways
+    { "gateways",       "gatewaysaddress",   &gatewaysaddress,      {"pubkey"} },
+    { "gateways",       "gatewayslist",      &gatewayslist,         {} },
+    { "gateways",       "gatewaysexternaladdress",      &gatewaysexternaladdress,         {} },
+    { "gateways",       "gatewaysdumpprivkey",      &gatewaysdumpprivkey,         {} },
+    { "gateways",       "gatewaysinfo",      &gatewaysinfo,         {} },
+    { "gateways",       "gatewaysbind",      &gatewaysbind,         {} },
+    { "gateways",       "gatewaysdeposit",   &gatewaysdeposit,      {} },
+    { "gateways",       "gatewaysclaim",     &gatewaysclaim,        {} },
+    { "gateways",       "gatewayswithdraw",  &gatewayswithdraw,     {} },
+    { "gateways",       "gatewayspartialsign",  &gatewayspartialsign,     {} },
+    { "gateways",       "gatewayscompletesigning",  &gatewayscompletesigning,     {} },
+    { "gateways",       "gatewaysmarkdone",  &gatewaysmarkdone,     {} },
+    { "gateways",       "gatewayspendingdeposits",   &gatewayspendingdeposits,      {} },
+    { "gateways",       "gatewayspendingwithdraws",   &gatewayspendingwithdraws,      {} },
+    { "gateways",       "gatewaysprocessed",   &gatewaysprocessed,  {} },
+
+    // dice
+    { "dice",       "dicelist",      &dicelist,         {} },
+    { "dice",       "diceinfo",      &diceinfo,         {} },
+    { "dice",       "dicefund",      &dicefund,         {} },
+    { "dice",       "diceaddfunds",  &diceaddfunds,     {} },
+    { "dice",       "dicebet",       &dicebet,          {} },
+    { "dice",       "dicefinish",    &dicefinish,       {} },
+    { "dice",       "dicestatus",    &dicestatus,       {} },
+    { "dice",       "diceaddress",   &diceaddress,      {"pubkey"} },
+
+    // tokens & assets
+	{ "tokens",       "assetsaddress",     &assetsaddress,      {"pubkey"} },
+    { "tokens",       "tokeninfo",        &tokeninfo,         {} },
+    { "tokens",       "tokenlist",        &tokenlist,         {} },
+    { "tokens",       "tokenorders",      &tokenorders,       {} },
+    { "tokens",       "mytokenorders",    &mytokenorders,     {} },
+    { "tokens",       "tokenaddress",     &tokenaddress,      {"pubkey"} },
+    { "tokens",       "tokenbalance",     &tokenbalance,      {} },
+    { "tokens",       "tokencreate",      &tokencreate,       {} },
+    { "tokens",       "tokentransfer",    &tokentransfer,     {} },
+    { "tokens",       "tokenbid",         &tokenbid,          {} },
+    { "tokens",       "tokencancelbid",   &tokencancelbid,    {} },
+    { "tokens",       "tokenfillbid",     &tokenfillbid,      {} },
+    { "tokens",       "tokenask",         &tokenask,          {} },
+    //{ "tokens",       "tokenswapask",     &tokenswapask,      {} },
+    { "tokens",       "tokencancelask",   &tokencancelask,    {} },
+    { "tokens",       "tokenfillask",     &tokenfillask,      {} },
+    //{ "tokens",       "tokenfillswap",    &tokenfillswap,     {} },
+    { "tokens",       "tokenconvert", &tokenconvert, {} },
+
+    // pegs
+    { "pegs",       "pegscreate",     &pegscreate,      {} },
+    { "pegs",       "pegsfund",         &pegsfund,      {} },
+    { "pegs",       "pegsget",         &pegsget,        {} },
+    { "pegs",       "pegsredeem",         &pegsredeem,        {} },
+    { "pegs",       "pegsliquidate",         &pegsliquidate,        {} },
+    { "pegs",       "pegsexchange",         &pegsexchange,        {} },
+    { "pegs",       "pegsaccounthistory", &pegsaccounthistory,      {} },
+    { "pegs",       "pegsaccountinfo", &pegsaccountinfo,      {} },
+    { "pegs",       "pegsworstaccounts",         &pegsworstaccounts,      {} },
+    { "pegs",       "pegsinfo",         &pegsinfo,      {} },
+
+    { "generating",         "generate",                 &generate,                 {"nblocks","maxtries"} },
+    { "mining",             "getauxblock",              &getauxblock,              {"hash", "auxpow"} },
+};
+
+void RegisterWalletRPCCommands(CRPCTable &t)
+{
+    for (unsigned int vcidx = 0; vcidx < ARRAYLEN(commands); vcidx++)
+        t.appendCommand(commands[vcidx].name, &commands[vcidx]);
+}
