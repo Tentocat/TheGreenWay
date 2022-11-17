@@ -1061,4 +1061,181 @@ public:
     /* Returns true if HD is enabled */
     bool IsHDEnabled() const;
 
-    /* Generates a new HD master key (will not 
+    /* Generates a new HD master key (will not be activated) */
+    CPubKey GenerateNewHDMasterKey();
+    
+    /* Set the current HD master key (will reset the chain child index counters)
+       Sets the master key's version based on the current wallet version (so the
+       caller must ensure the current wallet version is correct before calling
+       this function). */
+    bool SetHDMasterKey(const CPubKey& key);
+
+    /**
+     * Blocks until the wallet state is up-to-date to /at least/ the current
+     * chain at the time this function is entered
+     * Obviously holding cs_main/cs_wallet when going into this call may cause
+     * deadlock
+     */
+    void BlockUntilSyncedToCurrentChain();
+
+    /**
+     * Explicitly make the wallet learn the related scripts for outputs to the
+     * given key. This is purely to make the wallet file compatible with older
+     * software, as CBasicKeyStore automatically does this implicitly for all
+     * keys now.
+     */
+    void LearnRelatedScripts(const CPubKey& key, OutputType);
+
+    /**
+     * Same as LearnRelatedScripts, but when the OutputType is not known (and could
+     * be anything).
+     */
+    void LearnAllRelatedScripts(const CPubKey& key);
+
+    /**
+     * Get a destination of the requested type (if possible) to the specified script.
+     * This function will automatically add the necessary scripts to the wallet.
+     */
+    CTxDestination AddAndGetDestinationForScript(const CScript& script, OutputType);
+};
+
+/** A key allocated from the key pool. */
+class CReserveKey final : public CReserveScript
+{
+protected:
+    CWallet* pwallet;
+    int64_t nIndex;
+    CPubKey vchPubKey;
+    bool fInternal;
+public:
+    explicit CReserveKey(CWallet* pwalletIn)
+    {
+        nIndex = -1;
+        pwallet = pwalletIn;
+        fInternal = false;
+    }
+
+    CReserveKey() = default;
+    CReserveKey(const CReserveKey&) = delete;
+    CReserveKey& operator=(const CReserveKey&) = delete;
+
+    ~CReserveKey()
+    {
+        ReturnKey();
+    }
+
+    void ReturnKey();
+    bool GetReservedKey(CPubKey &pubkey, bool internal = false);
+    void KeepKey();
+    void KeepScript() override { KeepKey(); }
+};
+
+
+/** 
+ * Account information.
+ * Stored in wallet with key "acc"+string account name.
+ */
+class CAccount
+{
+public:
+    CPubKey vchPubKey;
+
+    CAccount()
+    {
+        SetNull();
+    }
+
+    void SetNull()
+    {
+        vchPubKey = CPubKey();
+    }
+
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        int nVersion = s.GetVersion();
+        if (!(s.GetType() & SER_GETHASH))
+            READWRITE(nVersion);
+        READWRITE(vchPubKey);
+    }
+};
+
+/** Error status printout */
+#define ERR_RESULT(x) result.push_back(Pair("result", "error")) , result.push_back(Pair("error", x));
+
+// Helper for producing a bunch of max-sized low-S signatures (eg 72 bytes)
+// ContainerType is meant to hold pair<CWalletTx *, int>, and be iterable
+// so that each entry corresponds to each vIn, in order.
+template <typename ContainerType>
+bool CWallet::DummySignTx(CMutableTransaction &txNew, const ContainerType &coins) const
+{
+    // Fill in dummy signatures for fee calculation.
+    int nIn = 0;
+    for (const auto& coin : coins)
+    {
+        const CScript& scriptPubKey = coin.txout.scriptPubKey;
+        SignatureData sigdata;
+
+        if (!ProduceSignature(DummySignatureCreator(this), scriptPubKey, sigdata))
+        {
+            return false;
+        } else {
+            UpdateTransaction(txNew, nIn, sigdata);
+        }
+
+        nIn++;
+    }
+    return true;
+}
+
+OutputType ParseOutputType(const std::string& str, OutputType default_type = OUTPUT_TYPE_DEFAULT);
+const std::string& FormatOutputType(OutputType type);
+
+/**
+ * Get a destination of the requested type (if possible) to the specified key.
+ * The caller must make sure LearnRelatedScripts has been called beforehand.
+ */
+CTxDestination GetDestinationForKey(const CPubKey& key, OutputType);
+
+/** Get all destinations (potentially) supported by the wallet for the given key. */
+std::vector<CTxDestination> GetAllDestinationsForKey(const CPubKey& key);
+
+/** RAII object to check and reserve a wallet rescan */
+class WalletRescanReserver
+{
+private:
+    CWalletRef m_wallet;
+    bool m_could_reserve;
+public:
+    explicit WalletRescanReserver(CWalletRef w) : m_wallet(w), m_could_reserve(false) {}
+
+    bool reserve()
+    {
+        assert(!m_could_reserve);
+        std::lock_guard<std::mutex> lock(m_wallet->mutexScanning);
+        if (m_wallet->fScanningWallet) {
+            return false;
+        }
+        m_wallet->fScanningWallet = true;
+        m_could_reserve = true;
+        return true;
+    }
+
+    bool isReserved() const
+    {
+        return (m_could_reserve && m_wallet->fScanningWallet);
+    }
+
+    ~WalletRescanReserver()
+    {
+        std::lock_guard<std::mutex> lock(m_wallet->mutexScanning);
+        if (m_could_reserve) {
+            m_wallet->fScanningWallet = false;
+        }
+    }
+};
+
+#define RETURN_IF_ERROR(CCerror) if ( CCerror != "" ) { ERR_RESULT(CCerror); return(result); }
+
+#endif // BITCOIN_WALLET_WALLET_H
