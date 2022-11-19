@@ -86,4 +86,97 @@ bool CZMQNotificationInterface::Initialize()
     std::list<CZMQAbstractNotifier*>::iterator i=notifiers.begin();
     for (; i!=notifiers.end(); ++i)
     {
-        CZMQAbstractNotifier *notifier = 
+        CZMQAbstractNotifier *notifier = *i;
+        if (notifier->Initialize(pcontext))
+        {
+            LogPrint(BCLog::ZMQ, "  Notifier %s ready (address = %s)\n", notifier->GetType(), notifier->GetAddress());
+        }
+        else
+        {
+            LogPrint(BCLog::ZMQ, "  Notifier %s failed (address = %s)\n", notifier->GetType(), notifier->GetAddress());
+            break;
+        }
+    }
+
+    if (i!=notifiers.end())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+// Called during shutdown sequence
+void CZMQNotificationInterface::Shutdown()
+{
+    LogPrint(BCLog::ZMQ, "zmq: Shutdown notification interface\n");
+    if (pcontext)
+    {
+        for (std::list<CZMQAbstractNotifier*>::iterator i=notifiers.begin(); i!=notifiers.end(); ++i)
+        {
+            CZMQAbstractNotifier *notifier = *i;
+            LogPrint(BCLog::ZMQ, "   Shutdown notifier %s at %s\n", notifier->GetType(), notifier->GetAddress());
+            notifier->Shutdown();
+        }
+        zmq_ctx_destroy(pcontext);
+
+        pcontext = nullptr;
+    }
+}
+
+void CZMQNotificationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload)
+{
+    if (fInitialDownload || pindexNew == pindexFork) // In IBD or blocks were disconnected without any new ones
+        return;
+
+    for (std::list<CZMQAbstractNotifier*>::iterator i = notifiers.begin(); i!=notifiers.end(); )
+    {
+        CZMQAbstractNotifier *notifier = *i;
+        if (notifier->NotifyBlock(pindexNew))
+        {
+            i++;
+        }
+        else
+        {
+            notifier->Shutdown();
+            i = notifiers.erase(i);
+        }
+    }
+}
+
+void CZMQNotificationInterface::TransactionAddedToMempool(const CTransactionRef& ptx)
+{
+    // Used by BlockConnected and BlockDisconnected as well, because they're
+    // all the same external callback.
+    const CTransaction& tx = *ptx;
+
+    for (std::list<CZMQAbstractNotifier*>::iterator i = notifiers.begin(); i!=notifiers.end(); )
+    {
+        CZMQAbstractNotifier *notifier = *i;
+        if (notifier->NotifyTransaction(tx))
+        {
+            i++;
+        }
+        else
+        {
+            notifier->Shutdown();
+            i = notifiers.erase(i);
+        }
+    }
+}
+
+void CZMQNotificationInterface::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexConnected, const std::vector<CTransactionRef>& vtxConflicted)
+{
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        // Do a normal notify for each transaction added in the block
+        TransactionAddedToMempool(ptx);
+    }
+}
+
+void CZMQNotificationInterface::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex* pindexDelete)
+{
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        // Do a normal notify for each transaction removed in block disconnection
+        TransactionAddedToMempool(ptx);
+    }
+}
