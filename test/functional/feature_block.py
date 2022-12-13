@@ -436,4 +436,281 @@ class FullBlockTest(ComparisonTestFramework):
         # MULTISIG: each op code counts as 20 sigops.  To create the edge case, pack another 19 sigops at the end.
         lots_of_multisigs = CScript([OP_CHECKMULTISIG] * ((MAX_BLOCK_SIGOPS-1) // 20) + [OP_CHECKSIG] * 19)
         b31 = block(31, spend=out[8], script=lots_of_multisigs)
-        asse
+        assert_equal(get_legacy_sigopcount_block(b31), MAX_BLOCK_SIGOPS)
+        yield accepted()
+        save_spendable_output()
+
+        # this goes over the limit because the coinbase has one sigop
+        too_many_multisigs = CScript([OP_CHECKMULTISIG] * (MAX_BLOCK_SIGOPS // 20))
+        b32 = block(32, spend=out[9], script=too_many_multisigs)
+        assert_equal(get_legacy_sigopcount_block(b32), MAX_BLOCK_SIGOPS + 1)
+        yield rejected(RejectResult(16, b'bad-blk-sigops'))
+
+
+        # CHECKMULTISIGVERIFY
+        tip(31)
+        lots_of_multisigs = CScript([OP_CHECKMULTISIGVERIFY] * ((MAX_BLOCK_SIGOPS-1) // 20) + [OP_CHECKSIG] * 19)
+        block(33, spend=out[9], script=lots_of_multisigs)
+        yield accepted()
+        save_spendable_output()
+
+        too_many_multisigs = CScript([OP_CHECKMULTISIGVERIFY] * (MAX_BLOCK_SIGOPS // 20))
+        block(34, spend=out[10], script=too_many_multisigs)
+        yield rejected(RejectResult(16, b'bad-blk-sigops'))
+
+
+        # CHECKSIGVERIFY
+        tip(33)
+        lots_of_checksigs = CScript([OP_CHECKSIGVERIFY] * (MAX_BLOCK_SIGOPS - 1))
+        b35 = block(35, spend=out[10], script=lots_of_checksigs)
+        yield accepted()
+        save_spendable_output()
+
+        too_many_checksigs = CScript([OP_CHECKSIGVERIFY] * (MAX_BLOCK_SIGOPS))
+        block(36, spend=out[11], script=too_many_checksigs)
+        yield rejected(RejectResult(16, b'bad-blk-sigops'))
+
+
+        # Check spending of a transaction in a block which failed to connect
+        #
+        # b6  (3)
+        # b12 (3) -> b13 (4) -> b15 (5) -> b23 (6) -> b30 (7) -> b31 (8) -> b33 (9) -> b35 (10)
+        #                                                                                     \-> b37 (11)
+        #                                                                                     \-> b38 (11/37)
+        #
+
+        # save 37's spendable output, but then double-spend out11 to invalidate the block
+        tip(35)
+        b37 = block(37, spend=out[11])
+        txout_b37 = PreviousSpendableOutput(b37.vtx[1], 0)
+        tx = create_and_sign_tx(out[11].tx, out[11].n, 0)
+        b37 = update_block(37, [tx])
+        yield rejected(RejectResult(16, b'bad-txns-inputs-missingorspent'))
+
+        # attempt to spend b37's first non-coinbase tx, at which point b37 was still considered valid
+        tip(35)
+        block(38, spend=txout_b37)
+        yield rejected(RejectResult(16, b'bad-txns-inputs-missingorspent'))
+
+        # Check P2SH SigOp counting
+        #
+        #
+        #   13 (4) -> b15 (5) -> b23 (6) -> b30 (7) -> b31 (8) -> b33 (9) -> b35 (10) -> b39 (11) -> b41 (12)
+        #                                                                                        \-> b40 (12)
+        #
+        # b39 - create some P2SH outputs that will require 6 sigops to spend:
+        #
+        #           redeem_script = COINBASE_PUBKEY, (OP_2DUP+OP_CHECKSIGVERIFY) * 5, OP_CHECKSIG
+        #           p2sh_script = OP_HASH160, ripemd160(sha256(script)), OP_EQUAL
+        #
+        tip(35)
+        b39 = block(39)
+        b39_outputs = 0
+        b39_sigops_per_output = 6
+
+        # Build the redeem script, hash it, use hash to create the p2sh script
+        redeem_script = CScript([self.coinbase_pubkey] + [OP_2DUP, OP_CHECKSIGVERIFY]*5 + [OP_CHECKSIG])
+        redeem_script_hash = hash160(redeem_script)
+        p2sh_script = CScript([OP_HASH160, redeem_script_hash, OP_EQUAL])
+
+        # Create a transaction that spends one satoshi to the p2sh_script, the rest to OP_TRUE
+        # This must be signed because it is spending a coinbase
+        spend = out[11]
+        tx = create_tx(spend.tx, spend.n, 1, p2sh_script)
+        tx.vout.append(CTxOut(spend.tx.vout[spend.n].nValue - 1, CScript([OP_TRUE])))
+        self.sign_tx(tx, spend.tx, spend.n)
+        tx.rehash()
+        b39 = update_block(39, [tx])
+        b39_outputs += 1
+
+        # Until block is full, add tx's with 1 satoshi to p2sh_script, the rest to OP_TRUE
+        tx_new = None
+        tx_last = tx
+        total_size=len(b39.serialize())
+        while(total_size < MAX_BLOCK_BASE_SIZE):
+            tx_new = create_tx(tx_last, 1, 1, p2sh_script)
+            tx_new.vout.append(CTxOut(tx_last.vout[1].nValue - 1, CScript([OP_TRUE])))
+            tx_new.rehash()
+            total_size += len(tx_new.serialize())
+            if total_size >= MAX_BLOCK_BASE_SIZE:
+                break
+            b39.vtx.append(tx_new) # add tx to block
+            tx_last = tx_new
+            b39_outputs += 1
+
+        b39 = update_block(39, [])
+        yield accepted()
+        save_spendable_output()
+
+
+        # Test sigops in P2SH redeem scripts
+        #
+        # b40 creates 3333 tx's spending the 6-sigop P2SH outputs from b39 for a total of 19998 sigops.
+        # The first tx has one sigop and then at the end we add 2 more to put us just over the max.
+        #
+        # b41 does the same, less one, so it has the maximum sigops permitted.
+        #
+        tip(39)
+        b40 = block(40, spend=out[12])
+        sigops = get_legacy_sigopcount_block(b40)
+        numTxes = (MAX_BLOCK_SIGOPS - sigops) // b39_sigops_per_output
+        assert_equal(numTxes <= b39_outputs, True)
+
+        lastOutpoint = COutPoint(b40.vtx[1].sha256, 0)
+        new_txs = []
+        for i in range(1, numTxes+1):
+            tx = CTransaction()
+            tx.vout.append(CTxOut(1, CScript([OP_TRUE])))
+            tx.vin.append(CTxIn(lastOutpoint, b''))
+            # second input is corresponding P2SH output from b39
+            tx.vin.append(CTxIn(COutPoint(b39.vtx[i].sha256, 0), b''))
+            # Note: must pass the redeem_script (not p2sh_script) to the signature hash function
+            (sighash, err) = SignatureHash(redeem_script, tx, 1, SIGHASH_ALL)
+            sig = self.coinbase_key.sign(sighash) + bytes(bytearray([SIGHASH_ALL]))
+            scriptSig = CScript([sig, redeem_script])
+
+            tx.vin[1].scriptSig = scriptSig
+            tx.rehash()
+            new_txs.append(tx)
+            lastOutpoint = COutPoint(tx.sha256, 0)
+
+        b40_sigops_to_fill = MAX_BLOCK_SIGOPS - (numTxes * b39_sigops_per_output + sigops) + 1
+        tx = CTransaction()
+        tx.vin.append(CTxIn(lastOutpoint, b''))
+        tx.vout.append(CTxOut(1, CScript([OP_CHECKSIG] * b40_sigops_to_fill)))
+        tx.rehash()
+        new_txs.append(tx)
+        update_block(40, new_txs)
+        yield rejected(RejectResult(16, b'bad-blk-sigops'))
+
+        # same as b40, but one less sigop
+        tip(39)
+        block(41, spend=None)
+        update_block(41, b40.vtx[1:-1])
+        b41_sigops_to_fill = b40_sigops_to_fill - 1
+        tx = CTransaction()
+        tx.vin.append(CTxIn(lastOutpoint, b''))
+        tx.vout.append(CTxOut(1, CScript([OP_CHECKSIG] * b41_sigops_to_fill)))
+        tx.rehash()
+        update_block(41, [tx])
+        yield accepted()
+
+        # Fork off of b39 to create a constant base again
+        #
+        # b23 (6) -> b30 (7) -> b31 (8) -> b33 (9) -> b35 (10) -> b39 (11) -> b42 (12) -> b43 (13)
+        #                                                                  \-> b41 (12)
+        #
+        tip(39)
+        block(42, spend=out[12])
+        yield rejected()
+        save_spendable_output()
+
+        block(43, spend=out[13])
+        yield accepted()
+        save_spendable_output()
+
+
+        # Test a number of really invalid scenarios
+        #
+        #  -> b31 (8) -> b33 (9) -> b35 (10) -> b39 (11) -> b42 (12) -> b43 (13) -> b44 (14)
+        #                                                                                   \-> ??? (15)
+
+        # The next few blocks are going to be created "by hand" since they'll do funky things, such as having
+        # the first transaction be non-coinbase, etc.  The purpose of b44 is to make sure this works.
+        height = self.block_heights[self.tip.sha256] + 1
+        coinbase = create_coinbase(height, self.coinbase_pubkey)
+        b44 = CBlock()
+        b44.nTime = self.tip.nTime + 1
+        b44.hashPrevBlock = self.tip.sha256
+        b44.nBits = 0x207fffff
+        b44.vtx.append(coinbase)
+        b44.hashMerkleRoot = b44.calc_merkle_root()
+        b44.solve()
+        self.tip = b44
+        self.block_heights[b44.sha256] = height
+        self.blocks[44] = b44
+        yield accepted()
+
+        # A block with a non-coinbase as the first tx
+        non_coinbase = create_tx(out[15].tx, out[15].n, 1)
+        b45 = CBlock()
+        b45.nTime = self.tip.nTime + 1
+        b45.hashPrevBlock = self.tip.sha256
+        b45.nBits = 0x207fffff
+        b45.vtx.append(non_coinbase)
+        b45.hashMerkleRoot = b45.calc_merkle_root()
+        b45.calc_sha256()
+        b45.solve()
+        self.block_heights[b45.sha256] = self.block_heights[self.tip.sha256]+1
+        self.tip = b45
+        self.blocks[45] = b45
+        yield rejected(RejectResult(16, b'bad-cb-missing'))
+
+        # A block with no txns
+        tip(44)
+        b46 = CBlock()
+        b46.nTime = b44.nTime+1
+        b46.hashPrevBlock = b44.sha256
+        b46.nBits = 0x207fffff
+        b46.vtx = []
+        b46.hashMerkleRoot = 0
+        b46.solve()
+        self.block_heights[b46.sha256] = self.block_heights[b44.sha256]+1
+        self.tip = b46
+        assert 46 not in self.blocks
+        self.blocks[46] = b46
+        s = ser_uint256(b46.hashMerkleRoot)
+        yield rejected(RejectResult(16, b'bad-blk-length'))
+
+        # A block with invalid work
+        tip(44)
+        b47 = block(47, solve=False)
+        target = uint256_from_compact(b47.nBits)
+        while b47.sha256 < target: #changed > to <
+            b47.nNonce += 1
+            b47.rehash()
+        yield rejected(RejectResult(16, b'high-hash'))
+
+        # A block with timestamp > 2 hrs in the future
+        tip(44)
+        b48 = block(48, solve=False)
+        b48.nTime = int(time.time()) + 60 * 60 * 3
+        b48.solve()
+        yield rejected(RejectResult(16, b'time-too-new'))
+
+        # A block with an invalid merkle hash
+        tip(44)
+        b49 = block(49)
+        b49.hashMerkleRoot += 1
+        b49.solve()
+        yield rejected(RejectResult(16, b'bad-txnmrklroot'))
+
+        # A block with an incorrect POW limit
+        tip(44)
+        b50 = block(50)
+        b50.nBits = b50.nBits - 1
+        b50.solve()
+        yield rejected(RejectResult(16, b'bad-diffbits'))
+
+        # A block with two coinbase txns
+        tip(44)
+        b51 = block(51)
+        cb2 = create_coinbase(51, self.coinbase_pubkey)
+        b51 = update_block(51, [cb2])
+        yield rejected(RejectResult(16, b'bad-cb-multiple'))
+
+        # A block w/ duplicate txns
+        # Note: txns have to be in the right position in the merkle tree to trigger this error
+        tip(44)
+        b52 = block(52, spend=out[15])
+        tx = create_tx(b52.vtx[1], 0, 1)
+        b52 = update_block(52, [tx, tx])
+        yield rejected(RejectResult(16, b'bad-txns-duplicate'))
+
+        # Test block timestamps
+        #  -> b31 (8) -> b33 (9) -> b35 (10) -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15)
+        #                                                                                   \-> b54 (15)
+        #
+        tip(43)
+        block(53, spend=out[14])
+        yield rejected() # rejected since 
