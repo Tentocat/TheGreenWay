@@ -713,4 +713,268 @@ class FullBlockTest(ComparisonTestFramework):
         #
         tip(43)
         block(53, spend=out[14])
-        yield rejected() # rejected since 
+        yield rejected() # rejected since b44 is at same height
+        save_spendable_output()
+
+        # invalid timestamp (b35 is 5 blocks back, so its time is MedianTimePast)
+        b54 = block(54, spend=out[15])
+        b54.nTime = b35.nTime - 1
+        b54.solve()
+        yield rejected(RejectResult(16, b'time-too-old'))
+
+        # valid timestamp
+        tip(53)
+        b55 = block(55, spend=out[15])
+        b55.nTime = b35.nTime
+        update_block(55, [])
+        yield accepted()
+        save_spendable_output()
+
+
+        # Test CVE-2012-2459
+        #
+        # -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57p2 (16)
+        #                                                \-> b57   (16)
+        #                                                \-> b56p2 (16)
+        #                                                \-> b56   (16)
+        #
+        # Merkle tree malleability (CVE-2012-2459): repeating sequences of transactions in a block without 
+        #                           affecting the merkle root of a block, while still invalidating it.
+        #                           See:  src/consensus/merkle.h
+        #
+        #  b57 has three txns:  coinbase, tx, tx1.  The merkle root computation will duplicate tx.
+        #  Result:  OK
+        #
+        #  b56 copies b57 but duplicates tx1 and does not recalculate the block hash.  So it has a valid merkle
+        #  root but duplicate transactions.
+        #  Result:  Fails
+        #
+        #  b57p2 has six transactions in its merkle tree:
+        #       - coinbase, tx, tx1, tx2, tx3, tx4
+        #  Merkle root calculation will duplicate as necessary.
+        #  Result:  OK.
+        #
+        #  b56p2 copies b57p2 but adds both tx3 and tx4.  The purpose of the test is to make sure the code catches
+        #  duplicate txns that are not next to one another with the "bad-txns-duplicate" error (which indicates
+        #  that the error was caught early, avoiding a DOS vulnerability.)
+
+        # b57 - a good block with 2 txs, don't submit until end
+        tip(55)
+        b57 = block(57)
+        tx = create_and_sign_tx(out[16].tx, out[16].n, 1)
+        tx1 = create_tx(tx, 0, 1)
+        b57 = update_block(57, [tx, tx1])
+
+        # b56 - copy b57, add a duplicate tx
+        tip(55)
+        b56 = copy.deepcopy(b57)
+        self.blocks[56] = b56
+        assert_equal(len(b56.vtx),3)
+        b56 = update_block(56, [tx1])
+        assert_equal(b56.hash, b57.hash)
+        yield rejected(RejectResult(16, b'bad-txns-duplicate'))
+
+        # b57p2 - a good block with 6 tx'es, don't submit until end
+        tip(55)
+        b57p2 = block("57p2")
+        tx = create_and_sign_tx(out[16].tx, out[16].n, 1)
+        tx1 = create_tx(tx, 0, 1)
+        tx2 = create_tx(tx1, 0, 1)
+        tx3 = create_tx(tx2, 0, 1)
+        tx4 = create_tx(tx3, 0, 1)
+        b57p2 = update_block("57p2", [tx, tx1, tx2, tx3, tx4])
+
+        # b56p2 - copy b57p2, duplicate two non-consecutive tx's
+        tip(55)
+        b56p2 = copy.deepcopy(b57p2)
+        self.blocks["b56p2"] = b56p2
+        assert_equal(b56p2.hash, b57p2.hash)
+        assert_equal(len(b56p2.vtx),6)
+        b56p2 = update_block("b56p2", [tx3, tx4])
+        yield rejected(RejectResult(16, b'bad-txns-duplicate'))
+
+        tip("57p2")
+        yield accepted()
+
+        tip(57)
+        yield rejected()  #rejected because 57p2 seen first
+        save_spendable_output()
+
+        # Test a few invalid tx types
+        #
+        # -> b35 (10) -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17)
+        #                                                                                    \-> ??? (17)
+        #
+
+        # tx with prevout.n out of range
+        tip(57)
+        b58 = block(58, spend=out[17])
+        tx = CTransaction()
+        assert(len(out[17].tx.vout) < 42)
+        tx.vin.append(CTxIn(COutPoint(out[17].tx.sha256, 42), CScript([OP_TRUE]), 0xffffffff))
+        tx.vout.append(CTxOut(0, b""))
+        tx.calc_sha256()
+        b58 = update_block(58, [tx])
+        yield rejected(RejectResult(16, b'bad-txns-inputs-missingorspent'))
+
+        # tx with output value > input value out of range
+        tip(57)
+        b59 = block(59)
+        tx = create_and_sign_tx(out[17].tx, out[17].n, 51*COIN)
+        b59 = update_block(59, [tx])
+        yield rejected(RejectResult(16, b'bad-txns-in-belowout'))
+
+        # reset to good chain
+        tip(57)
+        b60 = block(60, spend=out[17])
+        yield accepted()
+        save_spendable_output()
+
+        # Test BIP30
+        #
+        # -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17)
+        #                                                                                    \-> b61 (18)
+        #
+        # Blocks are not allowed to contain a transaction whose id matches that of an earlier,
+        # not-fully-spent transaction in the same chain. To test, make identical coinbases;
+        # the second one should be rejected.
+        #
+        tip(60)
+        b61 = block(61, spend=out[18])
+        b61.vtx[0].vin[0].scriptSig = b60.vtx[0].vin[0].scriptSig  #equalize the coinbases
+        b61.vtx[0].rehash()
+        b61 = update_block(61, [])
+        assert_equal(b60.vtx[0].serialize(), b61.vtx[0].serialize())
+        yield rejected(RejectResult(16, b'bad-txns-BIP30'))
+
+
+        # Test tx.isFinal is properly rejected (not an exhaustive tx.isFinal test, that should be in data-driven transaction tests)
+        #
+        #   -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17)
+        #                                                                                     \-> b62 (18)
+        #
+        tip(60)
+        b62 = block(62)
+        tx = CTransaction()
+        tx.nLockTime = 0xffffffff  #this locktime is non-final
+        assert(out[18].n < len(out[18].tx.vout))
+        tx.vin.append(CTxIn(COutPoint(out[18].tx.sha256, out[18].n))) # don't set nSequence
+        tx.vout.append(CTxOut(0, CScript([OP_TRUE])))
+        assert(tx.vin[0].nSequence < 0xffffffff)
+        tx.calc_sha256()
+        b62 = update_block(62, [tx])
+        yield rejected(RejectResult(16, b'bad-txns-nonfinal'))
+
+
+        # Test a non-final coinbase is also rejected
+        #
+        #   -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17)
+        #                                                                                     \-> b63 (-)
+        #
+        tip(60)
+        b63 = block(63)
+        b63.vtx[0].nLockTime = 0xffffffff
+        b63.vtx[0].vin[0].nSequence = 0xDEADBEEF
+        b63.vtx[0].rehash()
+        b63 = update_block(63, [])
+        yield rejected(RejectResult(16, b'bad-txns-nonfinal'))
+
+
+        #  This checks that a block with a bloated VARINT between the block_header and the array of tx such that
+        #  the block is > MAX_BLOCK_BASE_SIZE with the bloated varint, but <= MAX_BLOCK_BASE_SIZE without the bloated varint,
+        #  does not cause a subsequent, identical block with canonical encoding to be rejected.  The test does not
+        #  care whether the bloated block is accepted or rejected; it only cares that the second block is accepted.
+        #
+        #  What matters is that the receiving node should not reject the bloated block, and then reject the canonical
+        #  block on the basis that it's the same as an already-rejected block (which would be a consensus failure.)
+        #
+        #  -> b39 (11) -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17) -> b64 (18)
+        #                                                                                        \
+        #                                                                                         b64a (18)
+        #  b64a is a bloated block (non-canonical varint)
+        #  b64 is a good block (same as b64 but w/ canonical varint)
+        #
+        tip(60)
+        regular_block = block("64a", spend=out[18])
+
+        # make it a "broken_block," with non-canonical serialization
+        b64a = CBrokenBlock(regular_block)
+        b64a.initialize(regular_block)
+        self.blocks["64a"] = b64a
+        self.tip = b64a
+        tx = CTransaction()
+
+        # use canonical serialization to calculate size
+        script_length = MAX_BLOCK_BASE_SIZE - len(b64a.normal_serialize()) - 69
+        script_output = CScript([b'\x00' * script_length])
+        tx.vout.append(CTxOut(0, script_output))
+        tx.vin.append(CTxIn(COutPoint(b64a.vtx[1].sha256, 0)))
+        b64a = update_block("64a", [tx])
+        assert_equal(len(b64a.serialize()), MAX_BLOCK_BASE_SIZE + 8)
+        yield TestInstance([[self.tip, None]])
+
+        # comptool workaround: to make sure b64 is delivered, manually erase b64a from blockstore
+        self.test.block_store.erase(b64a.sha256)
+
+        tip(60)
+        b64 = CBlock(b64a)
+        b64.vtx = copy.deepcopy(b64a.vtx)
+        assert_equal(b64.hash, b64a.hash)
+        assert_equal(len(b64.serialize()), MAX_BLOCK_BASE_SIZE)
+        self.blocks[64] = b64
+        update_block(64, [])
+        yield accepted()
+        save_spendable_output()
+
+        # Spend an output created in the block itself
+        #
+        # -> b42 (12) -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17) -> b64 (18) -> b65 (19)
+        #
+        tip(64)
+        block(65)
+        tx1 = create_and_sign_tx(out[19].tx, out[19].n, out[19].tx.vout[0].nValue)
+        tx2 = create_and_sign_tx(tx1, 0, 0)
+        update_block(65, [tx1, tx2])
+        yield accepted()
+        save_spendable_output()
+
+        # Attempt to spend an output created later in the same block
+        #
+        # -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17) -> b64 (18) -> b65 (19)
+        #                                                                                    \-> b66 (20)
+        tip(65)
+        block(66)
+        tx1 = create_and_sign_tx(out[20].tx, out[20].n, out[20].tx.vout[0].nValue)
+        tx2 = create_and_sign_tx(tx1, 0, 1)
+        update_block(66, [tx2, tx1])
+        yield rejected(RejectResult(16, b'bad-txns-inputs-missingorspent'))
+
+        # Attempt to double-spend a transaction created in a block
+        #
+        # -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17) -> b64 (18) -> b65 (19)
+        #                                                                                    \-> b67 (20)
+        #
+        #
+        tip(65)
+        block(67)
+        tx1 = create_and_sign_tx(out[20].tx, out[20].n, out[20].tx.vout[0].nValue)
+        tx2 = create_and_sign_tx(tx1, 0, 1)
+        tx3 = create_and_sign_tx(tx1, 0, 2)
+        update_block(67, [tx1, tx2, tx3])
+        yield rejected(RejectResult(16, b'bad-txns-inputs-missingorspent'))
+
+        # More tests of block subsidy
+        #
+        # -> b43 (13) -> b53 (14) -> b55 (15) -> b57 (16) -> b60 (17) -> b64 (18) -> b65 (19) -> b69 (20)
+        #                                                                                    \-> b68 (20)
+        #
+        # b68 - coinbase with an extra 10 satoshis,
+        #       creates a tx that has 9 satoshis from out[20] go to fees
+        #       this fails because the coinbase is trying to claim 1 satoshi too much in fees
+        #
+        # b69 - coinbase with extra 10 satoshis, and a tx that gives a 10 satoshi fee
+        #       this succeeds
+        #
+        tip(65)
+        block(68, additional_coinbase_value=10)
+        tx = create_and_sign_tx(out[
