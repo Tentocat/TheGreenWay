@@ -71,4 +71,58 @@ class InvalidBlockRequestTest(ComparisonTestFramework):
         Now we use merkle-root malleability to generate an invalid block with
         same blockheader.
         Manufacture a block with 3 transactions (coinbase, spend of prior
-        coinbase, spend of that spend).  Duplicate the 3rd t
+        coinbase, spend of that spend).  Duplicate the 3rd transaction to 
+        leave merkle root and blockheader unchanged but invalidate the block.
+        '''
+        block2 = create_block(self.tip, create_coinbase(height), self.block_time)
+        self.block_time += 1
+
+        # b'0x51' is OP_TRUE
+        tx1 = create_transaction(self.block1.vtx[0], 0, b'\x51', 50 * COIN)
+        tx2 = create_transaction(tx1, 0, b'\x51', 50 * COIN)
+
+        block2.vtx.extend([tx1, tx2])
+        block2.hashMerkleRoot = block2.calc_merkle_root()
+        block2.rehash()
+        block2.solve()
+        orig_hash = block2.sha256
+        block2_orig = copy.deepcopy(block2)
+
+        # Mutate block 2
+        block2.vtx.append(tx2)
+        assert_equal(block2.hashMerkleRoot, block2.calc_merkle_root())
+        assert_equal(orig_hash, block2.rehash())
+        assert(block2_orig.vtx != block2.vtx)
+
+        self.tip = block2.sha256
+        yield TestInstance([[block2, RejectResult(16, b'bad-txns-duplicate')]])
+
+        # Check transactions for duplicate inputs
+        self.log.info("Test duplicate input block.")
+
+        block2_dup = copy.deepcopy(block2_orig)
+        block2_dup.vtx[2].vin.append(block2_dup.vtx[2].vin[0])
+        block2_dup.vtx[2].rehash()
+        block2_dup.hashMerkleRoot = block2_dup.calc_merkle_root()
+        block2_dup.rehash()
+        block2_dup.solve()
+        yield TestInstance([[block2_dup, RejectResult(16, b'bad-txns-inputs-duplicate')], [block2_orig, True]])
+        height += 1
+
+        '''
+        Make sure that a totally screwed up block is not valid.
+        '''
+        block3 = create_block(self.tip, create_coinbase(height), self.block_time)
+        self.block_time += 1
+        block3.vtx[0].vout[0].nValue = 100 * COIN # Too high!
+        block3.vtx[0].sha256=None
+        block3.vtx[0].calc_sha256()
+        block3.hashMerkleRoot = block3.calc_merkle_root()
+        block3.rehash()
+        block3.solve()
+
+        yield TestInstance([[block3, RejectResult(16, b'bad-cb-amount')]])
+
+
+if __name__ == '__main__':
+    InvalidBlockRequestTest().main()
