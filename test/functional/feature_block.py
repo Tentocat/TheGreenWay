@@ -1262,4 +1262,32 @@ class FullBlockTest(ComparisonTestFramework):
                 assert_equal(len(b.serialize()), MAX_BLOCK_BASE_SIZE)
                 test1.blocks_and_transactions.append([self.tip, True])
                 save_spendable_output()
-      
+                spend = get_spendable_output()
+
+            yield test1
+            chain1_tip = i
+
+            # now create alt chain of same length
+            tip(88)
+            test2 = TestInstance(sync_every_block=False)
+            for i in range(89, LARGE_REORG_SIZE + 89):
+                block("alt"+str(i))
+                test2.blocks_and_transactions.append([self.tip, False])
+            yield test2
+
+            # extend alt chain to trigger re-org
+            block("alt" + str(chain1_tip + 1))
+            yield accepted()
+
+            # ... and re-org back to the first chain
+            tip(chain1_tip)
+            block(chain1_tip + 1)
+            yield rejected()
+            block(chain1_tip + 2)
+            yield accepted()
+
+            chain1_tip += 2
+
+
+if __name__ == '__main__':
+    FullBlockTest().main()
