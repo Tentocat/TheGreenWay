@@ -289,4 +289,197 @@ class BitcoinTestFramework():
                     if expected_msg not in stderr:
                         raise AssertionError("Expected error \"" + expected_msg + "\" not found in:\n" + stderr)
             else:
-           
+                if expected_msg is None:
+                    assert_msg = "namecoind should have exited with an error"
+                else:
+                    assert_msg = "namecoind should have exited with expected error " + expected_msg
+                raise AssertionError(assert_msg)
+
+    def wait_for_node_exit(self, i, timeout):
+        self.nodes[i].process.wait(timeout)
+
+    def split_network(self):
+        """
+        Split the network of four nodes into nodes 0/1 and 2/3.
+        """
+        disconnect_nodes(self.nodes[1], 2)
+        disconnect_nodes(self.nodes[2], 1)
+        self.sync_all([self.nodes[:2], self.nodes[2:]])
+
+    def join_network(self):
+        """
+        Join the (previously split) network halves together.
+        """
+        connect_nodes_bi(self.nodes, 1, 2)
+
+        # Only sync blocks after re-joining the network, since the mempools
+        # might conflict.
+        sync_blocks(self.nodes)
+
+    def sync_all(self, node_groups=None):
+        if not node_groups:
+            node_groups = [self.nodes]
+
+        for group in node_groups:
+            sync_blocks(group)
+            sync_mempools(group)
+
+    def enable_mocktime(self):
+        """Enable mocktime for the script.
+
+        mocktime may be needed for scripts that use the cached version of the
+        blockchain.  If the cached version of the blockchain is used without
+        mocktime then the mempools will not sync due to IBD.
+
+        For backwared compatibility of the python scripts with previous
+        versions of the cache, this helper function sets mocktime to Jan 1,
+        2014 + (201 * 10 * 60)"""
+        self.mocktime = 1388534400 + (201 * 10 * 60)
+
+    def disable_mocktime(self):
+        self.mocktime = 0
+
+    # Private helper methods. These should not be accessed by the subclass test scripts.
+
+    def _start_logging(self):
+        # Add logger and logging handlers
+        self.log = logging.getLogger('TestFramework')
+        self.log.setLevel(logging.DEBUG)
+        # Create file handler to log all messages
+        fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log')
+        fh.setLevel(logging.DEBUG)
+        # Create console handler to log messages to stderr. By default this logs only error messages, but can be configured with --loglevel.
+        ch = logging.StreamHandler(sys.stdout)
+        # User can provide log level as a number or string (eg DEBUG). loglevel was caught as a string, so try to convert it to an int
+        ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
+        ch.setLevel(ll)
+        # Format logs the same as bitcoind's debug.log with microprecision (so log files can be concatenated and sorted)
+        formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000 %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+        formatter.converter = time.gmtime
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+        # add the handlers to the logger
+        self.log.addHandler(fh)
+        self.log.addHandler(ch)
+
+        if self.options.trace_rpc:
+            rpc_logger = logging.getLogger("BitcoinRPC")
+            rpc_logger.setLevel(logging.DEBUG)
+            rpc_handler = logging.StreamHandler(sys.stdout)
+            rpc_handler.setLevel(logging.DEBUG)
+            rpc_logger.addHandler(rpc_handler)
+
+    def _initialize_chain(self):
+        """Initialize a pre-mined blockchain for use by the test.
+
+        Create a cache of a 200-block-long chain (with wallet) for MAX_NODES
+        Afterward, create num_nodes copies from the cache."""
+
+        assert self.num_nodes <= MAX_NODES
+        create_cache = False
+        for i in range(MAX_NODES):
+            if not os.path.isdir(get_datadir_path(self.options.cachedir, i)):
+                create_cache = True
+                break
+
+        if create_cache:
+            self.log.debug("Creating data directories from cached datadir")
+
+            # find and delete old cache directories if any exist
+            for i in range(MAX_NODES):
+                if os.path.isdir(get_datadir_path(self.options.cachedir, i)):
+                    shutil.rmtree(get_datadir_path(self.options.cachedir, i))
+
+            # Create cache directories, run bitcoinds:
+            for i in range(MAX_NODES):
+                datadir = initialize_datadir(self.options.cachedir, i)
+                args = [os.getenv("BITCOIND", "namecoind"), "-server", "-keypool=1", "-datadir=" + datadir, "-discover=0"]
+                args.extend(base_node_args(i))
+                if i > 0:
+                    args.append("-connect=127.0.0.1:" + str(p2p_port(0)))
+                self.nodes.append(TestNode(i, self.options.cachedir, extra_args=[], rpchost=None, timewait=None, binary=None, stderr=None, mocktime=self.mocktime, coverage_dir=None))
+                self.nodes[i].args = args
+                self.start_node(i)
+
+            # Wait for RPC connections to be ready
+            for node in self.nodes:
+                node.wait_for_rpc_connection()
+
+            # Create a 200-block-long chain; each of the 4 first nodes
+            # gets 25 mature blocks and 25 immature.
+            # Note: To preserve compatibility with older versions of
+            # initialize_chain, only 4 nodes will generate coins.
+            #
+            # blocks are created with timestamps 10 minutes apart
+            # starting from 2010 minutes in the past
+            self.enable_mocktime()
+            block_time = self.mocktime - (201 * 10 * 60)
+            for i in range(2):
+                for peer in range(4):
+                    for j in range(25):
+                        set_node_times(self.nodes, block_time)
+                        self.nodes[peer].generate(1)
+                        block_time += 10 * 60
+                    # Must sync before next peer starts generating blocks
+                    sync_blocks(self.nodes)
+
+            # Shut them down, and clean up cache directories:
+            self.stop_nodes()
+            self.nodes = []
+            self.disable_mocktime()
+
+            def cache_path(n, *paths):
+                return os.path.join(get_datadir_path(self.options.cachedir, n), "regtest", *paths)
+
+            for i in range(MAX_NODES):
+                for entry in os.listdir(cache_path(i)):
+                    if entry not in ['wallets', 'chainstate', 'blocks']:
+                        os.remove(cache_path(i, entry))
+
+        for i in range(self.num_nodes):
+            from_dir = get_datadir_path(self.options.cachedir, i)
+            to_dir = get_datadir_path(self.options.tmpdir, i)
+            shutil.copytree(from_dir, to_dir)
+            initialize_datadir(self.options.tmpdir, i)  # Overwrite port/rpcport in bitcoin.conf
+
+    def _initialize_chain_clean(self):
+        """Initialize empty blockchain for use by the test.
+
+        Create an empty blockchain and num_nodes wallets.
+        Useful if a test case wants complete control over initialization."""
+        for i in range(self.num_nodes):
+            initialize_datadir(self.options.tmpdir, i)
+
+class ComparisonTestFramework(BitcoinTestFramework):
+    """Test framework for doing p2p comparison testing
+
+    Sets up some namecoind binaries:
+    - 1 binary: test binary
+    - 2 binaries: 1 test binary, 1 ref binary
+    - n>2 binaries: 1 test binary, n-1 ref binaries"""
+
+    def set_test_params(self):
+        self.num_nodes = 2
+        self.setup_clean_chain = True
+
+    def add_options(self, parser):
+        parser.add_option("--testbinary", dest="testbinary",
+                          default=os.getenv("BITCOIND", "namecoind"),
+                          help="namecoind binary to test")
+        parser.add_option("--refbinary", dest="refbinary",
+                          default=os.getenv("BITCOIND", "namecoind"),
+                          help="namecoind binary to use for reference nodes (if any)")
+
+    def setup_network(self):
+        extra_args = [['-whitelist=127.0.0.1']] * self.num_nodes
+        if hasattr(self, "extra_args"):
+            extra_args = self.extra_args
+        self.add_nodes(self.num_nodes, extra_args,
+                       binary=[self.options.testbinary] +
+                       [self.options.refbinary] * (self.num_nodes - 1))
+        self.start_nodes()
+
+class SkipTest(Exception):
+    """This exception is raised to skip a test"""
+    def __init__(self, message):
+        self.message = message
