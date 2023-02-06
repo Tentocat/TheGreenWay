@@ -43,4 +43,104 @@ class MultiWalletTest(BitcoinTestFramework):
 
         # should not initialize if one wallet is a copy of another
         shutil.copyfile(wallet_dir('w2'), wallet_dir('w22'))
-        s
+        self.assert_start_raises_init_error(0, ['-wallet=w2', '-wallet=w22'], 'duplicates fileid')
+
+        # should not initialize if wallet file is a symlink
+        os.symlink(wallet_dir('w1'), wallet_dir('w12'))
+        self.assert_start_raises_init_error(0, ['-wallet=w12'], 'Error loading wallet w12. -wallet filename must be a regular file.')
+
+        # should not initialize if the specified walletdir does not exist
+        self.assert_start_raises_init_error(0, ['-walletdir=bad'], 'Error: Specified -walletdir "bad" does not exist')
+        # should not initialize if the specified walletdir is not a directory
+        not_a_dir = wallet_dir('notadir')
+        open(not_a_dir, 'a').close()
+        self.assert_start_raises_init_error(0, ['-walletdir=' + not_a_dir], 'Error: Specified -walletdir "' + not_a_dir + '" is not a directory')
+
+        self.log.info("Do not allow -zapwallettxes with multiwallet")
+        self.assert_start_raises_init_error(0, ['-zapwallettxes', '-wallet=w1', '-wallet=w2'], "Error: -zapwallettxes is only allowed with a single wallet file")
+        self.assert_start_raises_init_error(0, ['-zapwallettxes=1', '-wallet=w1', '-wallet=w2'], "Error: -zapwallettxes is only allowed with a single wallet file")
+        self.assert_start_raises_init_error(0, ['-zapwallettxes=2', '-wallet=w1', '-wallet=w2'], "Error: -zapwallettxes is only allowed with a single wallet file")
+
+        self.log.info("Do not allow -salvagewallet with multiwallet")
+        self.assert_start_raises_init_error(0, ['-salvagewallet', '-wallet=w1', '-wallet=w2'], "Error: -salvagewallet is only allowed with a single wallet file")
+        self.assert_start_raises_init_error(0, ['-salvagewallet=1', '-wallet=w1', '-wallet=w2'], "Error: -salvagewallet is only allowed with a single wallet file")
+
+        self.log.info("Do not allow -upgradewallet with multiwallet")
+        self.assert_start_raises_init_error(0, ['-upgradewallet', '-wallet=w1', '-wallet=w2'], "Error: -upgradewallet is only allowed with a single wallet file")
+        self.assert_start_raises_init_error(0, ['-upgradewallet=1', '-wallet=w1', '-wallet=w2'], "Error: -upgradewallet is only allowed with a single wallet file")
+
+        # if wallets/ doesn't exist, datadir should be the default wallet dir
+        wallet_dir2 = data_dir('walletdir')
+        os.rename(wallet_dir(), wallet_dir2)
+        self.start_node(0, ['-wallet=w4', '-wallet=w5'])
+        assert_equal(set(node.listwallets()), {"w4", "w5"})
+        w5 = wallet("w5")
+        w5.generate(1)
+
+        # now if wallets/ exists again, but the rootdir is specified as the walletdir, w4 and w5 should still be loaded
+        os.rename(wallet_dir2, wallet_dir())
+        self.restart_node(0, ['-wallet=w4', '-wallet=w5', '-walletdir=' + data_dir()])
+        assert_equal(set(node.listwallets()), {"w4", "w5"})
+        w5 = wallet("w5")
+        w5_info = w5.getwalletinfo()
+        assert_equal(w5_info['immature_balance'], 50)
+
+        competing_wallet_dir = os.path.join(self.options.tmpdir, 'competing_walletdir')
+        os.mkdir(competing_wallet_dir)
+        self.restart_node(0, ['-walletdir='+competing_wallet_dir])
+        self.assert_start_raises_init_error(1, ['-walletdir='+competing_wallet_dir], 'Error initializing wallet database environment')
+
+        self.restart_node(0, self.extra_args[0])
+
+        w1 = wallet("w1")
+        w2 = wallet("w2")
+        w3 = wallet("w3")
+        w4 = wallet("w")
+        wallet_bad = wallet("bad")
+
+        w1.generate(1)
+
+        # accessing invalid wallet fails
+        assert_raises_rpc_error(-18, "Requested wallet does not exist or is not loaded", wallet_bad.getwalletinfo)
+
+        # accessing wallet RPC without using wallet endpoint fails
+        assert_raises_rpc_error(-19, "Wallet file not specified", node.getwalletinfo)
+
+        # check w1 wallet balance
+        w1_info = w1.getwalletinfo()
+        assert_equal(w1_info['immature_balance'], 50)
+        w1_name = w1_info['walletname']
+        assert_equal(w1_name, "w1")
+
+        # check w2 wallet balance
+        w2_info = w2.getwalletinfo()
+        assert_equal(w2_info['immature_balance'], 0)
+        w2_name = w2_info['walletname']
+        assert_equal(w2_name, "w2")
+
+        w3_name = w3.getwalletinfo()['walletname']
+        assert_equal(w3_name, "w3")
+
+        w4_name = w4.getwalletinfo()['walletname']
+        assert_equal(w4_name, "w")
+
+        w1.generate(101)
+        assert_equal(w1.getbalance(), 100)
+        assert_equal(w2.getbalance(), 0)
+        assert_equal(w3.getbalance(), 0)
+        assert_equal(w4.getbalance(), 0)
+
+        w1.sendtoaddress(w2.getnewaddress(), 1)
+        w1.sendtoaddress(w3.getnewaddress(), 2)
+        w1.sendtoaddress(w4.getnewaddress(), 3)
+        w1.generate(1)
+        assert_equal(w2.getbalance(), 1)
+        assert_equal(w3.getbalance(), 2)
+        assert_equal(w4.getbalance(), 3)
+
+        batch = w1.batch([w1.getblockchaininfo.get_request(), w1.getwalletinfo.get_request()])
+        assert_equal(batch[0]["result"]["chain"], "regtest")
+        assert_equal(batch[1]["result"]["walletname"], "w1")
+
+if __name__ == '__main__':
+    MultiWalletTest().main()
