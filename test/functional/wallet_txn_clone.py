@@ -95,4 +95,72 @@ class TxnMallTest(BitcoinTestFramework):
         if self.options.mine_block: expected += 50
         expected += tx1["amount"] + tx1["fee"]
         expected += tx2["amount"] + tx2["fee"]
+        assert_equal(self.nodes[0].getbalance(), expected)
+
+        # foo and bar accounts should be debited:
+        assert_equal(self.nodes[0].getbalance("foo", 0), 1219 + tx1["amount"] + tx1["fee"])
+        assert_equal(self.nodes[0].getbalance("bar", 0), 29 + tx2["amount"] + tx2["fee"])
+
+        if self.options.mine_block:
+            assert_equal(tx1["confirmations"], 1)
+            assert_equal(tx2["confirmations"], 1)
+            # Node1's "from0" balance should be both transaction amounts:
+            assert_equal(self.nodes[1].getbalance("from0"), -(tx1["amount"] + tx2["amount"]))
+        else:
+            assert_equal(tx1["confirmations"], 0)
+            assert_equal(tx2["confirmations"], 0)
+
+        # Send clone and its parent to miner
+        self.nodes[2].sendrawtransaction(fund_foo_tx["hex"])
+        txid1_clone = self.nodes[2].sendrawtransaction(tx1_clone["hex"])
+        if self.options.segwit:
+            assert_equal(txid1, txid1_clone)
+            return
+
+        # ... mine a block...
+        self.nodes[2].generate(1)
+
+        # Reconnect the split network, and sync chain:
+        connect_nodes(self.nodes[1], 2)
+        self.nodes[2].sendrawtransaction(fund_bar_tx["hex"])
+        self.nodes[2].sendrawtransaction(tx2["hex"])
+        self.nodes[2].generate(1)  # Mine another block to make sure we sync
+        sync_blocks(self.nodes)
+
+        # Re-fetch transaction info:
+        tx1 = self.nodes[0].gettransaction(txid1)
+        tx1_clone = self.nodes[0].gettransaction(txid1_clone)
+        tx2 = self.nodes[0].gettransaction(txid2)
         
+        # Verify expected confirmations
+        assert_equal(tx1["confirmations"], -2)
+        assert_equal(tx1_clone["confirmations"], 2)
+        assert_equal(tx2["confirmations"], 1)
+
+        # Check node0's total balance; should be same as before the clone, + 100 BTC for 2 matured,
+        # less possible orphaned matured subsidy
+        expected += 100
+        if (self.options.mine_block): 
+            expected -= 50
+        assert_equal(self.nodes[0].getbalance(), expected)
+        assert_equal(self.nodes[0].getbalance("*", 0), expected)
+
+        # Check node0's individual account balances.
+        # "foo" should have been debited by the equivalent clone of tx1
+        assert_equal(self.nodes[0].getbalance("foo"), 1219 + tx1["amount"] + tx1["fee"])
+        # "bar" should have been debited by (possibly unconfirmed) tx2
+        assert_equal(self.nodes[0].getbalance("bar", 0), 29 + tx2["amount"] + tx2["fee"])
+        # "" should have starting balance, less funding txes, plus subsidies
+        assert_equal(self.nodes[0].getbalance("", 0), starting_balance
+                                                                - 1219
+                                                                + fund_foo_tx["fee"]
+                                                                -   29
+                                                                + fund_bar_tx["fee"]
+                                                                +  100)
+
+        # Node1's "from0" account balance
+        assert_equal(self.nodes[1].getbalance("from0", 0), -(tx1["amount"] + tx2["amount"]))
+
+if __name__ == '__main__':
+    TxnMallTest().main()
+
