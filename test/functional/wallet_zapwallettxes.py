@@ -39,4 +39,41 @@ class ZapWalletTXesTest (BitcoinTestFramework):
         self.nodes[0].generate(1)
         self.sync_all()
 
-        # This transaction will not be co
+        # This transaction will not be confirmed
+        txid2 = self.nodes[0].sendtoaddress(self.nodes[1].getnewaddress(), 20)
+
+        # Confirmed and unconfirmed transactions are now in the wallet.
+        assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
+        assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)
+
+        # Stop-start node0. Both confirmed and unconfirmed transactions remain in the wallet.
+        self.stop_node(0)
+        self.start_node(0)
+
+        assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
+        assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)
+
+        # Stop node0 and restart with zapwallettxes and persistmempool. The unconfirmed
+        # transaction is zapped from the wallet, but is re-added when the mempool is reloaded.
+        self.stop_node(0)
+        self.start_node(0, ["-persistmempool=1", "-zapwallettxes=2"])
+
+        wait_until(lambda: self.nodes[0].getmempoolinfo()['size'] == 1, timeout=3)
+        self.nodes[0].syncwithvalidationinterfacequeue()  # Flush mempool to wallet
+
+        assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
+        assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)
+
+        # Stop node0 and restart with zapwallettxes, but not persistmempool.
+        # The unconfirmed transaction is zapped and is no longer in the wallet.
+        self.stop_node(0)
+        self.start_node(0, ["-zapwallettxes=2"])
+
+        # tx1 is still be available because it was confirmed
+        assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
+
+        # This will raise an exception because the unconfirmed transaction has been zapped
+        assert_raises_rpc_error(-5, 'Invalid or non-wallet transaction id', self.nodes[0].gettransaction, txid2)
+
+if __name__ == '__main__':
+    ZapWalletTXesTest().main()
